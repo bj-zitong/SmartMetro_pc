@@ -9,7 +9,7 @@
        <el-link :underline="false">退出登录</el-link>
   </div>
 
-    <!-- <el-menu mode="horizontal" text-color="#fff" active-text-color="#fff">
+    <el-menu mode="horizontal" text-color="#fff" active-text-color="#fff">
       <router-link to="/home" style="display: table;">
         <el-menu-item index="1" class="title-name">{{$t('navbar.title')}}</el-menu-item>
       </router-link>
@@ -29,7 +29,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-    </el-menu>-->
+    </el-menu>
     <!-- https://github.com/settings/emails -->
     Zit12345678
   </div>
