@@ -131,7 +131,8 @@ export default {
                 saveToLocal("password", "");
                 saveToLocal("remember", false);
               }
-              this.$router.push({ path: "/" });
+              // this.$router.push({ path: "/Selectpage" })
+              this.$router.push({ path: "/" })
             })
             .catch(() => {
               this.loading = false;
