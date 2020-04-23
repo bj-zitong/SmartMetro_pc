@@ -13,6 +13,7 @@ NProgress.configure({ showSpinner: false })
 // 路由全局前置守卫
 const whiteList = ['/login']  // 白名单
 router.beforeEach((to, from, next) => {
+  
   NProgress.start() // start progress bar
   if (getToken()) {
     // 有token访问login页面，就跳到首页
@@ -46,12 +47,17 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
+   if(to.path==="/register"){
+    next()
+   }else{
     if (whiteList.includes(to.path)) { // 白名单，免密登录
       next()
     } else { // 否则就跳动登录页面
       next('/login')
       NProgress.done() // 这种情况不会触发router的后置钩子，所以这里需要单独处理
     }
+   }
+    
   }
 })
 
