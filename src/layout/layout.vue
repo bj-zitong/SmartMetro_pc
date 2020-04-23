@@ -29,7 +29,7 @@
   height: 100%;
   .main-container {
     padding-left: 201px;
-    padding-top: 61px;
+    padding-top: 140px;
   }
 }
 </style>

@@ -42,7 +42,7 @@
 <style lang="stylus" scoped>
 .left-sidebar
   position fixed
-  top 56px
+  top 140px
   width 200px
   height 100%
   min-height 500px
