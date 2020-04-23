@@ -38,7 +38,7 @@
           </el-form-item>
           <div class="register">
             <el-button type="text">忘记/修改密码</el-button>
-            <el-button type="text" class="free_registration">免费注册</el-button>
+            <el-button type="text" class="free_registration" @click="register">免费注册</el-button>
           </div>
           <el-button
             type="primary"
@@ -142,6 +142,10 @@ export default {
         }
       });
     },
+    //注册
+    register(){
+      this.$router.push({path:"/register"});
+    }
   },
   watch: {
     toggleParticles(val) {
