@@ -1,5 +1,35 @@
 <template>
-  
+  <div class="top-navbar">
+    <div class="WisdomSite_title">
+      <img src="/static/image/WisdomSite_title_login.png" alt class="WisdomSite_title_login" />
+      <h6>智慧地铁管理系统</h6>
+    </div>
+  <div class="rightNav_Logout">
+       <img src="/static/image/WisdomSite_title_login.png" alt class="WisdomSite_title_login" />
+       <el-link :underline="false">退出登录</el-link>
+  </div>
+    <el-menu mode="horizontal" text-color="#fff" active-text-color="#fff">
+      <router-link to="/home" style="display: table;">
+        <el-menu-item index="1" class="title-name">{{$t('navbar.title')}}</el-menu-item>
+      </router-link>
+      <div class="avatar-container">
+        <el-dropdown trigger="click">
+          <div class="avatar-wrapper">
+            <img class="user-avatar" :src="avatar" />
+            <div class="username-wrapper">
+              <span class="user-name">{{name}}</span>
+              <i class="el-icon-caret-bottom"></i>
+            </div>
+          </div>
+          <el-dropdown-menu class="user-dropdown" slot="dropdown">
+            <el-dropdown-item @click.native="logout">
+              <span style="display:block;">{{$t('navbar.logOut')}}</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+    </el-menu>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
@@ -98,6 +128,7 @@ export default {
     }
   }
 }
+
 .top-navbar /deep/ .el-menu-item {
   font-size: 20px;
 
