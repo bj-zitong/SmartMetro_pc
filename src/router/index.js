@@ -13,7 +13,10 @@ Vue.use(Router)
  * alwaysShow: true           如果设置为true,它将总是现在在根目录。如果不设置的话，当它只有1个子路由的时候，会把
  *                            它的唯一子路由放到跟目录上来，而不显示它自己本身。
  */
-
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 export const constantRouterMap = [
   {
     path: '/login',
@@ -23,6 +26,11 @@ export const constantRouterMap = [
     meta: {
       title: '登录'
     }
+  },
+  {
+    path: '/Selectpage',
+    name: 'Selectpage',
+    component: () => import('@/views/Selectpage/Selectpage'),
   },
   {
     path: '/404',
@@ -39,7 +47,7 @@ export const constantRouterMap = [
         path: 'home',
         name: 'home',
         component: () => import('@/views/homepage'),
-        meta: {title: '首页'}
+        meta: { title: '首页' }
       }
     ]
   },
@@ -56,13 +64,13 @@ export const constantRouterMap = [
         path: 'profile',
         name: 'Profile',
         component: () => import('@/views/user/profile'),
-        meta: {icon: 'warning', title: '个人中心'}
+        meta: { icon: 'warning', title: '个人中心' }
       },
       {
         path: 'avatar',
         name: 'Avatar',
         component: () => import('@/views/user/profile'),
-        meta: {icon: 'warning', title: '修改头像'}
+        meta: { icon: 'warning', title: '修改头像' }
       }
     ]
   },
@@ -80,7 +88,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Introduction',
         component: () => import('@/views/introduction/index'),
-        meta: {icon: 'svg-aperture', title: '简述'}
+        meta: { icon: 'svg-aperture', title: '简述' }
       }
     ]
   },
@@ -101,20 +109,20 @@ export const constantRouterMap = [
             path: 'menu1-1',
             name: 'menu1-1',
             component: () => import('@/views/introduction/index'),
-            meta: {icon: 'success', title: '嵌套路由1-1'}
+            meta: { icon: 'success', title: '嵌套路由1-1' }
           },
           {
             path: 'menu1-2',
             name: 'menu1-2',
             component: () => import('@/views/nested/menu1/menu1-2/index'),
             alwaysShow: true,
-            meta: {icon: 'error', title: '嵌套路由1-2'},
+            meta: { icon: 'error', title: '嵌套路由1-2' },
             children: [
               {
                 path: 'menu1-2-1',
                 component: () => import('@/views/introduction/index'),
                 name: 'menu1-2-1',
-                meta: {icon: 'warning', title: '嵌套路由1-2-1'}
+                meta: { icon: 'warning', title: '嵌套路由1-2-1' }
               }
             ]
           }
@@ -124,7 +132,7 @@ export const constantRouterMap = [
         path: 'menu2',
         name: 'menu2',
         component: () => import('@/views/user/add'),
-        meta: {icon: 'star-on', title: '嵌套路由2'}
+        meta: { icon: 'star-on', title: '嵌套路由2' }
       }
     ]
   },
@@ -141,7 +149,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'CustomComponent',
         component: () => import('@/views/custom-component/index'),
-        meta: {icon: 'guide', title: '自定义组件'}
+        meta: { icon: 'guide', title: '自定义组件' }
       }
     ]
   },
@@ -159,7 +167,7 @@ export const constantRouterMap = [
         path: 'index',
         name: '数量统计',
         component: () => import('@/views/echarts'),
-        meta: {title: '数量统计', icon: 'svg-heart'}
+        meta: { title: '数量统计', icon: 'svg-heart' }
       }
     ]
   },
@@ -177,13 +185,13 @@ export const constantRouterMap = [
         path: 'quill',
         name: 'QuillEditor',
         component: () => import('@/views/rich-editor/quill'),
-        meta: {icon: 's-order', title: 'quill'}
+        meta: { icon: 's-order', title: 'quill' }
       },
       {
         path: 'tinymce',
         name: 'TinyMCE',
         component: () => import('@/views/rich-editor/tinymce'),
-        meta: {icon: 'svg-type', title: 'tinymce'}
+        meta: { icon: 'svg-type', title: 'tinymce' }
       }
     ]
   },
@@ -200,7 +208,7 @@ export const constantRouterMap = [
         path: 'draggable',
         name: 'draggable',
         component: () => import('@/views/futures/draggable'),
-        meta: {icon: 'thumb', title: '拖拽'}
+        meta: { icon: 'thumb', title: '拖拽' }
       }
     ]
   }
@@ -227,19 +235,19 @@ export const asyncRouterMap = [
         path: 'export-excel',
         name: '导出表格',
         component: () => import('@/views/excel/export-excel'),
-        meta: {icon: 'download', title: '导出表格'}
+        meta: { icon: 'download', title: '导出表格' }
       },
       {
         path: 'upload-excel',
         name: '上传表格',
         component: () => import('@/views/excel/upload-excel'),
-        meta: {icon: 'upload', title: '上传表格'}
+        meta: { icon: 'upload', title: '上传表格' }
       },
       {
         path: 'merge-count',
         name: '合并&统计',
         component: () => import('@/views/excel/merge-count'),
-        meta: {icon: 'upload', title: '合并&统计'}
+        meta: { icon: 'upload', title: '合并&统计' }
       }
     ]
   },
@@ -256,7 +264,7 @@ export const asyncRouterMap = [
         path: 'index',
         name: 'clipBoard',
         component: () => import('@/views/clipboard'),
-        meta: {title: '剪切板示例', icon: 'document'}
+        meta: { title: '剪切板示例', icon: 'document' }
       }
     ]
   },

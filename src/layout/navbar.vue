@@ -1,34 +1,39 @@
 <template>
   <div class="top-navbar">
-    <div class="WisdomSite_title">
-      <img src="/static/image/WisdomSite_title_login.png" alt class="WisdomSite_title_login" />
-      <h6>智慧地铁管理系统</h6>
-    </div>
-  <div class="rightNav_Logout">
-       <img src="/static/image/WisdomSite_title_login.png" alt class="WisdomSite_title_login" />
-       <el-link :underline="false">退出登录</el-link>
-  </div>
-    <el-menu mode="horizontal" text-color="#fff" active-text-color="#fff">
-      <router-link to="/home" style="display: table;">
-        <el-menu-item index="1" class="title-name">{{$t('navbar.title')}}</el-menu-item>
-      </router-link>
-      <div class="avatar-container">
-        <el-dropdown trigger="click">
-          <div class="avatar-wrapper">
-            <img class="user-avatar" :src="avatar" />
-            <div class="username-wrapper">
-              <span class="user-name">{{name}}</span>
-              <i class="el-icon-caret-bottom"></i>
-            </div>
+    <div style="width:98%;margin:0 auto">
+      <el-menu mode="horizontal">
+        <div>
+          <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
+          <div index="1" class="title-name">{{$t('navbar.title')}}</div>
+        </div>
+        <div class="avatar-container">
+          <div class="exit_login">
+            <img src="/static/image/exit_login.png" alt class="ri_icon" />
+            <el-link :underline="false" style="exit_login_text" @click.native="logout">退出登录</el-link>
           </div>
-          <el-dropdown-menu class="user-dropdown" slot="dropdown">
-            <el-dropdown-item @click.native="logout">
-              <span style="display:block;">{{$t('navbar.logOut')}}</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-    </el-menu>
+          <div class="Head_portrait">
+            <img src="/static/image/Head_portrait.png" alt class="ri_icon_name" />
+            <el-link :underline="false" style="border-right:none">名称</el-link>
+          </div>
+        </div>
+      </el-menu>
+    </div>
+    <el-tabs type="border-card">
+      <el-tab-pane>
+        <span slot="label">
+          <i class="el-icon-date"></i> 首页
+        </span>
+      </el-tab-pane>
+      <el-tab-pane label="实名认证"></el-tab-pane>
+      <el-tab-pane label="智慧考勤"></el-tab-pane>
+      <el-tab-pane label="培训教育"></el-tab-pane>
+      <el-tab-pane label="诚信管理"></el-tab-pane>
+      <el-tab-pane label="人员定位"></el-tab-pane>
+      <el-tab-pane label="人员测温"></el-tab-pane>
+      <el-tab-pane label="工友须知"></el-tab-pane>
+      <el-tab-pane label="疫情管理"></el-tab-pane>
+      <el-tab-pane label="开复工管理"></el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 <script>
@@ -60,7 +65,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
 .top-navbar {
   position: fixed;
   width: 100%;
@@ -73,6 +78,7 @@ export default {
     width: 500px;
     height: 36px;
     float: left;
+
     h6 {
       font-size: 24px;
       color: #fff;
@@ -80,15 +86,17 @@ export default {
       float: left;
       margin: 0;
       padding: 20px 0 0 20px;
-      font-weight:normal
+      font-weight: normal;
     }
   }
+
   .WisdomSite_title_login {
     width: 36px;
     height: 36px;
     float: left;
-    margin: 17px 0 0 50px;
+    margin: 17px 0 0 30px;
   }
+
   .el-menu {
     border-bottom: none !important;
     background: rgba(0, 88, 162, 1);
@@ -106,18 +114,43 @@ export default {
 
     .avatar-container {
       position: absolute;
-      top: 15px;
-      right: 40px;
+      top: 20px;
+      right: -45px;
+      width: 300px;
+      outline: none;
 
       .avatar-wrapper {
         cursor: pointer;
       }
+
+      .ri_icon {
+        width: 16px;
+        height: 16px;
+        float: left;
+        margin-top: 1px;
+        margin-right: 3px;
+      }
+
+      .ri_icon_name {
+        width: 16px;
+        height: 16px;
+        margin: 1px 10px 0 20px;
+        float: left;
+      }
+
+      .exit_login {
+        float: left;
+      }
+
+      .Head_portrait {
+        float: left;
+      }
     }
-    .avatar-container /deep/ .user-avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      vertical-align: middle;
+
+    .el-link.el-link--default {
+      color: #fff;
+      border-right: 2px solid #fff;
+      padding-right: 22px;
     }
 
     .username-wrapper {
@@ -128,17 +161,8 @@ export default {
     }
   }
 }
-
 .top-navbar /deep/ .el-menu-item {
   font-size: 20px;
-
-  &:hover {
-    background-color: transparent;
-  }
-
-  &:focus {
-    background-color: transparent;
-  }
 }
 .top-navbar /deep/ .theme-container {
   position: absolute;
@@ -147,11 +171,33 @@ export default {
   color: #fff;
   font-size: 24px;
   cursor: pointer;
-  // background-image linear-gradient(red, blue)
+}
+.title-name {
+  padding: 20px 0 0 20px;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 1);
 }
 .top-navbar .screenfull {
   position: absolute;
   top: 20px;
   right: 190px;
+}
+.el-tabs--border-card{
+    background-color: #F5F7FA;
+    border-bottom: 1px solid #E4E7ED;
+    margin: 0;
+    height :30px;
+    border-radius: 30px;
+}
+.el-tabs__nav-scroll{
+  border-radius: 30px!important;
+}
+.el-tabs--border-card>.el-tabs__header{
+  border-radius: 30px!important;
+}
+.is-active{
+border-radius: 30px!important;
 }
 </style>
