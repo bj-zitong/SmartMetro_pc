@@ -28,6 +28,15 @@ export const constantRouterMap = [
     }
   },
   {
+    path: '/register',
+    name: 'register',
+    hidden: true,
+    component: () => import('@/views/register/register'),
+    meta: {
+      title: '注册'
+    }
+  },
+  {
     path: '/Selectpage',
     name: 'Selectpage',
     component: () => import('@/views/Selectpage/Selectpage'),
