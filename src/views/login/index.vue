@@ -40,30 +40,23 @@
             <el-button type="text">忘记/修改密码</el-button>
             <el-button type="text" class="free_registration">免费注册</el-button>
           </div>
-          <!-- <el-form-item :label="$t('login.remember')" label-width="80px">
-            <el-switch v-model="remember"></el-switch>
-          </el-form-item>-->
-          <el-button class="btnlogin" type="primary"
+          <el-button
+            type="primary"
             @click="onLogin('loginForm')"
             :loading="loading"
           >{{$t('login.login')}}</el-button>
         </el-form>
       </div>
     </el-card>
-    <div id="particles"></div>
   </el-container>
 </template>
 <script>
 import { isValidUsername } from "@/utils/validate";
-import LangSelect from "@/components/lang-select";
 import { saveToLocal, loadFromLocal } from "@/common/local-storage";
 import { mapActions } from "vuex";
 /* eslint-disable*/
 import particles from "particles.js";
 export default {
-  components: {
-    LangSelect
-  },
   data() {
     // username 验证
     const validateUsername = (rule, value, callback) => {
@@ -148,23 +141,6 @@ export default {
         }
       });
     },
-    accountTip() {
-      this.$notify({
-        title: "账号：admin",
-        dangerouslyUseHTMLString: true,
-        message: "<strong>密码：<i>123456</i></strong>",
-        type: "success",
-        position: "bottom-left"
-      });
-      this.$notify({
-        title: "账号：lucy",
-        dangerouslyUseHTMLString: true,
-        message: "<strong>密码：<i>123456</i></strong>",
-        type: "success",
-        position: "bottom-left",
-        offset: 80
-      });
-    }
   },
   watch: {
     toggleParticles(val) {
@@ -281,7 +257,6 @@ export default {
     }
   },
   mounted() {
-    this.accountTip();
   }
 };
 </script>
@@ -356,9 +331,11 @@ export default {
       .register {
         margin-left: 40px;
       }
+
       .free_registration {
         margin-left: 150px;
       }
+
       .r_login {
         width: 305px;
         height: 60px;
@@ -414,24 +391,25 @@ export default {
         font-size: 16px;
       }
     }
-    
   }
 }
-.el-button--primary {
-  position relative;
-left:37px;
-top:90px;
-      width:305px;
-height:60px;
-background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
-box-shadow:3px 6px 12px rgba(0,88,162,0.23);
-opacity:1;
-border-radius:4px;
-font-size:24px;
-line-height:20px;
-color:rgba(255,255,255,1);
 
-    }
+.el-button--primary {
+  position: relative;
+  left: 42px;
+  top: 90px;
+  width: 300px;
+  height: 60px;
+  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
+  box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
+  opacity: 1;
+  border-radius: 4px;
+  font-size: 24px;
+  line-height: 20px;
+  text-align :center;
+  color: rgba(255, 255, 255, 1);
+}
+
 #particles {
   width: 100%;
   height: 100%;
@@ -443,5 +421,4 @@ color:rgba(255,255,255,1);
   background-position: 50% 50%;
   background-repeat: no-repeat;
 }
-
 </style>
