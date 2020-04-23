@@ -221,82 +221,66 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  {
-    path: '/excel',
-    redirect: '/excel/export-excel',
-    meta: {
-      title: '',
-      icon: ''
-    },
-    children: [
-      {
-        path: 'export-excel',
-        name: '导出表格',
-        component: () => import('@/views/excel/export-excel'),
-        meta: {icon: '', title: ''}
-      },
-      {
-        path: 'upload-excel',
-        name: '上传表格',
-        component: () => import('@/views/excel/upload-excel'),
-        meta: {icon: '', title: ''}
-      },
-      {
-        path: 'merge-count',
-        name: '合并&统计',
-        component: () => import('@/views/excel/merge-count'),
-        meta: {icon: '', title: ''}
-      }
-    ]
-  },
-  {
-    path: '/clipboard',
-    component: Layout,
-    redirect: 'index',
-    meta: {
-      icon: 'document',
-      title: '剪切板'
-    },
-    children: [
-      {
-        path: 'index',
-        name: 'clipBoard',
-        component: () => import('@/views/clipboard'),
-        meta: {title: '', icon: ''}
-      }
-    ]
-  },
-  {
-    path: '/theme',
-    component: Layout,
-    meta: {
-      icon: 'document',
-      title: 'theme'
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/theme/index'),
-        name: 'Theme',
-        meta: { title: '', icon: '' }
-      }
-    ]
-  },
-  {
-    path: '/test',
-    component: Layout,
-    meta: {
-      icon: 'document',
-      title: ''
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/test/index'),
-        name: 'Test',
-        meta: { title: '', icon: '' }
-      }
-    ]
-  },
+  // {
+  //   path: '/excel',
+  //   redirect: '/excel/export-excel',
+  //   meta: {
+  //     title: '',
+  //     icon: ''
+  //   },
+  //   children: [
+  //     {
+  //       path: 'export-excel',
+  //       name: '导出表格',
+  //       component: () => import('@/views/excel/export-excel'),
+  //       meta: {icon: '', title: ''}
+  //     },
+  //     {
+  //       path: 'upload-excel',
+  //       name: '上传表格',
+  //       component: () => import('@/views/excel/upload-excel'),
+  //       meta: {icon: '', title: ''}
+  //     },
+  //     {
+  //       path: 'merge-count',
+  //       name: '合并&统计',
+  //       component: () => import('@/views/excel/merge-count'),
+  //       meta: {icon: '', title: ''}
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/clipboard',
+  //   component: Layout,
+  //   redirect: 'index',
+  //   meta: {
+  //     icon: 'document',
+  //     title: '剪切板'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'clipBoard',
+  //       component: () => import('@/views/clipboard'),
+  //       meta: {title: '', icon: ''}
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/theme',
+  //   component: Layout,
+  //   meta: {
+  //     icon: 'document',
+  //     title: 'theme'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/theme/index'),
+  //       name: 'Theme',
+  //       meta: { title: '', icon: '' }
+  //     }
+  //   ]
+  // },
   { path: '*', redirect: '/404', hidden: true }
 ]

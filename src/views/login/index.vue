@@ -38,7 +38,7 @@
           </el-form-item>
           <div class="register">
             <el-button type="text">忘记/修改密码</el-button>
-            <el-button type="text" class="free_registration">免费注册</el-button>
+            <el-button type="text" class="free_registration" @click="registered">免费注册</el-button>
           </div>
           <el-button
             type="primary"
@@ -131,7 +131,7 @@ export default {
                 saveToLocal("password", "");
                 saveToLocal("remember", false);
               }
-              this.$router.push({ path: "/Selectpage" })
+              this.$router.push({ path: "/Selectpage" });
               // this.$router.push({ path: "/" })
             })
             .catch(() => {
@@ -142,6 +142,9 @@ export default {
         }
       });
     },
+    registered(){
+       console.log("55555555")
+    }
   },
   watch: {
     toggleParticles(val) {
@@ -257,8 +260,7 @@ export default {
       }
     }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 <style scoped lang="stylus">
@@ -407,7 +409,7 @@ export default {
   border-radius: 4px;
   font-size: 24px;
   line-height: 20px;
-  text-align :center;
+  text-align: center;
   color: rgba(255, 255, 255, 1);
 }
 
