@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Login from '@/views/login'
 import Layout from '@/layout/layout'
+import sm_authentication from '@/sm_authentication/sm_authentication'
 
 Vue.use(Router)
 
@@ -27,11 +28,6 @@ export const constantRouterMap = [
       title: '登录'
     }
   },
-  // {
-  //   path: '/aa',
-  //   name: 'aa',
-  //   component: () => import('@/views/aa/aa'),
-  // },
   {
     path: '/register',
     name: 'register',
@@ -182,15 +178,61 @@ export const constantRouterMap = [
         meta: { icon: 'guide', title: '外来人员' }
       }
     ]
+  },
+  {
+    path: '/aa',
+    name: 'aa',
+    hidden: true,
+    component: sm_authentication,
+    children: [
+      {
+        path: 'aa',
+        name: 'aa',
+        component: () => import('@/views/aa/aa'),
+        meta: { title: '' }
+      }
+    ]
   }
 ]
-
 export default new Router({
   // mode: 'history',  require service support
   // scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+  routes: constantRouterMap,
+  RouterMap: asyncRouterMap
 })
-
 export const asyncRouterMap = [
-
+  {
+    path: '/foreignpersonnel',
+    component: Layout,
+    meta: {
+      icon: 'question',
+      title: '外来人员'
+    },
+    redirect: '/foreignpersonnel/index',
+    children: [
+      {
+        path: 'index',
+        name: 'CustomComponent',
+        component: () => import('@/views/foreignpersonnel/index'),
+        meta: { icon: 'guide', title: '外来人员' }
+      }
+    ]
+  },
+  {
+    path: '/foreignpersonnel',
+    component: Layout,
+    meta: {
+      icon: 'question',
+      title: '外来人员'
+    },
+    redirect: '/foreignpersonnel/index',
+    children: [
+      {
+        path: 'index',
+        name: 'CustomComponent',
+        component: () => import('@/views/foreignpersonnel/index'),
+        meta: { icon: 'guide', title: '外来人员' }
+      }
+    ]
+  }
 ]

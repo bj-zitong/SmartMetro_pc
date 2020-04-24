@@ -142,6 +142,7 @@ export default {
         }
       });
     },
+
     registered() {
       this.$router.push({ path: "/register" });
     }
