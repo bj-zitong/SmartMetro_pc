@@ -68,79 +68,80 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
-import Screenfull from "@/components/screenfull";
-import ChangeTheme from "@/components/theme";
+import { mapGetters, mapActions } from 'vuex'
+import Screenfull from '@/components/screenfull'
+import ChangeTheme from '@/components/theme'
 export default {
-  name: "top-navbar",
+  name: 'top-navbar',
   data() {
     return {
       objImg: {
-        home: "/static/image/home.png",
-        smrz: "/static/image/smrz.png",
-        kaoqin: "/static/image/kaoqin.png",
-        jypx: "/static/image/jypx.png",
-        cxgl: "/static/image/cxgl.png",
-        rycw: "/static/image/rycw.png",
-        gyxz: "/static/image/gyxz.png",
-        yqgl: "/static/image/yqgl.png",
-        kfg: "/static/image/kfg.png"
+        home: '/static/image/home.png',
+        smrz: '/static/image/smrz.png',
+        kaoqin: '/static/image/kaoqin.png',
+        jypx: '/static/image/jypx.png',
+        cxgl: '/static/image/cxgl.png',
+        rycw: '/static/image/rycw.png',
+        gyxz: '/static/image/gyxz.png',
+        yqgl: '/static/image/yqgl.png',
+        kfg: '/static/image/kfg.png'
       }
-    };
+    }
   },
-  name: "",
+  // name: '',
   components: {
     Screenfull,
     ChangeTheme
   },
   computed: {
-    ...mapGetters(["name", "avatar"])
+    ...mapGetters(['name', 'avatar'])
   },
   methods: {
     ...mapActions({
-      userLogout: "logout"
+      userLogout: 'logout'
     }),
     handleClick(tab, event) {
-      this.$router.push('/aa')
-      tab.name == "home"
-        ? (this.objImg.home = "/static/image/selected_soye.png")
-        : (this.objImg.home = "/static/image/home.png");
-      tab.name == "smrz"
-        ? (this.objImg.smrz = "/static/image/selected_smrz.png")
-        : (this.objImg.smrz = "/static/image/smrz.png");
-      tab.name == "kaoqin"
-        ? (this.objImg.kaoqin = "/static/image/selected_zhkq.png")
-        : (this.objImg.kaoqin = "/static/image/kaoqin.png");
-      tab.name == "jypx"
-        ? (this.objImg.jypx = "/static/image/selected_pxjy.png")
-        : (this.objImg.jypx = "/static/image/jypx.png");
-      tab.name == "cxgl"
-        ? (this.objImg.cxgl = "/static/image/selected_cxjy.png")
-        : (this.objImg.cxgl = "/static/image/cxgl.png");
-      tab.name == "rycw"
-        ? (this.objImg.rycw = "/static/image/selected_rycw.png")
-        : (this.objImg.rycw = "/static/image/rycw.png");
-      tab.name == "gyxz"
-        ? (this.objImg.gyxz = "/static/image/selected_gyxz.png")
-        : (this.objImg.gyxz = "/static/image/gyxz.png");
-      tab.name == "yqgl"
-        ? (this.objImg.yqgl = "/static/image/selected_gyxz.png")
-        : (this.objImg.yqgl = "/static/image/yqgl.png");
-      tab.name == "kfg"
-        ? (this.objImg.kfg = "/static/image/selected_kfg.png")
-        : (this.objImg.kfg = "/static/image/kfg.png");
+      // this.$router.push('/aa')
+      console.log(tab)
+      tab.name == 'home'
+        ? (this.objImg.home = '/static/image/selected_soye.png')
+        : (this.objImg.home = '/static/image/home.png')
+      tab.name == 'smrz'
+        ? (this.objImg.smrz = '/static/image/selected_smrz.png')
+        : (this.objImg.smrz = '/static/image/smrz.png')
+      tab.name == 'kaoqin'
+        ? (this.objImg.kaoqin = '/static/image/selected_zhkq.png')
+        : (this.objImg.kaoqin = '/static/image/kaoqin.png')
+      tab.name == 'jypx'
+        ? (this.objImg.jypx = '/static/image/selected_pxjy.png')
+        : (this.objImg.jypx = '/static/image/jypx.png')
+      tab.name == 'cxgl'
+        ? (this.objImg.cxgl = '/static/image/selected_cxjy.png')
+        : (this.objImg.cxgl = '/static/image/cxgl.png')
+      tab.name == 'rycw'
+        ? (this.objImg.rycw = '/static/image/selected_rycw.png')
+        : (this.objImg.rycw = '/static/image/rycw.png')
+      tab.name == 'gyxz'
+        ? (this.objImg.gyxz = '/static/image/selected_gyxz.png')
+        : (this.objImg.gyxz = '/static/image/gyxz.png')
+      tab.name == 'yqgl'
+        ? (this.objImg.yqgl = '/static/image/selected_gyxz.png')
+        : (this.objImg.yqgl = '/static/image/yqgl.png')
+      tab.name == 'kfg'
+        ? (this.objImg.kfg = '/static/image/selected_kfg.png')
+        : (this.objImg.kfg = '/static/image/kfg.png')
     },
     logout() {
       this.userLogout()
         .then(() => {
-          location.reload(); // 为了重新实例化vue-router对象 避免bug
+          location.reload() // 为了重新实例化vue-router对象 避免bug
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
   }
-};
+}
 </script>
 <style lang="stylus">
 .top-navbar {

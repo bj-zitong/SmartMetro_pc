@@ -81,53 +81,6 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/labor_Subcontract',
-    component: Layout,
-    alwaysShow: true,
-    meta: {
-      icon: 's-order',
-      title: '劳务分包管理'
-    },
-    redirect: 'labor_Subcontract1',
-    children: [
-      {
-        path: 'labor_Subcontract1',
-        name: 'labor_Subcontract1',
-        component: () => import('@/views/labor_Subcontract/labor_Subcontract1'),
-        meta: { icon: '', title: '劳务分包管理一组' }
-      },
-      {
-        path: 'labor_Subcontract2',
-        name: 'labor_Subcontract2',
-        component: () => import('@/views/labor_Subcontract/labor_Subcontract2'),
-        meta: { icon: '', title: '劳务分包管理二组' }
-      }
-    ]
-  },
-  {
-    path: '/team_message',
-    component: Layout,
-    alwaysShow: true,
-    meta: {
-      title: '班组管理',
-      icon: 'svg-droplet'
-    },
-    children: [
-      {
-        path: 'message',
-        name: 'message',
-        component: () => import('@/views/team_message/message'),
-        meta: { title: '班前信息', icon: '' }
-      },
-      {
-        path: 'talkrecord',
-        name: 'talkrecord',
-        component: () => import('@/views/team_message/talkrecord'),
-        meta: { title: '班前讲话记录', icon: '' }
-      }
-    ]
-  },
-  {
     path: '/roster',
     component: Layout,
     alwaysShow: true,
@@ -198,40 +151,53 @@ export default new Router({
   // mode: 'history',  require service support
   // scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap,
-  RouterMap: asyncRouterMap
+  RouterMap: constantRouterMap
 })
 export const asyncRouterMap = [
   {
-    path: '/foreignpersonnel',
+    path: '/labor_Subcontract',
     component: Layout,
+    alwaysShow: true,
     meta: {
-      icon: 'question',
-      title: '外来人员'
+      icon: 's-order',
+      title: '劳务分包管理'
     },
-    redirect: '/foreignpersonnel/index',
+    redirect: 'labor_Subcontract1',
     children: [
       {
-        path: 'index',
-        name: 'CustomComponent',
-        component: () => import('@/views/foreignpersonnel/index'),
-        meta: { icon: 'guide', title: '外来人员' }
+        path: 'labor_Subcontract1',
+        name: 'labor_Subcontract1',
+        component: () => import('@/views/labor_Subcontract/labor_Subcontract1'),
+        meta: { icon: '', title: '劳务分包管理一组' }
+      },
+      {
+        path: 'labor_Subcontract2',
+        name: 'labor_Subcontract2',
+        component: () => import('@/views/labor_Subcontract/labor_Subcontract2'),
+        meta: { icon: '', title: '劳务分包管理二组' }
       }
     ]
   },
   {
-    path: '/foreignpersonnel',
+    path: '/team_message',
     component: Layout,
+    alwaysShow: true,
     meta: {
-      icon: 'question',
-      title: '外来人员'
+      title: '班组管理',
+      icon: 'svg-droplet'
     },
-    redirect: '/foreignpersonnel/index',
     children: [
       {
-        path: 'index',
-        name: 'CustomComponent',
-        component: () => import('@/views/foreignpersonnel/index'),
-        meta: { icon: 'guide', title: '外来人员' }
+        path: 'message',
+        name: 'message',
+        component: () => import('@/views/team_message/message'),
+        meta: { title: '班前信息', icon: '' }
+      },
+      {
+        path: 'talkrecord',
+        name: 'talkrecord',
+        component: () => import('@/views/team_message/talkrecord'),
+        meta: { title: '班前讲话记录', icon: '' }
       }
     ]
   }

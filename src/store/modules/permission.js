@@ -5,6 +5,8 @@ import { constantRouterMap, asyncRouterMap } from '@/router'
  * @param routesMap
  */
 function filterAsyncRouter(asyncRouterMap, routesMap) {
+  console.log(asyncRouterMap)
+  console.log(routesMap)
   const accessedRouters = asyncRouterMap.filter(route => {
     return routesMap.includes(route.path)
   })

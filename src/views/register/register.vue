@@ -2,11 +2,14 @@
   <div class="login_container">
     <!--头部-->
     <div class="container_center">
-      <img src="../../../resource/logo.png" style="width:30px;height:30px" />
+      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin: 10px 0 0 10px" />
       <span class="register-head">智慧地铁管理系统</span>
       <!--表单-->
       <!---->
-      <p style="accout-style">已有账号，马上登录</p>
+      <div class="accout-style">
+        <span>已有账号，</span>
+        <router-link :to="{path: '/login' }" style="color:#0058A2">马上登录</router-link>
+      </div>
       <el-button type="primary" class="button-head">
         <span class="button-head-title">注册</span>
       </el-button>
@@ -32,24 +35,35 @@
           <!--密码-->
           <el-form-item prop="password">
             <el-input type="password" v-model="register.password" placeholder="密码"></el-input>
+            <span class="svg-container svg-container_password">
+              <svg-icon icon-class="password" />
+            </span>
           </el-form-item>
           <!--确认密码-->
           <el-form-item prop="confirmPassword">
             <el-input type="password" v-model="register.confirmPassword" placeholder="确认密码"></el-input>
+            <span class="svg-container svg-container_password">
+              <svg-icon icon-class="password" />
+            </span>
           </el-form-item>
           <!--验证码-->
-          <el-form-item prop="authCode" class="code-style">
-            <el-input type="text" v-model="register.authCode" placeholder="验证码"></el-input>
-            <el-input type="text" style="getcode"></el-input>
-          </el-form-item>
-          <!--生成验证码-->
-          <!--获得验证码-->
-          <el-form-item class="code-style" prop="getauthCode"  >
-            <el-input type="text" v-model="register.getauthCode"></el-input>
-          </el-form-item>
           <div>
-            <el-button type="text" @click="register('form')">点击注册</el-button>
+            <el-form-item prop="authCode" style="width:100px;float:left">
+              <el-input type="text" v-model="register.authCode" placeholder="验证码"></el-input>
+            </el-form-item>
+            <img
+              src="../../../resource/code.png"
+              style="width:94px;height:35px;vertical-align:middle;"
+              alt="验证码"
+            />
           </div>
+
+          <!-- <div  style="display: flex;align-items: center;justify-content: center;background-color:red">
+
+          </div>-->
+          <el-button type="primary" class="button-end">
+            <span class="button-head-title">注册</span>
+          </el-button>
         </el-form>
       </div>
       <!-- <vue-particles
@@ -73,6 +87,8 @@
     >
       </vue-particles>-->
     </div>
+    <span class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</span>
+    <span class="content-end1">京ICP备17067133号 京公网安备11010602006143号</span>
   </div>
 </template>
 <script>
@@ -125,8 +141,8 @@ export default {
 /* 总div */
 .login_container {
   width: 100%;
-  height: 100%;
-  background: rgba(244, 244, 244, 1);
+  height: 100vh;
+  background-color: rgba(244, 244, 244, 1);
   opacity: 1; /* 不透明级别 */
 
   /* 头部字体 */
@@ -138,20 +154,21 @@ export default {
     font-weight: bold;
     line-height: 26px;
     color: rgba(0, 88, 162, 1);
-    letter-spacing: 20px;
     opacity: 1;
+    margin-left: 20px;
   }
-  .accout-style{
-    // margin-right:20px;
-    // width:92px;
-    height:14px;
-    font-size:10px;
-    font-family:Microsoft YaHei;
-    font-weight:400;
-    line-height:14px;
-    color:rgba(10,96,177,1);
-    letter-spacing:20px;
-    opacity:1;
+
+  .accout-style {
+    width: 125px;
+    height: 14px;
+    font-size: 10px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    line-height: 14px;
+    color: rgba(10, 96, 177, 1);
+    opacity: 1;
+    float: right;
+    margin-top: 14px;
   }
 
   /* 头部head button */
@@ -185,6 +202,10 @@ export default {
     top: 50%;
     left: 50%;
     margin: -300px 0 0 -340px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    // opacity:0.5;
+    border-radius: 4px;
 
     /* 表单div */
     .login_box {
@@ -192,10 +213,10 @@ export default {
         padding: 32px;
         bottom: 0;
         box-sizing: border-box;
-        position:absolute;
-        left:50%;
-        top:44%;
-        transform:translate(-50%,-50%);
+        position: absolute;
+        left: 50%;
+        top: 44%;
+        transform: translate(-50%, -50%);
       }
 
       .el-form-item {
@@ -206,17 +227,51 @@ export default {
         opacity: 1;
         border-radius: 4px;
       }
-      .code-style{
-        width: 110px;
+
+      .code-style {
+        width: 120px;
         height: 35px;
         background: rgba(239, 239, 239, 1);
         border: 1px solid rgba(225, 225, 225, 1);
         opacity: 1;
         border-radius: 4px;
+      }
 
-
+      .button-end {
+        width: 260px;
+        height: 35px;
+        background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
+        box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
+        opacity: 1;
+        border-radius: 4px;
       }
     }
+  }
+
+  .content-end {
+    width: 400px;
+    height: 14px;
+    font-size: 10px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    line-height: 14px;
+    color: rgba(161, 161, 161, 1);
+    opacity: 1;
+    position: absolute;
+    margin: 861px 812px 205px 776px;
+  }
+
+  .content-end1 {
+    width: 257px;
+    height: 14px;
+    font-size: 10px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    line-height: 14px;
+    color: rgba(161, 161, 161, 1);
+    opacity: 1;
+    position: absolute;
+    margin: 885px 849px 181px 814px;
   }
 }
 </style>
