@@ -81,143 +81,204 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/introduction',
-    component: Layout,
-    redirect: '/introduction/index',
-    // alwaysShow: true,
-    meta: {
-      icon: 'svg-aperture',
-      title: '简述'
-    },
-    children: [
-      {
-        path: 'index',
-        name: 'Introduction',
-        component: () => import('@/views/introduction/index'),
-        meta: { icon: 'svg-aperture', title: '简述' }
-      }
-    ]
-  },
-  {
-    path: '/nested',
-    component: Layout,
-    meta: {
-      icon: 'svg-layers',
-      title: '路由嵌套'
-    },
-    children: [
-      {
-        path: 'menu1',
-        meta: { icon: 'share', title: '嵌套路由1' },
-        component: () => import('@/views/nested/menu1/index'),
-        children: [
-          {
-            path: 'menu1-1',
-            name: 'menu1-1',
-            component: () => import('@/views/introduction/index'),
-            meta: { icon: 'success', title: '嵌套路由1-1' }
-          },
-          {
-            path: 'menu1-2',
-            name: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2/index'),
-            alwaysShow: true,
-            meta: { icon: 'error', title: '嵌套路由1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/introduction/index'),
-                name: 'menu1-2-1',
-                meta: { icon: 'warning', title: '嵌套路由1-2-1' }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        name: 'menu2',
-        component: () => import('@/views/user/add'),
-        meta: { icon: 'star-on', title: '嵌套路由2' }
-      }
-    ]
-  },
-  {
-    path: '/custom-component',
-    component: Layout,
-    meta: {
-      icon: 'question',
-      title: '自定义组件'
-    },
-    redirect: '/custom-component/index',
-    children: [
-      {
-        path: 'index',
-        name: 'CustomComponent',
-        component: () => import('@/views/custom-component/index'),
-        meta: { icon: 'guide', title: '自定义组件' }
-      }
-    ]
-  },
-  {
-    path: '/echarts',
-    component: Layout,
-    redirect: 'index',
-    alwaysShow: true,
-    meta: {
-      title: '可视化',
-      icon: 'svg-droplet'
-    },
-    children: [
-      {
-        path: 'index',
-        name: '数量统计',
-        component: () => import('@/views/echarts'),
-        meta: { title: '数量统计', icon: 'svg-heart' }
-      }
-    ]
-  },
-  {
-    path: '/rich-editor',
+    path: '/labor_Subcontract',
     component: Layout,
     alwaysShow: true,
     meta: {
       icon: 's-order',
-      title: '富文本'
+      title: '劳务分包管理'
     },
-    redirect: 'quill',
+    redirect: 'labor_Subcontract1',
     children: [
       {
-        path: 'quill',
-        name: 'QuillEditor',
-        component: () => import('@/views/rich-editor/quill'),
-        meta: { icon: 's-order', title: 'quill' }
+        path: 'labor_Subcontract1',
+        name: 'labor_Subcontract1',
+        component: () => import('@/views/labor_Subcontract/labor_Subcontract1'),
+        meta: { icon: '', title: '劳务分包管理一组' }
       },
       {
-        path: 'tinymce',
-        name: 'TinyMCE',
-        component: () => import('@/views/rich-editor/tinymce'),
-        meta: { icon: 'svg-type', title: 'tinymce' }
+        path: 'labor_Subcontract2',
+        name: 'labor_Subcontract2',
+        component: () => import('@/views/labor_Subcontract/labor_Subcontract2'),
+        meta: { icon: '', title: '劳务分包管理二组' }
       }
     ]
   },
   {
-    path: '/futures',
+    path: '/team_message',
     component: Layout,
     alwaysShow: true,
     meta: {
-      icon: 's-grid',
-      title: '更多功能'
+      title: '班组管理',
+      icon: 'svg-droplet'
     },
     children: [
       {
-        path: 'draggable',
-        name: 'draggable',
-        component: () => import('@/views/futures/draggable'),
-        meta: { icon: 'thumb', title: '拖拽' }
+        path: 'message',
+        name: 'message',
+        component: () => import('@/views/team_message/message'),
+        meta: { title: '班前信息', icon: '' }
+      },
+      {
+        path: 'talkrecord',
+        name: 'talkrecord',
+        component: () => import('@/views/team_message/talkrecord'),
+        meta: { title: '班前讲话记录', icon: '' }
       }
     ]
-  }
+  },
+  {
+    path: '/roster',
+    component: Layout,
+    alwaysShow: true,
+    meta: {
+      title: '花名册',
+      icon: 'svg-droplet'
+    },
+    children: [
+      {
+        path: 'manager',
+        name: 'manager',
+        component: () => import('@/views/roster/manager'),
+        meta: { title: '管理人员', icon: '' }
+      },
+      {
+        path: 'personnel',
+        name: 'personnel',
+        component: () => import('@/views/roster/personnel'),
+        meta: { title: '劳务人员', icon: '' }
+      },
+      {
+        path: 'equipmentSpecialist',
+        name: 'equipmentSpecialist',
+        component: () => import('@/views/roster/equipmentSpecialist'),
+        meta: { title: '设备专用人员', icon: '' }
+      },
+      {
+        path: 'otherStaffs',
+        name: 'otherStaffs',
+        component: () => import('@/views/roster/otherStaffs'),
+        meta: { title: '其他服务类人员', icon: '' }
+      }
+    ]
+  },
+  {
+    path: '/foreignpersonnel',
+    component: Layout,
+    meta: {
+      icon: 'question',
+      title: '外来人员'
+    },
+    redirect: '/foreignpersonnel/index',
+    children: [
+      {
+        path: 'index',
+        name: 'CustomComponent',
+        component: () => import('@/views/foreignpersonnel/index'),
+        meta: { icon: 'guide', title: '外来人员' }
+      }
+    ]
+  },
+  // {
+  //   path: '/nested',
+  //   component: Layout,
+  //   meta: {
+  //     icon: 'svg-layers',
+  //     title: '路由嵌套'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'menu1',
+  //       meta: { icon: 'share', title: '嵌套路由1' },
+  //       component: () => import('@/views/nested/menu1/index'),
+  //       children: [
+  //         {
+  //           path: 'menu1-1',
+  //           name: 'menu1-1',
+  //           component: () => import('@/views/introduction/index'),
+  //           meta: { icon: 'success', title: '嵌套路由1-1' }
+  //         },
+  //         {
+  //           path: 'menu1-2',
+  //           name: 'menu1-2',
+  //           component: () => import('@/views/nested/menu1/menu1-2/index'),
+  //           alwaysShow: true,
+  //           meta: { icon: 'error', title: '嵌套路由1-2' },
+  //           children: [
+  //             {
+  //               path: 'menu1-2-1',
+  //               component: () => import('@/views/introduction/index'),
+  //               name: 'menu1-2-1',
+  //               meta: { icon: 'warning', title: '嵌套路由1-2-1' }
+  //             }
+  //           ]
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       path: 'menu2',
+  //       name: 'menu2',
+  //       component: () => import('@/views/user/add'),
+  //       meta: { icon: 'star-on', title: '嵌套路由2' }
+  //     }
+  //   ]
+  // },
+  
+  
+  // {
+  //   path: '/introduction',
+  //   component: Layout,
+  //   redirect: '/introduction/index',
+  //   // alwaysShow: true,
+  //   meta: {
+  //     icon: 'svg-aperture',
+  //     title: '简述'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Introduction',
+  //       component: () => import('@/views/introduction/index'),
+  //       meta: { icon: 'svg-aperture', title: '简述' }
+  //     }
+  //   ]
+  // },
+  
+  // {
+  //   path: '/custom-component',
+  //   component: Layout,
+  //   meta: {
+  //     icon: 'question',
+  //     title: '自定义组件'
+  //   },
+  //   redirect: '/custom-component/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'CustomComponent',
+  //       component: () => import('@/views/custom-component/index'),
+  //       meta: { icon: 'guide', title: '自定义组件' }
+  //     }
+  //   ]
+  // },
+ 
+  // {
+  //   path: '/futures',
+  //   component: Layout,
+  //   alwaysShow: true,
+  //   meta: {
+  //     icon: 's-grid',
+  //     title: '更多功能'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'draggable',
+  //       name: 'draggable',
+  //       component: () => import('@/views/futures/draggable'),
+  //       meta: { icon: 'thumb', title: '拖拽' }
+  //     }
+  //   ]
+  // }
 ]
 
 export default new Router({
@@ -288,5 +349,5 @@ export const asyncRouterMap = [
   //     }
   //   ]
   // },
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]

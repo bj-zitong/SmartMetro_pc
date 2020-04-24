@@ -69,7 +69,6 @@ export default {
   }
 }
 </script>
-
 <style lang="stylus">
 .tabs-view-container
   height 40px
