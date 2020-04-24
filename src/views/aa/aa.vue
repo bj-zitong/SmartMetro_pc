@@ -1,7 +1,5 @@
 <template>
-  <div class="top-navbar">
-    222222
-  </div>
+  <div class="top-navbar"></div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
@@ -17,9 +15,7 @@ import FinancingPie from '@/views/homepage/financing-pie'
 export default {
   name: 'top-navbar',
   data() {
-    return {
-
-    }
+    return {}
   },
   name: '',
   methods: {
@@ -32,5 +28,4 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
-</style>
+<style lang="stylus"></style>

@@ -88,7 +88,7 @@ export default {
       }
     }
   },
-  // name: '',
+  name: '',
   components: {
     Screenfull,
     ChangeTheme
@@ -102,7 +102,6 @@ export default {
     }),
     handleClick(tab, event) {
       // this.$router.push('/aa')
-      console.log(tab)
       tab.name == 'home'
         ? (this.objImg.home = '/static/image/selected_soye.png')
         : (this.objImg.home = '/static/image/home.png')
