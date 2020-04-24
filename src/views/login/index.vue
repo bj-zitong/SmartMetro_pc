@@ -131,7 +131,7 @@ export default {
                 saveToLocal("password", "");
                 saveToLocal("remember", false);
               }
-              this.$router.push({ path: "/Selectpage" })
+              this.$router.push({ path: "/Selectpage" });
               // this.$router.push({ path: "/" })
             })
             .catch(() => {
@@ -142,9 +142,8 @@ export default {
         }
       });
     },
-    //注册
-    register(){
-      this.$router.push({path:"/register"});
+    registered() {
+      this.$router.push({ path: "/register" });
     }
   },
   watch: {
@@ -261,8 +260,7 @@ export default {
       }
     }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 <style scoped lang="stylus">
@@ -411,7 +409,7 @@ export default {
   border-radius: 4px;
   font-size: 24px;
   line-height: 20px;
-  text-align :center;
+  text-align: center;
   color: rgba(255, 255, 255, 1);
 }
 
