@@ -14,7 +14,7 @@
               <img src="../../assets/images/home/home-out.png" alt="">
             </div>
             <div class="fl">
-              <a href="javascript:;" class="out-text">退出登录</a>
+              <a href="javascript:;" class="out-text" @click="out">退出登录</a>
             </div>
           </div>
           <div class="interval fl"></div>
@@ -29,7 +29,138 @@
         </div>
       </div>
     </div>
-    <div class="home-main">main</div>
+    <div class="home-main">
+      <div class="home-mian-box">
+        <div class="home-mian-t af">
+          <el-row>
+            <el-col :span="6">
+              <div class="home-list home-personnel">
+                <img src="../../assets/images/home/home-personnel.png" alt="">
+                <div class="home-list-text">
+                  <ul class="af">
+                    <li>实名认证</li>
+                    <li>智慧考勤</li>
+                    <li>培训教育</li>
+                    
+                  </ul>
+                  <ul class="af">
+                    <li>诚信管理</li>
+                    <li>人员定位</li>
+                  </ul>
+                </div>
+                <el-button
+                  type="primary"
+                  round
+                  icon="el-icon-view"
+                  @click="adminPage"
+                >人员智慧管理</el-button>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="home-list home-mechanics">
+                <img src="../../assets/images/home/hme-mechanics.png" alt="">
+                <div class="home-list-text">
+                  <ul class="af">
+                    <li>实名认证</li>
+                    <li>班组管理</li>
+                    <li>花名册</li>  
+                  </ul>
+                  <ul class="af">
+                    <li>外来人员</li>
+                  </ul>
+                </div>
+                <el-button type="primary" round icon="el-icon-view">机械设备管理</el-button>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="home-list home-video">
+                <img src="../../assets/images/home/home-video.png" alt="">
+                <div class="home-list-text">
+                  <ul class="af">
+                    <li>实名认证</li>
+                    <li>班组管理</li>
+                    <li>花名册</li>
+                  </ul>
+                  <ul class="af">
+                    <li>外来人员</li>
+                  </ul>
+                </div>
+                <el-button type="primary" round icon="el-icon-view">视频监控管理</el-button>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="home-list home-ambient">
+                <img src="../../assets/images/home/home-ambient.png" alt="">
+                <div class="home-list-text">
+                  <ul class="af">
+                    <li>实名认证</li>
+                    <li>班组管理</li>
+                    <li>花名册</li>  
+                  </ul>
+                  <ul class="af">
+                    <li>外来人员</li>
+                  </ul>
+                </div>
+                <el-button type="primary" round icon="el-icon-view">环境能耗管理</el-button>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="home-mian-b af">
+          <el-row>
+            <el-col :span="6" :offset="3" style="width: 420px;">
+              <div class="home-list home-list-lg home-materiel-sm">
+                <img src="../../assets/images/home/home-materiel-sm.png" alt="">
+                <img src="../../assets/images/home/home-materiel-lg.png" alt="" class="materiel-lg">
+                <div class="home-list-text">
+                  <ul class="af">
+                    <li>实名认证</li>
+                    <li>班组管理</li>
+                    <li>花名册</li>  
+                  </ul>
+                  <ul class="af">
+                    <li>外来人员</li>
+                  </ul>
+                </div>
+                <el-button type="primary" round icon="el-icon-view" class="el-button-bg">物料智慧管理</el-button>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="home-list home-progress">
+                <img src="../../assets/images/home/home-progress.png" alt="">
+                <div class="home-list-text">
+                  <ul class="af">
+                    <li>实名认证</li>
+                    <li>班组管理</li>
+                    <li>花名册</li>  
+                  </ul>
+                  <ul class="af">
+                    <li>外来人员</li>
+                  </ul>
+                </div>
+                <el-button type="primary" round icon="el-icon-view">进度智慧管理</el-button>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="home-list home-quality">
+                <img src="../../assets/images/home/home-quality.png" alt="">
+                <div class="home-list-text">
+                  <ul class="af">
+                    <li>实名认证</li>
+                    <li>班组管理</li>
+                    <li>花名册</li>  
+                  </ul>
+                  <ul class="af">
+                    <li>外来人员</li>
+                  </ul>
+                </div>
+                <el-button type="primary" round icon="el-icon-view">质量安全管理</el-button>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -42,19 +173,35 @@ export default {
   },
   created() {
     // 初始化时读取localStorage用户信息
+    let username = window.localStorage.getItem('username');
+    console.log(username)
   },
-  methods: {},
+  methods: {
+    adminPage () {
+      this.$router.push({ path: "/home" })
+    },
+    out () {
+      this.$router.push({ path: "/login" })
+    }
+  },
   watch: {},
   mounted() {}
 };
 </script>
-<style lang="stylus">
-html, body, #app, .home-box {
+<style lang="stylus" scoped>
+html, body, .home-box {
   width 100%;
   height 100%;
 }
+ul,li {
+  margin: 0;
+  padding: 0;
+  list-style:none;
+}
 .home-box {
-  position relative;
+  position absolute;
+  min-width 1280px;
+  min-height : 590px;
 }
 /* 头部样式 */
 .home-header {
@@ -123,6 +270,73 @@ html, body, #app, .home-box {
   height calc(100% - 70px);
   background radial-gradient(circle,rgba(151,207,255,1) 0%,rgba(0,88,162,1) 100%);
   opacity 0.9;
+  position relative;
+}
+.home-mian-box{
+  width 1280px;
+  height 520px;
+  position absolute;
+  top 50%;
+  left 50%;
+  margin-left -640px;
+  margin-top :-260px;
+}
+.home-list{
+  width : 320px;
+  height : 260px;
+  position relative;
+}
+.home-list-lg{
+  width : 420px;
+  height : 260px;
+}
+.home-personnel{
+  background-image : url('../../assets/images/home/home-personnel-bg.png');
+}
+.home-mechanics{
+  background-image : url('../../assets/images/home/home-mechanics-bg.png');
+}
+.home-video{
+  background-image : url('../../assets/images/home/home-video-bg.png');
+}
+.home-ambient{
+  background-image : url('../../assets/images/home/home-ambient-bg.png');
+}
+.home-materiel-sm{
+  background:rgba(255,255,255,1);
+}
+.home-progress{
+  background-image : url('../../assets/images/home/home-progress-bg.png');
+}
+.home-quality{
+  background-image : url('../../assets/images/home/home-quality-bg.png');
+} 
+.home-list-text{
+  font-size:16px;
+  font-family:Microsoft YaHei;
+  font-weight:400;
+  color:rgba(255,255,255,1);
+  padding : 30px 0 0 30px;
+}
+// 
+.home-list-text li{
+  float : left;
+  margin : 2px 6px;
+}
+.home-list-lg .home-list-text li{
+  color: #0058A2;
+}
+.home-list img{
+  width : 65px;
+  height : 65px;
+  position : absolute;
+  top : 98px;
+  right : 49px;
+}
+.home-list img.materiel-lg{
+  width : 100%;
+  height : 100%;
+  top : 30px;
 }
 
 .Container{

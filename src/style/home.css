@@ -1,0 +1,17 @@
+.home-box .el-button{
+  width:170px;
+  height:40px;
+  position: absolute;
+  left: 30px;
+  bottom: 30px;
+}
+.home-box .el-button.el-button-bg{
+  background-color: #055DAA;
+}
+.icon-box{
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border:1px solid rgba(255,255,255,1);
+  border-radius: 50%;
+}
