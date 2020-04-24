@@ -6,7 +6,7 @@
       <span class="register-head">智慧地铁管理系统</span>
       <!--表单-->
       <!---->
-      <span class="accout-style">已有账号，马上登录</span>
+      <p style="accout-style">已有账号，马上登录</p>
       <el-button type="primary" class="button-head">
         <span class="button-head-title">注册</span>
       </el-button>
@@ -38,12 +38,12 @@
             <el-input type="password" v-model="register.confirmPassword" placeholder="确认密码"></el-input>
           </el-form-item>
           <!--验证码-->
-          <el-form-item prop="authCode">
+          <el-form-item prop="authCode" class="code-style">
             <el-input type="text" v-model="register.authCode" placeholder="验证码"></el-input>
           </el-form-item>
           <!--生成验证码-->
           <!--获得验证码-->
-          <el-form-item>
+          <el-form-item class="code-style" prop="getauthCode"  >
             <el-input type="text" v-model="register.getauthCode"></el-input>
           </el-form-item>
           <div>
@@ -140,9 +140,9 @@ export default {
     letter-spacing: 20px;
     opacity: 1;
   }
-  .account-style{
-    float:right;
-    width:92px;
+  .accout-style{
+    // margin-right:20px;
+    // width:92px;
     height:14px;
     font-size:10px;
     font-family:Microsoft YaHei;
@@ -199,6 +199,14 @@ export default {
 
       .el-form-item {
         width: 260px;
+        height: 35px;
+        background: rgba(239, 239, 239, 1);
+        border: 1px solid rgba(225, 225, 225, 1);
+        opacity: 1;
+        border-radius: 4px;
+      }
+      .code-style{
+        width: 110px;
         height: 35px;
         background: rgba(239, 239, 239, 1);
         border: 1px solid rgba(225, 225, 225, 1);

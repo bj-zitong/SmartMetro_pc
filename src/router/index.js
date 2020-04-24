@@ -35,12 +35,12 @@ export const constantRouterMap = [
   {
     path: '/register',
     name: 'register',
-    component: () => import('@/views/register/register'),
+    component: () => import('@/views/register/register')
   },
   {
     path: '/Selectpage',
     name: 'Selectpage',
-    component: () => import('@/views/Selectpage/Selectpage'),
+    component: () => import('@/views/Selectpage/Selectpage')
   },
   {
     path: '/404',
@@ -188,10 +188,9 @@ export const constantRouterMap = [
 export default new Router({
   // mode: 'history',  require service support
   // scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap,
-  RouterMap:asyncRouterMap
+  routes: constantRouterMap
 })
 
 export const asyncRouterMap = [
-         
+
 ]
