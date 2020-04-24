@@ -9,11 +9,9 @@ import 'nprogress/nprogress.css'// progress bar style
 import { getToken } from '@/common/auth'
 
 NProgress.configure({ showSpinner: false })
-
 // 路由全局前置守卫
 const whiteList = ['/login']  // 白名单
 router.beforeEach((to, from, next) => {
-  
   NProgress.start() // start progress bar
   if (getToken()) {
     // 有token访问login页面，就跳到首页
