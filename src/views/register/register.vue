@@ -40,6 +40,7 @@
           <!--验证码-->
           <el-form-item prop="authCode" class="code-style">
             <el-input type="text" v-model="register.authCode" placeholder="验证码"></el-input>
+            <el-input type="text" style="getcode"></el-input>
           </el-form-item>
           <!--生成验证码-->
           <!--获得验证码-->
@@ -212,6 +213,8 @@ export default {
         border: 1px solid rgba(225, 225, 225, 1);
         opacity: 1;
         border-radius: 4px;
+
+
       }
     }
   }
