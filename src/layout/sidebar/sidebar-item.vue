@@ -22,7 +22,6 @@
             :item="child"
             :base-path="resolvePath(child.path)"
             v-if="child.children && child.children.length>0" />
-
           <router-link v-else :to="resolvePath(child.path)">
             <el-menu-item :index="child.path">
               <item :icon="child.meta.icon" :title="child.meta.title"></item>
@@ -30,7 +29,6 @@
           </router-link>
         </template>
       </el-submenu>
-
     </template>
   </div>
 </template>

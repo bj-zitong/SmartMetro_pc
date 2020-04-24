@@ -18,7 +18,6 @@ Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 export const constantRouterMap = [
-
   {
     path: '/login',
     name: 'login',
@@ -28,6 +27,11 @@ export const constantRouterMap = [
       title: '登录'
     }
   },
+  // {
+  //   path: '/aa',
+  //   name: 'aa',
+  //   component: () => import('@/views/aa/aa'),
+  // },
   {
     path: '/register',
     name: 'register',
@@ -184,9 +188,10 @@ export const constantRouterMap = [
 export default new Router({
   // mode: 'history',  require service support
   // scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+  routes: constantRouterMap,
+  RouterMap:asyncRouterMap
 })
 
 export const asyncRouterMap = [
-
+         
 ]

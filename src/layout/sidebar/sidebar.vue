@@ -25,11 +25,13 @@
       }
     },
     computed: {
+      
       ...mapGetters([
         'routers'
       ])
     },
     methods: {
+      
       handleOpen(key, keyPath) {
         console.log('handleOpen', key, keyPath)
       },

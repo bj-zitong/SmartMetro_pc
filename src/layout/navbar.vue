@@ -3,16 +3,16 @@
     <div style="width:98%;margin:0 auto">
       <el-menu mode="horizontal">
         <div>
-          <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
+          <!-- <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" /> -->
           <div index="1" class="title-name">{{$t('navbar.title')}}</div>
         </div>
         <div class="avatar-container">
           <div class="exit_login">
-            <img src="/static/image/exit_login.png" alt class="ri_icon" />
+            <!-- <img src="/static/image/exit_login.png" alt class="ri_icon" /> -->
             <el-link :underline="false" style="exit_login_text" @click.native="logout">退出登录</el-link>
           </div>
           <div class="Head_portrait">
-            <img src="/static/image/Head_portrait.png" alt class="ri_icon_name" />
+            <!-- <img src="/static/image/Head_portrait.png" alt class="ri_icon_name" /> -->
             <el-link :underline="false" style="border-right:none">名称</el-link>
           </div>
         </div>
@@ -69,8 +69,8 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Screenfull from "@/components/screenfull";
-import ChangeTheme from "@/components/theme";
+// import Screenfull from "@/components/screenfull";
+// import ChangeTheme from "@/components/theme";
 export default {
   name: "top-navbar",
   data() {
@@ -89,18 +89,20 @@ export default {
     };
   },
   name: "",
-  components: {
-    Screenfull,
-    ChangeTheme
-  },
-  computed: {
-    ...mapGetters(["name", "avatar"])
-  },
+  // components: {
+  //   Screenfull,
+  //   ChangeTheme
+  // },
+  // computed: {
+  //   ...mapGetters(["name", "avatar"])
+  // },
   methods: {
-    ...mapActions({
-      userLogout: "logout"
-    }),
+    // ...mapActions({
+    //   userLogout: "logout"
+    // }),
     handleClick(tab, event) {
+      this.$router.push('/aa')
+      // this.$router.push({"/aa"})
       tab.name == "home"
         ? (this.objImg.home = "/static/image/selected_soye.png")
         : (this.objImg.home = "/static/image/home.png");
