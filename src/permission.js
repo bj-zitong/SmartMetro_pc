@@ -46,12 +46,16 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    if (whiteList.includes(to.path)) { // 白名单，免密登录
-      next()
-    } else { // 否则就跳动登录页面
-      next('/login')
-      NProgress.done() // 这种情况不会触发router的后置钩子，所以这里需要单独处理
-    }
+    if(to.path === '/register') {
+          next()
+       }else{
+          if (whiteList.includes(to.path)) { // 白名单，免密登录
+              next()
+          } else { // 否则就跳动登录页面
+              next('/login')
+              NProgress.done() // 这种情况不会触发router的后置钩子，所以这里需要单独处理
+          }
+       }
   }
 })
 

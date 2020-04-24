@@ -10,6 +10,7 @@ import 'animate.css'
 import App from './App'
 import router from './router'
 import store from './store'
+import VueParticles from 'vue-particles'
 
 // 自定义的全局组件
 import Notification from '@/components/notification'
@@ -22,7 +23,7 @@ import './permission'
 import './icons'
 // 全局 Mock 接口
 import './mock'
-
+Vue.use(VueParticles)
 Vue.use(ElementUI, {
   size: 'medium',
   i18n: (key, value) => i18n.t(key, value)

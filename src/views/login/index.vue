@@ -38,7 +38,7 @@
           </el-form-item>
           <div class="register">
             <el-button type="text">忘记/修改密码</el-button>
-            <el-button type="text" class="free_registration" @click="register">免费注册</el-button>
+            <el-button type="text" class="free_registration" @click="register()">免费注册</el-button>
           </div>
           <el-button
             type="primary"
@@ -51,9 +51,9 @@
   </el-container>
 </template>
 <script>
-import { isValidUsername } from "@/utils/validate";
-import { saveToLocal, loadFromLocal } from "@/common/local-storage";
-import { mapActions } from "vuex";
+import { isValidUsername } from '@/utils/validate'
+import { saveToLocal, loadFromLocal } from '@/common/local-storage'
+import { mapActions } from 'vuex'
 /* eslint-disable*/
 import particles from "particles.js";
 export default {
