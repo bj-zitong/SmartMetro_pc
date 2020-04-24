@@ -10,9 +10,7 @@ function filterAsyncRouter(asyncRouterMap, routesMap) {
   })
   return accessedRouters
 }
-
 const SET_ROUTERS = 'SET_ROUTERS'
-
 const permission = {
   state: {
     addRouters: '',

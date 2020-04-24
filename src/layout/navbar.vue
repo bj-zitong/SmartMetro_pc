@@ -101,7 +101,7 @@ export default {
       userLogout: "logout"
     }),
     handleClick(tab, event) {
-      this.$router.push('/aa')
+      // this.$router.push('/aa')
       tab.name == "home"
         ? (this.objImg.home = "/static/image/selected_soye.png")
         : (this.objImg.home = "/static/image/home.png");

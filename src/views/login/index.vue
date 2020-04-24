@@ -143,7 +143,7 @@ export default {
       });
     },
 
-    registered() {
+    register() {
       this.$router.push({ path: "/register" });
     }
   },
