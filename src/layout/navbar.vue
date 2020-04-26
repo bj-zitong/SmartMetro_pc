@@ -26,44 +26,44 @@
       </el-tab-pane>
       <el-tab-pane name="smrz">
         <span slot="label">
-          <img :src="objImg.smrz" alt class="icon_list" />人员智慧管理
+          <img :src="objImg.smrz" alt class="icon_list" />实名认证
         </span>
       </el-tab-pane>
       <el-tab-pane name="kaoqin">
         <span slot="label">
-          <img :src="objImg.kaoqin" alt class="icon_list" />机械设备管理
+          <img :src="objImg.kaoqin" alt class="icon_list" />智慧考勤
         </span>
       </el-tab-pane>
       <el-tab-pane name="jypx">
         <span slot="label">
-          <img :src="objImg.jypx" alt class="icon_list" />视频监控管理
+          <img :src="objImg.jypx" alt class="icon_list" />培训教育
         </span>
       </el-tab-pane>
       <el-tab-pane name="cxgl">
         <span slot="label">
-          <img :src="objImg.cxgl" alt class="icon_list" />环境能耗管理
+          <img :src="objImg.cxgl" alt class="icon_list" />诚信管理
         </span>
       </el-tab-pane>
       <el-tab-pane name="rycw">
         <span slot="label">
-          <img :src="objImg.rycw" alt class="icon_list" />物料智慧管理
+          <img :src="objImg.rycw" alt class="icon_list" />人员测温
         </span>
       </el-tab-pane>
       <el-tab-pane name="gyxz">
         <span slot="label">
-          <img :src="objImg.gyxz" alt class="icon_list" />进度智慧管理
+          <img :src="objImg.gyxz" alt class="icon_list" />工友须知
         </span>
       </el-tab-pane>
       <el-tab-pane name="yqgl">
         <span slot="label">
-          <img :src="objImg.yqgl" alt class="icon_list" />质量安全管理
+          <img :src="objImg.yqgl" alt class="icon_list" />疫情管理
         </span>
       </el-tab-pane>
-      <!-- <el-tab-pane name="kfg">
+      <el-tab-pane name="kfg">
         <span slot="label">
           <img :src="objImg.kfg" alt class="icon_list" />开复工管理
         </span>
-      </el-tab-pane> -->
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -101,7 +101,6 @@ export default {
       userLogout: "logout"
     }),
     handleClick(tab, event) {
-      // this.$router.push('/aa')
       tab.name == "home"
         ? (this.objImg.home = "/static/image/selected_soye.png")
         : (this.objImg.home = "/static/image/home.png");

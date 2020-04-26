@@ -34,18 +34,18 @@ export const constantRouterMap = [
     name: 'register',
     component: () => import('@/views/register/register')
   },
-  //点击进入首页
+   //点击进入首页
   {
     path: '/Selectpage',
     name: 'Selectpage',
     component: () => import('@/views/Selectpage/Selectpage')
   },
-  //404页面 
-  {
-    path: '/404',
-    component: () => import('@/views/error-page/404'),
-    hidden: true
-  },
+   //404页面 
+  // {
+  //   path: '/404',
+  //   component: () => import('@/views/error-page/404'),
+  //   hidden: true
+  // },
 
   {
     path: '/',
@@ -84,97 +84,109 @@ export const constantRouterMap = [
       }
     ]
   },
+  //劳务分包管理
   {
-    path: '/nested',
+    path: '/labor_Subcontract',
     component: Layout,
+    alwaysShow: true,
     meta: {
-      icon: 'svg-layers',
-      title: '实名认证'
+      icon: 's-order',
+      title: '劳务分包管理'
+    },
+    redirect: 'labor_Subcontract1',
+    children: [
+      {
+        path: 'labor_Subcontract1',
+        name: 'labor_Subcontract1',
+        component: () => import('@/views/labor_Subcontract/labor_Subcontract1'),
+        meta: { icon: '', title: '劳务分包管理一组' }
+      },
+      {
+        path: 'labor_Subcontract2',
+        name: 'labor_Subcontract2',
+        component: () => import('@/views/labor_Subcontract/labor_Subcontract2'),
+        meta: { icon: '', title: '劳务分包管理二组' }
+      }
+    ]
+  },
+  //班组管理
+  {
+    path: '/team_message',
+    component: Layout,
+    alwaysShow: true,
+    meta: {
+      title: '班组管理',
+      icon: 'svg-droplet'
     },
     children: [
       {
-        path: '/labor_Subcontract',
-        name: 'menu2',
-        component: () => import('@/views/labor_Subcontract/labor_Subcontract1'),
-        meta: { icon: 's-order', title: '劳务分包管理' }
+        path: 'message',
+        name: 'message',
+        component: () => import('@/views/team_message/message'),
+        meta: { title: '班前信息', icon: '' }
       },
       {
-        path: '/team_message',
-        component: Layout,
-        alwaysShow: true,
-        meta: {
-          title: '班组管理',
-          icon: 'svg-droplet'
-        },
-        children: [
-          {
-            path: 'message',
-            name: 'message',
-            component: () => import('@/views/team_message/message'),
-            meta: { title: '班前信息', icon: '' }
-          },
-          {
-            path: 'talkrecord',
-            name: 'talkrecord',
-            component: () => import('@/views/team_message/talkrecord'),
-            meta: { title: '班前讲话记录', icon: '' }
-          }
-        ]
-      },
-      {
-        path: '/roster',
-        component: Layout,
-        alwaysShow: true,
-        meta: {
-          title: '花名册',
-          icon: 'guide'
-        },
-        children: [
-          {
-            path: 'manager',
-            name: 'manager',
-            component: () => import('@/views/roster/manager'),
-            meta: { title: '管理人员', icon: '' }
-          },
-          {
-            path: 'personnel',
-            name: 'personnel',
-            component: () => import('@/views/roster/personnel'),
-            meta: { title: '劳务人员', icon: '' }
-          },
-          {
-            path: 'equipmentSpecialist',
-            name: 'equipmentSpecialist',
-            component: () => import('@/views/roster/equipmentSpecialist'),
-            meta: { title: '设备专用人员', icon: '' }
-          },
-          {
-            path: 'otherStaffs',
-            name: 'otherStaffs',
-            component: () => import('@/views/roster/otherStaffs'),
-            meta: { title: '其他服务类人员', icon: '' }
-          }
-        ]
-      },
-      {
-        path: '/foreignpersonnel',
-        component: Layout,
-        meta: {
-          icon: 'question',
-          title: '外来人员'
-        },
-        redirect: '/foreignpersonnel/index',
-        children: [
-          {
-            path: 'index',
-            name: 'CustomComponent',
-            component: () => import('@/views/foreignpersonnel/index'),
-            meta: { icon: 'guide', title: '外来人员' }
-          }
-        ]
-      },
+        path: 'talkrecord',
+        name: 'talkrecord',
+        component: () => import('@/views/team_message/talkrecord'),
+        meta: { title: '班前讲话记录', icon: '' }
+      }
     ]
   },
+  // 花名册
+  {
+    path: '/roster',
+    component: Layout,
+    alwaysShow: true,
+    meta: {
+      title: '花名册',
+      icon: 'svg-droplet'
+    },
+    children: [
+      {
+        path: 'manager',
+        name: 'manager',
+        component: () => import('@/views/roster/manager'),
+        meta: { title: '管理人员', icon: '' }
+      },
+      {
+        path: 'personnel',
+        name: 'personnel',
+        component: () => import('@/views/roster/personnel'),
+        meta: { title: '劳务人员', icon: '' }
+      },
+      {
+        path: 'equipmentSpecialist',
+        name: 'equipmentSpecialist',
+        component: () => import('@/views/roster/equipmentSpecialist'),
+        meta: { title: '设备专用人员', icon: '' }
+      },
+      {
+        path: 'otherStaffs',
+        name: 'otherStaffs',
+        component: () => import('@/views/roster/otherStaffs'),
+        meta: { title: '其他服务类人员', icon: '' }
+      }
+    ]
+  },
+  // 外来人员
+  {
+    path: '/foreignpersonnel',
+    component: Layout,
+    meta: {
+      icon: 'question',
+      title: '外来人员'
+    },
+    redirect: '/foreignpersonnel/index',
+    children: [
+      {
+        path: 'index',
+        name: 'CustomComponent',
+        component: () => import('@/views/foreignpersonnel/index'),
+        meta: { icon: 'guide', title: '外来人员' }
+      }
+    ]
+  }
 ]
 export default new Router({
   // mode: 'history',  require service support
@@ -182,5 +194,5 @@ export default new Router({
   routes: constantRouterMap
 })
 export const asyncRouterMap = [
-
+  
 ]

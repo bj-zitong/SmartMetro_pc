@@ -62,11 +62,9 @@
         <i class="el-icon-question" slot="reference" style="margin-right: 20px; color: #409EFF; font-size: 20px; cursor: pointer;"></i>
       </el-popover>
     </div>
-
     <div class="split">
       <el-divider><i class="el-icon-eleme"></i></el-divider>
     </div>
-
     <el-calendar>
       <!-- 这里使用的是 2.5 slot 语法，对于新项目请使用 2.6 slot 语法-->
       <template
