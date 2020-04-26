@@ -23,7 +23,7 @@
           <!--手机号-->
           <el-form-item prop="phone">
             <el-input type="text" v-model="register.phone" placeholder="邮箱/手机号"></el-input>
-          </el-form-item>        
+          </el-form-item>
           <!--密码-->
           <el-form-item prop="password">
             <el-input type="password" v-model="register.password" placeholder="初始密码"></el-input>
@@ -114,8 +114,10 @@
         </el-form>
       </div>
     </div>
-    <span class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</span>
-    <span class="content-end1">京ICP备17067133号 京公网安备11010602006143号</span>
+  <div class="container_end">
+      <p class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</p><br/>
+      <p class="content-end1">京ICP备17067133号  京公网安备11010602006143号</p>
+    </div>
   </div>
 </template>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -123,11 +125,11 @@
 export default {
   data() {
     return {
-      authCode: '',  //全局验证码
-      code:'',   
+      authCode: '',  // 全局验证码
+      code: '',
       form: {
         phone: '',
-        newpassword:'',
+        newpassword: '',
         password: '',
         confirmPassword: '',
         authCode: ''
@@ -150,7 +152,7 @@ export default {
         ]
       },
 
-      forgetFormRules:{
+      forgetFormRules: {
         phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
           {
@@ -168,13 +170,13 @@ export default {
         authCode: [
           { required: true, message: '请输入验证码', trigger: 'blur' }
         ],
-         idNum: [{ required: true, message: '请输入身份证号', trigger: 'blur' }],
+        idNum: [{ required: true, message: '请输入身份证号', trigger: 'blur' }]
       },
-      forgetForm:{
+      forgetForm: {
         phone: '',
-        userName:'',
-        idNum:'',
-        newpassword:'',
+        userName: '',
+        idNum: '',
+        newpassword: '',
         password: '',
         confirmPassword: '',
         authCode: ''
@@ -183,58 +185,55 @@ export default {
   },
   created() {
   //  this.updateState1();
-   this.createCode();
-
+    this.createCode()
   },
   methods: {
 
-     //生成验证码
-  createCode () {
-    var code;
-    //首先默认code为空字符串
-    code = '';
-    //设置长度，这里看需求，我这里设置了4
-    var codeLength = 4;
-    //设置随机字符
-    var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
-    //循环codeLength 我设置的4就是循环4次
-    for (var i = 0; i < codeLength; i++) {
-      //设置随机数范围,这设置为0 ~ 36
-      var index = Math.floor(Math.random() * 36);
-      //字符串拼接 将每次随机的字符 进行拼接
-      code += random[index];
-    }
-    //将拼接好的字符串赋值给展示的code
-    this.code=code;
-      //将生成的验证码赋值给全局变量
-    this.authCode=code;
-     document.getElementById('code').value='123';
-  },
-    //忘记密码
+     // 生成验证码
+    createCode () {
+      var code
+    // 首先默认code为空字符串
+      code = ''
+    // 设置长度，这里看需求，我这里设置了4
+      var codeLength = 4
+    // 设置随机字符
+      var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
+    // 循环codeLength 我设置的4就是循环4次
+      for (var i = 0; i < codeLength; i++) {
+      // 设置随机数范围,这设置为0 ~ 36
+        var index = Math.floor(Math.random() * 36)
+      // 字符串拼接 将每次随机的字符 进行拼接
+        code += random[index]
+      }
+    // 将拼接好的字符串赋值给展示的code
+      this.code = code
+      // 将生成的验证码赋值给全局变量
+      this.authCode = code
+      document.getElementById('code').value = '123'
+    },
+    // 忘记密码
     forgetPassword() {
       // this.$router.push({ path: '/index' });
-       console.log('忘记密码');
+      console.log('忘记密码')
     },
-    //修改密码
-    updatePassword(){
-      console.log('修改密码');
-
+    // 修改密码
+    updatePassword() {
+      console.log('修改密码')
     },
-     register() {
+    register() {
       this.$router.push({ path: '/register' })
     },
-      //修改密码
-      updateState1(){
-          document.getElementById('btn1').style.display="block";
-       document.getElementById('btn').style.display="none";
-         
-      },
-    //忘记密码
-    updateState2(){
-     document.getElementById('btn').style.display="block";
-        document.getElementById('btn1').style.display="none";
+      // 修改密码
+    updateState1() {
+      document.getElementById('btn1').style.display = 'block'
+      document.getElementById('btn').style.display = 'none'
     },
-   
+    // 忘记密码
+    updateState2() {
+      document.getElementById('btn').style.display = 'block'
+      document.getElementById('btn1').style.display = 'none'
+    }
+
   }
 }
 </script>
@@ -280,7 +279,7 @@ export default {
     border-radius: 4px;
 
 
-    
+
   /* 头部head button */
   .button-head {
     width:340px;
@@ -300,7 +299,7 @@ export default {
     border-radius:4px 0px 0px 4px;
     position:absolute;
     margin-left: 0px;
-    
+
 
   }
     /* 按钮文字 */
@@ -384,30 +383,22 @@ export default {
     }
   }
 
-  .content-end {
-    width: 400px;
-    height: 14px;
-    font-size: 10px;
-    font-family: Microsoft YaHei;
-    font-weight: 400;
-    line-height: 14px;
-    color: rgba(161, 161, 161, 1);
-    opacity: 1;
+.container_end{
+    width: 100%;
+    height: 50px;
     position: absolute;
-    margin: 816px 812px 250px 611px;
-  }
-
-  .content-end1 {
-    width: 530px;
-    height: 14px;
-    font-size: 10px;
-    font-family: Microsoft YaHei;
-    font-weight: 400;
-    line-height: 14px;
-    color: rgba(161, 161, 161, 1);
-    opacity: 1;
-    position: absolute;
-    margin: 885px 849px 181px 645px;
+    bottom:80px;
+    left: 0;
+    text-align center;
+     p{
+        height:14px;
+        font-size:10px;
+        font-family:Microsoft YaHei;
+        font-weight:400;
+        line-height:14px;
+        color:rgba(161,161,161,1);
+        opacity:1;
+     }
   }
 }
 </style>

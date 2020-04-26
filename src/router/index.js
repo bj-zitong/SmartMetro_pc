@@ -3,7 +3,6 @@ import Router from 'vue-router'
 
 import Login from '@/views/login'
 import Layout from '@/layout/layout'
-import sm_authentication from '@/sm_authentication/sm_authentication'
 
 Vue.use(Router)
 
@@ -28,7 +27,7 @@ export const constantRouterMap = [
       title: '登录'
     }
   },
-  //用户注册
+  // 用户注册
   {
     path: '/register',
     name: 'register',
