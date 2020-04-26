@@ -37,14 +37,14 @@
             <el-input type="password" v-model="register.password" placeholder="密码"></el-input>
             <!-- <span class="svg-container svg-container_password">
               <svg-icon icon-class="password" />
-            </span> -->
+            </span>-->
           </el-form-item>
           <!--确认密码-->
           <el-form-item prop="confirmPassword">
             <el-input type="password" v-model="register.confirmPassword" placeholder="确认密码"></el-input>
             <!-- <span class="svg-container svg-container_password">
               <svg-icon icon-class="password" />
-            </span> -->
+            </span>-->
           </el-form-item>
           <!--验证码-->
           <div>
@@ -56,7 +56,10 @@
               style="width:94px;height:35px;vertical-align:middle;margin-left:15px"
               alt="验证码"
             />
-            <img src="../../../resource/shuaxin.png" style="width:16px;height:16px;margin-left:10px">
+            <img
+              src="../../../resource/shuaxin.png"
+              style="width:16px;height:16px;margin-left:10px"
+            />
           </div>
 
           <!-- <div  style="display: flex;align-items: center;justify-content: center;background-color:red">
@@ -67,29 +70,12 @@
           </el-button>
         </el-form>
       </div>
-      <!-- <vue-particles
-      color="#fff"
-      :particleOpacity="0.7"
-      :particlesNumber="60"
-      shapeType="circle"
-      :particleSize="4"
-      linesColor="#fff"
-      :linesWidth="1"
-      :lineLinked="true"
-      :lineOpacity="0.4"
-      :linesDistance="150"
-      :moveSpeed="2"
-      :hoverEffect="true"
-      hoverMode="grab"
-      :clickEffect="true"
-      clickMode="push"
-      class="lizi"
-      style="height:100%"
-    >
-      </vue-particles>-->
     </div>
-    <span class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</span>
-    <span class="content-end1">京ICP备17067133号 京公网安备11010602006143号</span>
+    <!--最后-->
+    <div class="container_end">
+      <p class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</p><br/>
+      <p class="content-end1">京ICP备17067133号  京公网安备11010602006143号</p>
+    </div>
   </div>
 </template>
 <script>
@@ -249,30 +235,24 @@ export default {
     }
   }
 
-  .content-end {
-    width: 400px;
-    height: 14px;
-    font-size: 10px;
-    font-family: Microsoft YaHei;
-    font-weight: 400;
-    line-height: 14px;
-    color: rgba(161, 161, 161, 1);
-    opacity: 1;
+  .container_end{
+    width: 100%;
+    height: 50px;
     position: absolute;
-    margin: 861px 812px 205px 611px;
+    bottom:80px;
+    left: 0;
+    text-align center;
+     p{
+        height:14px;
+        font-size:10px;
+        font-family:Microsoft YaHei;
+        font-weight:400;
+        line-height:14px;
+        color:rgba(161,161,161,1);
+        opacity:1;
+     }
+
   }
 
-  .content-end1 {
-    width: 530px;
-    height: 14px;
-    font-size: 10px;
-    font-family: Microsoft YaHei;
-    font-weight: 400;
-    line-height: 14px;
-    color: rgba(161, 161, 161, 1);
-    opacity: 1;
-    position: absolute;
-    margin: 885px 849px 181px 645px;
-  }
 }
 </style>

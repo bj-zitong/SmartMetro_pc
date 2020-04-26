@@ -3,7 +3,6 @@ import Router from 'vue-router'
 
 import Login from '@/views/login'
 import Layout from '@/layout/layout'
-import sm_authentication from '@/sm_authentication/sm_authentication'
 
 Vue.use(Router)
 
@@ -28,19 +27,19 @@ export const constantRouterMap = [
       title: '登录'
     }
   },
-  //用户注册
+  // 用户注册
   {
     path: '/register',
     name: 'register',
     component: () => import('@/views/register/register')
   },
-  //点击进入首页
+  // 点击进入首页
   {
     path: '/Selectpage',
     name: 'Selectpage',
     component: () => import('@/views/Selectpage/Selectpage')
   },
-  //404页面 
+  // 404页面
   {
     path: '/404',
     component: () => import('@/views/error-page/404'),
@@ -100,7 +99,6 @@ export const constantRouterMap = [
       },
       {
         path: '/team_message',
-        component: Layout,
         alwaysShow: true,
         meta: {
           title: '班组管理',
@@ -158,7 +156,7 @@ export const constantRouterMap = [
       },
       {
         path: '/foreignpersonnel',
-        component: Layout,
+        // component: Layout,
         meta: {
           icon: 'question',
           title: '外来人员'
@@ -172,9 +170,9 @@ export const constantRouterMap = [
             meta: { icon: 'guide', title: '外来人员' }
           }
         ]
-      },
+      }
     ]
-  },
+  }
 ]
 export default new Router({
   // mode: 'history',  require service support
