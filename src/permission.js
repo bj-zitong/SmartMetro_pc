@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-   if(to.path==="/register"){
+   if(to.path==="/register"||to.path=="/updatePassword"){
     next()
    }else{
     if (whiteList.includes(to.path)) { // 白名单，免密登录

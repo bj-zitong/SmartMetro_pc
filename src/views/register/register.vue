@@ -35,16 +35,16 @@
           <!--密码-->
           <el-form-item prop="password">
             <el-input type="password" v-model="register.password" placeholder="密码"></el-input>
-            <span class="svg-container svg-container_password">
+            <!-- <span class="svg-container svg-container_password">
               <svg-icon icon-class="password" />
-            </span>
+            </span> -->
           </el-form-item>
           <!--确认密码-->
           <el-form-item prop="confirmPassword">
             <el-input type="password" v-model="register.confirmPassword" placeholder="确认密码"></el-input>
-            <span class="svg-container svg-container_password">
+            <!-- <span class="svg-container svg-container_password">
               <svg-icon icon-class="password" />
-            </span>
+            </span> -->
           </el-form-item>
           <!--验证码-->
           <div>
@@ -53,9 +53,10 @@
             </el-form-item>
             <img
               src="../../../resource/code.png"
-              style="width:94px;height:35px;vertical-align:middle;"
+              style="width:94px;height:35px;vertical-align:middle;margin-left:15px"
               alt="验证码"
             />
+            <img src="../../../resource/shuaxin.png" style="width:16px;height:16px;margin-left:10px">
           </div>
 
           <!-- <div  style="display: flex;align-items: center;justify-content: center;background-color:red">
@@ -258,11 +259,11 @@ export default {
     color: rgba(161, 161, 161, 1);
     opacity: 1;
     position: absolute;
-    margin: 861px 812px 205px 776px;
+    margin: 861px 812px 205px 611px;
   }
 
   .content-end1 {
-    width: 257px;
+    width: 530px;
     height: 14px;
     font-size: 10px;
     font-family: Microsoft YaHei;
@@ -271,7 +272,7 @@ export default {
     color: rgba(161, 161, 161, 1);
     opacity: 1;
     position: absolute;
-    margin: 885px 849px 181px 814px;
+    margin: 885px 849px 181px 645px;
   }
 }
 </style>

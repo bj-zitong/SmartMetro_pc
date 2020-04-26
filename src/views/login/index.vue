@@ -37,7 +37,7 @@
             </span>
           </el-form-item>
           <div class="register">
-            <el-button type="text">忘记/修改密码</el-button>
+            <el-button type="text" @click="updatePassword()">忘记/修改密码</el-button>
             <el-button type="text" class="free_registration" @click="register()">免费注册</el-button>
           </div>
           <el-button
@@ -142,9 +142,13 @@ export default {
         }
       });
     },
-
+    //注册
     register() {
       this.$router.push({ path: "/register" });
+    },
+    //修改密码
+    updatePassword(){
+      this.$router.push({path:"/updatePassword"});
     }
   },
   watch: {
