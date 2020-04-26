@@ -26,121 +26,121 @@
       </el-tab-pane>
       <el-tab-pane name="smrz">
         <span slot="label">
-          <img :src="objImg.smrz" alt class="icon_list" />实名认证
+          <img :src="objImg.smrz" alt class="icon_list" />人员智慧管理
         </span>
       </el-tab-pane>
       <el-tab-pane name="kaoqin">
         <span slot="label">
-          <img :src="objImg.kaoqin" alt class="icon_list" />智慧考勤
+          <img :src="objImg.kaoqin" alt class="icon_list" />机械设备管理
         </span>
       </el-tab-pane>
       <el-tab-pane name="jypx">
         <span slot="label">
-          <img :src="objImg.jypx" alt class="icon_list" />培训教育
+          <img :src="objImg.jypx" alt class="icon_list" />视频监控管理
         </span>
       </el-tab-pane>
       <el-tab-pane name="cxgl">
         <span slot="label">
-          <img :src="objImg.cxgl" alt class="icon_list" />诚信管理
+          <img :src="objImg.cxgl" alt class="icon_list" />环境能耗管理
         </span>
       </el-tab-pane>
       <el-tab-pane name="rycw">
         <span slot="label">
-          <img :src="objImg.rycw" alt class="icon_list" />人员测温
+          <img :src="objImg.rycw" alt class="icon_list" />物料智慧管理
         </span>
       </el-tab-pane>
       <el-tab-pane name="gyxz">
         <span slot="label">
-          <img :src="objImg.gyxz" alt class="icon_list" />工友须知
+          <img :src="objImg.gyxz" alt class="icon_list" />进度智慧管理
         </span>
       </el-tab-pane>
       <el-tab-pane name="yqgl">
         <span slot="label">
-          <img :src="objImg.yqgl" alt class="icon_list" />疫情管理
+          <img :src="objImg.yqgl" alt class="icon_list" />质量安全管理
         </span>
       </el-tab-pane>
-      <el-tab-pane name="kfg">
+      <!-- <el-tab-pane name="kfg">
         <span slot="label">
           <img :src="objImg.kfg" alt class="icon_list" />开复工管理
         </span>
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import Screenfull from '@/components/screenfull'
-import ChangeTheme from '@/components/theme'
+import { mapGetters, mapActions } from "vuex";
+import Screenfull from "@/components/screenfull";
+import ChangeTheme from "@/components/theme";
 export default {
-  name: 'top-navbar',
+  name: "top-navbar",
   data() {
     return {
       objImg: {
-        home: '/static/image/home.png',
-        smrz: '/static/image/smrz.png',
-        kaoqin: '/static/image/kaoqin.png',
-        jypx: '/static/image/jypx.png',
-        cxgl: '/static/image/cxgl.png',
-        rycw: '/static/image/rycw.png',
-        gyxz: '/static/image/gyxz.png',
-        yqgl: '/static/image/yqgl.png',
-        kfg: '/static/image/kfg.png'
+        home: "/static/image/home.png",
+        smrz: "/static/image/smrz.png",
+        kaoqin: "/static/image/kaoqin.png",
+        jypx: "/static/image/jypx.png",
+        cxgl: "/static/image/cxgl.png",
+        rycw: "/static/image/rycw.png",
+        gyxz: "/static/image/gyxz.png",
+        yqgl: "/static/image/yqgl.png",
+        kfg: "/static/image/kfg.png"
       }
-    }
+    };
   },
-  name: '',
+  name: "",
   components: {
     Screenfull,
     ChangeTheme
   },
   computed: {
-    ...mapGetters(['name', 'avatar'])
+    ...mapGetters(["name", "avatar"])
   },
   methods: {
     ...mapActions({
-      userLogout: 'logout'
+      userLogout: "logout"
     }),
     handleClick(tab, event) {
       // this.$router.push('/aa')
-      tab.name == 'home'
-        ? (this.objImg.home = '/static/image/selected_soye.png')
-        : (this.objImg.home = '/static/image/home.png')
-      tab.name == 'smrz'
-        ? (this.objImg.smrz = '/static/image/selected_smrz.png')
-        : (this.objImg.smrz = '/static/image/smrz.png')
-      tab.name == 'kaoqin'
-        ? (this.objImg.kaoqin = '/static/image/selected_zhkq.png')
-        : (this.objImg.kaoqin = '/static/image/kaoqin.png')
-      tab.name == 'jypx'
-        ? (this.objImg.jypx = '/static/image/selected_pxjy.png')
-        : (this.objImg.jypx = '/static/image/jypx.png')
-      tab.name == 'cxgl'
-        ? (this.objImg.cxgl = '/static/image/selected_cxjy.png')
-        : (this.objImg.cxgl = '/static/image/cxgl.png')
-      tab.name == 'rycw'
-        ? (this.objImg.rycw = '/static/image/selected_rycw.png')
-        : (this.objImg.rycw = '/static/image/rycw.png')
-      tab.name == 'gyxz'
-        ? (this.objImg.gyxz = '/static/image/selected_gyxz.png')
-        : (this.objImg.gyxz = '/static/image/gyxz.png')
-      tab.name == 'yqgl'
-        ? (this.objImg.yqgl = '/static/image/selected_gyxz.png')
-        : (this.objImg.yqgl = '/static/image/yqgl.png')
-      tab.name == 'kfg'
-        ? (this.objImg.kfg = '/static/image/selected_kfg.png')
-        : (this.objImg.kfg = '/static/image/kfg.png')
+      tab.name == "home"
+        ? (this.objImg.home = "/static/image/selected_soye.png")
+        : (this.objImg.home = "/static/image/home.png");
+      tab.name == "smrz"
+        ? (this.objImg.smrz = "/static/image/selected_smrz.png")
+        : (this.objImg.smrz = "/static/image/smrz.png");
+      tab.name == "kaoqin"
+        ? (this.objImg.kaoqin = "/static/image/selected_zhkq.png")
+        : (this.objImg.kaoqin = "/static/image/kaoqin.png");
+      tab.name == "jypx"
+        ? (this.objImg.jypx = "/static/image/selected_pxjy.png")
+        : (this.objImg.jypx = "/static/image/jypx.png");
+      tab.name == "cxgl"
+        ? (this.objImg.cxgl = "/static/image/selected_cxjy.png")
+        : (this.objImg.cxgl = "/static/image/cxgl.png");
+      tab.name == "rycw"
+        ? (this.objImg.rycw = "/static/image/selected_rycw.png")
+        : (this.objImg.rycw = "/static/image/rycw.png");
+      tab.name == "gyxz"
+        ? (this.objImg.gyxz = "/static/image/selected_gyxz.png")
+        : (this.objImg.gyxz = "/static/image/gyxz.png");
+      tab.name == "yqgl"
+        ? (this.objImg.yqgl = "/static/image/selected_gyxz.png")
+        : (this.objImg.yqgl = "/static/image/yqgl.png");
+      tab.name == "kfg"
+        ? (this.objImg.kfg = "/static/image/selected_kfg.png")
+        : (this.objImg.kfg = "/static/image/kfg.png");
     },
     logout() {
       this.userLogout()
         .then(() => {
-          location.reload() // 为了重新实例化vue-router对象 避免bug
+          location.reload(); // 为了重新实例化vue-router对象 避免bug
         })
         .catch(err => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     }
   }
-}
+};
 </script>
 <style lang="stylus">
 .top-navbar {
@@ -155,7 +155,6 @@ export default {
     width: 500px;
     height: 36px;
     float: left;
-
     h6 {
       font-size: 24px;
       color: #fff;
@@ -166,7 +165,6 @@ export default {
       font-weight: normal;
     }
   }
-
   .WisdomSite_title_login {
     width: 36px;
     height: 36px;
@@ -177,7 +175,6 @@ export default {
   .el-menu {
     border-bottom: none !important;
     background: rgba(0, 88, 162, 1);
-
     .lang-select {
       position: absolute;
       top: 18px;
@@ -195,7 +192,6 @@ export default {
       right: -45px;
       width: 300px;
       outline: none;
-
       .avatar-wrapper {
         cursor: pointer;
       }
@@ -214,7 +210,6 @@ export default {
         margin: 1px 10px 0 20px;
         float: left;
       }
-
       .exit_login {
         float: left;
       }
