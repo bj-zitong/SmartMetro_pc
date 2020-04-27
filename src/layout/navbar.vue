@@ -71,7 +71,8 @@
 import { mapGetters, mapActions } from "vuex";
 import Screenfull from "@/components/screenfull";
 import ChangeTheme from "@/components/theme";
-export default {
+import main from '../main'
+export default {  
   name: "top-navbar",
   data() {
     return {
@@ -101,6 +102,8 @@ export default {
       userLogout: "logout"
     }),
     handleClick(tab, event) {
+      // location.reload()
+
       tab.name == "home"
         ? (this.objImg.home = "/static/image/selected_soye.png")
         : (this.objImg.home = "/static/image/home.png");
@@ -270,6 +273,7 @@ export default {
 }
 
 .hed_tab>.el-tabs__header {
+
   border-radius: 30px !important;
 }
 
