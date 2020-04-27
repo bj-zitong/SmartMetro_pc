@@ -33,13 +33,18 @@ export const constantRouterMap = [
     name: 'register',
     component: () => import('@/views/register/register')
   },
+  {
+    path: '/updatePassword',
+    name: 'updatePassword',
+    component: () => import('@/views/register/updatePassword')
+  },
    //点击进入首页
   {
     path: '/Selectpage',
     name: 'Selectpage',
     component: () => import('@/views/Selectpage/Selectpage')
   },
-   //404页面 
+   //404页面
   // {
   //   path: '/404',
   //   component: () => import('@/views/error-page/404'),
@@ -193,5 +198,5 @@ export default new Router({
   routes: constantRouterMap
 })
 export const asyncRouterMap = [
-  
+
 ]

@@ -1,82 +1,87 @@
 <template>
-  <div class="wrapper">
-    <el-alert
-      title="自定义的通知(notify)组件"
-      type="success"
-      description="自定义的通知组件支持在全局使用 <notification /> 以及使用 api 的形式来调用">
-    </el-alert>
-    <el-row class="animate-wrapper">
-      进入动画：
-      <el-select v-model="enterAnimated" filterable placeholder="请选择(可搜索)">
-        <el-option
-          v-for="item of options"
-          :key="item"
-          :label="item"
-          :value="item">
-        </el-option>
-      </el-select>
-      离开动画：
-      <el-select v-model="leaveAnimated" filterable placeholder="请选择(可搜索)">
-        <el-option
-          v-for="item of options"
-          :key="item"
-          :label="item"
-          :value="item">
-        </el-option>
-      </el-select>
-      <el-button type="danger" plain @click="emitNotify(enterAnimated, leaveAnimated)">触发</el-button>
-    </el-row>
-
-    <div class="split">
-      <el-divider><i class="el-icon-eleme"></i></el-divider>
-    </div>
-
-    <div style="margin-top: 20px">
-      <el-button type="primary" plain @click="doNotify">弹出通知叠加</el-button>
-      <el-popover
-        :tabindex="-1"
-        placement="top-start"
-        width="200"
-        trigger="hover"
-        content="正常情况下，在一次事件中调用多次通知，会出现重叠">
-        <i class="el-icon-question" slot="reference" style="margin-right: 20px; color: #409EFF; font-size: 20px; cursor: pointer;"></i>
-      </el-popover>
-
-      <el-button type="success" plain @click="usePromise">promise弹出不叠加的通知</el-button>
-      <el-popover
-        :tabindex="-1"
-        placement="top-start"
-        width="200"
-        trigger="hover"
-        content="使用 Promise 来解决这个问题">
-        <i class="el-icon-question" slot="reference" style="margin-right: 20px; color: #409EFF; font-size: 20px; cursor: pointer;"></i>
-      </el-popover>
-
-      <el-button type="success" plain @click="useSetTimeout">setTimeout弹出不叠加的通知</el-button>
-      <el-popover
-        :tabindex="-1"
-        placement="top-start"
-        width="200"
-        trigger="hover"
-        content="使用 setTimeout 来解决这个问题">
-        <i class="el-icon-question" slot="reference" style="margin-right: 20px; color: #409EFF; font-size: 20px; cursor: pointer;"></i>
-      </el-popover>
-    </div>
-    <div class="split">
-      <el-divider><i class="el-icon-eleme"></i></el-divider>
-    </div>
-    <el-calendar>
-      <!-- 这里使用的是 2.5 slot 语法，对于新项目请使用 2.6 slot 语法-->
-      <template
-        slot="dateCell"
-        slot-scope="{date, data}">
-        <p :class="data.isSelected ? 'is-selected' : ''">
-          {{ data.day.split('-').slice(1).join('-') }} {{ data.isSelected ? '✔️' : ''}}
-        </p>
-      </template>
-    </el-calendar>
-
-  </div>
+  <el-container>
+    <el-header>
+      <div class="search-Box">
+       <span>姓名：</span>
+        <el-input
+          placeholder="请输入姓名"
+          icon="search"
+          id="searchUname"
+          style="width:120px"
+          v-model="searchUname"
+        ></el-input>
+        <span style="margin-left:40px">来访单位：</span>
+        <el-input
+          placeholder="请输入来访单位"
+          icon="search"
+          id="jobNum"
+          style="width:140px;"
+          v-model="searchNum"
+        ></el-input>
+        <el-button type="primary" plain @click="handleUserList" icon="el-icon-search" style="margin-left:20px">搜索</el-button>
+        <!-- <el-button type="info" plain @click="refresh" icon="el-icon-refresh">刷新</el-button>
+              <el-button type="warning" plain @click="poiExcel">导出</el-button>
+              <el-button type="danger" plain @click="deleteAll">批量删除</el-button> <v-addUser></v-addUser>
+        <el-button type="danger" plain @click="addUser2">123</el-button>-->
+      </div>
+    </el-header>
+    <!-- 表格-->
+    <el-main>
+      <div class="main-style">
+        <el-table :data="tableData" ref="multipleTable" @selection-change="changeFun" stripe border :header-cell-style="{background:'#0058A2'}">
+          <el-table-column
+            type="selection"
+            width="65"
+            prop="userId"
+            @selection-change="changeFun"
+          ></el-table-column>
+          <el-table-column prop="userName" label="姓名" style="width:120px"></el-table-column>
+          <el-table-column prop="jobNum" label="工号"></el-table-column>
+          <el-table-column prop="age" label="年龄"></el-table-column>
+          <el-table-column prop="organizationId" label="班组" :formatter="organId"></el-table-column>
+          <el-table-column prop="profession" label="工种" :formatter="professionId"></el-table-column>
+          <el-table-column prop="phone" label="电话"></el-table-column>
+          <el-table-column prop="companyId" label="承建单位" :formatter="companyState"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间"></el-table-column>
+          <el-table-column label="操作" fixed="right" style="width:200px">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="handleEdit(scope.row)"
+                icon="el-icon-setting"
+                type="warning"
+                plain
+              >编辑</el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.row)"
+                icon="el-icon-delete"
+                plain
+              >删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- 分页 total  //这是显示总共有多少数据，
+                    pagesize //显示当前行的条数
+                    sizes这是下拉框可以选择的，每选择一行，要展示多少内容
+        -->
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="page"
+          :page-sizes="[5, 10, 20, 40]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          @prev-click="pre"
+          @next-click="next"
+          hide-on-single-page
+          :total="total"
+        ></el-pagination>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 <script>
 // import addUser from '@/views/index/addUser'
