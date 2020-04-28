@@ -106,7 +106,7 @@ export default {
           projectName: "第二项目",
           contractCode: "HT654321",
           contractDate: "2019-10-10 - 1021-10-09",
-          contractType: "劳务分包",
+          contractType: "劳务888分包",
           mechanismCode: "81131348",
           status: "已提交",
         }
