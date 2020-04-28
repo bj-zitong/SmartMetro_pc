@@ -1,0 +1,825 @@
+<template>
+  <el-container>
+    <el-header style="padding:5px">
+      <div class="search-Box">
+        <!-- <el-form  :model="formInline" class="search-Box">
+          <el-form-item label="姓名">
+            <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
+          </el-form-item>
+           <el-form-item label="来访单位">
+            <el-input v-model="formInline.searchNum" placeholder="来访单位"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleUserList">查询</el-button>
+          </el-form-item>
+        </el-form>-->
+        <span style="margin-left:30px">姓名：</span>
+        <el-input
+          placeholder="请输入姓名"
+          icon="search"
+          style="width:180px;margin-top:33px"
+          v-model="searchUname"
+        ></el-input>
+        <span style="margin-left:40px">来访单位：</span>
+        <el-input placeholder="请输入来访单位" icon="search" style="width:180px;" v-model="searchNum"></el-input>
+        <el-button
+          type="primary"
+          @click="handleUserList"
+          style="margin-left:20px"
+        >搜索</el-button>
+      </div>
+    </el-header>
+    <!-- 表格-->
+    <el-main style="padding:5px;margin-top:30px">
+      <div class="main-style">
+        <div class="main-head">
+          <el-button @click="dialogFormVisible = true" class="addStyle">
+            <span class="addStyle-title">新增</span>
+          </el-button>
+          <el-button @click="deleteAll" class="deleteStyle">
+            <span class="deleteStyle-title">删除</span>
+          </el-button>
+          <el-button @click="poiExcel" class="exportStyle">
+            <span class="poiExcel-title">导出</span>
+          </el-button>
+        </div>
+        <div class="table-content">
+          <el-table
+            :data="tableData"
+            ref="multipleTable"
+            @selection-change="changeFun"
+            stripe
+            :header-cell-style="{background:'#0058A2'}"
+          >
+            <el-table-column
+              type="selection"
+              width="65"
+              prop="userId"
+              @selection-change="changeFun"
+            ></el-table-column>
+            <el-table-column prop="userName" label="姓名"></el-table-column>
+            <el-table-column prop="idNum" label="身份证号"></el-table-column>
+            <el-table-column prop="phone" label="电话"></el-table-column>
+            <el-table-column prop="company" label="来访单位"></el-table-column>
+            <el-table-column prop="profession" label="被访部门"></el-table-column>
+            <el-table-column prop="interviewee" label="被访人姓名"></el-table-column>
+            <el-table-column prop="intervieweeReason" label="来访事由"></el-table-column>
+            <el-table-column prop="intervieweeDate" label="来访时间"></el-table-column>
+            <el-table-column prop="direction" label="进出方向"></el-table-column>
+            <el-table-column prop="attendanceEquipment" label="考勤设备"></el-table-column>
+            <el-table-column prop="createTime" label="打卡时间"></el-table-column>
+            <el-table-column label="操作" style="width:180px">
+              <template slot-scope="scope" >
+                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑
+                </el-button>
+                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- 分页 total  //这是显示总共有多少数据，
+                    pagesize //显示当前行的条数
+                    sizes这是下拉框可以选择的，每选择一行，要展示多少内容
+                     :page-sizes="[5, 10, 20, 40]" 下拉选择
+                     layout="total, sizes, prev, pager, next, jumper"
+
+          -->
+          <el-pagination style="text-align:center;margin-top:10px"
+            @size-change="handleSizeChange"
+            :current-page="page"
+             layout="total, prev, pager,next"
+            :page-size="pageSize"
+            @prev-click="pre"
+            @next-click="next"
+            @current-change="handleCurrentChange"
+            hide-on-single-page
+            :total="total"
+          ></el-pagination>
+        </div>
+      </div>
+    </el-main>
+
+    <!--新增-->
+    <div class="addUser-content">
+      <el-dialog :visible.sync="dialogFormVisible">
+        <div class="button-head">
+          <span class="button-head-title">外来人员登记</span>
+        </div>
+        <div class="login_box">
+          <el-form
+            method="post"
+            enctype="multipart/form-data"
+            ref="form"
+            :rules="formRules"
+            :model="form"
+            action="http://192.168.1.164:8001/auth/user/baseUser"
+          >
+            <!-- 固定项目label="用户名"       label-width="80px" -->
+            <el-form-item prop="userName" >
+              <el-input v-model="form.userName" type="text" placeholder="用户名"></el-input>
+            </el-form-item>
+            <el-form-item prop="idNum">
+              <el-input v-model="form.idNum" placeholder="身份证号"></el-input>
+            </el-form-item>
+            <el-form-item prop="phone">
+              <el-input v-model="form.phone" placeholder="请联系电话"></el-input>
+            </el-form-item>
+            <el-form-item prop="company">
+              <el-input v-model="form.company" placeholder="单位"></el-input>
+            </el-form-item>
+            <el-form-item prop="carNum">
+              <el-input v-model="form.carNum" placeholder="车牌号"></el-input>
+            </el-form-item>
+            <!-- <el-form-item    label="被访人部门">
+              <el-select v-model="form.profession" placeholder="请选择被访人部门">
+                <el-option
+                  v-for="item in options"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item> -->
+             <el-select
+                v-model="form.profession"
+                placeholder="请选择被访人部门"
+                @change="selectProfession"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+            </el-select>
+            <el-form-item prop="interviewee" style="margin-top:20px">
+              <el-input v-model="form.interviewee" placeholder="被访人姓名"></el-input>
+            </el-form-item>
+            <br />
+            <el-form-item prop="intervieweeReason">
+              <el-input v-model="form.intervieweeReason" placeholder="来访事由"></el-input>
+            </el-form-item>
+            <br />
+            <!-- <el-form-item prop="intervieweeDate">
+              <el-input v-model="form.intervieweeDate" placeholder="来访时间"></el-input>
+            </el-form-item> -->
+              <el-date-picker
+              v-model="form.intervieweeDate"
+              type="datetime"
+              placeholder="选择日期时间"
+              default-time="12:00:00">
+            </el-date-picker>
+            <div  style="margin-top:20px">
+                <el-button type="info" round style="float:left" @click="concel()">取消</el-button>
+                <el-button type="primary" round @click="addUser('form')" style="float:right">确定</el-button>
+            </div>
+          </el-form>
+        </div>
+      </el-dialog>
+    </div>
+  </el-container>
+</template>
+<script>
+// import addUser from '@/views/index/addUser'
+export default {
+  data() {
+    return {
+      token: null, // token
+      dialogFormVisible: false,
+      // 动态数据
+      tableData: [],
+      page: 1, // 初始页
+      pageSize: 10, //    每页的数据
+      total: 100,//总条数
+      ids: null, //选中的id
+      searchUname: null, // 搜索
+      searchNum: null,
+      options: [
+        // 来访部门
+        { id: "", name: "请选择来访部门" },
+        { id: 1, name: "部门一" },
+        { id: 2, name: "部门二" },
+        { id: 3, name: "部门三" }
+      ],
+      formInline: {
+        searchUname: null, // 搜索
+        searchNum: null
+      },
+      form: {
+        userName: "",
+        idNum: "",
+        phone: null,
+        company: null, // 单位
+        carNum: "", // 车牌号
+        profession: "", // 被访部门
+        interviewee: "", // 被访姓名
+        intervieweeReason: "", // 被访来由
+        intervieweeDate: "", // 来访时间
+        dialogFormVisible: false
+      },
+      formRules: {
+        userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        phone: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          {
+            pattern: /^1[34578]\d{9}$/,
+            message: "目前只支持中国大陆的手机号码"
+          }
+        ],
+        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
+        company: [{ required: true, message: "请输入单位", trigger: "blur" }],
+        carNum: [{ required: true, message: "请输入车牌号", trigger: "blur" }],
+        profession: [
+          { required: true, message: "请选择被访部门", trigger: "blur" }
+        ],
+        interviewee: [
+          { required: true, message: "请输入被访人姓名", trigger: "blur" }
+        ],
+        intervieweeReason: [
+          { required: true, message: "请输入被访事由", trigger: "blur" }
+        ],
+        intervieweeDate: [
+          { required: true, message: "请选择被访时间", trigger: "blur" }
+        ]
+      }
+    };
+  },
+  created: function() {
+    this.handleUserList();
+  },
+  methods: {
+    // 初始页Page、初始每页数据数pagesize和数据data
+    handleSizeChange: function(size) {
+      this.pageSize = size;
+      // this.handleUserList()
+      // console.log(this.pageSize)  //每页下拉显示数据
+    },
+    handleCurrentChange: function(page) {
+      this.page = page;
+      this.handleUserList()
+      console.log(this.page)  //点击第几页
+    },
+    pre(cpage) {
+      this.page = cpage;
+      console.log('cpage'+cpage);
+      // this.handleUserList()
+    },
+    //下一页
+    next(cpage) {
+      this.page = cpage;
+      console.log('下一页'+cpage);
+      // this.handleUserList()
+    },
+    // 下拉框获得值
+    selectProfession(vid) {
+      let obj = {};
+      obj = this.options.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.form.profession = obj.id;
+    },
+    //取消
+    concel(){
+      this.dialogFormVisible=false;
+    },
+    addUser(form) {
+      var params = JSON.stringify({
+        userName: this.form.userName,
+        phone: this.form.phone,
+        idNum: this.form.idNum,
+        company: this.form.company,
+        profession: this.form.profession,
+        carNum: this.form.carNum,
+        interviewee: this.form.interviewee,
+        intervieweeReason: this.form.intervieweeReason,
+        intervieweeDate: this.form.intervieweeDate
+      });
+      console.log(params);
+      // 获得值
+      // let _this = this
+      // _this.$http({
+      //       // 头部信息及编码格式设置
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //     'Authorization': sessionStorage.getItem('token')
+      //   },
+      //   method: 'POST', // 请求的方式
+      //   url: '/api/auth/user/baseUser', // 请求地址
+      //       // 传参
+      //   data: datas
+      // })
+      //       .then(function (response) {
+      //         var res = response.data
+      //         // 请求失败
+      //         if(res.code != '200') {
+      //           alert(res.code)
+      //         }
+      //         // 请求成功
+      //         if(res.code == '200') {
+      //           alert(res.code)
+      //         }
+      //       })
+      //       .catch(function(error) {
+      //         console.log(error)
+      //       })
+      // $.ajax({
+      //   url: 'http://192.168.1.164:8001/auth/user/baseUser',
+      //     headers: {
+      //           Authorization: 'eaaad1cb1ace4186bda0e26655e1a793032fadf85f5532ca6a61fa85523885a2'
+      //       },
+      //   data: datas,
+      //   //  beforeSend: function(request) {
+      //   //     request.setRequestHeader("Authorization:",token);
+      //   // },
+      //   type: "POST",
+      //   async: true,
+      //   dateType: "json",
+      //   cache: false,
+      //   processData: false, // 不处理发送的数据，因为data值是Formdata对象，不需要对数据做处理
+      //   contentType: false, // 不设置Content-type请求头
+      //   success: function(data) {
+      //     var code = data.code;
+      //     if (code == "200") {
+      //       alert("添加成功");
+      //       _this.$router.push("/index");
+      //     }
+      //   },
+      //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+      //     console.log(textStatus+errorThrown);
+      //   }
+      // });
+      this.dialogFormVisible = false;
+    },
+    // 列表请求
+    handleUserList() {
+      // 获得搜索的内容
+      var uname = this.searchNum;
+      var unum = this.searchUname;
+      console.log("uname" + uname);
+      console.log("unum" + unum);
+      //   // 获得当前用户的id
+      // var  uid = sessionStorage.getItem('uid')
+      var data = JSON.stringify({
+        pageSize: this.pageSize,
+        page: this.page,
+        userName: uname,
+        idNum: unum
+      });
+      var url = "";
+      var result = [
+        {
+          userId: 1,
+          userName: "地铁安保部",
+          idNum: "210234567898765876",
+          phone: 15236985236,
+          company: "安保部一",
+          profession: "部门一",
+          interviewee: "123",
+          intervieweeReason: "123",
+          intervieweeDate: "2020-4-12",
+          direction: "22222222",
+          attendanceEquipment: "22222222",
+          createTime: 2020-4-12
+        },
+        {
+          userId: 2,
+          userName: "",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        }
+      ];
+      this.tableData = result;
+      //  this.$http({
+      //       // 头部信息及编码格式设置
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //         Authorization: sessionStorage.getItem('token')
+      //       },
+      //       method: 'POST', // 请求的方式
+      //       url: url, // 请求地址
+      //       // 传参
+      //       data: data
+      //     })
+      //     .then(function(response) {
+      //       var res = response.data
+      //       // 请求成功
+      //       if (res.code == '200') {
+      //         this.total = res.data.total
+      //         // 获得列表数据
+      //         this.tableData = res.data.rows
+      //       }
+      //     })
+      //     .catch(function(error) {
+      //       console.log(error)
+      //     })
+      // $.ajax({
+      //   url:'http://192.168.1.100:8001/auth/user/'+uid,
+      //   headers: {
+      //       Authorization: sessionStorage.getItem('token')
+      //   },
+      //   type: "POST",
+      //   data: data,
+      //   async: true,
+      //   dateType:'json',
+      //    success: function (response) {
+      //     var res=response.data;
+      //     //请求成功
+      //     if(res.code=="200"){
+      //       // alert('成功');
+      //        _this.total=res.data.total;
+      //        //获得列表数据
+      //        _this.tableData=res.data.rows;
+      //         }
+      //   },
+      //  error: function(XMLHttpRequest, textStatus, errorThrown){
+      //         console.log(textStatus);
+      //     }
+      // })
+    },
+    // 删除
+    handleDelete(row) {
+      // 删除用户id
+      var uid = row.userId;
+      var url = "";
+      this.$http({
+        // 头部信息及编码格式设置
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: sessionStorage.getItem("token")
+        },
+        method: "DELETE", // 请求的方式
+        url: url, // 请求地址
+        // 传参
+        data: uid
+      })
+        .then(function(response) {
+          var res = response.data;
+          // 请求失败
+          if (res.code != "200") {
+          }
+          // 请求成功
+          if (res.code == "200") {
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    //编辑
+    handleEdit(row){
+       // 用户id
+      var uid = row.userId;
+
+
+    },
+    // poi导出
+    poiExcel() {
+      // //获得token
+      // var token = sessionStorage.getItem("token");
+      var uname = this.userName;
+      var unum = this.company;
+      let _this = this;
+      var data = JSON.stringify({
+        userName: uname,
+        company: unum,
+        pageSize: _this.pageSize,
+        page: _this.page
+      });
+      var url='';
+      _this
+        .$http({
+          // 头部信息编码格式
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token
+          },
+          method: "POST",
+          url: url,
+          data: {
+            userParams: data
+          },
+          responseType: "arraybuffer"
+        })
+        .then(function(res) {
+          // // 创建Blob对象，设置文件类型
+          // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
+          // let objectUrl = URL.createObjectURL(blob) // 创建URL
+          // location.href = objectUrl;
+          // URL.revokeObjectURL(objectUrl); // 释放内存
+          // 创建Blob对象，设置文件类型
+          // 自定义文件下载名称  Subway-User-20191223114607
+          var d = new Date();
+          var month = d.getMonth() + 1;
+          var excelName =
+            "Subway-User-" +
+            d.getFullYear() +
+            month +
+            d.getDate() +
+            d.getHours() +
+            d.getMinutes() +
+            d.getSeconds();
+          let blob = new Blob([res.data], { type: "application/vnd.ms-excel" });
+          let objectUrl = URL.createObjectURL(blob); // 创建URL
+          link.href = objectUrl;
+          link.download = excelName; // 自定义文件名
+          link.click(); // 下载文件
+          URL.revokeObjectURL(objectUrl); // 释放内存
+          // alert("调用导出！");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    //获得表格前面选中的id值
+    changeFun() {
+      var ids = new Array();
+      var arrays = this.$refs.multipleTable.selection;
+      for (var i = 0; i < arrays.length; i++) {
+        // 获得id
+        var id = arrays[i].userId;
+        ids.push(id);
+        // console.log("获得id"+arrays[i].userId);
+      }
+      return ids;
+      // console.log("选中的ids"+ids);
+      //  this.multipleSelection = val;
+    },
+    // 批量删除
+    deleteAll() {
+      
+      var ids = this.changeFun();
+      console.log(ids);
+      var url = "";
+      // this.$http({
+      //   // 头部信息及编码格式设置
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: sessionStorage.getItem('token')
+      //   },
+      //   method: 'DELETE', // 请求的方式
+      //   url: url, // 请求地址
+      //   // 传参
+      //   data: ids
+      // })
+      //   .then(function(response) {
+      //     var res = response.data
+      //     // 请求失败
+      //     if (res.code != '200') {
+      //     }
+      //     // 请求成功
+      //     if (res.code == '200') {
+      //     }
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error)
+      //   })
+    }
+  }
+};
+</script>
+<style scoped lang="stylus">
+.search-Box {
+  width: 100%;
+  height: 100px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
+  opacity: 1;
+  border-radius: 10px;
+  padding: 5px;
+
+
+}
+
+/*表格 */
+.main-style {
+  width: 100%;
+  height: 744px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.16);
+  opacity: 1;
+  border-radius: 10px;
+  margin-top: 40px;
+  padding: 5px;
+
+  /**按钮 */
+.main-head {
+  margin-top: 20px;
+  margin-left: 30px;
+  position: absolute;
+  height: 50px;
+  width: 100%;
+  display: block;
+}
+
+
+
+/*表格内容 */
+.table-content {
+  width: 1650px;
+  /* height: 500px; */
+  margin-top: 80px;
+  /* margin-left: 10px; */
+  position: absolute;
+  padding: 30px;
+
+  .editStyle {
+  width: 60px;
+  height: 25px;
+  background: rgba(66, 199, 111, 1);
+  opacity: 1;
+  border-radius: 4px;
+}
+
+.editStyle-title {
+  width: 20px;
+  height: 14px;
+  font-size: 10px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+  line-height: 14px;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+.deleteStylerow {
+  width: 60px;
+  height: 25px;
+  background: rgba(175, 186, 203, 1);
+  opacity: 1;
+  border-radius: 4px;
+}
+.deleteStylerow-title {
+  width: 20px;
+  height: 14px;
+  font-size: 10px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+  line-height: 14px;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+
+
+
+
+}
+
+.addStyle {
+  width: 80px;
+  height: 35px;
+  background: linear-gradient(
+    180deg,
+    rgba(54, 130, 243, 1) 0%,
+    rgba(0, 88, 162, 1) 100%
+  );
+  opacity: 1;
+  border-radius: 4px;
+  text-align: center;
+}
+.addStyle-title {
+  color: #ffffff;
+  width: 33px;
+  height: 19px;
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  line-height: 19px;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+.deleteStyle {
+  width: 80px;
+  height: 35px;
+  background: linear-gradient(
+    180deg,
+    rgba(225, 225, 225, 1) 0%,
+    rgba(190, 190, 190, 1) 100%
+  );
+  opacity: 1;
+  border-radius: 4px;
+}
+.deleteStyle-title {
+  width: 33px;
+  height: 19px;
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  line-height: 19px;
+  color: rgba(99, 99, 99, 1);
+  opacity: 1;
+}
+.exportStyle {
+  width: 80px;
+  height: 35px;
+  background: linear-gradient(
+    180deg,
+    rgba(58, 222, 214, 1) 0%,
+    rgba(0, 150, 143, 1) 100%
+  );
+  opacity: 1;
+  border-radius: 4px;
+}
+.poiExcel-title {
+  width: 33px;
+  height: 19px;
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  line-height: 19px;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+
+}
+
+
+/*新增 */
+.addUser-content {
+  margin-top: 50px;
+  height: 300px;
+  width: 200px;
+
+  .button-head {
+  width: 104.5%;
+  height: 40px;
+  margin-left: -20px;
+  background: linear-gradient(
+    180deg,
+    rgba(54, 130, 243, 1) 0%,
+    rgba(0, 88, 162, 1) 100%
+  );
+  text-align: center;
+}
+/* 按钮文字 */
+.button-head-title {
+  width: 56px;
+  height: 31px;
+  font-size: 24px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  line-height: 31px;
+  letter-spacing: 20px;
+  opacity: 1;
+  text-align: center;
+  color: aliceblue;
+}
+
+/*form表单 */
+.login_box {
+  width: 100%;
+  height: 800px;
+}
+.el-form {
+  padding: 32px;
+  bottom: 0;
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  /* margin-top:30px; */
+}
+
+.el-form-item {
+  width: 260px;
+  height: 35px;
+  background: rgba(239, 239, 239, 1);
+  border: 1px solid rgba(225, 225, 225, 1);
+  opacity: 1;
+  border-radius: 4px;
+}
+
+.confirm{
+  width:80px;
+  height:35px;
+  background-color:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
+  opacity:1;
+  border-radius:18px;
+}
+.confirm-title{
+  width:33px;
+  height:19px;
+  font-size:14px;
+  font-family:Microsoft YaHei;
+  font-weight:bold;
+  line-height:19px;
+  color:rgba(255,255,255,1);
+  letter-spacing:20px;
+  opacity:1;
+}
+
+
+}
+
+
+
+
+
+</style>
