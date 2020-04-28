@@ -120,6 +120,7 @@ export default {
     // 注册
     register() {
       this.$router.push({ path: '/register' })
+      console.log(this.form.username)
     }
   }
 }

@@ -1,39 +1,47 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header style="padding:5px">
       <div class="search-Box">
+        <!-- <el-form  :model="formInline" class="search-Box">
+          <el-form-item label="姓名">
+            <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
+          </el-form-item>
+           <el-form-item label="来访单位">
+            <el-input v-model="formInline.searchNum" placeholder="来访单位"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleUserList">查询</el-button>
+          </el-form-item>
+        </el-form>-->
         <span style="margin-left:30px">姓名：</span>
         <el-input
           placeholder="请输入姓名"
           icon="search"
-          id="searchUname"
-          style="width:120px;margin-top:33px"
+          style="width:180px;margin-top:33px"
           v-model="searchUname"
         ></el-input>
         <span style="margin-left:40px">来访单位：</span>
-        <el-input
-          placeholder="请输入来访单位"
-          icon="search"
-          id="jobNum"
-          style="width:140px;"
-          v-model="searchNum"
-        ></el-input>
+        <el-input placeholder="请输入来访单位" icon="search" style="width:180px;" v-model="searchNum"></el-input>
         <el-button
           type="primary"
-          plain
           @click="handleUserList"
-          icon="el-icon-search"
           style="margin-left:20px"
         >搜索</el-button>
       </div>
     </el-header>
     <!-- 表格-->
-    <el-main>
+    <el-main style="padding:5px;margin-top:30px">
       <div class="main-style">
         <div class="main-head">
-           <el-button type="success" plain @click="dialogFormVisible = true" icon="el-icon-plus">新增</el-button>
-          <el-button type="danger" plain @click="deleteAll">删除</el-button>
-          <el-button type="warning" plain @click="poiExcel">导出</el-button>
+          <el-button @click="dialogFormVisible = true" class="addStyle">
+            <span class="addStyle-title">新增</span>
+          </el-button>
+          <el-button @click="deleteAll" class="deleteStyle">
+            <span class="deleteStyle-title">删除</span>
+          </el-button>
+          <el-button @click="poiExcel" class="exportStyle">
+            <span class="poiExcel-title">导出</span>
+          </el-button>
         </div>
         <div class="table-content">
           <el-table
@@ -49,182 +57,164 @@
               prop="userId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="userName" label="姓名" style="width:120px;"></el-table-column>
-            <el-table-column prop="jobNum" label="身份证号"></el-table-column>
+            <el-table-column prop="userName" label="姓名"></el-table-column>
+            <el-table-column prop="idNum" label="身份证号"></el-table-column>
             <el-table-column prop="phone" label="电话"></el-table-column>
-            <el-table-column prop="age" label="来访单位"></el-table-column>
-            <el-table-column prop="createTime" label="被访部门"></el-table-column>
-            <el-table-column prop="createTime" label="被访人姓名"></el-table-column>
-            <el-table-column prop="createTime" label="来访事由"></el-table-column>
-            <el-table-column prop="createTime" label="来访时间"></el-table-column>
-            <el-table-column prop="createTime" label="进出方向"></el-table-column>
-            <el-table-column prop="createTime" label="考勤设备"></el-table-column>
+            <el-table-column prop="company" label="来访单位"></el-table-column>
+            <el-table-column prop="profession" label="被访部门"></el-table-column>
+            <el-table-column prop="interviewee" label="被访人姓名"></el-table-column>
+            <el-table-column prop="intervieweeReason" label="来访事由"></el-table-column>
+            <el-table-column prop="intervieweeDate" label="来访时间"></el-table-column>
+            <el-table-column prop="direction" label="进出方向"></el-table-column>
+            <el-table-column prop="attendanceEquipment" label="考勤设备"></el-table-column>
             <el-table-column prop="createTime" label="打卡时间"></el-table-column>
-            <el-table-column label="操作" fixed="right" style="width:200px">
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="handleEdit(scope.row)"
-                  icon="el-icon-setting"
-                  type="warning"
-                  plain
-                >编辑</el-button>
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click="handleDelete(scope.row)"
-                  icon="el-icon-delete"
-                  plain
-                >删除</el-button>
+            <el-table-column label="操作" style="width:180px">
+              <template slot-scope="scope" >
+                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑
+                </el-button>
+                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
           <!-- 分页 total  //这是显示总共有多少数据，
                     pagesize //显示当前行的条数
                     sizes这是下拉框可以选择的，每选择一行，要展示多少内容
+                     :page-sizes="[5, 10, 20, 40]" 下拉选择
+                     layout="total, sizes, prev, pager, next, jumper"
+
           -->
-          <el-pagination
-            background
+          <el-pagination style="text-align:center;margin-top:10px"
             @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
             :current-page="page"
-            :page-sizes="[5, 10, 20, 40]"
+             layout="total, prev, pager,next"
             :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
             @prev-click="pre"
             @next-click="next"
+            @current-change="handleCurrentChange"
             hide-on-single-page
             :total="total"
           ></el-pagination>
         </div>
       </div>
-      <!--新增-->
-  <div class="addUser-content">
-    <el-dialog  :visible.sync="dialogFormVisible">
-      <div class="button-head">
-        <span class="button-head-title">外来人员登记</span>
-      </div>
-      <div class="login_box">
+    </el-main>
+
+    <!--新增-->
+    <div class="addUser-content">
+      <el-dialog :visible.sync="dialogFormVisible">
+        <div class="button-head">
+          <span class="button-head-title">外来人员登记</span>
+        </div>
+        <div class="login_box">
           <el-form
             method="post"
             enctype="multipart/form-data"
             ref="form"
             :rules="formRules"
-            :inline="true"
             :model="form"
-            label-width="50px"
-            action="http://192.168.1.164:8001/auth/user/baseUser">
-            <!-- 固定项目 -->
-            <el-form-item label="姓名" prop="userName">
-              <el-input v-model="form.userName" palceholder="请输入姓名" id="userName"></el-input>
+            action="http://192.168.1.164:8001/auth/user/baseUser"
+          >
+            <!-- 固定项目label="用户名"       label-width="80px" -->
+            <el-form-item prop="userName" >
+              <el-input v-model="form.userName" type="text" placeholder="用户名"></el-input>
             </el-form-item>
-             <el-form-item label="身份证号" prop="phone">
-              <el-input v-model="form.phone" palceholder="请输入身份证号" id="phone"></el-input>
+            <el-form-item prop="idNum">
+              <el-input v-model="form.idNum" placeholder="身份证号"></el-input>
             </el-form-item>
-            <el-form-item label="电话" prop="phone">
-              <el-input v-model="form.phone" palceholder="请输入联系电话" id="phone"></el-input>
-            </el-form-item>     
-            <el-form-item label="单位" prop="age">
-              <el-input v-model="form.age" palceholder="请输入单位" id="age"></el-input>
+            <el-form-item prop="phone">
+              <el-input v-model="form.phone" placeholder="请联系电话"></el-input>
             </el-form-item>
-            <el-form-item label="车牌号" prop="nation">
-              <el-input v-model="form.nation" palceholder="请输入车牌号" id="nation"></el-input>
+            <el-form-item prop="company">
+              <el-input v-model="form.company" placeholder="单位"></el-input>
             </el-form-item>
-              <el-select v-model="profession" placeholder="请选择被访人部门" @change="selectProfession">
+            <el-form-item prop="carNum">
+              <el-input v-model="form.carNum" placeholder="车牌号"></el-input>
+            </el-form-item>
+            <!-- <el-form-item    label="被访人部门">
+              <el-select v-model="form.profession" placeholder="请选择被访人部门">
                 <el-option
                   v-for="item in options"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
                 ></el-option>
-              </el-select>          
-            <el-form-item label="被访人姓名" prop="energencyContactName" id="emergencyContactName">
-              <el-input v-model="form.energencyContactName" palceholder="请输入被访人姓名"></el-input>
+              </el-select>
+            </el-form-item> -->
+             <el-select
+                v-model="form.profession"
+                placeholder="请选择被访人部门"
+                @change="selectProfession"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+            </el-select>
+            <el-form-item prop="interviewee" style="margin-top:20px">
+              <el-input v-model="form.interviewee" placeholder="被访人姓名"></el-input>
             </el-form-item>
             <br />
-            <el-form-item label="来访事由" prop="presentAddress">
-              <el-input v-model="form.presentAddress" palceholder="请输入来访事由" id="presentAddress"></el-input>
+            <el-form-item prop="intervieweeReason">
+              <el-input v-model="form.intervieweeReason" placeholder="来访事由"></el-input>
             </el-form-item>
             <br />
-            <el-form-item label="来访时间" prop="registrationAddrass">
-              <el-input
-                v-model="form.registrationAddrass"
-                palceholder="请输入来访时间"
-                id="registrationAddress"
-              ></el-input>
-            </el-form-item>
-            <el-button type="primary" @click="addUser">确定</el-button>
+            <!-- <el-form-item prop="intervieweeDate">
+              <el-input v-model="form.intervieweeDate" placeholder="来访时间"></el-input>
+            </el-form-item> -->
+              <el-date-picker
+              v-model="form.intervieweeDate"
+              type="datetime"
+              placeholder="选择日期时间"
+              default-time="12:00:00">
+            </el-date-picker>
+            <div  style="margin-top:20px">
+                <el-button type="info" round style="float:left" @click="concel()">取消</el-button>
+                <el-button type="primary" round @click="addUser('form')" style="float:right">确定</el-button>
+            </div>
           </el-form>
-      </div>
-    </el-dialog>
-    </div>   
-    </el-main>
+        </div>
+      </el-dialog>
+    </div>
   </el-container>
 </template>
 <script>
 // import addUser from '@/views/index/addUser'
 export default {
-  // name: 'addUser',
-  // components: {
-  //   'v-addUser': addUser
-  // },
   data() {
     return {
-       dialogFormVisible: false,
+      token: null, // token
+      dialogFormVisible: false,
       // 动态数据
       tableData: [],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
-      total: null,
-      searchUname: null,
-      options: [
-        { id: 1, name: "焊工" },
-        { id: 2, name: "钢筋工" },
-        { id: 3, name: "电工" }
-      ], // 渲染数据
-      profession: "",
-      professionName: "",
-      jobNum: null,
+      total: 100,//总条数
+      ids: null, //选中的id
+      searchUname: null, // 搜索
       searchNum: null,
-      companyIds: [
-        { id: 1, name: "单位一" },
-        { id: 2, name: "单位二" },
-        { id: 3, name: "单位三" }
+      options: [
+        // 来访部门
+        { id: "", name: "请选择来访部门" },
+        { id: 1, name: "部门一" },
+        { id: 2, name: "部门二" },
+        { id: 3, name: "部门三" }
       ],
-      companyId: "",
-      companyName: "",
-      organizationIds: [
-        { id: 1, name: "班组一" },
-        { id: 2, name: "班组二" },
-        { id: 3, name: "班组三" }
-      ],
-      organizationId: "",
-      orginizId: null,
-      roles: [
-        { id: 1, name: "角色一" },
-        { id: 2, name: "角色二" },
-        { id: 3, name: "角色三" }
-      ],
-      profession: "请选择工种",
-      attribute: "请选择人员属性",
-      companyId: "请选择承建单位",
-      organizationId: "请选择班组",
-      role: "请选择角色",
-      attributes: [
-        { id: 1, name: "内部员工" },
-        { id: 2, name: "外来人员" },
-        { id: 3, name: "供货商" }
-      ],
+      formInline: {
+        searchUname: null, // 搜索
+        searchNum: null
+      },
       form: {
         userName: "",
-        phone: "",
-        radio: "男",
-        age: null,
-        nation: "",
-        registrationAddrass: "",
-        presentAddress: "",
-        energencyContactPhone: "",
-        energencyContactName: "",
+        idNum: "",
+        phone: null,
+        company: null, // 单位
+        carNum: "", // 车牌号
+        profession: "", // 被访部门
+        interviewee: "", // 被访姓名
+        intervieweeReason: "", // 被访来由
+        intervieweeDate: "", // 来访时间
         dialogFormVisible: false
       },
       formRules: {
@@ -236,26 +226,26 @@ export default {
             message: "目前只支持中国大陆的手机号码"
           }
         ],
-        nation: [{ required: true, message: "请输入民族", trigger: "blur" }],
-        age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
-        registrationAddrass: [
-          { required: true, message: "请输入户籍地址", trigger: "blur" }
+        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
+        company: [{ required: true, message: "请输入单位", trigger: "blur" }],
+        carNum: [{ required: true, message: "请输入车牌号", trigger: "blur" }],
+        profession: [
+          { required: true, message: "请选择被访部门", trigger: "blur" }
         ],
-        presentAddress: [
-          { required: true, message: "请输入居住地", trigger: "blur" }
+        interviewee: [
+          { required: true, message: "请输入被访人姓名", trigger: "blur" }
         ],
-        energencyContactPhone: [
-          { required: true, message: "请输入紧急联系人电话", trigger: "blur" }
+        intervieweeReason: [
+          { required: true, message: "请输入被访事由", trigger: "blur" }
         ],
-        energencyContactName: [
-          { required: true, message: "请输入紧急联系人姓名", trigger: "blur" }
+        intervieweeDate: [
+          { required: true, message: "请选择被访时间", trigger: "blur" }
         ]
       }
     };
   },
   created: function() {
-    // this.handleUserList()
-    console.log("初始化调用list");
+    this.handleUserList();
   },
   methods: {
     // 初始页Page、初始每页数据数pagesize和数据data
@@ -266,93 +256,72 @@ export default {
     },
     handleCurrentChange: function(page) {
       this.page = page;
-      // this.handleUserList()
-      // console.log(this.page)  //点击第几页
+      this.handleUserList()
+      console.log(this.page)  //点击第几页
     },
     pre(cpage) {
       this.page = cpage;
+      console.log('cpage'+cpage);
       // this.handleUserList()
     },
+    //下一页
     next(cpage) {
       this.page = cpage;
+      console.log('下一页'+cpage);
       // this.handleUserList()
     },
-      addUser() {
-      console.log("添加adduser");
-      var datas = new FormData();
-      console.log("添加的token"+sessionStorage.getItem('token'));
-      var userName = $("#userName").val();
-      console.log("userName"+userName);
-      var phone = $("#phone").val();
-      var age = $("#age").val();
-      var nation = $("#nation").val();
-      var profession = $("#profession").val();
-      profession = this.professionName;
-      var attribute = $("#attribute").val();
-      attribute = this.attributeid;
-      var companyId = $("#companyId").val();
-      companyId = this.companyName;
-      var organizationId = $("#organizationId").val();
-      organizationId = this.orginizId;
-      var emergencyContactName = $("#emergencyContactName").val();
-      var emergencyContactPhone = $("#emergencyContactPhone").val();
-      var presentAddress = $("#presentAddress").val();
-      var registrationAddress = $("#registrationAddress").val();
-      var roleIds = $("#roleIds").val();
-      roleIds = this.roleid;
-      // var gender=$("#gender").val();
-      var gender = $('input[name="gender"]:checked').val();
-      datas.append("userName", userName);
-      datas.append("gender", gender);
-      datas.append("phone", phone);
-      datas.append("age", age);
-      datas.append("nation", nation);
-      datas.append("profession", profession);
-      datas.append("attribute", attribute);
-      datas.append("companyId", companyId);
-      datas.append("organizationId", organizationId);
-      datas.append("emergencyContactName", emergencyContactName);
-      datas.append("emergencyContactPhone", emergencyContactPhone);
-      datas.append("presentAddress", presentAddress);
-      datas.append("registrationAddress", registrationAddress);
-      var roles = [1, 2];
-      datas.append("roleIds", roles);
-      datas.append("photoFile", $("#photoFile")[0].files[0]);
-      console.log("attribute------"+attribute);
-      console.log("companyId------"+companyId);
-      console.log("organizationId------"+organizationId);
-      console.log("professionName------"+profession);
-      console.log("roles------"+this.roleid);
-      console.log(datas);
-      var token=sessionStorage.getItem('token');
-      console.log("token"+token);
-  //获得值
-      let _this = this;
-        _this.$http({
-            //头部信息及编码格式设置
-            headers:{
-               'Content-Type': 'multipart/form-data',
-               'Authorization': sessionStorage.getItem('token')
-            },
-            method:'POST',//请求的方式
-            url:'/api/auth/user/baseUser',//请求地址
-            //传参
-            data:datas
-          })
-            .then(function (response){
-              var res=response.data;
-              //请求失败
-              if(res.code!="200"){
-                alert(res.code);
-              }
-              //请求成功
-              if(res.code=="200"){
-                alert(res.code);
-              }
-            })
-            .catch(function(error){
-              console.log(error);
-            });
+    // 下拉框获得值
+    selectProfession(vid) {
+      let obj = {};
+      obj = this.options.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.form.profession = obj.id;
+    },
+    //取消
+    concel(){
+      this.dialogFormVisible=false;
+    },
+    addUser(form) {
+      var params = JSON.stringify({
+        userName: this.form.userName,
+        phone: this.form.phone,
+        idNum: this.form.idNum,
+        company: this.form.company,
+        profession: this.form.profession,
+        carNum: this.form.carNum,
+        interviewee: this.form.interviewee,
+        intervieweeReason: this.form.intervieweeReason,
+        intervieweeDate: this.form.intervieweeDate
+      });
+      console.log(params);
+      // 获得值
+      // let _this = this
+      // _this.$http({
+      //       // 头部信息及编码格式设置
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //     'Authorization': sessionStorage.getItem('token')
+      //   },
+      //   method: 'POST', // 请求的方式
+      //   url: '/api/auth/user/baseUser', // 请求地址
+      //       // 传参
+      //   data: datas
+      // })
+      //       .then(function (response) {
+      //         var res = response.data
+      //         // 请求失败
+      //         if(res.code != '200') {
+      //           alert(res.code)
+      //         }
+      //         // 请求成功
+      //         if(res.code == '200') {
+      //           alert(res.code)
+      //         }
+      //       })
+      //       .catch(function(error) {
+      //         console.log(error)
+      //       })
       // $.ajax({
       //   url: 'http://192.168.1.164:8001/auth/user/baseUser',
       //     headers: {
@@ -383,29 +352,59 @@ export default {
     },
     // 列表请求
     handleUserList() {
-      //   var _this = this
+      // 获得搜索的内容
+      var uname = this.searchNum;
+      var unum = this.searchUname;
+      console.log("uname" + uname);
+      console.log("unum" + unum);
       //   // 获得当前用户的id
-      //   var uid = sessionStorage.getItem('uid')
-      //   var uname = $('#searchUname').val()
-      //   var unum = $('#jobNum').val()
-      //   var data = JSON.stringify({
-      //     pageSize: _this.pageSize,
-      //     page: _this.page,
-      //     userName: uname,
-      //     jobNum: unum,
-      //     profession: _this.professionName,
-      //     companyId: _this.companyName,
-      //     organizationId: _this.orginizId
-      //   })
-      //   _this
-      //     .$http({
+      // var  uid = sessionStorage.getItem('uid')
+      var data = JSON.stringify({
+        pageSize: this.pageSize,
+        page: this.page,
+        userName: uname,
+        idNum: unum
+      });
+      var url = "";
+      var result = [
+        {
+          userId: 1,
+          userName: "地铁安保部",
+          idNum: "210234567898765876",
+          phone: 15236985236,
+          company: "安保部一",
+          profession: "部门一",
+          interviewee: "123",
+          intervieweeReason: "123",
+          intervieweeDate: "2020-4-12",
+          direction: "22222222",
+          attendanceEquipment: "22222222",
+          createTime: 2020-4-12
+        },
+        {
+          userId: 2,
+          userName: "",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        }
+      ];
+      this.tableData = result;
+      //  this.$http({
       //       // 头部信息及编码格式设置
       //       headers: {
       //         'Content-Type': 'application/json',
       //         Authorization: sessionStorage.getItem('token')
       //       },
       //       method: 'POST', // 请求的方式
-      //       url: '/api/auth/user/' + uid, // 请求地址
+      //       url: url, // 请求地址
       //       // 传参
       //       data: data
       //     })
@@ -413,45 +412,43 @@ export default {
       //       var res = response.data
       //       // 请求成功
       //       if (res.code == '200') {
-      //         // alert('成功');
-      //         _this.total = res.data.total
+      //         this.total = res.data.total
       //         // 获得列表数据
-      //         _this.tableData = res.data.rows
+      //         this.tableData = res.data.rows
       //       }
       //     })
       //     .catch(function(error) {
       //       console.log(error)
       //     })
-      //   // $.ajax({
-      //   //   url:'http://192.168.1.100:8001/auth/user/'+uid,
-      //   //   headers: {
-      //   //       Authorization: sessionStorage.getItem('token')
-      //   //   },
-      //   //   type: "POST",
-      //   //   data: data,
-      //   //   async: true,
-      //   //   dateType:'json',
-      //   //    success: function (response) {
-      //   //     var res=response.data;
-      //   //     //请求成功
-      //   //     if(res.code=="200"){
-      //   //       // alert('成功');
-      //   //        _this.total=res.data.total;
-      //   //        //获得列表数据
-      //   //        _this.tableData=res.data.rows;
-      //   //         }
-      //   //   },
-      //   //  error: function(XMLHttpRequest, textStatus, errorThrown){
-      //   //         console.log(textStatus);
-      //   //     }
-      //   // })
+      // $.ajax({
+      //   url:'http://192.168.1.100:8001/auth/user/'+uid,
+      //   headers: {
+      //       Authorization: sessionStorage.getItem('token')
+      //   },
+      //   type: "POST",
+      //   data: data,
+      //   async: true,
+      //   dateType:'json',
+      //    success: function (response) {
+      //     var res=response.data;
+      //     //请求成功
+      //     if(res.code=="200"){
+      //       // alert('成功');
+      //        _this.total=res.data.total;
+      //        //获得列表数据
+      //        _this.tableData=res.data.rows;
+      //         }
+      //   },
+      //  error: function(XMLHttpRequest, textStatus, errorThrown){
+      //         console.log(textStatus);
+      //     }
+      // })
     },
     // 删除
     handleDelete(row) {
       // 删除用户id
       var uid = row.userId;
-      var userid = sessionStorage.getItem("uid");
-      var uids = [uid];
+      var url = "";
       this.$http({
         // 头部信息及编码格式设置
         headers: {
@@ -459,46 +456,44 @@ export default {
           Authorization: sessionStorage.getItem("token")
         },
         method: "DELETE", // 请求的方式
-        url: "/api/auth/user/" + userid, // 请求地址
+        url: url, // 请求地址
         // 传参
-        data: uids
+        data: uid
       })
         .then(function(response) {
           var res = response.data;
           // 请求失败
           if (res.code != "200") {
-            alert("用户名或密码错误，请重新输入");
           }
           // 请求成功
           if (res.code == "200") {
-            alert("删除成功");
-            window.location.reload();
           }
         })
         .catch(function(error) {
           console.log(error);
         });
     },
+    //编辑
+    handleEdit(row){
+       // 用户id
+      var uid = row.userId;
+
+
+    },
     // poi导出
     poiExcel() {
       // //获得token
-      var token = sessionStorage.getItem("token");
-      var uname = $("#searchUname").val();
-      var unum = $("#jobNum").val();
+      // var token = sessionStorage.getItem("token");
+      var uname = this.userName;
+      var unum = this.company;
       let _this = this;
-      _this.companyName == 1;
-      if (_this.companyName == null) {
-      }
-      const link = document.createElement("a");
       var data = JSON.stringify({
         userName: uname,
-        jobNum: unum,
-        profession: _this.professionName,
-        companyId: 1,
-        organizationId: _this.orginizId,
+        company: unum,
         pageSize: _this.pageSize,
         page: _this.page
       });
+      var url='';
       _this
         .$http({
           // 头部信息编码格式
@@ -507,7 +502,7 @@ export default {
             Authorization: token
           },
           method: "POST",
-          url: "/api/auth/user/excel/" + 1,
+          url: url,
           data: {
             userParams: data
           },
@@ -524,7 +519,7 @@ export default {
           var d = new Date();
           var month = d.getMonth() + 1;
           var excelName =
-            " Subway-User-" +
+            "Subway-User-" +
             d.getFullYear() +
             month +
             d.getDate() +
@@ -543,6 +538,7 @@ export default {
           console.log(error);
         });
     },
+    //获得表格前面选中的id值
     changeFun() {
       var ids = new Array();
       var arrays = this.$refs.multipleTable.selection;
@@ -559,126 +555,271 @@ export default {
     // 批量删除
     deleteAll() {
       var ids = this.changeFun();
-      // 删除用户id
-      var userid = sessionStorage.getItem("uid");
-      var uids = ids;
-      this.$http({
-        // 头部信息及编码格式设置
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: sessionStorage.getItem("token")
-        },
-        method: "DELETE", // 请求的方式
-        url: "/api/auth/user/" + userid, // 请求地址
-        // 传参
-        data: uids
-      })
-        .then(function(response) {
-          var res = response.data;
-          // 请求失败
-          if (res.code != "200") {
-            alert("用户名或密码错误，请重新输入");
-          }
-          // 请求成功
-          if (res.code == "200") {
-            alert("删除成功");
-            window.location.reload();
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      console.log(ids);
+      var url = "";
+      // this.$http({
+      //   // 头部信息及编码格式设置
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: sessionStorage.getItem('token')
+      //   },
+      //   method: 'DELETE', // 请求的方式
+      //   url: url, // 请求地址
+      //   // 传参
+      //   data: ids
+      // })
+      //   .then(function(response) {
+      //     var res = response.data
+      //     // 请求失败
+      //     if (res.code != '200') {
+      //     }
+      //     // 请求成功
+      //     if (res.code == '200') {
+      //     }
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error)
+      //   })
     }
   }
 };
 </script>
-<style>
+<style scoped lang="stylus">
+/*搜索 */
 .search-Box {
-  /* width: 100%;
-  height: 100px;
-  background-color: rgba(255, 255, 255, 1); */
-  width: 1600px;
+  width: 100%;
   height: 100px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
   opacity: 1;
   border-radius: 10px;
+  padding: 5px;
+
+
 }
+
+/*表格 */
 .main-style {
-  width: 1600px;
+  width: 100%;
   height: 744px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.16);
   opacity: 1;
   border-radius: 10px;
   margin-top: 40px;
-}
+  padding: 5px;
+
+  /**按钮 */
 .main-head {
   margin-top: 20px;
   margin-left: 30px;
   position: absolute;
   height: 50px;
-  width: 1540px;
+  width: 100%;
   display: block;
 }
+
+
+
+/*表格内容 */
 .table-content {
-  width: 1540px;
-  height: 500px;
-  /* background:rgba(0,88,162,1);
-      opacity:1;
-      border-radius: 4px 4px 0px 0px;*/
+  width: 1650px;
+  /* height: 500px; */
   margin-top: 80px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
   position: absolute;
+  padding: 30px;
+
+  .editStyle {
+  width: 60px;
+  height: 25px;
+  background: rgba(66, 199, 111, 1);
+  opacity: 1;
+  border-radius: 4px;
 }
-.addUser-content{
-  margin-top:50px;
+
+.editStyle-title {
+  width: 20px;
+  height: 14px;
+  font-size: 10px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+  line-height: 14px;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+.deleteStylerow {
+  width: 60px;
+  height: 25px;
+  background: rgba(175, 186, 203, 1);
+  opacity: 1;
+  border-radius: 4px;
+}
+.deleteStylerow-title {
+  width: 20px;
+  height: 14px;
+  font-size: 10px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+  line-height: 14px;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+
+
+
+
+}
+
+.addStyle {
+  width: 80px;
+  height: 35px;
+  background: linear-gradient(
+    180deg,
+    rgba(54, 130, 243, 1) 0%,
+    rgba(0, 88, 162, 1) 100%
+  );
+  opacity: 1;
+  border-radius: 4px;
+  text-align: center;
+}
+.addStyle-title {
+  color: #ffffff;
+  width: 33px;
+  height: 19px;
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  line-height: 19px;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+.deleteStyle {
+  width: 80px;
+  height: 35px;
+  background: linear-gradient(
+    180deg,
+    rgba(225, 225, 225, 1) 0%,
+    rgba(190, 190, 190, 1) 100%
+  );
+  opacity: 1;
+  border-radius: 4px;
+}
+.deleteStyle-title {
+  width: 33px;
+  height: 19px;
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  line-height: 19px;
+  color: rgba(99, 99, 99, 1);
+  opacity: 1;
+}
+.exportStyle {
+  width: 80px;
+  height: 35px;
+  background: linear-gradient(
+    180deg,
+    rgba(58, 222, 214, 1) 0%,
+    rgba(0, 150, 143, 1) 100%
+  );
+  opacity: 1;
+  border-radius: 4px;
+}
+.poiExcel-title {
+  width: 33px;
+  height: 19px;
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  line-height: 19px;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+
+}
+
+
+/*新增 */
+.addUser-content {
+  margin-top: 50px;
   height: 300px;
   width: 200px;
-}
- .button-head {
-    width: 105.5%;
-    height: 40px;
-    margin-left: -20px;
-    background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
-    text-align: center;
-  }
-    /* 按钮文字 */
-    .button-head-title {
-      width: 56px;
-      height: 31px;
-      font-size: 24px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      line-height: 31px;
-      letter-spacing: 20px;
-      opacity: 1;
-      text-align: center;
-    }
-      
-      .login_box{
-        width: 100%;
-        height: 800px;
-        
-       
-      }
-       .el-form {
-        padding: 32px;
-        bottom: 0;
-        box-sizing: border-box;
-        position: absolute;
-        left: 50%;
-        top: 40%;
-        transform: translate(-50%, -50%);
-        /* margin-top:30px; */
-      } 
 
-      .el-form-item {
-        width: 260px;
-        height: 35px;
-        background: rgba(239, 239, 239, 1);
-        border: 1px solid rgba(225, 225, 225, 1);
-        opacity: 1;
-        border-radius: 4px;
-      }
+  .button-head {
+  width: 104.5%;
+  height: 40px;
+  margin-left: -20px;
+  background: linear-gradient(
+    180deg,
+    rgba(54, 130, 243, 1) 0%,
+    rgba(0, 88, 162, 1) 100%
+  );
+  text-align: center;
+}
+/* 按钮文字 */
+.button-head-title {
+  width: 56px;
+  height: 31px;
+  font-size: 24px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  line-height: 31px;
+  letter-spacing: 20px;
+  opacity: 1;
+  text-align: center;
+  color: aliceblue;
+}
+
+/*form表单 */
+.login_box {
+  width: 100%;
+  height: 800px;
+}
+.el-form {
+  padding: 32px;
+  bottom: 0;
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  /* margin-top:30px; */
+}
+
+.el-form-item {
+  width: 260px;
+  height: 35px;
+  background: rgba(239, 239, 239, 1);
+  border: 1px solid rgba(225, 225, 225, 1);
+  opacity: 1;
+  border-radius: 4px;
+}
+
+.confirm{
+  width:80px;
+  height:35px;
+  background-color:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
+  opacity:1;
+  border-radius:18px;
+}
+.confirm-title{
+  width:33px;
+  height:19px;
+  font-size:14px;
+  font-family:Microsoft YaHei;
+  font-weight:bold;
+  line-height:19px;
+  color:rgba(255,255,255,1);
+  letter-spacing:20px;
+  opacity:1;
+}
+
+
+}
+
+
+
+
+
 </style>
