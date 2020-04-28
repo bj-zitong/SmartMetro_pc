@@ -102,8 +102,7 @@ export default {
       userLogout: "logout"
     }),
     handleClick(tab, event) {
-      // location.reload()
-
+      // this.$router.push({ path: "/dome" });
       tab.name == "home"
         ? (this.objImg.home = "/static/image/selected_soye.png")
         : (this.objImg.home = "/static/image/home.png");

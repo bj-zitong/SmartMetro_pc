@@ -558,6 +558,7 @@ export default {
     },
     // 批量删除
     deleteAll() {
+      
       var ids = this.changeFun();
       // 删除用户id
       var userid = sessionStorage.getItem("uid");
@@ -592,7 +593,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped lang="stylus">
 .search-Box {
   /* width: 100%;
   height: 100px;

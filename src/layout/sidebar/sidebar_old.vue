@@ -8,7 +8,6 @@
            :collapse="isCollapse"
            :default-active="$route.path">
     <template v-for="router of routers" v-if="!router.hidden">
-
       <router-link v-if="hasOneShowingChildren(router.children) && !router.children[0].children && !router.alwaysShow" :to="router.path + '/' + router.children[0].path">
         <el-menu-item :index="router.path + '/' + router.children[0].path">
           <i :class="'el-icon-' + router.meta.icon"></i>
@@ -21,7 +20,6 @@
           <i :class="'el-icon-' + router.meta.icon"></i>
           <span>{{router.meta.title}}</span>
         </template>
-
         <template v-for="child of router.children" v-if="!child.hidden">
           <router-link :to="router.path + '/' + child.path" v-if="!child.children">
             <el-menu-item :index="router.path + '/' + child.path">
@@ -41,10 +39,8 @@
               </router-link>
             </template>
           </el-submenu>
-
         </template>
       </el-submenu>
-      
     </template>
   </el-menu>
 </template>

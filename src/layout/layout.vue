@@ -27,6 +27,8 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  background:rgba(246,247,248,1);
+opacity:1;
   .main-container {
     padding-left: 201px;
     padding-top: 140px;

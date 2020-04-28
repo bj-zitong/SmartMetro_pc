@@ -97,13 +97,70 @@ export const constantRouterMap = [
       icon: 's-order',
       title: '劳务分包管理'
     },
-    redirect: 'labor_Subcontract1',
+    redirect: 'labor_Subcontract',
     children: [
       {
-        path: 'labor_Subcontract1',
-        name: 'labor_Subcontract1',
-        component: () => import('@/views/labor_Subcontract/labor_Subcontract1'),
+        path: 'labor_Subcontract',
+        name: 'labor_Subcontract',
+        component: () => import('@/views/labor_Subcontract/index'),
         meta: { icon: 's-order', title: '劳务分包管理' }
+      }
+    ]
+  },
+  //ManagerNewlyadded 花名册管理人员新增 PersonnelNewlyadded
+  {
+    path: '/LabourNewlyadded',
+    component: Layout,
+    hidden:true,
+    meta: { icon: '', title: '新增劳务' },
+    children: [
+      {
+        path: '/LabourNewlyadded',
+        name: 'LabourNewlyadded',
+        component: () => import('@/views/ManagerNewlyadded/LabourNewlyadded'),
+        meta: { icon: '', title: '新增劳务' },
+      }
+    ]
+  },
+  {
+    path: '/AddEquipment',
+    component: Layout,
+    hidden:true,
+    meta: { icon: '', title: '添加设备专用人员' },
+    children: [
+      {
+        path: '/AddEquipment',
+        name: 'AddEquipment',
+        component: () => import('@/views/ManagerNewlyadded/AddEquipment'),
+        meta: { icon: '', title: '添加设备专用人员' },
+      }
+    ]
+  },
+  {
+    path: '/AddOther',
+    component: Layout,
+    hidden:true,
+    meta: { icon: '', title: '其他类服务人员' },
+    children: [
+      {
+        path: '/AddOther',
+        name: 'AddOther',
+        component: () => import('@/views/ManagerNewlyadded/AddOther'),
+        meta: { icon: '', title: '其他类服务人员' },
+      }
+    ]
+  },
+  {
+    path: '/AddAdministration',
+    component: Layout,
+    hidden:true,
+    meta: { icon: '', title: '添加管理人员' },
+    children: [
+      {
+        path: '/AddAdministration',
+        name: 'AddAdministration',
+        component: () => import('@/views/ManagerNewlyadded/AddAdministration'),
+        meta: { icon: '', title: '添加管理人员' },
       }
     ]
   },
@@ -153,6 +210,7 @@ export const constantRouterMap = [
         component: () => import('@/views/roster/personnel'),
         meta: { title: '劳务人员', icon: '' }
       },
+      
       {
         path: 'equipmentSpecialist',
         name: 'equipmentSpecialist',
