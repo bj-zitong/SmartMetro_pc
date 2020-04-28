@@ -190,6 +190,12 @@ export const constantRouterMap = [
         meta: { icon: 'guide', title: '外来人员' }
       }
     ]
+  },
+  {
+    path: '/addForeignPersonnel',
+    name: 'addForeignPersonnel',
+    component: () => import('../../src/views/foreignpersonnel/addForeignPersonnel'),
+    meta: { title: '添加外来人员', icon: '' }
   }
 ]
 export default new Router({
