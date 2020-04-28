@@ -64,4 +64,247 @@ p {
 .components-container {
   margin: 20px 30px;
 }
+.main-box{
+  width:100%;
+  height:100%;
+  background:rgba(246,247,248,1);
+  opacity:1;
+  padding: 0 30px;
+}
+/* 筛选 表格 按钮 公共共样式 */
+
+/* 筛选 表格的盒子样式 */
+.screen-form, .table-main{
+  padding: 32px 30px;
+  margin-bottom: 30px;
+}
+
+/* 
+表格头部按钮
+T 表格 H 头部 B 按钮 - 颜色
+
+T-H-B-DarkBlue  深蓝色
+T-H-B-Grey      灰色
+T-H-B-Cyan      青色
+T-H-B-SkyBlue   天蓝色
+T-H-B-DarkGreen 深绿色
+*/
+.T-H-B-DarkBlue{
+  background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-DarkBlue:hover, .T-H-B-DarkBlue:focus{
+  background:linear-gradient(180deg,rgb(80, 146, 245) 0%,rgb(1, 140, 255) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-DarkBlue:active{
+  background:linear-gradient(180deg,rgb(91, 132, 192) 0%,rgb(23, 107, 175) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-H-B-Grey{
+  background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
+  color:rgba(99,99,99,1);
+  border: none;
+}
+.T-H-B-Grey:hover, .T-H-B-Grey:focus{
+  background:linear-gradient(180deg,rgb(255, 255, 255) 0%,rgb(207, 207, 207) 100%);
+  color:rgba(99,99,99,1);
+  border: none;
+}
+.T-H-B-Grey:active{
+  background:linear-gradient(180deg,rgb(206, 205, 205) 0%,rgb(170, 170, 170) 100%);
+  color:rgba(99,99,99,1);
+  border: none;
+}
+
+.T-H-B-Cyan, .T-H-B-Cyan{
+  background:linear-gradient(180deg,rgba(58,222,214,1) 0%,rgba(0,150,143,1) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-Cyan:hover, .T-H-B-Cyan:focus{
+  background:linear-gradient(180deg,rgb(94, 247, 239) 0%,rgb(3, 212, 202) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-Cyan:active, .T-H-B-Cyan:active{
+  background:linear-gradient(180deg,rgb(72, 226, 218) 0%,rgb(2, 172, 163) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-H-B-SkyBlue{
+  background:linear-gradient(180deg,rgba(82,206,245,1) 0%,rgba(19,128,163,1) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-SkyBlue:hover, .T-H-B-SkyBlue:focus{
+  background:linear-gradient(180deg,rgb(96, 208, 241) 0%,rgb(31, 142, 179) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-SkyBlue:active{
+  background:linear-gradient(180deg,rgb(60, 184, 221) 0%,rgb(14, 103, 133) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-H-B-DarkGreen{
+  background:linear-gradient(180deg,rgba(12,214,108,1) 0%,rgba(0,132,59,1) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-DarkGreen:hover, .T-H-B-DarkGreen:focus{
+  background:linear-gradient(180deg,rgb(28, 233, 127) 0%,rgb(6, 184, 86) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-DarkGreen:active{
+  background:linear-gradient(180deg,rgb(9, 172, 87) 0%,rgb(4, 139, 65) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+/* 
+表格行按钮
+T 表格 R 行内 B 按钮 -颜色
+T-R-B-Green         绿色
+T-R-B-Grey          灰色
+T-R-B-Violet        紫色
+T-R-B-BlackishGreen 墨绿色
+T-R-B-Orange        橘色
+T-R-B-DarkViolet    暗紫色
+*/
+
+.T-R-B-Green{
+  background:rgba(66,199,111,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Green:hover, .T-R-B-Green:focus{
+  background:rgb(80, 221, 127);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Green:active{
+  background:rgb(51, 182, 95);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-R-B-Grey{
+  background:rgba(175,186,203,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Grey:hover, .T-R-B-Grey:focus{
+  background:rgb(196, 206, 219);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Grey:active{
+  background:rgb(143, 153, 168);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-R-B-Violet{
+  background:rgba(142,83,246,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Violet:hover, .T-R-B-Violet:focus{
+  background:rgb(165, 117, 247);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Violet:active{
+  background:rgb(124, 75, 209);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-R-B-BlackishGreen{
+  background:rgba(0,152,68,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-BlackishGreen:hover, .T-R-B-BlackishGreen:focus{
+  background:rgb(15, 180, 90);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-BlackishGreen:active{
+  background:rgb(0, 121, 54);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-R-B-DarkViolet{
+  background:rgba(84,40,238,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-DarkViolet:hover, .T-R-B-DarkViolet:focus{
+  background:rgb(101, 61, 245);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-DarkViolet:active{
+  background:rgb(51, 15, 180);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-R-B-Orange{
+  background:rgba(235,94,66,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Orange:hover, .T-R-B-Orange:focus{
+  background:rgb(231, 109, 84);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Orange:active{
+  background:rgb(216, 78, 50);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+/* 
+表单按钮
+F 表单 -颜色
+
+F-Blue  蓝色
+F-Grey  灰色
+*/
+.F-Blue{
+  background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
+  color: #fff;
+}
+.F-Blue:hover, .F-Blue:focus{
+  background:linear-gradient(180deg,rgb(77, 143, 241) 0%,rgb(6, 111, 197) 100%);
+  color: #fff;
+}
+.F-Blue:active{
+  background:linear-gradient(180deg,rgb(35, 103, 206) 0%,rgb(2, 70, 126) 100%);
+  color: #fff;
+}
+
+.F-Grey{
+  background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
+  color:rgba(99,99,99,1);
+}
+.F-Grey:hover, .F-Grey:focus{
+  background:linear-gradient(180deg,rgb(238, 238, 238) 0%,rgb(219, 219, 219) 100%);
+  color:rgba(99,99,99,1);
+}
+.F-Grey{
+  background:linear-gradient(180deg,rgb(201, 200, 200) 0%,rgb(150, 149, 149) 100%);
+  color:rgba(99,99,99,1);
+}
 

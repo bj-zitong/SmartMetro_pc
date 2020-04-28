@@ -61,7 +61,7 @@ export const constantRouterMap = [
         path: 'home',
         name: 'home',
         component: () => import('@/views/homepage'),
-        meta: { title: '首页' }
+        meta: { title: '人员智慧管理系统' }
       }
     ]
   },
@@ -92,7 +92,7 @@ export const constantRouterMap = [
   {
     path: '/labor_Subcontract',
     component: Layout,
-    alwaysShow: true,
+    // alwaysShow: true,
     meta: {
       icon: 's-order',
       title: '劳务分包管理'
@@ -103,13 +103,7 @@ export const constantRouterMap = [
         path: 'labor_Subcontract1',
         name: 'labor_Subcontract1',
         component: () => import('@/views/labor_Subcontract/labor_Subcontract1'),
-        meta: { icon: '', title: '劳务分包管理一组' }
-      },
-      {
-        path: 'labor_Subcontract2',
-        name: 'labor_Subcontract2',
-        component: () => import('@/views/labor_Subcontract/labor_Subcontract2'),
-        meta: { icon: '', title: '劳务分包管理二组' }
+        meta: { icon: 's-order', title: '劳务分包管理' }
       }
     ]
   },
@@ -117,7 +111,7 @@ export const constantRouterMap = [
   {
     path: '/team_message',
     component: Layout,
-    alwaysShow: true,
+    // alwaysShow: true,
     meta: {
       title: '班组管理',
       icon: 'svg-droplet'
@@ -190,12 +184,6 @@ export const constantRouterMap = [
         meta: { icon: 'guide', title: '外来人员' }
       }
     ]
-  },
-  {
-    path: '/addForeignPersonnel',
-    name: 'addForeignPersonnel',
-    component: () => import('../../src/views/foreignpersonnel/addForeignPersonnel'),
-    meta: { title: '添加外来人员', icon: '' }
   }
 ]
 export default new Router({
