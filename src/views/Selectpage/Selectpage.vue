@@ -14,7 +14,7 @@
               <img src="../../assets/images/home/home-out.png" alt="">
             </div>
             <div class="fl">
-              <a href="javascript:;" class="out-text" @click="out">退出登录</a>
+            <el-link :underline="false" class="out-text" @click.native="logout">退出登录</el-link>
             </div>
           </div>
           <div class="interval fl"></div>
@@ -164,6 +164,7 @@
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 /* eslint-disable*/
 export default {
   data() {
@@ -176,12 +177,24 @@ export default {
     let username = window.localStorage.getItem('username');
     console.log(username)
   },
+  computed: {
+    ...mapGetters(["name", "avatar"])
+  },
   methods: {
+    ...mapActions({
+      userLogout: "logout"
+    }),
     adminPage () {
       this.$router.push({ path: "/home" })
     },
-    out () {
-      this.$router.push({ path: "/login" })
+    logout() {
+      this.userLogout()
+        .then(() => {
+          location.reload(); // 为了重新实例化vue-router对象 避免bug
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   watch: {},
@@ -189,7 +202,7 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-html, body, .home-box {
+.home-box {
   width 100%;
   height 100%;
 }
