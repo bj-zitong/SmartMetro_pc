@@ -6,8 +6,8 @@
           <el-form-item label="姓名">
             <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
           </el-form-item>
-           <el-form-item label="来访单位" class="region">
-            <el-input v-model="formInline.searchNum" placeholder="来访单位"></el-input>
+          <el-form-item label="来访单位" class="region">
+            <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleUserList">搜索</el-button>
@@ -18,48 +18,46 @@
     <div class="table-main">
       <el-main class="table-head">
         <el-button @click="dialogFormVisible = true" class="addStyle">
-            <span class="addStyle-title">新增</span>
-          </el-button>
-          <el-button @click="deleteAll" class="deleteStyle">
-            <span class="deleteStyle-title">删除</span>
-          </el-button>
-          <el-button @click="poiExcel" class="exportStyle">
-            <span class="poiExcel-title">导出</span>
-          </el-button>
+          <span class="addStyle-title">新增</span>
+        </el-button>
+        <el-button @click="deleteAll" class="deleteStyle">
+          <span class="deleteStyle-title">删除</span>
+        </el-button>
+        <el-button @click="poiExcel" class="exportStyle">
+          <span class="poiExcel-title">导出</span>
+        </el-button>
         <div class="table-content">
-               <el-table
+          <el-table
             :data="tableData"
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
             :header-cell-style="{background:'#0058A2'}"
-            style="width: 100%"
+            style="width: 98%"
           >
-           <el-table-column
+            <el-table-column
               type="selection"
               width="65"
               prop="userId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="userName" label="姓名"  width="120"></el-table-column>
-            <el-table-column prop="idNum" label="身份证号"  width="150"></el-table-column>
-            <el-table-column prop="phone" label="电话"  width="150"></el-table-column>
-            <el-table-column prop="company" label="来访单位"  width="150"></el-table-column>
-            <el-table-column prop="profession" label="被访部门"  width="100"></el-table-column>
-            <el-table-column prop="interviewee" label="被访人姓名"  width="100"></el-table-column>
-            <el-table-column prop="intervieweeReason" label="来访事由"  width="120"></el-table-column>
-            <el-table-column prop="intervieweeDate" label="来访时间"  width="100"></el-table-column>
-            <el-table-column prop="direction" label="进出方向"  width="100"></el-table-column>
-            <el-table-column prop="attendanceEquipment" label="考勤设备"  width="100"></el-table-column>
-            <el-table-column prop="createTime" label="打卡时间"  width="150" fixed="right"></el-table-column>
-            <el-table-column label="操作" style="width:500px" fixed="right">
-                <template slot-scope="scope" >
-                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑
-                </el-button>
-                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除
-                </el-button>
+            <el-table-column prop="userName" label="姓名"></el-table-column>
+            <el-table-column prop="idNum" label="身份证号"></el-table-column>
+            <el-table-column prop="phone" label="性别"></el-table-column>
+            <el-table-column prop="company" label="工号"></el-table-column>
+            <el-table-column prop="profession" label="岗位/职责"></el-table-column>
+            <el-table-column prop="interviewee" label="日期"></el-table-column>
+            <el-table-column prop="intervieweeReason" label="首次打卡"></el-table-column>
+            <el-table-column prop="intervieweeDate" label="末次打卡"></el-table-column>
+            <el-table-column prop="direction" label="出勤时长"></el-table-column>
+            <el-table-column prop="attendanceEquipment" label="考勤设备"></el-table-column>
+            <el-table-column prop="createTime" label="打卡时间"></el-table-column>
+            <!-- <el-table-column label="操作" style=" fixed="right">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
+                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
               </template>
-            </el-table-column>
+            </el-table-column>-->
           </el-table>
         </div>
         <!-- 分页 total  //这是显示总共有多少数据，
@@ -68,22 +66,23 @@
                      :page-sizes="[5, 10, 20, 40]" 下拉选择
                      layout="total, sizes, prev, pager, next, jumper"
 
-          -->
-          <el-pagination class="page-end"
-            @size-change="handleSizeChange"
-            :current-page="page"
-             layout="total, prev, pager,next"
-            :page-size="pageSize"
-            @prev-click="pre"
-            @next-click="next"
-            @current-change="handleCurrentChange"
-            hide-on-single-page
-            :total="total"
-            background
-          ></el-pagination>
+        -->
+        <el-pagination
+          class="page-end"
+          @size-change="handleSizeChange"
+          :current-page="page"
+          layout="total, prev, pager,next"
+          :page-size="pageSize"
+          @prev-click="pre"
+          @next-click="next"
+          @current-change="handleCurrentChange"
+          hide-on-single-page
+          :total="total"
+          background
+        ></el-pagination>
       </el-main>
     </div>
-     <!--新增-->
+    <!--新增-->
     <div style="text-align:center">
       <el-dialog :visible.sync="dialogFormVisible" style="width:40%;center:true">
         <div class="button-head">
@@ -99,7 +98,7 @@
             action="http://192.168.1.164:8001/auth/user/baseUser"
           >
             <!-- 固定项目label="用户名"       label-width="80px" -->
-            <el-form-item prop="userName" >
+            <el-form-item prop="userName">
               <el-input v-model="form.userName" type="text" placeholder="用户名"></el-input>
             </el-form-item>
             <el-form-item prop="idNum">
@@ -123,18 +122,9 @@
                   :value="item.id"
                 ></el-option>
               </el-select>
-            </el-form-item> -->
-             <el-select
-                v-model="form.profession"
-                placeholder="请选择被访人部门"
-                @change="selectProfession"
-              >
-                <el-option
-                  v-for="item in options"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
+            </el-form-item>-->
+            <el-select v-model="form.profession" placeholder="请选择被访人部门" @change="selectProfession">
+              <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
             <el-form-item prop="interviewee" style="margin-top:20px">
               <el-input v-model="form.interviewee" placeholder="被访人姓名"></el-input>
@@ -146,16 +136,16 @@
             <br />
             <!-- <el-form-item prop="intervieweeDate">
               <el-input v-model="form.intervieweeDate" placeholder="来访时间"></el-input>
-            </el-form-item> -->
-              <el-date-picker
+            </el-form-item>-->
+            <el-date-picker
               v-model="form.intervieweeDate"
               type="datetime"
               placeholder="选择日期时间"
-              default-time="12:00:00">
-            </el-date-picker>
-            <div  style="margin-top:20px">
-                <el-button type="info" round style="float:left" @click="concel()">取消</el-button>
-                <el-button type="primary" round @click="addUser('form')" style="float:right">确定</el-button>
+              default-time="12:00:00"
+            ></el-date-picker>
+            <div style="margin-top:20px">
+              <el-button type="info" round style="float:left" @click="concel()">取消</el-button>
+              <el-button type="primary" round @click="addUser('form')" style="float:right">确定</el-button>
             </div>
           </el-form>
         </div>
@@ -167,13 +157,44 @@
 export default {
   data() {
     return {
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
+            }
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            }
+          }
+        ]
+      },
+      value1: "",
+      value2: "",
       token: null, // token
       dialogFormVisible: false,
       // 动态数据
       tableData: [],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
-      total: 100,//总条数
+      total: 100, //总条数
       ids: null, //选中的id
       searchUname: null, // 搜索
       searchNum: null,
@@ -239,18 +260,18 @@ export default {
     },
     handleCurrentChange: function(page) {
       this.page = page;
-      this.handleUserList()
-      console.log(this.page)  //点击第几页
+      this.handleUserList();
+      console.log(this.page); //点击第几页
     },
     pre(cpage) {
       this.page = cpage;
-      console.log('cpage'+cpage);
+      console.log("cpage" + cpage);
       // this.handleUserList()
     },
     //下一页
     next(cpage) {
       this.page = cpage;
-      console.log('下一页'+cpage);
+      console.log("下一页" + cpage);
       // this.handleUserList()
     },
     // 下拉框获得值
@@ -262,8 +283,8 @@ export default {
       this.form.profession = obj.id;
     },
     //取消
-    concel(){
-      this.dialogFormVisible=false;
+    concel() {
+      this.dialogFormVisible = false;
     },
     addUser(form) {
       var params = JSON.stringify({
@@ -362,7 +383,7 @@ export default {
           intervieweeDate: "2020-4-12",
           direction: "22222222",
           attendanceEquipment: "22222222",
-          createTime: 2020-4-12
+          createTime: 2020 - 4 - 12
         },
         {
           userId: 2,
@@ -457,11 +478,9 @@ export default {
         });
     },
     //编辑
-    handleEdit(row){
-       // 用户id
+    handleEdit(row) {
+      // 用户id
       var uid = row.userId;
-
-
     },
     // poi导出
     poiExcel() {
@@ -476,7 +495,7 @@ export default {
         pageSize: _this.pageSize,
         page: _this.page
       });
-      var url='';
+      var url = "";
       _this
         .$http({
           // 头部信息编码格式
@@ -537,7 +556,6 @@ export default {
     },
     // 批量删除
     deleteAll() {
-
       var ids = this.changeFun();
       console.log(ids);
       var url = "";
@@ -593,22 +611,14 @@ export default {
   height: 100px;
 }
 
- .el-container {
+.el-container {
   margin-bottom: 40px;
 }
-
-// .el-container:nth-child(5) .el-aside, .el-container:nth-child(6) .el-aside {
-//   line-height: 260px;
-// }
-
-// .el-container:nth-child(7) .el-aside {
-//   line-height: 320px;
-// }
 
 .main-content {
   padding-top: 30px;
   margin-left: 30px;
-  margin-right:30px;
+  margin-right: 30px;
 
   .search-head {
     margin-left: 30px;
@@ -625,80 +635,80 @@ export default {
 
 .table-main {
   margin-top: -30px;
-  height:500px;
+  height: 500px;
 
   .table-head {
     padding-left: 30px;
     padding-top: 30px;
     height: 600px;
 
-  .addStyle {
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(
-    180deg,
-    rgba(54, 130, 243, 1) 0%,
-    rgba(0, 88, 162, 1) 100%
-  );
-  opacity: 1;
-  border-radius: 4px;
-  text-align: center;
-}
-.addStyle-title {
-  color: #ffffff;
-  width: 33px;
-  height: 19px;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  // line-height: 19px;
-  color: rgba(255, 255, 255, 1);
-  opacity: 1;
-}
-.deleteStyle {
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(
-    180deg,
-    rgba(225, 225, 225, 1) 0%,
-    rgba(190, 190, 190, 1) 100%
-  );
-  opacity: 1;
-  border-radius: 4px;
-}
-.deleteStyle-title {
-  width: 33px;
-  height: 19px;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  // line-height: 19px;
-  color: rgba(99, 99, 99, 1);
-  opacity: 1;
-}
-.exportStyle {
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(
-    180deg,
-    rgba(58, 222, 214, 1) 0%,
-    rgba(0, 150, 143, 1) 100%
-  );
-  opacity: 1;
-  border-radius: 4px;
-}
-.poiExcel-title {
-  width: 33px;
-  height: 19px;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  // line-height: 19px;
-  color: rgba(255, 255, 255, 1);
-  opacity: 1;
-}
+    .addStyle {
+      width: 80px;
+      height: 35px;
+      background: linear-gradient(
+        180deg,
+        rgba(54, 130, 243, 1) 0%,
+        rgba(0, 88, 162, 1) 100%
+      );
+      opacity: 1;
+      border-radius: 4px;
+      text-align: center;
+    }
 
+    .addStyle-title {
+      color: #ffffff;
+      width: 33px;
+      height: 19px;
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 1);
+      opacity: 1;
+    }
 
+    .deleteStyle {
+      width: 80px;
+      height: 35px;
+      background: linear-gradient(
+        180deg,
+        rgba(225, 225, 225, 1) 0%,
+        rgba(190, 190, 190, 1) 100%
+      );
+      opacity: 1;
+      border-radius: 4px;
+    }
+
+    .deleteStyle-title {
+      width: 33px;
+      height: 19px;
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: rgba(99, 99, 99, 1);
+      opacity: 1;
+    }
+
+    .exportStyle {
+      width: 80px;
+      height: 35px;
+      background: linear-gradient(
+        180deg,
+        rgba(58, 222, 214, 1) 0%,
+        rgba(0, 150, 143, 1) 100%
+      );
+      opacity: 1;
+      border-radius: 4px;
+    }
+
+    .poiExcel-title {
+      width: 33px;
+      height: 19px;
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 1);
+      opacity: 1;
+    }
   }
 
   .table-content {
@@ -709,83 +719,5 @@ export default {
     text-align: center;
     margin-top: 30px;
   }
-
 }
-
-/*新增 */
-// .addUser-content {
-//   margin-top: 50px;
-//   height: 300px;
-//   width: 200px;
-
-//   .button-head {
-//   width: 104.5%;
-//   height: 40px;
-//   margin-left: -20px;
-//   background: linear-gradient(
-//     180deg,
-//     rgba(54, 130, 243, 1) 0%,
-//     rgba(0, 88, 162, 1) 100%
-//   );
-//   text-align: center;
-// }
-// /* 按钮文字 */
-// .button-head-title {
-//   width: 56px;
-//   height: 31px;
-//   font-size: 24px;
-//   font-family: Microsoft YaHei;
-//   font-weight: bold;
-//   line-height: 31px;
-//   letter-spacing: 20px;
-//   opacity: 1;
-//   text-align: center;
-//   color: aliceblue;
-// }
-
-// /*form表单 */
-// .login_box {
-//   width: 100%;
-//   height: 800px;
-// }
-// .el-form {
-//   padding: 32px;
-//   bottom: 0;
-//   box-sizing: border-box;
-//   position: absolute;
-//   left: 50%;
-//   top: 40%;
-//   transform: translate(-50%, -50%);
-//   /* margin-top:30px; */
-// }
-
-// .el-form-item {
-//   width: 260px;
-//   height: 35px;
-//   background: rgba(239, 239, 239, 1);
-//   border: 1px solid rgba(225, 225, 225, 1);
-//   opacity: 1;
-//   border-radius: 4px;
-// }
-
-// .confirm{
-//   width:80px;
-//   height:35px;
-//   background-color:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
-//   opacity:1;
-//   border-radius:18px;
-// }
-// .confirm-title{
-//   width:33px;
-//   height:19px;
-//   font-size:14px;
-//   font-family:Microsoft YaHei;
-//   font-weight:bold;
-//   line-height:19px;
-//   color:rgba(255,255,255,1);
-//   letter-spacing:20px;
-//   opacity:1;
-// }
-
-// }
 </style>

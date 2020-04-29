@@ -171,11 +171,9 @@ body > .el-container {
     padding-top: 30px;
     height: 600px;
   }
-
   .tableView {
     margin-top: 30px;
   }
-
   .paging {
     text-align: center;
     margin-top: 30px;

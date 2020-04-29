@@ -97,10 +97,11 @@
             <el-select v-model="form.profession" placeholder="请选择班组类型" @change="selectProfession">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
-            <div slot="footer" class="dialog-footer">
+            
+            <div class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取 消</el-button>
               <el-button type="primary" @click="addClass('form')">确 定</el-button>
-            </div>
+            </div> 
           </el-form>
         </div>
       </div>
@@ -408,7 +409,7 @@ export default {
       font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: bold;
-      line-height: 10px;
+      line-height: 19px;
       color: rgba(255, 255, 255, 1);
       opacity: 1;
     }
