@@ -1,16 +1,16 @@
 <template>
-    <div>
-        <!-- 添加用户弹框 -->
+  <div>
+    <!-- 添加用户弹框 -->
     <el-dialog
       title="添加劳务分包单位公司"
       width="450px"
       :visible.sync="dialogTableVisible"
       :close-on-click-modal="false"
     >
-    <!-- 添加用户的表单 -->
+      <!-- 添加用户的表单 -->
       <el-form ref="addFormRef" :rules="rulesAddUser" :model="addUser" label-width="80px">
         <el-form-item prop="companyName" label="公司名称" :required="true">
-          <el-input v-model="addUser.companyName" ></el-input>
+          <el-input v-model="addUser.companyName"></el-input>
         </el-form-item>
         <el-form-item prop="personnel" label="负责人" :required="true">
           <el-input v-model="addUser.personnel"></el-input>
@@ -48,45 +48,47 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    </div>
+  </div>
 </template>
 <script>
-import Utils from '../../../assets/js/util.js'
+import Utils from "../../../assets/js/util.js";
 
 export default {
   data() {
     return {
-      dialogTableVisible:true,
-      rulesAddUser:[],
-      addUser:{}
-    }
+      dialogTableVisible: true,
+      rulesAddUser: [],
+      addUser: {}
+    };
   },
-    mounted(){
-        var that = this;
-        Utils.$on('demo', function (msg) {
-          console.log(213)
-        })
-    }
-}
+  mounted() {
+    var that = this;
+    Utils.$on("demo", function(msg) {
+      console.log(213);
+    });
+  }
+};
 </script>>
 <style lang="stylus">
-.el-dialog__header{
-    height:60px;
-    background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
-    opacity:1;
-    border-radius:4px 4px 0px 0px;
-    text-align: center;
-    
+.el-dialog__header {
+  height: 60px;
+  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
+  opacity: 1;
+  border-radius: 4px 4px 0px 0px;
+  text-align: center;
 }
-.el-dialog__header .el-dialog__title{
-    font-size:20px;
-    font-family:Microsoft YaHei;
-    color : #fff;
+
+.el-dialog__header .el-dialog__title {
+  font-size: 20px;
+  font-family: Microsoft YaHei;
+  color: #fff;
 }
+
 #labelWidth label {
-    width : 40% !important;
+  width: 40% !important;
 }
+
 #labelWidth .el-input {
-    width : 60% !important;
+  width: 60% !important;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <el-container class="AddOther">
     <el-main class="main">
-      <p>添加其他服务类人员</p>
+      <p>添加管理人员</p>
       <div class="AddEquipment_form">
         <el-form ref="form" :model="form" label-width="80px">
           <el-col :span="7">
@@ -139,7 +139,7 @@
               </el-upload>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="10">
             <el-form-item label="政治面貌">
               <el-select v-model="form.region" placeholder="政治面貌">
                 <el-option label="企业自有职工" value="shanghai"></el-option>
@@ -148,12 +148,19 @@
             </el-form-item>
           </el-col>
           <div class="role">
-            <el-form-item label="活动性质">
+            <el-form-item label="角色">
               <el-checkbox-group v-model="form.type">
-                <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-                <el-checkbox label="地推活动" name="type"></el-checkbox>
-                <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-                <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+                <el-checkbox label="超级管理员" name="type"></el-checkbox>
+                <el-checkbox label="项目负责人" name="type"></el-checkbox>
+                <el-checkbox label="项目技术负责人" name="type"></el-checkbox>
+                <el-checkbox label="智慧工地管理员" name="type"></el-checkbox>
+                <el-checkbox label="BIM管理" name="type"></el-checkbox>
+                <el-checkbox label="物资管理" name="type"></el-checkbox>
+                <el-checkbox label="质量管理" name="type"></el-checkbox>
+                <el-checkbox label="劳务管理" name="type"></el-checkbox>
+                <el-checkbox label="生产管理" name="type"></el-checkbox>
+                <el-checkbox label="安全管理" name="type"></el-checkbox>
+                <el-checkbox label="其他" name="type"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
           </div>
@@ -269,10 +276,8 @@ export default {
   margin-top: 30px;
 }
 .role{
-    // float left;
-    // padding-top:20px;
-    // position absolute;
-    // left:0;
-    // bottom :0
+    float left;
+    position absolute;
+    bottom :50px
 }
 </style>

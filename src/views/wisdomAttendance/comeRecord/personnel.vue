@@ -6,8 +6,17 @@
           <el-form-item label="姓名">
             <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item label="来访单位" class="region">
-            <el-input v-model="formInline.searchNum" placeholder="来访单位"></el-input>
+          <el-form-item label="工种" class="region">
+            <el-select v-model="formInline.region" placeholder="请选择">
+              <el-option label="区域一" value="shanghai"></el-option>
+              <el-option label="区域二" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+            <el-form-item label="时间" class="region">
+            <el-date-picker v-model="value1" type="date" placeholder="时间"></el-date-picker>
+          </el-form-item>
+          <el-form-item label="工号" class="region">
+            <el-input v-model="formInline.searchUname" placeholder="工号"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleUserList">搜索</el-button>
@@ -17,9 +26,6 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="dialogFormVisible = true" class="addStyle">
-          <span class="addStyle-title">新增</span>
-        </el-button>
         <el-button @click="deleteAll" class="deleteStyle">
           <span class="deleteStyle-title">删除</span>
         </el-button>
@@ -33,7 +39,7 @@
             @selection-change="changeFun"
             stripe
             :header-cell-style="{background:'#0058A2'}"
-            style="width: 100%"
+            style="width: 98%"
           >
             <el-table-column
               type="selection"
@@ -41,21 +47,18 @@
               prop="userId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="userName" label="姓名" width="120"></el-table-column>
-            <el-table-column prop="idNum" label="身份证号" width="150"></el-table-column>
-            <el-table-column prop="phone" label="电话" width="150"></el-table-column>
-            <el-table-column prop="company" label="来访单位" width="150"></el-table-column>
-            <el-table-column prop="profession" label="被访部门" width="100"></el-table-column>
-            <el-table-column prop="interviewee" label="被访人姓名" width="100"></el-table-column>
-            <el-table-column prop="intervieweeReason" label="来访事由" width="120"></el-table-column>
-            <el-table-column prop="intervieweeDate" label="来访时间" width="100"></el-table-column>
-            <el-table-column prop="direction" label="进出方向" width="100"></el-table-column>
-            <el-table-column prop="attendanceEquipment" label="考勤设备" width="100"></el-table-column>
-            <el-table-column prop="createTime" label="打卡时间" width="150" fixed="right"></el-table-column>
-            <el-table-column label="操作" style="width:500px" fixed="right">
+            <el-table-column prop="userName" label="姓名"></el-table-column>
+            <el-table-column prop="idNum" label="工号"></el-table-column>
+            <el-table-column prop="phone" label="所在班组"></el-table-column>
+            <el-table-column prop="company" label="工种"></el-table-column>
+            <el-table-column prop="profession" label="作业区"></el-table-column>
+            <!-- <el-table-column prop="interviewee" label="考勤设备ID"></el-table-column>
+            <el-table-column prop="intervieweeReason" label="打卡时间"></el-table-column>
+            <el-table-column prop="intervieweeDate" label="进出方向"></el-table-column> -->
+            <el-table-column prop="direction" label="出勤时长"></el-table-column>
+            <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
-                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
+                <el-button type="warning" @click="personnelDetailClick(scope.row)">详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -65,6 +68,7 @@
                     sizes这是下拉框可以选择的，每选择一行，要展示多少内容
                      :page-sizes="[5, 10, 20, 40]" 下拉选择
                      layout="total, sizes, prev, pager, next, jumper"
+
         -->
         <el-pagination
           class="page-end"
@@ -81,68 +85,21 @@
         ></el-pagination>
       </el-main>
     </div>
-    <!--新增-->
+    <!--新增66666-->
     <div style="text-align:center">
-      <el-dialog :visible.sync="dialogFormVisible" style="width:45%;center:true" title="外来人员登记">
-        <div class="login_box">
-          <el-form
-            method="post"
-            enctype="multipart/form-data"
-            ref="form"
-            :rules="formRules"
-            :model="form"
-            action="http://192.168.1.164:8001/auth/user/baseUser"
-          >
-            <el-form-item prop="userName" label="用户名">
-              <el-input v-model="form.userName" type="text" placeholder="用户名" style="width:290px;"></el-input>
-            </el-form-item>
-            <el-form-item prop="idNum" label="身份证号">
-              <el-input v-model="form.idNum" placeholder="身份证号" style="width:270px;"></el-input>
-            </el-form-item>
-            <el-form-item prop="phone" label="电话">
-              <el-input v-model="form.phone" placeholder="联系电话" style="width:270px;"></el-input>
-            </el-form-item>
-            <el-form-item prop="company" label="单位">
-              <el-input v-model="form.company" placeholder="单位" style="width:270px;"></el-input>
-            </el-form-item>
-            <el-form-item prop="carNum" label="车牌号">
-              <el-input v-model="form.carNum" placeholder="车牌号" style="width:290px;"></el-input>
-            </el-form-item>
-            <el-form-item label="被访人部门">
-              <el-select
-                v-model="form.profession"
-                placeholder="请选择被访人部门"
-                @change="selectProfession"
-              >
-                <el-option
-                  v-for="item in options"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item prop="interviewee" style="margin-top:20px" label="被访人姓名">
-              <el-input v-model="form.interviewee" placeholder="被访人姓名" style="width:285px"></el-input>
-            </el-form-item>
-            <br />
-            <el-form-item prop="intervieweeReason" label="来访事由">
-              <el-input v-model="form.intervieweeReason" placeholder="来访事由" style="width:275px"></el-input>
-            </el-form-item>
-            <br />
-            <el-form-item prop="intervieweeDate" label="日期">
-              <el-date-picker
-                v-model="form.intervieweeDate"
-                type="datetime"
-                placeholder="选择日期时间"
-                default-time="12:00:00"
-              ></el-date-picker>
-            </el-form-item>
-            <div class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="addUser('form')">确 定</el-button>
-            </div>
-          </el-form>
+      <el-dialog :visible.sync="dialogFormVisible" width="20%" style>
+        <div class="addUser-content">
+          <p>出入记录</p>
+          <div style="border-bottom:1px solid #000">
+            <h6>作业区域：</h6>
+            <h6>考勤设备：</h6>
+            <h6>打卡时间：2019/12/12 10：30：23 出</h6>
+          </div>
+          <div>
+            <h6>作业区域：</h6>
+            <h6>考勤设备：</h6>
+            <h6>打卡时间：2019/12/12 10：30：23 出</h6>
+          </div>
         </div>
       </el-dialog>
     </div>
@@ -152,6 +109,37 @@
 export default {
   data() {
     return {
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
+            }
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            }
+          }
+        ]
+      },
+      value1: "",
+      value2: "",
       token: null, // token
       dialogFormVisible: false,
       // 动态数据
@@ -218,20 +206,24 @@ export default {
   methods: {
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
-      this.pageSize = size; //每页下拉显示数据
+      this.pageSize = size;
       // this.handleUserList()
+      // console.log(this.pageSize)  //每页下拉显示数据
     },
     handleCurrentChange: function(page) {
       this.page = page;
-      this.handleUserList(); //点击第几页
+      this.handleUserList();
+      console.log(this.page); //点击第几页
     },
     pre(cpage) {
       this.page = cpage;
+      console.log("cpage" + cpage);
       // this.handleUserList()
     },
     //下一页
     next(cpage) {
       this.page = cpage;
+      console.log("下一页" + cpage);
       // this.handleUserList()
     },
     // 下拉框获得值
@@ -258,6 +250,7 @@ export default {
         intervieweeReason: this.form.intervieweeReason,
         intervieweeDate: this.form.intervieweeDate
       });
+      console.log(params);
       // 获得值
       // let _this = this
       // _this.$http({
@@ -285,6 +278,32 @@ export default {
       //       .catch(function(error) {
       //         console.log(error)
       //       })
+      // $.ajax({
+      //   url: 'http://192.168.1.164:8001/auth/user/baseUser',
+      //     headers: {
+      //           Authorization: 'eaaad1cb1ace4186bda0e26655e1a793032fadf85f5532ca6a61fa85523885a2'
+      //       },
+      //   data: datas,
+      //   //  beforeSend: function(request) {
+      //   //     request.setRequestHeader("Authorization:",token);
+      //   // },
+      //   type: "POST",
+      //   async: true,
+      //   dateType: "json",
+      //   cache: false,
+      //   processData: false, // 不处理发送的数据，因为data值是Formdata对象，不需要对数据做处理
+      //   contentType: false, // 不设置Content-type请求头
+      //   success: function(data) {
+      //     var code = data.code;
+      //     if (code == "200") {
+      //       alert("添加成功");
+      //       _this.$router.push("/index");
+      //     }
+      //   },
+      //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+      //     console.log(textStatus+errorThrown);
+      //   }
+      // });
       this.dialogFormVisible = false;
     },
     // 列表请求
@@ -292,6 +311,8 @@ export default {
       // 获得搜索的内容
       var uname = this.searchNum;
       var unum = this.searchUname;
+      console.log("uname" + uname);
+      console.log("unum" + unum);
       //   // 获得当前用户的id
       // var  uid = sessionStorage.getItem('uid')
       var data = JSON.stringify({
@@ -355,6 +376,29 @@ export default {
       //     .catch(function(error) {
       //       console.log(error)
       //     })
+      // $.ajax({
+      //   url:'http://192.168.1.100:8001/auth/user/'+uid,
+      //   headers: {
+      //       Authorization: sessionStorage.getItem('token')
+      //   },
+      //   type: "POST",
+      //   data: data,
+      //   async: true,
+      //   dateType:'json',
+      //    success: function (response) {
+      //     var res=response.data;
+      //     //请求成功
+      //     if(res.code=="200"){
+      //       // alert('成功');
+      //        _this.total=res.data.total;
+      //        //获得列表数据
+      //        _this.tableData=res.data.rows;
+      //         }
+      //   },
+      //  error: function(XMLHttpRequest, textStatus, errorThrown){
+      //         console.log(textStatus);
+      //     }
+      // })
     },
     // 删除
     handleDelete(row) {
@@ -384,6 +428,10 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    //详情
+    personnelDetailClick() {
+      this.dialogFormVisible = true;
     },
     //编辑
     handleEdit(row) {
@@ -459,10 +507,13 @@ export default {
         // console.log("获得id"+arrays[i].userId);
       }
       return ids;
+      // console.log("选中的ids"+ids);
+      //  this.multipleSelection = val;
     },
     // 批量删除
     deleteAll() {
       var ids = this.changeFun();
+      console.log(ids);
       var url = "";
       // this.$http({
       //   // 头部信息及编码格式设置
@@ -540,76 +591,25 @@ export default {
 
 .table-main {
   margin-top: -30px;
+  height: 500px;
 
   .table-head {
-    height: 500px;
-    padding: 30px;
+    padding-left: 30px;
+    padding-top: 30px;
+    height: 600px;
 
-  .addStyle {
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(
-    180deg,
-    rgba(54, 130, 243, 1) 0%,
-    rgba(0, 88, 162, 1) 100%
-  );
-  opacity: 1;
-  border-radius: 4px;
-  text-align: center;
-}
-.addStyle-title {
-  color: #ffffff;
-  width: 33px;
-  height: 19px;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  // line-height: 19px;
-  color: rgba(255, 255, 255, 1);
-  opacity: 1;
-}
-.deleteStyle {
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(
-    180deg,
-    rgba(225, 225, 225, 1) 0%,
-    rgba(190, 190, 190, 1) 100%
-  );
-  opacity: 1;
-  border-radius: 4px;
-}
-.deleteStyle-title {
-  width: 33px;
-  height: 19px;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  // line-height: 19px;
-  color: rgba(99, 99, 99, 1);
-  opacity: 1;
-}
-.exportStyle {
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(
-    180deg,
-    rgba(58, 222, 214, 1) 0%,
-    rgba(0, 150, 143, 1) 100%
-  );
-  opacity: 1;
-  border-radius: 4px;
-}
-.poiExcel-title {
-  width: 33px;
-  height: 19px;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  // line-height: 19px;
-  color: rgba(255, 255, 255, 1);
-  opacity: 1;
-}
+    .addStyle {
+      width: 80px;
+      height: 35px;
+      background: linear-gradient(
+        180deg,
+        rgba(54, 130, 243, 1) 0%,
+        rgba(0, 88, 162, 1) 100%
+      );
+      opacity: 1;
+      border-radius: 4px;
+      text-align: center;
+    }
 
     .addStyle-title {
       color: #ffffff;
@@ -618,7 +618,6 @@ export default {
       font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: bold;
-      line-height: 19px;
       color: rgba(255, 255, 255, 1);
       opacity: 1;
     }
@@ -641,7 +640,6 @@ export default {
       font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: bold;
-      line-height: 19px;
       color: rgba(99, 99, 99, 1);
       opacity: 1;
     }
@@ -664,7 +662,6 @@ export default {
       font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: bold;
-      line-height: 19px;
       color: rgba(255, 255, 255, 1);
       opacity: 1;
     }
@@ -679,10 +676,17 @@ export default {
     margin-top: 30px;
   }
 }
-</style>
 
-<style lang="stylus">
-.el-dialog__header {
-  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
+.addUser-content{
+  height :300px;
+  p{
+    text-align :center;
+    width :100%;
+    border-bottom:1px solid #000;
+     padding-bottom:20px
+  }
+}
+.addUser-content h6{
+   text-align :left
 }
 </style>
