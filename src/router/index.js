@@ -356,7 +356,138 @@ export const constantRouterMap = [
                 meta: { title: '线下视频培训记录', icon: '' }
             }
         ]
-    }
+    },
+    
+  //智慧考勤》出勤记录
+  {
+    path: '/wisdomAttendance/attendanceRecord',
+    component: Layout,
+    alwaysShow: true,
+    meta: {
+      title: '出勤记录',
+      icon: 'svg-droplet'
+    },
+    children: [
+      {
+        path: '/manager',
+        name: 'manager',
+        component: () => import('@/views/wisdomAttendance/attendanceRecord/manager'),
+        meta: { title: '管理人员', icon: '' }
+      },
+      {
+        path: '/personnel',
+        name: 'personnel',
+        component: () => import('@/views/wisdomAttendance/attendanceRecord/personnel'),
+        meta: { title: '劳务人员', icon: '' }
+      },
+
+      {
+        path: '/equipmentSpecialist',
+        name: 'equipmentSpecialist',
+        component: () => import('@/views/wisdomAttendance/attendanceRecord/equipmentSpecialist'),
+        meta: { title: '设备专用人员', icon: '' }
+      },
+      {
+        path: '/otherStaffs',
+        name: 'otherStaffs',
+        component: () => import('@/views/wisdomAttendance/attendanceRecord/otherStaffs'),
+        meta: { title: '其他服务类人员', icon: '' }
+      }
+    ]
+  },
+  //智慧考勤》出入记录
+  {
+    path: '/wisdomAttendance',
+    component: Layout,
+    alwaysShow: true,
+    meta: {
+      title: '出入记录',
+      icon: 'svg-droplet'
+    },
+    children: [
+      {
+        path: '/comeRecord/manager',
+        name: 'manager',
+        component: () => import('@/views/wisdomAttendance/comeRecord/manager'),
+        meta: { title: '管理人员', icon: '' }
+      },
+      {
+        path: '/comeRecord/personnel',
+        name: 'personnel',
+        component: () => import('@/views/wisdomAttendance/comeRecord/personnel'),
+        meta: { title: '劳务人员', icon: '' }
+      },
+      {
+        path: '/comeRecord/otherStaffs',
+        name: 'otherStaffs',
+        component: () => import('@/views/wisdomAttendance/comeRecord/otherStaffs'),
+        meta: { title: '其他服务类人员', icon: '' }
+      },
+      {
+        path: '/comeRecord/equipmentSpecialist',
+        name: 'equipmentSpecialist',
+        component: () => import('@/views/wisdomAttendance/comeRecord/equipmentSpecialist'),
+        meta: { title: '设备专用人员', icon: '' }
+      },
+      {
+        path: '/comeRecord/foreign',
+        name: 'foreign',
+        component: () => import('@/views/wisdomAttendance/comeRecord/foreign'),
+        meta: { title: '外来人员', icon: '' }
+      }
+    ]
+  },
+  //智慧考勤》考勤报表
+  {
+    path: '/thereport',
+    component: Layout,
+
+    meta: {
+      icon: 'svg-layers',
+      title: '考勤报表'
+    },
+    children: [
+      {
+        path: 'menu1',
+        meta: { icon: 'share', title: '详细信息' },
+        alwaysShow: true,
+        // component: Layout,
+        component: () => import('@/views/nested/menu1/index'),
+        children: [
+          {
+            path: 'menu1-1',
+            name: 'menu1-1',
+            component: () => import('@/views/wisdomAttendance/thereport/personnel'),
+            meta: { title: '劳务人员', icon: '' }
+          },
+            {
+            path: 'manager',
+            name: 'manager',
+            component: () => import('@/views/wisdomAttendance/thereport/manager'),
+            meta: { title: '管理人员', icon: '' }
+          },
+          {
+            path: 'equipmentSpecialist',
+            name: 'equipmentSpecialist',
+            component: () => import('@/views/wisdomAttendance/thereport/equipmentSpecialist'),
+            meta: { title: '设备专用人员', icon: '' }
+          },
+          {
+            path: 'otherStaffs',
+            name: 'otherStaffs',
+            component: () => import('@/views/wisdomAttendance/thereport/otherStaffs'),
+            meta: { title: '其他服务类人员', icon: '' }
+          }
+        ]
+      },
+      {
+        path: '/foreign',
+        name: 'foreign',
+        component: () => import('@/views/wisdomAttendance/thereport/foreign'),
+        meta: { icon: 'star-on', title: '统计分析' }
+      }
+    ]
+  }
 ]
 export default new Router({
   // mode: 'history',  require service support
