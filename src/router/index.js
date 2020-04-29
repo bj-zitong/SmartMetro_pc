@@ -210,7 +210,7 @@ export const constantRouterMap = [
                 component: () => import('@/views/roster/personnel'),
                 meta: { title: '劳务人员', icon: '' }
             },
-            
+
             {
                 path: 'equipmentSpecialist',
                 name: 'equipmentSpecialist',
@@ -344,15 +344,15 @@ export const constantRouterMap = [
         },
         children: [
             {
-                path: 'lineUpperTrain',
-                name: 'lineUpperTrain',
-                component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
+                path: 'dd',
+                name: 'dd',
+                component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
                 meta: { title: '线上培训记录', icon: '' }
             },
             {
-                path: 'lineLowerTrain',
-                name: 'lineLowerTrain',
-                component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
+                path: 'ss',
+                name: 'ss',
+                component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
                 meta: { title: '线下视频培训记录', icon: '' }
             }
         ]
