@@ -5,7 +5,6 @@
       <img src="../../../resource/logo.png" style="width:30px;height:30px;margin: 10px 0 0 10px" />
       <span class="register-head">智慧地铁管理系统</span>
       <!--表单-->
-      <!---->
       <div class="accout-style">
         <router-link :to="{path: '/login' }" style="color:#0058A2">返回登录</router-link>
       </div>
@@ -17,106 +16,121 @@
           <span class="button-head-title-end">修改密码</span>
         </el-button>
       </div>
-       <div class="login_box">
+      <div class="login_box">
         <!-- 修改密码 -->
-        <el-form :rules="formRules" :model="form" ref="register" class="form-content" id="btn">
+        <el-form :rules="formRules" :model="form" ref="form" class="form-content" id="btn">
           <!--手机号-->
           <el-form-item prop="phone">
-            <el-input type="text" v-model="register.phone" placeholder="邮箱/手机号"></el-input>
+            <el-input type="text" v-model="form.phone" placeholder="邮箱/手机号"></el-input>
           </el-form-item>
           <!--密码-->
           <el-form-item prop="password">
-            <el-input type="password" v-model="register.password" placeholder="初始密码"></el-input>
-            <!-- <span class="svg-container svg-container_password">
+            <el-input type="password" v-model="form.password" placeholder="初始密码"></el-input>
+            <span style="position: absolute;top:3px;right: 8px;">
               <svg-icon icon-class="password" />
-            </span> -->
+            </span>
           </el-form-item>
           <el-form-item prop="newpassword">
-            <el-input type="password" v-model="register.newpassword" placeholder="重置密码"></el-input>
-            <!-- <span class="svg-container svg-container_password">
+            <el-input type="password" v-model="form.newpassword" placeholder="重置密码"></el-input>
+            <span style="position: absolute;top:3px;right: 8px;">
               <svg-icon icon-class="password" />
-            </span> -->
+            </span>
           </el-form-item>
           <!--确认密码-->
           <el-form-item prop="confirmPassword">
-            <el-input type="password" v-model="register.confirmPassword" placeholder="确认密码"></el-input>
-            <!-- <span class="svg-container svg-container_password">
+            <el-input type="password" v-model="form.confirmPassword" placeholder="确认密码"></el-input>
+            <span style="position: absolute;top:3px;right: 8px;">
               <svg-icon icon-class="password" />
-            </span> -->
+            </span>
           </el-form-item>
           <!--验证码-->
           <div>
             <el-form-item prop="authCode" style="width:100px;float:left">
-              <el-input type="text" v-model="register.authCode" placeholder="验证码"></el-input>
+              <el-input type="text" v-model="form.authCode" placeholder="验证码"></el-input>
             </el-form-item>
-            <el-form-item  style="width:100px;float:left;margin-left:15px">
-              <el-input type="text" v-model="register.authCode" value="1256"></el-input>
+            <el-form-item style="width:100px;float:left;margin-left:15px" prop="getCode">
+              <el-input type="text" v-model="form.getCode"></el-input>
             </el-form-item>
             <!-- <img
               src="../../../resource/code.png"
               style="width:94px;height:35px;vertical-align:middle;margin-left:15px"
               alt="验证码"
-            /> -->
-            <img src="../../../resource/shuaxin.png" style="width:16px;height:16px;margin-left:10px">
+            />-->
+            <img
+              src="../../../resource/shuaxin.png"
+              style="width:16px;height:16px;margin-left:10px"
+              @click="getNewCode()"
+            />
           </div>
-          <el-button type="primary" class="button-end" @click="updatePassword()">
+          <el-button type="primary" class="button-end" @click="updatePassword('form')">
             <span class="button-head-title">确定</span>
           </el-button>
         </el-form>
         <!--忘记密码 -->
-         <el-form :rules="forgetFormRules" :model="forgetForm" ref="register" class="form-content" id="btn1">
+        <el-form
+          :rules="forgetFormRules"
+          :model="forgetForm"
+          ref="register"
+          class="form-content"
+          id="btn1"
+        >
           <!--手机号-->
           <el-form-item prop="account">
             <el-input type="text" v-model="register.account" placeholder="账号/手机号"></el-input>
           </el-form-item>
-            <el-form-item prop="username">
-            <el-input type="text" v-model="register.userName" placeholder="姓名"></el-input>
+          <el-form-item prop="userName2">
+            <el-input type="text" v-model="register.userName2" placeholder="姓名"></el-input>
           </el-form-item>
           <!--身份证号-->
           <el-form-item prop="idNum">
             <el-input type="text" v-model="register.idNum" placeholder="身份证号"></el-input>
           </el-form-item>
-          <el-form-item prop="phone">
-            <el-input type="text" v-model="register.phone" placeholder="手机号码"></el-input>
+          <el-form-item prop="phone2">
+            <el-input type="text" v-model="register.phone2" placeholder="手机号码"></el-input>
           </el-form-item>
           <!--密码-->
-          <el-form-item prop="password">
-            <el-input type="password" v-model="register.password" placeholder="重置密码"></el-input>
-            <!-- <span class="svg-container svg-container_password">
+          <el-form-item prop="password2">
+            <el-input type="password" v-model="register.password2" placeholder="重置密码"></el-input>
+            <span style="position: absolute;top:3px;right: 8px;">
               <svg-icon icon-class="password" />
-            </span> -->
+            </span>
           </el-form-item>
           <!--确认密码-->
-          <el-form-item prop="confirmPassword">
-            <el-input type="password" v-model="register.confirmPassword" placeholder="确认密码"></el-input>
-            <!-- <span class="svg-container svg-container_password">
+          <el-form-item prop="confirmPassword2">
+            <el-input type="password" v-model="register.confirmPassword2" placeholder="确认密码"></el-input>
+            <span style="position: absolute;top:3px;right: 8px;">
               <svg-icon icon-class="password" />
-            </span> -->
+            </span>
           </el-form-item>
           <!--验证码-->
           <div>
-            <el-form-item prop="authCode" style="width:100px;float:left">
-              <el-input type="text" v-model="register.authCode" placeholder="验证码"></el-input>
+            <el-form-item prop="authCode2" style="width:100px;float:left">
+              <el-input type="text" v-model="register.authCode2" placeholder="验证码"></el-input>
             </el-form-item>
-            <el-form-item  style="width:100px;float:left;margin-left:15px">
-              <el-input type="text" id="code"></el-input>
+            <el-form-item prop="Code" style="width:100px;float:left;margin-left:15px">
+              <el-input type="text" v-model="register.Code"></el-input>
             </el-form-item>
             <!-- <img
               src="../../../resource/code.png"
               style="width:94px;height:35px;vertical-align:middle;margin-left:15px"
               alt="验证码"
-            /> -->
-            <img src="../../../resource/shuaxin.png" style="width:16px;height:16px;margin-left:10px">
+            />-->
+            <img
+              src="../../../resource/shuaxin.png"
+              style="width:16px;height:16px;margin-left:10px"
+              @click="getNewCode()"
+            />
           </div>
-          <el-button type="primary" class="button-end" @click="forgetPassword()">
+          <el-button type="primary" class="button-end" @click="forgetPassword('forgetForm')">
             <span class="button-head-title">确定</span>
           </el-button>
         </el-form>
       </div>
     </div>
-  <div class="container_end">
-      <p class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</p><br/>
-      <p class="content-end1">京ICP备17067133号  京公网安备11010602006143号</p>
+    <div class="container_end">
+      <p class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</p>
+      <br />
+      <p class="content-end1">京ICP备17067133号 京公网安备11010602006143号</p>
     </div>
   </div>
 </template>
@@ -125,117 +139,124 @@
 export default {
   data() {
     return {
-      authCode: '',  // 全局验证码
-      code: '',
+      code: "",
       form: {
-        phone: '',
-        newpassword: '',
-        password: '',
-        confirmPassword: '',
-        authCode: ''
+        phone: "",
+        newpassword: "",
+        password: "",
+        confirmPassword: "",
+        authCode: "",
+        getCode: ""
       },
       formRules: {
         phone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { required: true, message: "请输入手机号", trigger: "blur" },
           {
             pattern: /^1[34578]\d{9}$/,
-            message: '目前只支持中国大陆的手机号码'
+            message: "目前只支持中国大陆的手机号码"
           }
         ],
-        newpassword: [{ required: true, message: '请输入重置密码', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        newpassword: [
+          { required: true, message: "请输入重置密码", trigger: "blur" }
+        ],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         confirmPassword: [
-          { required: true, message: '请输入确认密码', trigger: 'blur' }
+          { required: true, message: "请输入确认密码", trigger: "blur" }
         ],
         authCode: [
-          { required: true, message: '请输入验证码', trigger: 'blur' }
-        ]
+          { required: true, message: "请输入验证码", trigger: "blur" }
+        ],
+        getCode: [{ required: true, message: "请输入验证码", trigger: "blur" }]
       },
 
       forgetFormRules: {
-        phone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
+        phone2: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
           {
             pattern: /^1[34578]\d{9}$/,
-            message: '目前只支持中国大陆的手机号码'
+            message: "目前只支持中国大陆的手机号码"
           }
         ],
-        account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-        username: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
-        newpassword: [{ required: true, message: '请输入确认密码', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入重置密码', trigger: 'blur' }],
-        confirmPassword: [
-          { required: true, message: '请输入确认密码', trigger: 'blur' }
+        account: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        userName2: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        password2: [
+          { required: true, message: "请输入重置密码", trigger: "blur" }
         ],
-        authCode: [
-          { required: true, message: '请输入验证码', trigger: 'blur' }
+        confirmPassword2: [
+          { required: true, message: "请输入确认密码", trigger: "blur" }
         ],
-        idNum: [{ required: true, message: '请输入身份证号', trigger: 'blur' }]
+        authCode2: [
+          { required: true, message: "请输入验证码", trigger: "blur" }
+        ],
+        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
+        Code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
       },
       forgetForm: {
-        phone: '',
-        userName: '',
-        idNum: '',
-        newpassword: '',
-        password: '',
-        confirmPassword: '',
-        authCode: ''
+        account: "",
+        phone2: "",
+        userName2: "",
+        idNum: "",
+        password2: "",
+        confirmPassword2: "",
+        authCode2: "",
+        Code: ""
       }
-    }
+    };
   },
   created() {
-  //  this.updateState1();
-    this.createCode()
+    //  this.updateState1();
+    this.createCode();
   },
   methods: {
-
-     // 生成验证码
-    createCode () {
-      var code
-    // 首先默认code为空字符串
-      code = ''
-    // 设置长度，这里看需求，我这里设置了4
-      var codeLength = 4
-    // 设置随机字符
-      var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
-    // 循环codeLength 我设置的4就是循环4次
+    getNewCode() {
+      this.createCode();
+    },
+    // 生成验证码
+    createCode() {
+      var code;
+      // 首先默认code为空字符串
+      code = "";
+      // 设置长度，这里看需求，我这里设置了4
+      var codeLength = 4;
+      // 设置随机字符
+      var random = new Array(
+        0,1,2,3,4,5,6,7,8,9,"A","B","C","D","E", "F", "G", "H", "I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
+      );
+      // 循环codeLength 我设置的4就是循环4次
       for (var i = 0; i < codeLength; i++) {
-      // 设置随机数范围,这设置为0 ~ 36
-        var index = Math.floor(Math.random() * 36)
-      // 字符串拼接 将每次随机的字符 进行拼接
-        code += random[index]
+        // 设置随机数范围,这设置为0 ~ 36
+        var index = Math.floor(Math.random() * 36);
+        // 字符串拼接 将每次随机的字符 进行拼接
+        code += random[index];
       }
-    // 将拼接好的字符串赋值给展示的code
-      this.code = code
+      // 将拼接好的字符串赋值给展示的code
+      this.code = code;
       // 将生成的验证码赋值给全局变量
-      this.authCode = code
-      document.getElementById('code').value = '123'
+      this.form.getCode = code;
+      this.forgetForm.Code = code;
     },
     // 忘记密码
-    forgetPassword() {
+    forgetPassword(form) {
       // this.$router.push({ path: '/index' });
-      console.log('忘记密码')
     },
     // 修改密码
-    updatePassword() {
-      console.log('修改密码')
+    updatePassword(form) {
     },
     register() {
-      this.$router.push({ path: '/register' })
+      this.$router.push({ path: "/register" });
     },
-      // 修改密码
+    // 修改密码
     updateState1() {
-      document.getElementById('btn1').style.display = 'block'
-      document.getElementById('btn').style.display = 'none'
+      document.getElementById("btn1").style.display = "block";
+      document.getElementById("btn").style.display = "none";
     },
     // 忘记密码
     updateState2() {
-      document.getElementById('btn').style.display = 'block'
-      document.getElementById('btn1').style.display = 'none'
+      document.getElementById("btn").style.display = "block";
+      document.getElementById("btn1").style.display = "none";
     }
-
   }
-}
+};
 </script>
 <style scoped lang="stylus">
 /* 总div */
@@ -268,66 +289,63 @@ export default {
     color: rgba(10, 96, 177, 1);
     opacity: 1;
     float: right;
-    margin-top: 14px
+    margin-top: 14px;
   }
 
-  .tab-title{
+  .tab-title {
     width: 680px;
     height: 60px;
     box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
     opacity: 1;
     border-radius: 4px;
 
+    /* 头部head button */
+    .button-head {
+      width: 340px;
+      height: 60px;
+      background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
+      box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
+      opacity: 1;
+      border-radius: 0px 4px 4px 0px;
+    }
 
+    /*  */
+    .button-end {
+      width: 340px;
+      height: 60px;
+      background: rgba(246, 247, 248, 1);
+      box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
+      opacity: 1;
+      border-radius: 4px 0px 0px 4px;
+      position: absolute;
+      margin-left: 0px;
+    }
 
-  /* 头部head button */
-  .button-head {
-    width:340px;
-    height:60px;
-    background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
-    box-shadow:3px 6px 12px rgba(0,88,162,0.23);
-    opacity:1;
-    border-radius:0px 4px 4px 0px;
-  }
-  /* */
-  .button-end{
-    width:340px;
-    height:60px;
-    background:rgba(246,247,248,1);
-    box-shadow:3px 6px 12px rgba(0,88,162,0.23);
-    opacity:1;
-    border-radius:4px 0px 0px 4px;
-    position:absolute;
-    margin-left: 0px;
-
-
-  }
     /* 按钮文字 */
     .button-head-title {
-     width:120px;
-    height:31px;
-    font-size:24px;
-    font-family:Microsoft YaHei;
-    font-weight:bold;
-    line-height:31px;
-    color:rgba(255,255,255,1);
-    letter-spacing:20px;
-    opacity:1;
+      width: 120px;
+      height: 31px;
+      font-size: 24px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      line-height: 31px;
+      color: rgba(255, 255, 255, 1);
+      letter-spacing: 20px;
+      opacity: 1;
     }
-  .button-head-title-end{
-    width:120px;
-    height:31px;
-    font-size:24px;
-    font-family:Microsoft YaHei;
-    font-weight:400;
-    line-height:31px;
-    color:rgba(99,99,99,1);
-    letter-spacing:20px;
-    opacity:1;
-  }
 
+    .button-head-title-end {
+      width: 120px;
+      height: 31px;
+      font-size: 24px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      line-height: 31px;
+      color: rgba(99, 99, 99, 1);
+      letter-spacing: 20px;
+      opacity: 1;
+    }
   }
-
 
   /* 二层div */
   .container_center {
@@ -383,22 +401,23 @@ export default {
     }
   }
 
-.container_end{
+  .container_end {
     width: 100%;
     height: 50px;
     position: absolute;
-    bottom:80px;
+    bottom: 80px;
     left: 0;
-    text-align center;
-     p{
-        height:14px;
-        font-size:10px;
-        font-family:Microsoft YaHei;
-        font-weight:400;
-        line-height:14px;
-        color:rgba(161,161,161,1);
-        opacity:1;
-     }
+    text-align: center;
+
+    p {
+      height: 14px;
+      font-size: 10px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      line-height: 14px;
+      color: rgba(161, 161, 161, 1);
+      opacity: 1;
+    }
   }
 }
 </style>
