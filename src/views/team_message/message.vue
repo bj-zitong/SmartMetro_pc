@@ -68,11 +68,11 @@
       </div>
     </div>
     <!-- 新增-->
-    <el-dialog :visible.sync="dialogFormVisible" width='20%' center=true title="新增班组">
+    <el-dialog :visible.sync="dialogFormVisible" width="20%" center="true" title="新增班组">
       <div class="addUser-content">
         <!-- <div class="button-head">
           <span class="button-head-title"></span>
-        </div> -->
+        </div>-->
         <div class="login_box">
           <el-form
             method="post"
@@ -97,7 +97,12 @@
             <el-select v-model="form.profession" placeholder="请选择班组类型" @change="selectProfession">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
-             <el-select v-model="form.profession" placeholder="请选择班组类型" @change="selectProfession" hidden='true'>
+            <el-select
+              v-model="form.profession"
+              placeholder="请选择班组类型"
+              @change="selectProfession"
+              hidden="true"
+            >
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
             <div class="dialog-footer">
@@ -354,13 +359,6 @@ export default {
       console.log(uid);
       this.dialogVisible = true;
     },
-    // handleClose(done) {
-    //     this.$confirm('确认关闭？')
-    //       .then(_ => {
-    //         done();
-    //       })
-    //       .catch(_ => {});
-    //   },
     //讲话
     addSpeech() {},
     cencal() {
@@ -421,14 +419,15 @@ export default {
     margin-top: 30px;
   }
 }
- .dialog-footer{
-  //  float: right ;
-  text-align :center;
-  margin-top :20px;
- }
+
+.dialog-footer {
+  // float: right ;
+  text-align: center;
+  margin-top: 20px;
+}
 </style>
 <style lang="stylus">
-.el-dialog__header{
-  background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
+.el-dialog__header {
+  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
 }
 </style>

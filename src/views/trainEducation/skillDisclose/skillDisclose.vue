@@ -77,9 +77,7 @@
                     pagesize //显示当前行的条数
                     sizes这是下拉框可以选择的，每选择一行，要展示多少内容
                      :page-sizes="[5, 10, 20, 40]" 下拉选择
-                     layout="total, sizes, prev, pager, next, jumper"
-
-        -->
+        layout="total, sizes, prev, pager, next, jumper"-->
         <el-pagination
           class="page-end"
           @size-change="handleSizeChange()"
@@ -96,7 +94,7 @@
       </el-main>
     </div>
     <!--新增-->
-    <el-dialog title="技术交底" :visible.sync="dialogFormVisible" width="450px" center=true>
+    <el-dialog title="技术交底" :visible.sync="dialogFormVisible" width="450px" center="true">
       <el-form :model="form">
         <el-form-item label="工程名称" :label-width="formLabelWidth">
           <el-input v-model="form.projectName"></el-input>
@@ -117,10 +115,10 @@
           <el-input type="textarea" :rows="2" placeholder="请输入交底内容" v-model="form.content"></el-input>
         </el-form-item>
         <el-form-item label="交底人">
-            <el-input v-model="form.tellPerson"></el-input>
+          <el-input v-model="form.tellPerson"></el-input>
         </el-form-item>
         <el-form-item label="接收人">
-            <el-input v-model="form.reciveTell"></el-input>
+          <el-input v-model="form.reciveTell"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -162,9 +160,9 @@ export default {
         companyName: "",
         breachProject: "",
         tellAbstract: "",
-        content:"",
-        tellPerson:"",
-        reciveTell:""
+        content: "",
+        tellPerson: "",
+        reciveTell: ""
       }
     };
   },
@@ -198,9 +196,7 @@ export default {
     this.tableData = result;
   },
   method: {
-    addSkillClick:function(form){
-
-    },
+    addSkillClick: function(form) {},
     skillList: function() {
       // 列表请求
       // 获得搜索的内容
@@ -246,23 +242,19 @@ export default {
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
       this.pageSize = size;
-      // this.handleUserList()
-      // console.log(this.pageSize)  //每页下拉显示数据
+      // this.handleUserList()//每页下拉显示数据
     },
     handleCurrentChange: function(page) {
-      this.page = page;
+      this.page = page; //点击第几页
       this.handleUserList();
-      console.log(this.page); //点击第几页
     },
     pre(cpage) {
       this.page = cpage;
-      console.log("cpage" + cpage);
       // this.handleUserList()
     },
     //下一页
     next(cpage) {
       this.page = cpage;
-      console.log("下一页" + cpage);
       // this.handleUserList()
     },
     // 下拉框获得值
@@ -301,11 +293,8 @@ export default {
         // 获得id
         var id = arrays[i].userId;
         ids.push(id);
-        // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      // console.log("选中的ids"+ids);
-      //  this.multipleSelection = val;
     }
   }
 };
@@ -358,10 +347,7 @@ export default {
   .table-main {
     margin-top: -30px;
 
-    // height :500px;
     .table-button {
-      // padding-left: 30px;
-      // padding-top: 30px;
       height: 500px;
       padding: 30px;
     }

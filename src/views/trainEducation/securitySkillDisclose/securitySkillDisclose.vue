@@ -78,7 +78,6 @@
                     sizes这是下拉框可以选择的，每选择一行，要展示多少内容
                      :page-sizes="[5, 10, 20, 40]" 下拉选择
                      layout="total, sizes, prev, pager, next, jumper"
-
         -->
         <el-pagination
           class="page-end"
@@ -96,7 +95,7 @@
       </el-main>
     </div>
     <!--新增-->
-    <el-dialog title="安全技术交底" :visible.sync="dialogFormVisible" width="500px" center=true>
+    <el-dialog title="安全技术交底" :visible.sync="dialogFormVisible" width="500px" center="true">
       <el-form :model="form">
         <el-form-item label="施工单位" :label-width="formLabelWidth">
           <el-input v-model="form.company"></el-input>
@@ -113,21 +112,21 @@
         <el-form-item label>
           <el-input type="textarea" :rows="2" placeholder="请输入针对性交底" v-model="form.aimContent"></el-input>
         </el-form-item>
-        <div >
+        <div>
           <el-form-item label="交底人" style="width:200px;float:left">
-              <el-input v-model="form.tellPerson"></el-input>
+            <el-input v-model="form.tellPerson"></el-input>
           </el-form-item>
           <el-form-item label="职务" style="width:200px;float:right">
-              <el-input v-model="form.tellPerson"></el-input>
+            <el-input v-model="form.tellPerson"></el-input>
           </el-form-item>
         </div>
         <div>
-            <el-form-item label="接收人" style="width:200px;float:left">
-              <el-input v-model="form.reciveTell"></el-input>
-            </el-form-item>
-             <el-form-item label="职务" style="width:200px;float:right">
-              <el-input v-model="form.tellPerson"></el-input>
-              </el-form-item>
+          <el-form-item label="接收人" style="width:200px;float:left">
+            <el-input v-model="form.reciveTell"></el-input>
+          </el-form-item>
+          <el-form-item label="职务" style="width:200px;float:right">
+            <el-input v-model="form.tellPerson"></el-input>
+          </el-form-item>
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -167,12 +166,11 @@ export default {
         company: "",
         tellAbstract: null,
         workType: "",
-        content:"",
+        content: "",
         aimContent: "",
         tellAbstract: "",
-        tellPerson:"",
-        reciveTell:"",
-
+        tellPerson: "",
+        reciveTell: ""
       }
     };
   },
@@ -182,36 +180,34 @@ export default {
         company: "安保部一",
         userId: 1,
         tellAbstract: "123",
-        workType:'瓦工',
+        workType: "瓦工",
         tellPerson: "123",
-        duty:'1111',
+        duty: "1111",
         reciveDuty: "55555",
         reciveTell: "22222222",
         checkState: "22222222",
         accessory: 2,
-        accessory:'444444'
+        accessory: "444444"
       },
       {
         userId: 2,
         company: "22222222",
-        workType:'泥工',
+        workType: "泥工",
         tellPerson: "44444",
-        duty:'5555',
-        reciveDuty:'444444',
+        duty: "5555",
+        reciveDuty: "444444",
         breachProject: "44444",
         tellAbstract: "1111",
         reciveTell: "444",
         checkState: 44444,
         accessory: 1,
-        accessory:'444444'
+        accessory: "444444"
       }
     ];
     this.tableData = result;
   },
   method: {
-    addSkillClick:function(form){
-
-    },
+    addSkillClick: function(form) {},
     skillList: function() {
       // 列表请求
       // 获得搜索的内容
@@ -256,24 +252,20 @@ export default {
     },
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
-      this.pageSize = size;
+      this.pageSize = size; //每页下拉显示数据
       // this.handleUserList()
-      // console.log(this.pageSize)  //每页下拉显示数据
     },
     handleCurrentChange: function(page) {
       this.page = page;
-      this.handleUserList();
-      console.log(this.page); //点击第几页
+      this.handleUserList(); //点击第几页
     },
     pre(cpage) {
       this.page = cpage;
-      console.log("cpage" + cpage);
       // this.handleUserList()
     },
     //下一页
     next(cpage) {
       this.page = cpage;
-      console.log("下一页" + cpage);
       // this.handleUserList()
     },
     // 下拉框获得值
@@ -312,11 +304,8 @@ export default {
         // 获得id
         var id = arrays[i].userId;
         ids.push(id);
-        // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      // console.log("选中的ids"+ids);
-      //  this.multipleSelection = val;
     }
   }
 };
@@ -369,10 +358,7 @@ export default {
   .table-main {
     margin-top: -30px;
 
-    // height :500px;
     .table-button {
-      // padding-left: 30px;
-      // padding-top: 30px;
       height: 500px;
       padding: 30px;
     }
