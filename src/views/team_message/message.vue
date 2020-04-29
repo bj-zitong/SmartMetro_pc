@@ -31,13 +31,13 @@
           :header-cell-style="{background:'#0058A2'}"
         >
           <el-table-column type="selection" prop="userId" @selection-change="changeFun"></el-table-column>
-          <el-table-column prop="projectName" label="工程名称" width="180"></el-table-column>
-          <el-table-column prop="className" label="班组名称" width="180"></el-table-column>
-          <el-table-column prop="classType" label="班组类型" width="150"></el-table-column>
-          <el-table-column prop="classLeader" label="班组长" width="180"></el-table-column>
-          <el-table-column prop="phone" label="手机号" width="200"></el-table-column>
-          <el-table-column prop="createDate" label="创建日期" width="260"></el-table-column>
-          <el-table-column label="操作">
+          <el-table-column prop="projectName" label="工程名称" width="150"></el-table-column>
+          <el-table-column prop="className" label="班组名称" width="150"></el-table-column>
+          <el-table-column prop="classType" label="班组类型" width="100"></el-table-column>
+          <el-table-column prop="classLeader" label="班组长" width="100"></el-table-column>
+          <el-table-column prop="phone" label="手机号" width="120"></el-table-column>
+          <el-table-column prop="createDate" label="创建日期" width="150"></el-table-column>
+          <el-table-column label="操作" width="500" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
               <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
@@ -53,7 +53,7 @@
                      layout="total, sizes, prev, pager, next, jumper"
         -->
         <el-pagination
-          style="text-align:center;margin-top:10px"
+          style="text-align:center;padding:10px;"
           background
           @size-change="handleSizeChange"
           :current-page="page"
@@ -68,7 +68,7 @@
       </div>
     </div>
     <!-- 新增-->
-    <el-dialog :visible.sync="dialogFormVisible" style="width:25%;left: 37.5%;padding:0px 0px 0 0 ">
+    <el-dialog :visible.sync="dialogFormVisible" style="width:35%;left: 37.5%;padding:0px 0px 0 0 ">
       <div class="addUser-content">
         <div class="button-head">
           <span class="button-head-title">新增班组</span>
@@ -97,19 +97,24 @@
             <el-select v-model="form.profession" placeholder="请选择班组类型" @change="selectProfession">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
-            <div style="margin-top:20px">
-              <el-button type="info" round style="float:left" @click="cencal()">取消</el-button>
-              <el-button type="primary" round @click="addClass('form')" style="float:right">确定</el-button>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="addClass('form')">确 定</el-button>
             </div>
           </el-form>
         </div>
       </div>
     </el-dialog>
     <!-- 评价-->
-    <el-dialog title="评价" :visible.sync="dialogVisible" width="30%" style="text-align:center;">
+    <el-dialog title="评价" :visible.sync="dialogVisible" width="35%" style="center:true">
       <span slot="footer" class="dialog-footer">
         <el-select v-model="evaluated" placeholder="请选择评价等级" @change="selectEvaluate">
-          <el-option v-for="item in evaluatLevel" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          <el-option
+            v-for="item in evaluatLevel"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          ></el-option>
         </el-select>
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="evaluate()">确 定</el-button>
@@ -168,12 +173,12 @@ export default {
         { id: 2, name: "类型二" },
         { id: 3, name: "类型三" }
       ],
-      evaluatLevel:[
-        {id:1,name:'优'},
-        {id:2,name:'良'},
-        {id:3,name:'差'}
+      evaluatLevel: [
+        { id: 1, name: "优" },
+        { id: 2, name: "良" },
+        { id: 3, name: "差" }
       ],
-      evaluated:null,//选中的评价等级
+      evaluated: null //选中的评价等级
     };
   },
   created: function() {
@@ -285,13 +290,13 @@ export default {
       });
       this.form.profession = obj.id;
     },
-    selectEvaluate(vid){
+    selectEvaluate(vid) {
       let obj = {};
       obj = this.evaluatLevel.find(item => {
         return item.id == vid; // 筛选出匹配数据
       });
       this.evaluated = obj.id;
-      console.log('选中'+this.evaluated);
+      console.log("选中" + this.evaluated);
     },
     // 删除
     handleDelete(row) {
@@ -341,7 +346,7 @@ export default {
       this.dialogVisible = false;
       console.log(this.evaluated);
     },
-    addEvalte(row){
+    addEvalte(row) {
       var uid = row.userId;
       console.log(uid);
       this.dialogVisible = true;
@@ -354,9 +359,7 @@ export default {
     //       .catch(_ => {});
     //   },
     //讲话
-    addSpeech() {
-
-    },
+    addSpeech() {},
     cencal() {
       this.dialogFormVisible = false;
     }
@@ -365,32 +368,25 @@ export default {
 </script>
 <style scoped lang="stylus">
 .container {
-  width: 100%;
-  /* height:874px; */
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.16);
-  opacity: 1;
-  border-radius: 10px;
-  padding: 5px;
-  background: rgba(246, 247, 248, 1);
-  opacity: 1;
-
   .container-head {
-    width: 100%;
+    // width: 100%;
     height: 100px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
     opacity: 1;
     border-radius: 10px;
+    margin: 30px 30px 0 30px;
   }
 
   .container-content {
-    width: 100%;
-    height: 744px;
+    // width: 100%;
+    // height: 600px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.16);
     opacity: 1;
     border-radius: 10px;
+    padding: 30px;
+    margin: 30px 30px 0 30px;
 
     .addStyle {
       width: 80px;
@@ -420,43 +416,6 @@ export default {
 
   .table-content {
     margin-top: 30px;
-  }
-
-  .addUser-content {
-    width: 450px;
-    height: 440px;
-    background: rgba(255, 255, 255, 1);
-    opacity: 1;
-    border-radius: 4px;
-    text-align: center;
-
-    // top: 320px;
-    // left: 735px;
-    // right: 735px;
-    .button-head {
-      width: 450px;
-      height: 60px;
-      background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
-      opacity: 1;
-      border-radius: 4px 4px 0px 0px;
-    }
-
-    /* 按钮文字 */
-    .button-head-title {
-      width: 81px;
-      height: 26px;
-      font-size: 20px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      line-height: 26px;
-      color: rgba(255, 255, 255, 1);
-      letter-spacing: 20px;
-      opacity: 1;
-    }
-
-    .login_box {
-      // height: 800px;
-    }
   }
 }
 

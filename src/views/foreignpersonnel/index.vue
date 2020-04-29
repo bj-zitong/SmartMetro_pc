@@ -1,39 +1,23 @@
 <template>
-  <el-container>
-    <el-header style="padding:5px">
-      <div class="search-Box">
-        <!-- <el-form  :model="formInline" class="search-Box">
+  <div class="container">
+    <el-container>
+      <el-main class="main-content">
+        <el-form :inline="true" :model="formInline" class="search-head">
           <el-form-item label="姓名">
             <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
           </el-form-item>
-           <el-form-item label="来访单位">
+           <el-form-item label="来访单位" class="region">
             <el-input v-model="formInline.searchNum" placeholder="来访单位"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleUserList">查询</el-button>
+            <el-button type="primary" @click="handleUserList">搜索</el-button>
           </el-form-item>
-        </el-form>-->
-        <span style="margin-left:30px">姓名：</span>
-        <el-input
-          placeholder="请输入姓名"
-          icon="search"
-          style="width:180px;margin-top:33px"
-          v-model="searchUname"
-        ></el-input>
-        <span style="margin-left:40px">来访单位：</span>
-        <el-input placeholder="请输入来访单位" icon="search" style="width:180px;" v-model="searchNum"></el-input>
-        <el-button
-          type="primary"
-          @click="handleUserList"
-          style="margin-left:20px"
-        >搜索</el-button>
-      </div>
-    </el-header>
-    <!-- 表格-->
-    <el-main style="padding:5px;margin-top:30px">
-      <div class="main-style">
-        <div class="main-head">
-          <el-button @click="dialogFormVisible = true" class="addStyle">
+        </el-form>
+      </el-main>
+    </el-container>
+    <div class="table-main">
+      <el-main class="table-head">
+        <el-button @click="dialogFormVisible = true" class="addStyle">
             <span class="addStyle-title">新增</span>
           </el-button>
           <el-button @click="deleteAll" class="deleteStyle">
@@ -42,34 +26,34 @@
           <el-button @click="poiExcel" class="exportStyle">
             <span class="poiExcel-title">导出</span>
           </el-button>
-        </div>
         <div class="table-content">
-          <el-table
+               <el-table
             :data="tableData"
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
             :header-cell-style="{background:'#0058A2'}"
+            style="width: 100%"
           >
-            <el-table-column
+           <el-table-column
               type="selection"
               width="65"
               prop="userId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="userName" label="姓名"></el-table-column>
-            <el-table-column prop="idNum" label="身份证号"></el-table-column>
-            <el-table-column prop="phone" label="电话"></el-table-column>
-            <el-table-column prop="company" label="来访单位"></el-table-column>
-            <el-table-column prop="profession" label="被访部门"></el-table-column>
-            <el-table-column prop="interviewee" label="被访人姓名"></el-table-column>
-            <el-table-column prop="intervieweeReason" label="来访事由"></el-table-column>
-            <el-table-column prop="intervieweeDate" label="来访时间"></el-table-column>
-            <el-table-column prop="direction" label="进出方向"></el-table-column>
-            <el-table-column prop="attendanceEquipment" label="考勤设备"></el-table-column>
-            <el-table-column prop="createTime" label="打卡时间"></el-table-column>
-            <el-table-column label="操作" style="width:180px">
-              <template slot-scope="scope" >
+            <el-table-column prop="userName" label="姓名"  width="120"></el-table-column>
+            <el-table-column prop="idNum" label="身份证号"  width="150"></el-table-column>
+            <el-table-column prop="phone" label="电话"  width="150"></el-table-column>
+            <el-table-column prop="company" label="来访单位"  width="150"></el-table-column>
+            <el-table-column prop="profession" label="被访部门"  width="100"></el-table-column>
+            <el-table-column prop="interviewee" label="被访人姓名"  width="100"></el-table-column>
+            <el-table-column prop="intervieweeReason" label="来访事由"  width="120"></el-table-column>
+            <el-table-column prop="intervieweeDate" label="来访时间"  width="100"></el-table-column>
+            <el-table-column prop="direction" label="进出方向"  width="100"></el-table-column>
+            <el-table-column prop="attendanceEquipment" label="考勤设备"  width="100"></el-table-column>
+            <el-table-column prop="createTime" label="打卡时间"  width="150" fixed="right"></el-table-column>
+            <el-table-column label="操作" style="width:500px" fixed="right">
+                <template slot-scope="scope" >
                 <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑
                 </el-button>
                 <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除
@@ -77,14 +61,15 @@
               </template>
             </el-table-column>
           </el-table>
-          <!-- 分页 total  //这是显示总共有多少数据，
+        </div>
+        <!-- 分页 total  //这是显示总共有多少数据，
                     pagesize //显示当前行的条数
                     sizes这是下拉框可以选择的，每选择一行，要展示多少内容
                      :page-sizes="[5, 10, 20, 40]" 下拉选择
                      layout="total, sizes, prev, pager, next, jumper"
 
           -->
-          <el-pagination style="text-align:center;margin-top:10px"
+          <el-pagination class="page-end"
             @size-change="handleSizeChange"
             :current-page="page"
              layout="total, prev, pager,next"
@@ -94,14 +79,13 @@
             @current-change="handleCurrentChange"
             hide-on-single-page
             :total="total"
+            background
           ></el-pagination>
-        </div>
-      </div>
-    </el-main>
-
-    <!--新增-->
-    <div class="addUser-content">
-      <el-dialog :visible.sync="dialogFormVisible">
+      </el-main>
+    </div>
+     <!--新增-->
+    <div style="text-align:center">
+      <el-dialog :visible.sync="dialogFormVisible" style="width:40%;center:true">
         <div class="button-head">
           <span class="button-head-title">外来人员登记</span>
         </div>
@@ -177,10 +161,9 @@
         </div>
       </el-dialog>
     </div>
-  </el-container>
+  </div>
 </template>
 <script>
-// import addUser from '@/views/index/addUser'
 export default {
   data() {
     return {
@@ -383,7 +366,7 @@ export default {
         },
         {
           userId: 2,
-          userName: "",
+          userName: "22222222",
           idNum: "210234567898765789",
           phone: 111,
           company: "44444",
@@ -554,7 +537,7 @@ export default {
     },
     // 批量删除
     deleteAll() {
-      
+
       var ids = this.changeFun();
       console.log(ids);
       var url = "";
@@ -586,92 +569,70 @@ export default {
 };
 </script>
 <style scoped lang="stylus">
-.search-Box {
-  width: 100%;
-  height: 100px;
+.el-header, .el-footer {
+  background-color: #B3C0D1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
+
+.el-aside {
+  background-color: #D3DCE6;
+  color: #333;
+  text-align: center;
+  line-height: 200px;
+}
+
+.el-main {
+  padding: 0px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
+  color: #333;
   opacity: 1;
   border-radius: 10px;
-  padding: 5px;
-
-
+  height: 100px;
 }
 
-/*表格 */
-.main-style {
-  width: 100%;
-  height: 744px;
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.16);
-  opacity: 1;
-  border-radius: 10px;
-  margin-top: 40px;
-  padding: 5px;
+ .el-container {
+  margin-bottom: 40px;
+}
 
-  /**按钮 */
-.main-head {
-  margin-top: 20px;
+// .el-container:nth-child(5) .el-aside, .el-container:nth-child(6) .el-aside {
+//   line-height: 260px;
+// }
+
+// .el-container:nth-child(7) .el-aside {
+//   line-height: 320px;
+// }
+
+.main-content {
+  padding-top: 30px;
   margin-left: 30px;
-  position: absolute;
-  height: 50px;
-  width: 100%;
-  display: block;
+  margin-right:30px;
+
+  .search-head {
+    margin-left: 30px;
+  }
+
+  .region {
+    margin-left: 60px;
+  }
+
+  el-input {
+    width: 180px;
+  }
 }
 
+.table-main {
+  margin-top: -30px;
+  height:500px;
 
+  .table-head {
+    padding-left: 30px;
+    padding-top: 30px;
+    height: 600px;
 
-/*表格内容 */
-.table-content {
-  width: 1650px;
-  /* height: 500px; */
-  margin-top: 80px;
-  /* margin-left: 10px; */
-  position: absolute;
-  padding: 30px;
-
-  .editStyle {
-  width: 60px;
-  height: 25px;
-  background: rgba(66, 199, 111, 1);
-  opacity: 1;
-  border-radius: 4px;
-}
-
-.editStyle-title {
-  width: 20px;
-  height: 14px;
-  font-size: 10px;
-  font-family: Microsoft YaHei;
-  font-weight: 400;
-  line-height: 14px;
-  color: rgba(255, 255, 255, 1);
-  opacity: 1;
-}
-.deleteStylerow {
-  width: 60px;
-  height: 25px;
-  background: rgba(175, 186, 203, 1);
-  opacity: 1;
-  border-radius: 4px;
-}
-.deleteStylerow-title {
-  width: 20px;
-  height: 14px;
-  font-size: 10px;
-  font-family: Microsoft YaHei;
-  font-weight: 400;
-  line-height: 14px;
-  color: rgba(255, 255, 255, 1);
-  opacity: 1;
-}
-
-
-
-
-}
-
-.addStyle {
+  .addStyle {
   width: 80px;
   height: 35px;
   background: linear-gradient(
@@ -737,89 +698,94 @@ export default {
   opacity: 1;
 }
 
-}
 
+  }
+
+  .table-content {
+    margin-top: 30px;
+  }
+
+  .page-end {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+}
 
 /*新增 */
-.addUser-content {
-  margin-top: 50px;
-  height: 300px;
-  width: 200px;
+// .addUser-content {
+//   margin-top: 50px;
+//   height: 300px;
+//   width: 200px;
 
-  .button-head {
-  width: 104.5%;
-  height: 40px;
-  margin-left: -20px;
-  background: linear-gradient(
-    180deg,
-    rgba(54, 130, 243, 1) 0%,
-    rgba(0, 88, 162, 1) 100%
-  );
-  text-align: center;
-}
-/* 按钮文字 */
-.button-head-title {
-  width: 56px;
-  height: 31px;
-  font-size: 24px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  line-height: 31px;
-  letter-spacing: 20px;
-  opacity: 1;
-  text-align: center;
-  color: aliceblue;
-}
+//   .button-head {
+//   width: 104.5%;
+//   height: 40px;
+//   margin-left: -20px;
+//   background: linear-gradient(
+//     180deg,
+//     rgba(54, 130, 243, 1) 0%,
+//     rgba(0, 88, 162, 1) 100%
+//   );
+//   text-align: center;
+// }
+// /* 按钮文字 */
+// .button-head-title {
+//   width: 56px;
+//   height: 31px;
+//   font-size: 24px;
+//   font-family: Microsoft YaHei;
+//   font-weight: bold;
+//   line-height: 31px;
+//   letter-spacing: 20px;
+//   opacity: 1;
+//   text-align: center;
+//   color: aliceblue;
+// }
 
-/*form表单 */
-.login_box {
-  width: 100%;
-  height: 800px;
-}
-.el-form {
-  padding: 32px;
-  bottom: 0;
-  box-sizing: border-box;
-  position: absolute;
-  left: 50%;
-  top: 40%;
-  transform: translate(-50%, -50%);
-  /* margin-top:30px; */
-}
+// /*form表单 */
+// .login_box {
+//   width: 100%;
+//   height: 800px;
+// }
+// .el-form {
+//   padding: 32px;
+//   bottom: 0;
+//   box-sizing: border-box;
+//   position: absolute;
+//   left: 50%;
+//   top: 40%;
+//   transform: translate(-50%, -50%);
+//   /* margin-top:30px; */
+// }
 
-.el-form-item {
-  width: 260px;
-  height: 35px;
-  background: rgba(239, 239, 239, 1);
-  border: 1px solid rgba(225, 225, 225, 1);
-  opacity: 1;
-  border-radius: 4px;
-}
+// .el-form-item {
+//   width: 260px;
+//   height: 35px;
+//   background: rgba(239, 239, 239, 1);
+//   border: 1px solid rgba(225, 225, 225, 1);
+//   opacity: 1;
+//   border-radius: 4px;
+// }
 
-.confirm{
-  width:80px;
-  height:35px;
-  background-color:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
-  opacity:1;
-  border-radius:18px;
-}
-.confirm-title{
-  width:33px;
-  height:19px;
-  font-size:14px;
-  font-family:Microsoft YaHei;
-  font-weight:bold;
-  line-height:19px;
-  color:rgba(255,255,255,1);
-  letter-spacing:20px;
-  opacity:1;
-}
+// .confirm{
+//   width:80px;
+//   height:35px;
+//   background-color:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
+//   opacity:1;
+//   border-radius:18px;
+// }
+// .confirm-title{
+//   width:33px;
+//   height:19px;
+//   font-size:14px;
+//   font-family:Microsoft YaHei;
+//   font-weight:bold;
+//   line-height:19px;
+//   color:rgba(255,255,255,1);
+//   letter-spacing:20px;
+//   opacity:1;
+// }
 
-
-}
-
-
-
-
-
+// }
 </style>

@@ -1,37 +1,37 @@
 <template>
- <div class="container">
-   <div >
-     <el-button type="info"  @click="deleteAll" style="margin-top:30px;margin-left:60px;color:black;font-wight:bold">删除</el-button>
-   </div>
-   <div class="table-content">
-      <el-table
+  <div class="container">
+    <div class="main-content">
+      <el-main class="button-head">
+        <el-button type="info"  @click="deleteAll" style="margin-top:30px;margin-left:60px;color:black;font-wight:bold">删除</el-button>
+        <!-- :header-cell-style="{background:'#0058A2'}" -->
+        <div class="table-content">
+            <el-table
             :data="tableData"
             ref="multipleTable"
             @selection-change="changeFun"
-            stripe
             :header-cell-style="{background:'#0058A2'}"
-          >
-            <el-table-column
+            stripe>
+             <el-table-column
               type="selection"
               width="65"
               prop="userId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="number" label="编号"></el-table-column>
-            <el-table-column prop="createDate" label="创建日期"></el-table-column>
-            <el-table-column prop="jobSite" label="作业部位"></el-table-column>
-            <el-table-column prop="workNumber" label="作业人数"></el-table-column>
-            <el-table-column prop="workContent" label="作业内容"></el-table-column>
-            <el-table-column prop="safetyUse" label="安全防护用品配套使用"></el-table-column>
-            <el-table-column prop="speachContent" label="班前讲话内容"></el-table-column>
-            <el-table-column prop="workNum" label="参加活动作业人员名单"></el-table-column>
-            <el-table-column label="视频附件">
+             <el-table-column prop="number" label="编号" width="150"></el-table-column>
+              <el-table-column prop="createDate" label="创建日期" width="120"></el-table-column>
+              <el-table-column prop="jobSite" label="作业部位"  width="120"></el-table-column>
+              <el-table-column prop="workNumber" label="作业人数" width="120"></el-table-column>
+               <el-table-column prop="workContent" label="作业内容"  width="200"></el-table-column>
+                <el-table-column prop="safetyUse" label="安全防护用品配套使用" width="120"></el-table-column>
+                 <el-table-column prop="speachContent" label="班前讲话内容"  width="100"></el-table-column>
+                 <el-table-column prop="workNum" label="参加活动作业人员名单" width="200"></el-table-column>
+             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope" >
               <img src="../../../static/image/shangchuan.png" style="width:26px;height:26px" @click="uploadVideo(scope.row)"/>
               <el-input type="file" placeholder="" hidden="true"></el-input>
               </template>
             </el-table-column>
-            <el-table-column label="操作" style="width:180px">
+            <el-table-column label="操作" style="width:300px" fixed="right">
               <template slot-scope="scope" >
                 <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑
                 </el-button>
@@ -40,13 +40,14 @@
               </template>
             </el-table-column>
           </el-table>
-          <!-- 分页 total  //这是显示总共有多少数据，
+        </div>
+         <!-- 分页 total  //这是显示总共有多少数据，
                     pagesize //显示当前行的条数
                     sizes这是下拉框可以选择的，每选择一行，要展示多少内容
                      :page-sizes="[5, 10, 20, 40]" 下拉选择
                      layout="total, sizes, prev, pager, next, jumper"
           -->
-          <el-pagination style="text-align:center;margin-top:10px"
+          <el-pagination class="page-view"
             background
             @size-change="handleSizeChange"
             :current-page="page"
@@ -58,8 +59,9 @@
             hide-on-single-page
             :total="total"
           ></el-pagination>
-   </div>
-</div>
+      </el-main>
+    </div>
+  </div>
 </template>
 <script>
 export default {
@@ -223,19 +225,68 @@ export default {
 }
 </script>
 <style scoped lang="stylus">
-.container{
-  width:100%;
-  /* height:874px; */
-  background:rgba(255,255,255,1);
-  box-shadow:3px 3px 10px rgba(0,0,0,0.16);
-  opacity:1;
-  border-radius:10px;
-  padding:5px;
+.el-header, .el-footer {
+  background-color: #B3C0D1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
 
-  .table-content{
-    margin-top:30px;
+.el-aside {
+  background-color: #D3DCE6;
+  color: #333;
+  text-align: center;
+  line-height: 200px;
+}
+
+.el-main {
+  padding: 0px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
+  color: #333;
+  opacity: 1;
+  border-radius: 10px;
+  height: 100px;
+
+}
+
+.el-container {
+  margin-bottom: 36px;
+}
+.glry {
+  padding-top: 30px;
+
+  .demo-form-inline {
+    margin-left: 30px;
   }
 
+  .region {
+    margin-left: 60px;
+  }
 
+  el-input {
+    width: 180px;
+  }
+}
+
+.main-content {
+  margin-top: 36px;
+  margin-left :30px;
+  margin-right 30px;
+
+  .button-head {
+    padding-left: 30px;
+    padding-top: 30px;
+    height: 600px;
+  }
+
+  .table-content {
+    margin-top: 30px;
+  }
+
+  .page-view {
+    text-align: center;
+    margin-top: 30px;
+  }
 }
 </style>
