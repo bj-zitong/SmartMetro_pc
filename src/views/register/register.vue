@@ -61,10 +61,6 @@
               style="width:16px;height:16px;margin-left:10px"
             />
           </div>
-
-          <!-- <div  style="display: flex;align-items: center;justify-content: center;background-color:red">
-
-          </div>-->
           <el-button type="primary" class="button-end">
             <span class="button-head-title">注册</span>
           </el-button>

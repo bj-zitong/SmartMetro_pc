@@ -625,12 +625,15 @@ export default {
 
 .table-main {
   margin-top: -30px;
-  height:500px;
+
 
   .table-head {
-    padding-left: 30px;
-    padding-top: 30px;
-    height: 600px;
+    // padding-left: 30px;
+    // padding-top: 30px;
+    height: 500px;
+    // padding-right:30px;
+    padding:30px;
+
 
   .addStyle {
   width: 80px;
@@ -703,6 +706,7 @@ export default {
 
   .table-content {
     margin-top: 30px;
+
   }
 
   .page-end {
