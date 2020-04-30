@@ -40,11 +40,12 @@
             <el-table-column prop="profession" label="审核状态"></el-table-column>
              <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
-                <el-button type="warning" @click="personnelDetailClick(scope.row)">取消</el-button>
+                <el-button type="warning" @click="cancelClick(scope.row)">取消</el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
+    
         <!-- 分页 total  //这是显示总共有多少数据，
                     pagesize //显示当前行的条数
                     sizes这是下拉框可以选择的，每选择一行，要展示多少内容
@@ -393,10 +394,10 @@ export default {
       var ids = this.changeFun();
       console.log(ids);
       var url = "";
-    },
-    personnelDetailClick(){
-      this.dialogFormVisible=true
     }
+    // personnelDetailClick(){
+    //   this.dialogFormVisible=true
+    // }
   }
 };
 </script>
