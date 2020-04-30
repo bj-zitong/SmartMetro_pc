@@ -26,10 +26,17 @@
     <!-- 表格 -->
     <div class="R-L-T table-main">
 		<div style="margin-bottom: 30px;">
-			<el-button @click="add" class="T-H-B-DarkBlue">新增</el-button>
-			<el-button @click="del" class="T-H-B-Grey">删除</el-button>
-			<el-button class="T-H-B-Cyan">导出</el-button>
-			<el-button class="T-H-B-Cyan">导入</el-button>
+			<el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
+			<el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
+			<el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
+            <el-upload
+                style="display:inline-block; margin-left: 10px;"
+                class="upload-demo"
+                action=""
+                :show-file-list="false"
+            >
+			    <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick">导入</el-button>
+            </el-upload>
 		</div>
       <el-table
         ref="multipleTable"
@@ -61,17 +68,17 @@
             <el-button
               class="T-R-B-Green"
               size="mini"
-              @click="handleEdit(scope.$index, scope.row)"
+              @click="editRowClick(scope.$index, scope.row)"
             >编辑</el-button>
             <el-button
               class="T-R-B-Grey"
               size="mini"
-              @click="handleDelete(scope.$index, scope.row)"
+              @click="deleteRowClick(scope.$index, scope.row)"
             >删除</el-button>
             <el-button
               class="T-R-B-Violet"
               size="mini"
-              @click="handleSeeBranch(scope.$index, scope.row)"
+              @click="downRowClick(scope.$index, scope.row)"
             >查看下属</el-button>
           </template>
         </el-table-column>
@@ -113,52 +120,93 @@ export default {
 		}
     };
 	},
-  components: {
-    addDia
-  },
+    components: {
+        addDia
+    },
 	methods: {
 		handleSelectionChange(val) {
 			this.multipleSelection = val;
 		},
-    onScreen() {},
-    add() {
-		isCreate: true
-		console.log(Utils);
-		Utils.$emit("demo");
-    },
-    del() {
-      this.$confirm("确定删除该员工信息吗？", {
-        confirmButtonText: "确定",
-		cancelButtonText: "取消",
-		confirmButtonClass: 'detDel',
-		cancelButtonClass: 'cancelClone',
-		center: true,
-		roundButton: true
-      })
-        .then(res => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-    headClass() {
-      return "text-align: center; height: 60px; background:rgba(0,88,162,1);";
+        onScreen() {},
+        addStaffClick() {
+            isCreate: true
+            console.log(Utils);
+            Utils.$emit("demo");
+        },
+        //  批量删除
+        deleteBatchClick() {
+            this.$confirm("确定删除该员工信息吗？", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                confirmButtonClass: 'detDel',
+                cancelButtonClass: 'cancelClone',
+                center: true,
+                roundButton: true
+            })
+            .then(res => {
+                this.$message({
+                    type: "success",
+                    message: "删除成功!"
+                });
+            })
+            .catch(() => {
+                this.$message({
+                    type: "info",
+                    message: "已取消删除"
+                });
+            });
+        },
+        //  导出    
+        exportStaffClick () {
+
+        },
+        //  导入
+        importStaffClick () {
+
+        },
+        //  表格操作
+        //  编辑
+        editRowClick () {
+
+        },
+        //  删除
+        deleteRowClick () {
+            this.$confirm("确定删除该员工信息吗？", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                confirmButtonClass: 'detDel',
+                cancelButtonClass: 'cancelClone',
+                center: true,
+                roundButton: true
+            })
+            .then(res => {
+                this.$message({
+                    type: "success",
+                    message: "删除成功!"
+                });
+            })
+            .catch(() => {
+                this.$message({
+                    type: "info",
+                    message: "已取消删除"
+                });
+            });
+        },
+        //  下载
+        downRowClick () {
+
+        },
+        headClass() {
+            return "text-align: center; height: 60px; background:rgba(0,88,162,1);";
+        }
     }
-  }
 };
 </script>
 
 <style lang="stylus" scoped>
 .R-L-wrap {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .R-L-S, .R-L-T {

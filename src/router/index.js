@@ -344,15 +344,15 @@ export const constantRouterMap = [
         },
         children: [
             {
-                path: 'dd',
-                name: 'dd',
-                component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
+                path: 'lineUpperTrain',
+                name: 'lineUpperTrain',
+                component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
                 meta: { title: '线上培训记录', icon: '' }
             },
             {
-                path: 'ss',
-                name: 'ss',
-                component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
+                path: 'lineLowerTrain',
+                name: 'lineLowerTrain',
+                component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
                 meta: { title: '线下视频培训记录', icon: '' }
             }
         ]
