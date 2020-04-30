@@ -13,7 +13,42 @@
         <el-button class="btn">出勤天数（工时）/周</el-button>
       </div>
     </el-container>
-    <el-container class="right_echarts"></el-container>
+    <el-container class="right_echarts">
+      <div class="sign">
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+      </div>
+      <div class="sign_classify">
+        <p>工长</p>
+        <p>电梯安装工</p>
+        <p>土方</p>
+        <p>机修长</p>
+        <p>水电工</p>
+        <p>消防安装工</p>
+        <p>结构工</p>
+        <p>筑路工</p>
+        <p>电工</p>
+      </div>
+      <div class="sign_classify_price">
+
+        <p>30%</p>
+         <p>30%</p>
+          <p>30%</p>
+           <p>30%</p>
+            <p>30%</p>
+             <p>30%</p>
+              <p>30%</p>
+               <p>30%</p>
+                <p>30%</p>
+      </div>
+    </el-container>
     <el-container class="bottom_echarts">
       <div id="foreignEcharts" style="width:100%;height: 350px;"></div>
     </el-container>
@@ -46,7 +81,8 @@ export default {
         },
         legend: {
           orient: "vertical",
-          left: 10,
+          left: 100,
+          x: "left",
           data: []
         },
         series: [
@@ -54,6 +90,7 @@ export default {
             name: "访问来源",
             type: "pie",
             radius: ["50%", "70%"],
+            center: ["50%", "45%"],
             avoidLabelOverlap: false,
             // label: {
             //   show: true,
@@ -228,8 +265,10 @@ export default {
 
 .boxbtn {
   width: 200px;
-   margin-top :50px;
-   text-align :center
+  margin-top: 30px;
+  text-align: center;
+  margin-left: 80px;
+
   .btn {
     height: 35px;
     background: rgba(246, 247, 248, 1);
@@ -237,7 +276,56 @@ export default {
     opacity: 1;
     border-radius: 4px;
     font-size: 12px;
-    margin-top :30px
+    margin-top: 30px;
+  }
+}
+
+.quan {
+  width: 25px;
+  height: 25px;
+  background: rgba(255, 255, 255, 1);
+  border: 4px solid rgba(79, 197, 234, 1);
+  opacity: 1;
+  border-radius: 13px;
+}
+
+.right_echarts {
+  .sign {
+    width: 60px;
+    height: 280px;
+   
+     margin-left:111px;
+      margin-top:10px
+    p {
+      width: 25px;
+      height: 25px;
+      background: rgba(255, 255, 255, 1);
+      border: 4px solid rgba(79, 197, 234, 1);
+      opacity: 1;
+      border-radius: 13px;
+      margin-top :10px;
+      
+    }
+  }
+
+  .sign_classify {
+    width: 200px;
+    height: 280px;
+   
+    margin-top :10px;
+    p{
+      margin-top :17px;
+    }
+  }
+
+  .sign_classify_price {
+    width: 80px;
+    height: 280px;
+    
+    margin-top :10px;
+    p{
+      margin-top :17px;
+    }
   }
 }
 </style>

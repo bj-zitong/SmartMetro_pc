@@ -24,7 +24,7 @@ export const constantRouterMap = [
         hidden: true,
         component: Login,
         meta: {
-        title: '登录'
+            title: '登录'
         }
     },
     // 用户注册
@@ -57,12 +57,12 @@ export const constantRouterMap = [
         component: Layout,
         redirect: '/home',
         children: [
-        {
-            path: 'home',
-            name: 'home',
-            component: () => import('@/views/homepage'),
-            meta: { title: '人员智慧管理系统' }
-        }
+            {
+                path: 'home',
+                name: 'home',
+                component: () => import('@/views/homepage'),
+                meta: { title: '人员智慧管理系统' }
+            }
         ]
     },
     {
@@ -70,8 +70,8 @@ export const constantRouterMap = [
         component: Layout,
         hidden: true,
         meta: {
-        icon: 'tickets',
-        title: '个人中心'
+            icon: 'tickets',
+            title: '个人中心'
         },
         children: [
             {
@@ -94,8 +94,8 @@ export const constantRouterMap = [
         component: Layout,
         // alwaysShow: true,
         meta: {
-        icon: 's-order',
-        title: '劳务分包管理'
+            icon: 's-order',
+            title: '劳务分包管理'
         },
         redirect: 'labor_Subcontract',
         children: [
@@ -107,11 +107,11 @@ export const constantRouterMap = [
             }
         ]
     },
-    //ManagerNewlyadded 花名册管理人员新增 PersonnelNewlyadded
+    // ManagerNewlyadded 花名册管理人员新增 PersonnelNewlyadded
     {
         path: '/LabourNewlyadded',
         component: Layout,
-        hidden:true,
+        hidden: true,
         meta: { icon: '', title: '新增劳务' },
         children: [
             {
@@ -125,7 +125,7 @@ export const constantRouterMap = [
     {
         path: '/AddEquipment',
         component: Layout,
-        hidden:true,
+        hidden: true,
         meta: { icon: '', title: '添加设备专用人员' },
         children: [
             {
@@ -137,9 +137,9 @@ export const constantRouterMap = [
         ]
     },
     {
-        path: '/AddOther',
+        path:  '/AddOther',
         component: Layout,
-        hidden:true,
+        hidden: true,
         meta: { icon: '', title: '其他类服务人员' },
         children: [
             {
@@ -153,7 +153,7 @@ export const constantRouterMap = [
     {
         path: '/AddAdministration',
         component: Layout,
-        hidden:true,
+        hidden: true,
         meta: { icon: '', title: '添加管理人员' },
         children: [
             {
@@ -164,335 +164,380 @@ export const constantRouterMap = [
             }
         ]
     },
+
     //班组管理
+    // {
+    //     path: '/team_message',
+    //     component: Layout,
+    //     // alwaysShow: true,
+    //     meta: {
+    //         title: '班组管理',
+    //         icon: 'svg-droplet'
+    //     },
+    //     children: [
+    //         {
+    //             path: 'message',
+    //             name: 'message',
+    //             component: () => import('@/views/team_message/message'),
+    //             meta: { title: '班前信息', icon: '' }
+    //         },
+    //         {
+    //             path: 'talkrecord',
+    //             name: 'talkrecord',
+    //             component: () => import('@/views/team_message/talkrecord'),
+    //             meta: { title: '班前讲话记录', icon: '' }
+    //         }
+    //     ]
+    // },
+     // 花名册
+    // {
+    //     path: '/roster',
+    //     component: Layout,
+    //     alwaysShow: true,
+    //     meta: {
+    //         title: '花名册',
+    //         icon: 'svg-droplet'
+    //     },
+    //     children: [
+    //         {
+    //             path: 'manager',
+    //             name: 'manager',
+    //             component: () => import('@/views/roster/manager'),
+    //             meta: { title: '管理人员', icon: '' }
+    //         },
+    //         {
+    //             path: 'personnel',
+    //             name: 'personnel',
+    //             component: () => import('@/views/roster/personnel'),
+    //             meta: { title: '劳务人员', icon: '' }
+    //         },
+
+    //         {
+    //             path: 'equipmentSpecialist',
+    //             name: 'equipmentSpecialist',
+    //             component: () => import('@/views/roster/equipmentSpecialist'),
+    //             meta: { title: '设备专用人员', icon: '' }
+    //         },
+    //         {
+    //             path: 'otherStaffs',
+    //             name: 'otherStaffs',
+    //             component: () => import('@/views/roster/otherStaffs'),
+    //             meta: { title: '其他服务类人员', icon: '' }
+    //         }
+    //     ]
+    // },
+    // 外来人员
+    // {
+    //     path: '/foreignpersonnel',
+    //     component: Layout,
+    //     meta: {
+    //         icon: 'question',
+    //         title: '外来人员'
+    //     },
+    //     redirect: '/foreignpersonnel/index',
+    //     children: [
+    //         {
+    //             path: 'index',
+    //             name: 'CustomComponent',
+    //             component: () => import('@/views/foreignpersonnel/index'),
+    //             meta: { icon: 'guide', title: '外来人员' }
+    //         }
+    //     ]
+    // },
+    //  技术交底
+    // {
+    //     path: '/trainEducation/skillDisclose',
+    //     component: Layout,
+    //     alwaysShow: true,
+    //     meta: {
+    //         title: '技术交底',
+    //         icon: 'svg-droplet'
+    //     },
+    //     children: [
+    //         {
+    //             path: 'skillDisclose',
+    //             name: 'skillDisclose',
+    //             component: () => import('@/views/trainEducation/skillDisclose/skillDisclose'),
+    //             meta: { title: '技术交底', icon: '' }
+    //         }
+    //     ]
+    // },
+    //  安全技术交底
+    // {
+    //     path: '/trainEducation/securitySkillDisclose',
+    //     component: Layout,
+    //     alwaysShow: true,
+    //     meta: {
+    //         title: '安全技术交底',
+    //         icon: 'svg-droplet'
+    //     },
+    //     children: [
+    //         {
+    //             path: 'securitySkillDisclose',
+    //             name: 'securitySkillDisclose',
+    //             component: () => import('@/views/trainEducation/securitySkillDisclose/securitySkillDisclose'),
+    //             meta: { title: '安全技术交底', icon: '' }
+    //         }
+    //     ]
+    // },
+    //  视频库
+    // {
+    //     path: '/trainEducation/videoLibrary',
+    //     component: Layout,
+    //     alwaysShow: true,
+    //     meta: {
+    //         title: '视频库',
+    //         icon: 'svg-droplet'
+    //     },
+    //     children: [
+    //         {
+    //             path: 'videoLibrary',
+    //             name: 'videoLibrary',
+    //             component: () => import('@/views/trainEducation/videoLibrary/videoLibrary'),
+    //             meta: { title: '视频库', icon: '' }
+    //         }
+    //     ]
+    // },
+    //  试题库
+    // {
+    //     path: '/trainEducation/questionsLibrary',
+    //     component: Layout,
+    //     alwaysShow: true,
+    //     meta: {
+    //         title: '试题库',
+    //         icon: 'svg-droplet'
+    //     },
+    //     children: [
+    //         {
+    //             path: 'questionsLibrary',
+    //             name: 'questionsLibrary',
+    //             component: () => import('@/views/trainEducation/questionsLibrary/questionsLibrary'),
+    //             meta: { title: '试题库', icon: '' }
+    //         }
+    //     ]
+    // },
+    //  成绩统计
+    // {
+    //     path: '/trainEducation/resultStatistics',
+    //     component: Layout,
+    //     alwaysShow: true,
+    //     meta: {
+    //         title: '成绩统计',
+    //         icon: 'svg-droplet'
+    //     },
+    //     children: [
+    //         {
+    //             path: 'resultStatistics',
+    //             name: 'resultStatistics',
+    //             component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
+    //             meta: { title: '成绩统计', icon: '' }
+    //         }
+    //     ]
+    // },
+    //  培训记录
+    // {
+    //     path: '/trainEducation/trainRecord',
+    //     component: Layout,
+    //     alwaysShow: true,
+    //     meta: {
+    //         title: '培训记录',
+    //         icon: 'svg-droplet'
+    //     },
+    //     children: [
+    //         {
+    //             path: 'dd',
+    //             name: 'dd',
+    //             component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
+    //             meta: { title: '线上培训记录', icon: '' }
+    //         },
+    //         {
+    //             path: 'ss',
+    //             name: 'ss',
+    //             component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
+    //             meta: { title: '线下视频培训记录', icon: '' }
+    //         }
+    //     ]
+    // },
+
+    //智慧考勤》出勤记录
     {
-        path: '/team_message',
-        component: Layout,
-        // alwaysShow: true,
-        meta: {
-        title: '班组管理',
-        icon: 'svg-droplet'
-        },
-        children: [
-            {
-                path: 'message',
-                name: 'message',
-                component: () => import('@/views/team_message/message'),
-                meta: { title: '班前信息', icon: '' }
-            },
-            {
-                path: 'talkrecord',
-                name: 'talkrecord',
-                component: () => import('@/views/team_message/talkrecord'),
-                meta: { title: '班前讲话记录', icon: '' }
-            }
-        ]
-    },
-    // 花名册
-    {
-        path: '/roster',
+        path: '/wisdomAttendance/attendanceRecord',
         component: Layout,
         alwaysShow: true,
         meta: {
-        title: '花名册',
-        icon: 'svg-droplet'
+            title: '出勤记录',
+            icon: 'svg-droplet'
         },
         children: [
             {
-                path: 'manager',
+                path: '/manager',
                 name: 'manager',
-                component: () => import('@/views/roster/manager'),
+                component: () => import('@/views/wisdomAttendance/attendanceRecord/manager'),
                 meta: { title: '管理人员', icon: '' }
             },
             {
-                path: 'personnel',
+                path: '/personnel',
                 name: 'personnel',
-                component: () => import('@/views/roster/personnel'),
+                component: () => import('@/views/wisdomAttendance/attendanceRecord/personnel'),
                 meta: { title: '劳务人员', icon: '' }
             },
 
             {
-                path: 'equipmentSpecialist',
+                path: '/equipmentSpecialist',
                 name: 'equipmentSpecialist',
-                component: () => import('@/views/roster/equipmentSpecialist'),
+                component: () => import('@/views/wisdomAttendance/attendanceRecord/equipmentSpecialist'),
                 meta: { title: '设备专用人员', icon: '' }
             },
             {
-                path: 'otherStaffs',
+                path: '/otherStaffs',
                 name: 'otherStaffs',
-                component: () => import('@/views/roster/otherStaffs'),
+                component: () => import('@/views/wisdomAttendance/attendanceRecord/otherStaffs'),
                 meta: { title: '其他服务类人员', icon: '' }
             }
         ]
     },
-    // 外来人员
+    //智慧考勤》出入记录
     {
-        path: '/foreignpersonnel',
-        component: Layout,
-        meta: {
-            icon: 'question',
-            title: '外来人员'
-        },
-        redirect: '/foreignpersonnel/index',
-        children: [
-            {
-                path: 'index',
-                name: 'CustomComponent',
-                component: () => import('@/views/foreignpersonnel/index'),
-                meta: { icon: 'guide', title: '外来人员' }
-            }
-        ]
-    },
-    //  技术交底
-    {
-        path: '/trainEducation/skillDisclose',
+        path: '/wisdomAttendance',
         component: Layout,
         alwaysShow: true,
         meta: {
-        title: '技术交底',
-        icon: 'svg-droplet'
+            title: '出入记录',
+            icon: 'svg-droplet'
         },
         children: [
             {
-                path: 'skillDisclose',
-                name: 'skillDisclose',
-                component: () => import('@/views/trainEducation/skillDisclose/skillDisclose'),
-                meta: { title: '技术交底', icon: '' }
-            }
-        ]
-    },
-    //  安全技术交底
-    {
-        path: '/trainEducation/securitySkillDisclose',
-        component: Layout,
-        alwaysShow: true,
-        meta: {
-        title: '安全技术交底',
-        icon: 'svg-droplet'
-        },
-        children: [
-            {
-                path: 'securitySkillDisclose',
-                name: 'securitySkillDisclose',
-                component: () => import('@/views/trainEducation/securitySkillDisclose/securitySkillDisclose'),
-                meta: { title: '安全技术交底', icon: '' }
-            }
-        ]
-    },
-    //  视频库
-    {
-        path: '/trainEducation/videoLibrary',
-        component: Layout,
-        alwaysShow: true,
-        meta: {
-        title: '视频库',
-        icon: 'svg-droplet'
-        },
-        children: [
-            {
-                path: 'videoLibrary',
-                name: 'videoLibrary',
-                component: () => import('@/views/trainEducation/videoLibrary/videoLibrary'),
-                meta: { title: '视频库', icon: '' }
-            }
-        ]
-    },
-    //  试题库
-    {
-        path: '/trainEducation/questionsLibrary',
-        component: Layout,
-        alwaysShow: true,
-        meta: {
-        title: '试题库',
-        icon: 'svg-droplet'
-        },
-        children: [
-            {
-                path: 'questionsLibrary',
-                name: 'questionsLibrary',
-                component: () => import('@/views/trainEducation/questionsLibrary/questionsLibrary'),
-                meta: { title: '试题库', icon: '' }
-            }
-        ]
-    },
-    //  成绩统计
-    {
-        path: '/trainEducation/resultStatistics',
-        component: Layout,
-        alwaysShow: true,
-        meta: {
-        title: '成绩统计',
-        icon: 'svg-droplet'
-        },
-        children: [
-            {
-                path: 'resultStatistics',
-                name: 'resultStatistics',
-                component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
-                meta: { title: '成绩统计', icon: '' }
-            }
-        ]
-    },
-    //  培训记录
-    {
-        path: '/trainEducation/trainRecord',
-        component: Layout,
-        alwaysShow: true,
-        meta: {
-        title: '培训记录',
-        icon: 'svg-droplet'
-        },
-        children: [
-            {
-                path: 'dd',
-                name: 'dd',
-                component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
-                meta: { title: '线上培训记录', icon: '' }
+                path: '/comeRecord/manager',
+                name: 'manager',
+                component: () => import('@/views/wisdomAttendance/comeRecord/manager'),
+                meta: { title: '管理人员', icon: '' }
             },
             {
-                path: 'ss',
-                name: 'ss',
-                component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
-                meta: { title: '线下视频培训记录', icon: '' }
+                path: '/comeRecord/personnel',
+                name: 'personnel',
+                component: () => import('@/views/wisdomAttendance/comeRecord/personnel'),
+                meta: { title: '劳务人员', icon: '' }
+            },
+            {
+                path: '/comeRecord/otherStaffs',
+                name: 'otherStaffs',
+                component: () => import('@/views/wisdomAttendance/comeRecord/otherStaffs'),
+                meta: { title: '其他服务类人员', icon: '' }
+            },
+            {
+                path: '/comeRecord/equipmentSpecialist',
+                name: 'equipmentSpecialist',
+                component: () => import('@/views/wisdomAttendance/comeRecord/equipmentSpecialist'),
+                meta: { title: '设备专用人员', icon: '' }
+            },
+            {
+                path: '/comeRecord/foreign',
+                name: 'foreign',
+                component: () => import('@/views/wisdomAttendance/comeRecord/foreign'),
+                meta: { title: '外来人员', icon: '' }
+            }
+        ]
+    },
+    //智慧考勤》考勤报表
+    {
+        path: '/thereport',
+        component: Layout,
+
+        meta: {
+            icon: 'svg-layers',
+            title: '考勤报表'
+        },
+        children: [
+            {
+                path: 'menu1',
+                meta: { icon: 'share', title: '详细信息' },
+                alwaysShow: true,
+                // component: Layout,
+                component: () => import('@/views/nested/menu1/index'),
+                children: [
+                    {
+                        path: 'menu1-1',
+                        name: 'menu1-1',
+                        component: () => import('@/views/wisdomAttendance/thereport/personnel'),
+                        meta: { title: '劳务人员', icon: '' }
+                    },
+                    {
+                        path: 'manager',
+                        name: 'manager',
+                        component: () => import('@/views/wisdomAttendance/thereport/manager'),
+                        meta: { title: '管理人员', icon: '' }
+                    },
+                    {
+                        path: 'equipmentSpecialist',
+                        name: 'equipmentSpecialist',
+                        component: () => import('@/views/wisdomAttendance/thereport/equipmentSpecialist'),
+                        meta: { title: '设备专用人员', icon: '' }
+                    },
+                    {
+                        path: 'otherStaffs',
+                        name: 'otherStaffs',
+                        component: () => import('@/views/wisdomAttendance/thereport/otherStaffs'),
+                        meta: { title: '其他服务类人员', icon: '' }
+                    }
+                ]
+            },
+            {
+                path: '/foreign',
+                name: 'foreign',
+                component: () => import('@/views/wisdomAttendance/thereport/foreign'),
+                meta: { icon: 'star-on', title: '统计分析' }
             }
         ]
     },
     
-  //智慧考勤》出勤记录
-  {
-    path: '/wisdomAttendance/attendanceRecord',
-    component: Layout,
-    alwaysShow: true,
-    meta: {
-      title: '出勤记录',
-      icon: 'svg-droplet'
-    },
-    children: [
-      {
-        path: '/manager',
-        name: 'manager',
-        component: () => import('@/views/wisdomAttendance/attendanceRecord/manager'),
-        meta: { title: '管理人员', icon: '' }
-      },
-      {
-        path: '/personnel',
-        name: 'personnel',
-        component: () => import('@/views/wisdomAttendance/attendanceRecord/personnel'),
-        meta: { title: '劳务人员', icon: '' }
-      },
 
-      {
-        path: '/equipmentSpecialist',
-        name: 'equipmentSpecialist',
-        component: () => import('@/views/wisdomAttendance/attendanceRecord/equipmentSpecialist'),
-        meta: { title: '设备专用人员', icon: '' }
-      },
-      {
-        path: '/otherStaffs',
-        name: 'otherStaffs',
-        component: () => import('@/views/wisdomAttendance/attendanceRecord/otherStaffs'),
-        meta: { title: '其他服务类人员', icon: '' }
-      }
-    ]
-  },
-  //智慧考勤》出入记录
-  {
-    path: '/wisdomAttendance',
-    component: Layout,
-    alwaysShow: true,
-    meta: {
-      title: '出入记录',
-      icon: 'svg-droplet'
-    },
-    children: [
-      {
-        path: '/comeRecord/manager',
-        name: 'manager',
-        component: () => import('@/views/wisdomAttendance/comeRecord/manager'),
-        meta: { title: '管理人员', icon: '' }
-      },
-      {
-        path: '/comeRecord/personnel',
-        name: 'personnel',
-        component: () => import('@/views/wisdomAttendance/comeRecord/personnel'),
-        meta: { title: '劳务人员', icon: '' }
-      },
-      {
-        path: '/comeRecord/otherStaffs',
-        name: 'otherStaffs',
-        component: () => import('@/views/wisdomAttendance/comeRecord/otherStaffs'),
-        meta: { title: '其他服务类人员', icon: '' }
-      },
-      {
-        path: '/comeRecord/equipmentSpecialist',
-        name: 'equipmentSpecialist',
-        component: () => import('@/views/wisdomAttendance/comeRecord/equipmentSpecialist'),
-        meta: { title: '设备专用人员', icon: '' }
-      },
-      {
-        path: '/comeRecord/foreign',
-        name: 'foreign',
-        component: () => import('@/views/wisdomAttendance/comeRecord/foreign'),
-        meta: { title: '外来人员', icon: '' }
-      }
-    ]
-  },
-  //智慧考勤》考勤报表
-  {
-    path: '/thereport',
-    component: Layout,
-
-    meta: {
-      icon: 'svg-layers',
-      title: '考勤报表'
-    },
-    children: [
-      {
-        path: 'menu1',
-        meta: { icon: 'share', title: '详细信息' },
+    //诚信管理
+    {
+        path: '/integrityManagement',
+        component: Layout,
         alwaysShow: true,
-        // component: Layout,
-        component: () => import('@/views/nested/menu1/index'),
+        meta: {
+            title: '人员评价',
+            icon: 'svg-droplet'
+        },
         children: [
-          {
-            path: 'menu1-1',
-            name: 'menu1-1',
-            component: () => import('@/views/wisdomAttendance/thereport/personnel'),
-            meta: { title: '劳务人员', icon: '' }
-          },
             {
-            path: 'manager',
-            name: 'manager',
-            component: () => import('@/views/wisdomAttendance/thereport/manager'),
-            meta: { title: '管理人员', icon: '' }
-          },
-          {
-            path: 'equipmentSpecialist',
-            name: 'equipmentSpecialist',
-            component: () => import('@/views/wisdomAttendance/thereport/equipmentSpecialist'),
-            meta: { title: '设备专用人员', icon: '' }
-          },
-          {
-            path: 'otherStaffs',
-            name: 'otherStaffs',
-            component: () => import('@/views/wisdomAttendance/thereport/otherStaffs'),
-            meta: { title: '其他服务类人员', icon: '' }
-          }
+                path: 'personageEvaluate',
+                name: 'personageEvaluate',
+                component: () => import('@/views/integrityManagement/personnelEvaluate/personageEvaluate'),
+                meta: { title: '个人评价', icon: '' }
+            },
+            {
+                path: 'teamEvaluate',
+                name: 'teamEvaluate',
+                component: () => import('@/views/integrityManagement/personnelEvaluate/teamEvaluate'),
+                meta: { title: '班组评价', icon: '' }
+            }
         ]
-      },
-      {
-        path: '/foreign',
-        name: 'foreign',
-        component: () => import('@/views/wisdomAttendance/thereport/foreign'),
-        meta: { icon: 'star-on', title: '统计分析' }
-      }
-    ]
-  }
+    },
+    //黑名单
+    {
+        path: '/blacklist',
+        component: Layout,
+        meta: {
+            icon: 'question',
+            title: '黑名单'
+        },
+        redirect: '/blacklist/blacklist',
+        children: [
+            {
+                path: 'blacklist',
+                name: 'CustomComponent',
+                component: () => import('@/views/integrityManagement/blacklist/blacklist'),
+                meta: { icon: 'guide', title: '黑名单' }
+            }
+        ]
+    }
 ]
 export default new Router({
-  // mode: 'history',  require service support
-  // scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+    // mode: 'history',  require service support
+    // scrollBehavior: () => ({ y: 0 }),
+    routes: constantRouterMap
 })
 export const asyncRouterMap = [
 
