@@ -72,7 +72,7 @@
       </div>
     </div>
     <!-- 新增-->
-    <el-dialog :visible.sync="dialogFormVisible" width="20%"  title="新增班组" :center="true">
+    <el-dialog :visible.sync="dialogFormVisible" width="20%" title="新增班组" :center="true">
       <div class="addUser-content">
         <!-- <div class="button-head">
           <span class="button-head-title"></span>
@@ -118,7 +118,7 @@
       </div>
     </el-dialog>
     <!-- 评价-->
-    <el-dialog title="评价" :visible.sync="dialogVisible" width="20%" :center="true"  top="33vh">
+    <el-dialog title="评价" :visible.sync="dialogVisible" width="20%" :center="true" top="33vh">
       <span slot="footer" class="dialog-footer">
         <el-select
           v-model="evaluated"
@@ -140,7 +140,7 @@
       </span>
     </el-dialog>
     <!--新增讲话-->
-    <el-dialog title="班前讲话记录" :visible.sync="outerVisible"  width="25%" :center="true">
+    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true">
       <div>
         <el-form
           method="post"
@@ -191,8 +191,8 @@
           </div>
         </el-form>
       </div>
-      <el-dialog width="25%" title="选择人员" :visible.sync="innerVisible" append-to-body :center="true">
-        <el-input v-model="checkPerson" placeholder></el-input>
+      <el-dialog width="25%" title="选择人员" :visible.sync="innerVisible" append-to-body>
+        <el-input v-model="checkedCities" placeholder></el-input>
         <el-checkbox
           :indeterminate="isIndeterminate"
           v-model="checkAll"
@@ -200,7 +200,7 @@
         >全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-          <el-checkbox v-for="city in citys" :label="city" :key="city">{{city}}</el-checkbox>
+          <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
         </el-checkbox-group>
       </el-dialog>
       <div slot="footer" class="dialog-footer">
@@ -210,10 +210,10 @@
   </div>
 </template>
 <script>
+ const cityOptions = ['上海', '北京', '广州', '深圳'];
 export default {
   data() {
     return {
-      
       token: null, // token
       // 动态数据
       tableData: [],
@@ -301,9 +301,9 @@ export default {
       ],
       checkPerson: null, //选中的人员
       checkAll: false,
-      checkedCities: ["上海", "北京"],
-      isIndeterminate: true,
-      citys: ['上海', '北京', '广州', '深圳']
+      checkedCities: [],
+      cities: cityOptions,
+      isIndeterminate: true
     };
   },
   created: function() {
@@ -491,15 +491,15 @@ export default {
     cencal() {
       this.dialogFormVisible = false;
     },
-    handleCheckAllChange(val) {
-      this.checkedCities = val ? citys: [];
-      this.isIndeterminate = false;
+   handleCheckAllChange(val) {
+        this.checkedCities = val ? cityOptions : [];
+        this.isIndeterminate = false;
       },
-    handleCheckedCitiesChange(value) {
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-    }
+      handleCheckedCitiesChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.cities.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      }
   }
 };
 </script>
