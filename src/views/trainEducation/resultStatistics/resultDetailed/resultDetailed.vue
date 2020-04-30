@@ -3,11 +3,8 @@
     <!-- 筛选 -->
     <div class="R-L-S screen-form">
       <el-form :inline="true" ref="screenForm" :model="screenForm" class="screen-form-h">
-        <el-form-item label="视频类型">
-          <el-select v-model="screenForm.grouping" placeholder="请选择类型">
-            <el-option label="视频类型1" value="video1"></el-option>
-            <el-option label="视频类型2" value="video2"></el-option>
-          </el-select>
+        <el-form-item label="姓名：">
+          <el-input placeholder="请输入姓名"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onScreen">查询</el-button>
@@ -26,6 +23,7 @@
                 <el-button class="T-H-B-SkyBlue" type="primary" @click="uploadQuestionsClick">上传</el-button>
             </el-upload>
             <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
+            <el-button class="T-H-B-DarkGreen" @click="downBatchClick">下载</el-button>
 		</div>
       <el-table
         ref="multipleTable"
@@ -36,23 +34,38 @@
         style="width: 100%;"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="videoType" label="视频类型"></el-table-column>
-        <el-table-column prop="video" label="视频"></el-table-column>
-        <el-table-column prop="uploadPeople" label="上传者"></el-table-column>
-        <el-table-column prop="establishTime" label="创建时间"></el-table-column>
-        <el-table-column label="操作" width="150" fixed="right">
+        <el-table-column prop="ranking" label="名次"></el-table-column>
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="labour" label="劳务单位"></el-table-column>
+        <el-table-column prop="team" label="所在班组"></el-table-column>
+        <el-table-column prop="major" label="工种"></el-table-column>
+        <el-table-column prop="trainType" label="培训类型"></el-table-column>
+        <el-table-column prop="fraction" label="分数"></el-table-column>
+        <el-table-column prop="testDate" label="考试时间" width="180"></el-table-column>
+        <el-table-column prop="testPaper" label="试卷"></el-table-column>
+        <el-table-column label="关联闸机" fixed="right">
+          <template slot-scope="gate">
+            <el-switch
+                v-model="value"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                @change="changeSwitch(gate.row)"
+            >
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="200" fixed="right">
           <template slot-scope="scope">
             <el-button
-				class="T-R-B-BlackishGreen"
-				size="mini"
-				@click="downRowClick(scope.$index, scope.row)"
-			>下载</el-button>
-			<el-button
-				class="T-R-B-Grey"
-				size="mini"
-				@click="deleteRowClick(scope.$index, scope.row)"
-			>删除</el-button>
+              class="T-R-B-Green"
+              size="mini"
+              @click="editRowClick(scope.$index, scope.row)"
+            >填写分数</el-button>
+            <el-button
+              class="T-R-B-Grey"
+              size="mini"
+              @click="deleteRowClick(scope.$index, scope.row)"
+            >下载试卷</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -67,12 +80,18 @@
 export default {
   data() {
     return {
+        value: true,
 		tableData: [
         {
-			videoType: "视频1",
-			video: "XXX.mp4",
-			uploadPeople: "张三",
-			establishTime: "2020-05-07 11:24:00"
+			ranking: "1",
+			name: "张三",
+			labour: "第一单位",
+			team: "第一班组",
+            major: "电焊工",
+            trainType: "岗前培训",
+            fraction: '79',
+            testDate: '2020-05-07 09:10:00',
+            testPaper: '试卷'
         }
 		],
 		multipleSelection: [],
@@ -90,58 +109,15 @@ export default {
         onScreen() {},
         uploadQuestionsClick () {
 
-		},
-        //  批量删除
-        deleteBatchClick() {
-            this.$confirm("确定删除视频吗？", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                confirmButtonClass: 'detDel',
-                cancelButtonClass: 'cancelClone',
-                center: true,
-                roundButton: true
-            })
-            .then(res => {
-                this.$message({
-                    type: "success",
-                    message: "删除成功!"
-                });
-            })
-            .catch(() => {
-                this.$message({
-                    type: "info",
-                    message: "已取消删除"
-                });
-            });
         },
-        //  表格操作
-        //  下载
-        downRowClick () {
+        deleteBatchClick () {
 
         },
-        //  删除
-        deleteRowClick () {
-            this.$confirm("确定删除视频吗？", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                confirmButtonClass: 'detDel',
-                cancelButtonClass: 'cancelClone',
-                center: true,
-                roundButton: true
-            })
-            .then(res => {
-                this.$message({
-                    type: "success",
-                    message: "删除成功!"
-                });
-            })
-            .catch(() => {
-                this.$message({
-                    type: "info",
-                    message: "已取消删除"
-                });
-            });
+        downBatchClick () {
+
         },
+        //  表格操作
+        
         //  数据表格-表头样式
         headClass() {
             return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";

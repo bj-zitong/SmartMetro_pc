@@ -94,8 +94,8 @@ export const constantRouterMap = [
         component: Layout,
         // alwaysShow: true,
         meta: {
-            icon: 's-order',
-            title: '劳务分包管理'
+        icon: 's-order',
+        title: '劳务公司管理'
         },
         redirect: 'labor_Subcontract',
         children: [
@@ -103,7 +103,7 @@ export const constantRouterMap = [
                 path: 'labor_Subcontract',
                 name: 'labor_Subcontract',
                 component: () => import('@/views/labor_Subcontract/index'),
-                meta: { icon: 's-order', title: '劳务分包管理' }
+                meta: { icon: 's-order', title: '劳务公司管理' }
             }
         ]
     },
@@ -398,7 +398,67 @@ export const constantRouterMap = [
     },
     //智慧考勤》出入记录
     {
-        path: '/wisdomAttendance',
+        path: '/foreignpersonnel',
+        component: Layout,
+        meta: {
+            icon: 'question',
+            title: '外来人员'
+        },
+        redirect: '/foreignpersonnel/index',
+        children: [
+            {
+                path: 'index',
+                name: 'CustomComponent',
+                component: () => import('@/views/foreignpersonnel/index'),
+                meta: { icon: 'guide', title: '外来人员' }
+            }
+        ]
+    },
+    //  实时预览
+    {
+        path: '/testTemperature/realTimePreview',
+        component: Layout,
+        alwaysShow: true,
+        meta: {
+        title: '实时预览',
+            icon: 'svg-droplet'
+        },
+        children: [
+            {
+                path: 'realTimePreview',
+                name: 'realTimePreview',
+                component: () => import('@/views/testTemperature/realTimePreview/realTimePreview'),
+                meta: { title: '实时预览', icon: '' }
+            }
+        ]
+    },
+    //  预警事件
+    {
+        path: '/testTemperature/warningEvent',
+        component: Layout,
+        alwaysShow: true,
+        meta: {
+        title: '预警事件',
+            icon: 'svg-droplet'
+        },
+        children: [
+            {
+                path: 'highTemperature',
+                name: 'highTemperature',
+                component: () => import('@/views/testTemperature/warningEvent/highTemperature/highTemperature'),
+                meta: { title: '高温预警', icon: '' }
+            },
+            {
+                path: 'notWearMask',
+                name: 'notWearMask',
+                component: () => import('@/views/testTemperature/warningEvent/notWearMask/notWearMask'),
+                meta: { title: '未佩戴口罩', icon: '' }
+            }
+        ]
+    },
+    //  技术交底
+    {
+        path: '/trainEducation/skillDisclose',
         component: Layout,
         alwaysShow: true,
         meta: {
@@ -526,13 +586,166 @@ export const constantRouterMap = [
         redirect: '/blacklist/blacklist',
         children: [
             {
-                path: 'blacklist',
-                name: 'CustomComponent',
-                component: () => import('@/views/integrityManagement/blacklist/blacklist'),
-                meta: { icon: 'guide', title: '黑名单' }
+                path: 'lineLowerTrain',
+                name: 'lineLowerTrain',
+                component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
+                meta: { title: '线下培训记录', icon: '' }
+            },
+            {
+                path: 'lineUpperTrain',
+                name: 'lineUpperTrain',
+                component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
+                meta: { title: '线上视频培训记录', icon: '' }
             }
         ]
-    }
+    },
+
+  //智慧考勤》出勤记录
+  {
+    path: '/wisdomAttendance/attendanceRecord',
+    component: Layout,
+    alwaysShow: true,
+    meta: {
+      title: '出勤记录',
+      icon: 'svg-droplet'
+    },
+    children: [
+      {
+        path: '/manager',
+        name: 'manager',
+        component: () => import('@/views/wisdomAttendance/attendanceRecord/manager'),
+        meta: { title: '管理人员', icon: '' }
+      },
+      {
+        path: '/personnel',
+        name: 'personnel',
+        component: () => import('@/views/wisdomAttendance/attendanceRecord/personnel'),
+        meta: { title: '劳务人员', icon: '' }
+      },
+
+      {
+        path: '/equipmentSpecialist',
+        name: 'equipmentSpecialist',
+        component: () => import('@/views/wisdomAttendance/attendanceRecord/equipmentSpecialist'),
+        meta: { title: '设备专用人员', icon: '' }
+      },
+      {
+        path: '/otherStaffs',
+        name: 'otherStaffs',
+        component: () => import('@/views/wisdomAttendance/attendanceRecord/otherStaffs'),
+        meta: { title: '其他服务类人员', icon: '' }
+      }
+    ]
+  },
+  //智慧考勤》出入记录
+  {
+    path: '/wisdomAttendance',
+    component: Layout,
+    alwaysShow: true,
+    meta: {
+      title: '出入记录',
+      icon: 'svg-droplet'
+    },
+    children: [
+      {
+        path: '/comeRecord/manager',
+        name: 'manager',
+        component: () => import('@/views/wisdomAttendance/comeRecord/manager'),
+        meta: { title: '管理人员', icon: '' }
+      },
+      {
+        path: '/comeRecord/personnel',
+        name: 'personnel',
+        component: () => import('@/views/wisdomAttendance/comeRecord/personnel'),
+        meta: { title: '劳务人员', icon: '' }
+      },
+      {
+        path: '/comeRecord/otherStaffs',
+        name: 'otherStaffs',
+        component: () => import('@/views/wisdomAttendance/comeRecord/otherStaffs'),
+        meta: { title: '其他服务类人员', icon: '' }
+      },
+      {
+        path: '/comeRecord/equipmentSpecialist',
+        name: 'equipmentSpecialist',
+        component: () => import('@/views/wisdomAttendance/comeRecord/equipmentSpecialist'),
+        meta: { title: '设备专用人员', icon: '' }
+      },
+      {
+        path: '/comeRecord/foreign',
+        name: 'foreign',
+        component: () => import('@/views/wisdomAttendance/comeRecord/foreign'),
+        meta: { title: '外来人员', icon: '' }
+      }
+    ]
+  },
+  //智慧考勤》考勤报表
+  // {
+  //   path: '/thereport',
+  //   component: Layout,
+
+  //   meta: {
+  //     icon: 'svg-layers',
+  //     title: '考勤报表'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'menu1',
+  //       meta: { icon: 'share', title: '详细信息' },
+  //       alwaysShow: true,
+  //       // component: Layout,
+  //       component: () => import('@/views/nested/menu1/index'),
+  //       children: [
+  //         {
+  //           path: 'menu1-1',
+  //           name: 'menu1-1',
+  //           component: () => import('@/views/wisdomAttendance/thereport/personnel'),
+  //           meta: { title: '劳务人员', icon: '' }
+  //         },
+  //           {
+  //           path: 'manager',
+  //           name: 'manager',
+  //           component: () => import('@/views/wisdomAttendance/thereport/manager'),
+  //           meta: { title: '管理人员', icon: '' }
+  //         },
+  //         {
+  //           path: 'equipmentSpecialist',
+  //           name: 'equipmentSpecialist',
+  //           component: () => import('@/views/wisdomAttendance/thereport/equipmentSpecialist'),
+  //           meta: { title: '设备专用人员', icon: '' }
+  //         },
+  //         {
+  //           path: 'otherStaffs',
+  //           name: 'otherStaffs',
+  //           component: () => import('@/views/wisdomAttendance/thereport/otherStaffs'),
+  //           meta: { title: '其他服务类人员', icon: '' }
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       path: '/foreign',
+  //       name: 'foreign',
+  //       component: () => import('@/views/wisdomAttendance/thereport/foreign'),
+  //       meta: { icon: 'star-on', title: '统计分析' }
+  //     },
+         // 工友须知
+    {
+      path: '/workmateNotice',
+      component: Layout,
+      meta: {
+          icon: 'question',
+          title: '工友须知'
+      },
+      redirect: '/WorkmateNotice/workmateNotice',
+      children: [
+          {
+              path: 'index',
+              name: 'CustomComponent',
+              component: () => import('@/views/WorkmateNotice/workmateNotice'),
+              meta: { icon: 'guide', title: '工友须知' }
+          }
+      ]
+  }
 ]
 export default new Router({
     // mode: 'history',  require service support
