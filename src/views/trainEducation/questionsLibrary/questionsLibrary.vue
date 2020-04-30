@@ -1,4 +1,5 @@
 <template>
+<!-- 试题库 -->
 <div class="main-box">
     <div class="min-box">
         <div style="margin-bottom: 30px;">
@@ -158,11 +159,7 @@ export default {
     padding: 38px 30px;
 }
 </style>
-<style lang="stylus">
-.el-table__row td{
-    text-align: center;
-}
-</style>
+
 <style lang="stylus">
 .el-message-box{
 	width:350px;
@@ -173,6 +170,9 @@ export default {
 }
 .el-message-box__content{
 	margin-bottom : 25px;
+}
+.el-table__row td{
+    text-align: center;
 }
 .detDel{
 	background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);

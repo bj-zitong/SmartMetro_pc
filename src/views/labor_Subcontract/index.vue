@@ -3,10 +3,10 @@
     <!-- 筛选 -->
     <div class="R-L-S screen-form">
       <el-form :inline="true" ref="screenForm" :model="screenForm" class="screen-form-h">
-        <el-form-item label="劳务分包：">
-          <el-select v-model="screenForm.grouping" placeholder="请选择分组">
-            <el-option label="劳务分包一组" value="shanghai"></el-option>
-            <el-option label="劳务分包二组" value="beijing"></el-option>
+        <el-form-item label="劳务公司：">
+          <el-select v-model="screenForm.grouping" placeholder="请选择劳务公司">
+            <el-option label="劳务公司1" value="shanghai"></el-option>
+            <el-option label="劳务公司2" value="beijing"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="负责人：">
@@ -78,7 +78,7 @@
             <el-button
               class="T-R-B-Violet"
               size="mini"
-              @click="downRowClick(scope.$index, scope.row)"
+              @click="seeSubRowClick(scope.$index, scope.row)"
             >查看下属</el-button>
           </template>
         </el-table-column>
@@ -192,12 +192,13 @@ export default {
                 });
             });
         },
-        //  下载
-        downRowClick () {
+        //  查看下属
+        seeSubRowClick () {
 
         },
+        //  数据表格-表头样式
         headClass() {
-            return "text-align: center; height: 60px; background:rgba(0,88,162,1);";
+            return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
         }
     }
 };

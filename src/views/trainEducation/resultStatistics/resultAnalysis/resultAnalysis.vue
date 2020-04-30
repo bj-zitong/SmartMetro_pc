@@ -1,4 +1,5 @@
 <template>
+<!-- 成績分析 -->
     <div class="main-box">
         <div class="echarts-box">
             <div id="myChart" :style="{width: '90%', height: '500px'}"></div>
@@ -116,5 +117,30 @@ export default {
     box-shadow:3px 3px 10px rgba(112,112,112,0.16);
     opacity:1;
     border-radius:10px;
+}
+</style>
+
+<style lang="stylus">
+.el-message-box{
+	width:350px;
+	height:200px;
+	background:rgba(255,255,255,1);
+	opacity:1;
+	border-radius:10px;
+}
+.el-message-box__content{
+	margin-bottom : 25px;
+}
+.el-table__row td{
+    text-align: center;
+}
+.detDel{
+	background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
+}
+.el-message-box__btns button:nth-child(2) {
+	margin-left: 56px;
+}
+.cancelClone{
+	background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
 }
 </style>

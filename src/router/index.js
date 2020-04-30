@@ -95,7 +95,7 @@ export const constantRouterMap = [
         // alwaysShow: true,
         meta: {
         icon: 's-order',
-        title: '劳务分包管理'
+        title: '劳务公司管理'
         },
         redirect: 'labor_Subcontract',
         children: [
@@ -103,7 +103,7 @@ export const constantRouterMap = [
                 path: 'labor_Subcontract',
                 name: 'labor_Subcontract',
                 component: () => import('@/views/labor_Subcontract/index'),
-                meta: { icon: 's-order', title: '劳务分包管理' }
+                meta: { icon: 's-order', title: '劳务公司管理' }
             }
         ]
     },
@@ -243,6 +243,48 @@ export const constantRouterMap = [
             }
         ]
     },
+    //  实时预览
+    {
+        path: '/testTemperature/realTimePreview',
+        component: Layout,
+        alwaysShow: true,
+        meta: {
+        title: '实时预览',
+            icon: 'svg-droplet'
+        },
+        children: [
+            {
+                path: 'realTimePreview',
+                name: 'realTimePreview',
+                component: () => import('@/views/testTemperature/realTimePreview/realTimePreview'),
+                meta: { title: '实时预览', icon: '' }
+            }
+        ]
+    },
+    //  预警事件
+    {
+        path: '/testTemperature/warningEvent',
+        component: Layout,
+        alwaysShow: true,
+        meta: {
+        title: '预警事件',
+            icon: 'svg-droplet'
+        },
+        children: [
+            {
+                path: 'highTemperature',
+                name: 'highTemperature',
+                component: () => import('@/views/testTemperature/warningEvent/highTemperature/highTemperature'),
+                meta: { title: '高温预警', icon: '' }
+            },
+            {
+                path: 'notWearMask',
+                name: 'notWearMask',
+                component: () => import('@/views/testTemperature/warningEvent/notWearMask/notWearMask'),
+                meta: { title: '未佩戴口罩', icon: '' }
+            }
+        ]
+    },
     //  技术交底
     {
         path: '/trainEducation/skillDisclose',
@@ -326,10 +368,16 @@ export const constantRouterMap = [
         },
         children: [
             {
-                path: 'resultStatistics',
-                name: 'resultStatistics',
-                component: () => import('@/views/trainEducation/resultStatistics/resultStatistics'),
-                meta: { title: '成绩统计', icon: '' }
+                path: 'resultAnalysis',
+                name: 'resultAnalysis',
+                component: () => import('@/views/trainEducation/resultStatistics/resultAnalysis/resultAnalysis'),
+                meta: { title: '统计分析', icon: '' }
+            },
+            {
+                path: 'resultDetailed',
+                name: 'resultDetailed',
+                component: () => import('@/views/trainEducation/resultStatistics/resultDetailed/resultDetailed'),
+                meta: { title: '统计详情', icon: '' }
             }
         ]
     },
@@ -344,16 +392,16 @@ export const constantRouterMap = [
         },
         children: [
             {
-                path: 'lineUpperTrain',
-                name: 'lineUpperTrain',
-                component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
-                meta: { title: '线上培训记录', icon: '' }
-            },
-            {
                 path: 'lineLowerTrain',
                 name: 'lineLowerTrain',
                 component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
-                meta: { title: '线下视频培训记录', icon: '' }
+                meta: { title: '线下培训记录', icon: '' }
+            },
+            {
+                path: 'lineUpperTrain',
+                name: 'lineUpperTrain',
+                component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
+                meta: { title: '线上视频培训记录', icon: '' }
             }
         ]
     },

@@ -60,7 +60,11 @@ a:hover {
 p {
   margin: 0;
 }
-
+ul, ol, li{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 .components-container {
   margin: 20px 30px;
 }
@@ -78,7 +82,17 @@ p {
   padding: 32px 30px;
   margin-bottom: 30px;
 }
-
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.clearfix::after{
+  display: block;
+  content: "";
+  clear: both;
+}
 /* 
 表格头部按钮
 T 表格 H 头部 B 按钮 - 颜色
