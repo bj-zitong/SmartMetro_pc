@@ -94,25 +94,25 @@
       </el-main>
     </div>
     <!--新增-->
-    <el-dialog title="技术交底" :visible.sync="dialogFormVisible" width="450px" center="true">
+    <el-dialog title="技术交底" :visible.sync="dialogFormVisible" width="450px" :center="true" top="0vh">
       <el-form :model="form">
-        <el-form-item label="工程名称" :label-width="formLabelWidth">
+        <el-form-item label="工程名称">
           <el-input v-model="form.projectName"></el-input>
         </el-form-item>
-        <el-form-item label="交底时间" :label-width="formLabelWidth">
+        <el-form-item label="交底时间">
           <el-date-picker v-model="form.skillDate" type="date" placeholder="选择交底时间"></el-date-picker>
         </el-form-item>
-        <el-form-item label="单位名称" :label-width="formLabelWidth">
+        <el-form-item label="单位名称">
           <el-input v-model="form.companyName"></el-input>
         </el-form-item>
-        <el-form-item label="分项工程名称" :label-width="formLabelWidth">
+        <el-form-item label="分项工程名称">
           <el-input v-model="form.breachProject"></el-input>
         </el-form-item>
-        <el-form-item label="交底提要" :label-width="formLabelWidth">
+        <el-form-item label="交底提要">
           <el-input v-model="form.tellAbstract"></el-input>
         </el-form-item>
         <el-form-item label>
-          <el-input type="textarea" :rows="2" placeholder="请输入交底内容" v-model="form.content"></el-input>
+          <el-input type="textarea" :rows="6" placeholder="请输入交底内容" v-model="form.content"></el-input>
         </el-form-item>
         <el-form-item label="交底人">
           <el-input v-model="form.tellPerson"></el-input>
@@ -122,8 +122,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addSkillClick('form')">确 定</el-button>
+        <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
+        <el-button type="primary" @click="addSkillClick('form')" style="border-radius:18px">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -361,5 +361,17 @@ export default {
   .page-end {
     text-align: center;
   }
+}
+  .cancel-style{
+    border-radius:18px;
+    width:80px;
+    height:35px;
+    background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
+    opacity:1;
+  }
+</style>
+<style lang="stylus">
+.el-dialog__header {
+  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
 }
 </style>

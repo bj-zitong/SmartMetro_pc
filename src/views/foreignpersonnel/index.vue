@@ -83,7 +83,7 @@
     </div>
     <!--新增-->
     <div style="text-align:center">
-      <el-dialog :visible.sync="dialogFormVisible" style="width:45%;center:true" title="外来人员登记">
+      <el-dialog :visible.sync="dialogFormVisible" style="width:45%;center:true;left:28%" title="外来人员登记">
         <div class="login_box">
           <el-form
             method="post"
@@ -139,8 +139,8 @@
               ></el-date-picker>
             </el-form-item>
             <div class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="addUser('form')">确 定</el-button>
+              <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
+              <el-button type="primary" @click="addUser('form')" style="border-radius:18px">确 定</el-button>
             </div>
           </el-form>
         </div>
@@ -585,7 +585,6 @@ export default {
   font-size: 14px;
   font-family: Microsoft YaHei;
   font-weight: bold;
-  // line-height: 19px;
   color: rgba(99, 99, 99, 1);
   opacity: 1;
 }
@@ -606,7 +605,6 @@ export default {
   font-size: 14px;
   font-family: Microsoft YaHei;
   font-weight: bold;
-  // line-height: 19px;
   color: rgba(255, 255, 255, 1);
   opacity: 1;
 }
@@ -618,7 +616,6 @@ export default {
       font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: bold;
-      line-height: 19px;
       color: rgba(255, 255, 255, 1);
       opacity: 1;
     }
@@ -641,7 +638,6 @@ export default {
       font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: bold;
-      line-height: 19px;
       color: rgba(99, 99, 99, 1);
       opacity: 1;
     }
@@ -664,7 +660,6 @@ export default {
       font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: bold;
-      line-height: 19px;
       color: rgba(255, 255, 255, 1);
       opacity: 1;
     }
@@ -679,6 +674,13 @@ export default {
     margin-top: 30px;
   }
 }
+  .cancel-style{
+    border-radius:18px;
+    width:80px;
+    height:35px;
+    background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
+    opacity:1;
+  }
 </style>
 
 <style lang="stylus">

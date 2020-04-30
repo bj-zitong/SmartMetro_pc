@@ -15,11 +15,15 @@
       </div>
     </div>
     <div class="container-content">
-      <div style="margin-top:30px;margin-left:60px;height:60px;width:100%;">
-        <el-button @click="dialogFormVisible = true" class="addStyle" style="margin-top:30px">
+      <div style="margin-top:30px;margin-left:30px;height:60px;width:100%;">
+        <el-button @click="dialogFormVisible = true" class="addStyle">
           <span class="addStyle-title">新增</span>
         </el-button>
-        <el-button type="info" @click="deleteAll" style="color:black;font-wight:bold">删除</el-button>
+        <el-button
+          type="info"
+          @click="deleteAll"
+          style="color:black;font-wight:bold;margin-left:15px;"
+        >删除</el-button>
       </div>
 
       <div class="table-content">
@@ -68,7 +72,7 @@
       </div>
     </div>
     <!-- 新增-->
-    <el-dialog :visible.sync="dialogFormVisible" width="20%" center="true" title="新增班组">
+    <el-dialog :visible.sync="dialogFormVisible" width="20%"  title="新增班组" :center="true">
       <div class="addUser-content">
         <!-- <div class="button-head">
           <span class="button-head-title"></span>
@@ -106,17 +110,22 @@
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
             <div class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="addClass('form')">确 定</el-button>
-            </div> 
+              <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
+              <el-button type="primary" @click="addClass('form')" style="border-radius:18px">确 定</el-button>
+            </div>
           </el-form>
         </div>
       </div>
     </el-dialog>
     <!-- 评价-->
-    <el-dialog title="评价" :visible.sync="dialogVisible" width="35%" style="center:true">
+    <el-dialog title="评价" :visible.sync="dialogVisible" width="20%" :center="true"  top="33vh">
       <span slot="footer" class="dialog-footer">
-        <el-select v-model="evaluated" placeholder="请选择评价等级" @change="selectEvaluate">
+        <el-select
+          v-model="evaluated"
+          placeholder="请选择评价等级"
+          @change="selectEvaluate"
+          style="margin-bottom:25px;"
+        >
           <el-option
             v-for="item in evaluatLevel"
             :key="item.id"
@@ -124,9 +133,79 @@
             :value="item.id"
           ></el-option>
         </el-select>
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="evaluate()">确 定</el-button>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false" class="cancel-style">取 消</el-button>
+          <el-button type="primary" @click="evaluate()" style="border-radius:18px">确 定</el-button>
+        </div>
       </span>
+    </el-dialog>
+    <!--新增讲话-->
+    <el-dialog title="班前讲话记录" :visible.sync="outerVisible"  width="25%" :center="true">
+      <div>
+        <el-form
+          method="post"
+          enctype="multipart/form-data"
+          ref="formSpeech"
+          :rules="formSpeechRules"
+          :model="formSpeech"
+          action="http://192.168.1.164:8001/auth/user/baseUser"
+        >
+          <el-form-item prop="jobsite" label="作业部位:">
+            <el-input v-model="formSpeech.jobsite" placeholder="作业部位"></el-input>
+          </el-form-item>
+          <el-form-item prop="jobNum" label="作业人数：">
+            <el-input v-model="formSpeech.jobNum" placeholder="作业人数"></el-input>
+          </el-form-item>
+          <el-form-item label="安全防护用品配套使用：" prop="protective">
+            <el-select
+              v-model="formSpeech.protective"
+              placeholder="请选择"
+              @change="selectProtective"
+              hidden="true"
+            >
+              <el-option
+                v-for="item in protectives"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="作业内容:" prop="speachContent">
+            <el-input
+              type="textarea"
+              :rows="6"
+              placeholder="作业内容"
+              v-model="formSpeech.speachContent"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="班前讲话内容:" prop="classContent">
+            <el-input type="textarea" :rows="6" placeholder="内容" v-model="formSpeech.classContent"></el-input>
+          </el-form-item>
+          <el-form-item label="参加活动人员名单:" prop="classContent">
+            <el-button type="primary" @click="innerVisible = true">点击选择</el-button>
+          </el-form-item>
+          <div class="dialog-footer">
+            <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
+            <el-button type="primary" @click="addClass('form')" style="border-radius:18px">确 定</el-button>
+          </div>
+        </el-form>
+      </div>
+      <el-dialog width="25%" title="选择人员" :visible.sync="innerVisible" append-to-body :center="true">
+        <el-input v-model="checkPerson" placeholder></el-input>
+        <el-checkbox
+          :indeterminate="isIndeterminate"
+          v-model="checkAll"
+          @change="handleCheckAllChange"
+        >全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+          <el-checkbox v-for="city in citys" :label="city" :key="city">{{city}}</el-checkbox>
+        </el-checkbox-group>
+      </el-dialog>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="outerVisible = false">取 消</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -134,6 +213,7 @@
 export default {
   data() {
     return {
+      
       token: null, // token
       // 动态数据
       tableData: [],
@@ -146,6 +226,8 @@ export default {
       },
       dialogFormVisible: false, //新增
       dialogVisible: false, //评价
+      outerVisible: false, //新增讲话
+      innerVisible: false, //二层
       formClass: {
         projectName: "",
         groupName: "",
@@ -186,7 +268,42 @@ export default {
         { id: 2, name: "良" },
         { id: 3, name: "差" }
       ],
-      evaluated: null //选中的评价等级
+      evaluated: null, //选中的评价等级
+      formSpeech: {
+        //班前讲话
+        jobsite: "",
+        jobNum: null,
+        protective: null,
+        speachContent: "",
+        classContent: "",
+        numbers: null
+      },
+      formSpeechRules: {
+        jobsite: [
+          { required: true, message: "请输入作业部位", trigger: "blur" }
+        ],
+        jobNum: [
+          { required: true, message: "请输入作业人数", trigger: "blur" }
+        ],
+        protective: [{ required: true, message: "请选择", trigger: "blur" }],
+        speachContent: [
+          { required: true, message: "请输入作业内容", trigger: "blur" }
+        ],
+        classContent: [
+          { required: true, message: "请输入班前讲话内容", trigger: "blur" }
+        ]
+      },
+      protectives: [
+        { id: "", name: "请选择" },
+        { id: 1, name: "xxxxxx" },
+        { id: 2, name: "kkkkkk" },
+        { id: 3, name: "tttttt" }
+      ],
+      checkPerson: null, //选中的人员
+      checkAll: false,
+      checkedCities: ["上海", "北京"],
+      isIndeterminate: true,
+      citys: ['上海', '北京', '广州', '深圳']
     };
   },
   created: function() {
@@ -298,6 +415,14 @@ export default {
       });
       this.form.profession = obj.id;
     },
+    //选择下拉安全用品
+    selectProtective(vid) {
+      let obj = {};
+      obj = this.protectives.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.formSpeech.protective = obj.id;
+    },
     selectEvaluate(vid) {
       let obj = {};
       obj = this.evaluatLevel.find(item => {
@@ -360,9 +485,20 @@ export default {
       this.dialogVisible = true;
     },
     //讲话
-    addSpeech() {},
+    addSpeech(row) {
+      this.outerVisible = true;
+    },
     cencal() {
       this.dialogFormVisible = false;
+    },
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? citys: [];
+      this.isIndeterminate = false;
+      },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
     }
   }
 };
@@ -409,21 +545,27 @@ export default {
       font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: bold;
-      line-height: 19px;
       color: rgba(255, 255, 255, 1);
       opacity: 1;
     }
   }
 
   .table-content {
-    margin-top: 30px;
+    margin-top: 10px;
   }
 }
 
 .dialog-footer {
-  // float: right ;
   text-align: center;
   margin-top: 20px;
+}
+
+.cancel-style {
+  border-radius: 18px;
+  width: 80px;
+  height: 35px;
+  background: linear-gradient(180deg, rgba(225, 225, 225, 1) 0%, rgba(190, 190, 190, 1) 100%);
+  opacity: 1;
 }
 </style>
 <style lang="stylus">
