@@ -26,8 +26,8 @@
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
-            :header-cell-style="{background:'#0058A2'}"
-            style="width: 98%"
+            :header-cell-style="headClass"
+            style="width: 987"
           >
             <el-table-column
               type="selection"
@@ -88,6 +88,7 @@
   </div>
 </template>
 <script>
+import { headClass } from "@/utils";
 export default {
   data() {
     return {
@@ -120,6 +121,7 @@ export default {
           }
         ]
       },
+      headClass:headClass,
       value1: "",
       value2: "",
       token: null, // token

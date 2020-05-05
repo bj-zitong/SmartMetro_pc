@@ -321,5 +321,15 @@ F-Grey  灰色
   background:linear-gradient(180deg,rgb(201, 200, 200) 0%,rgb(150, 149, 149) 100%);
   color:rgba(99,99,99,1);
 }
+.F-black{
+  background:#000;
+  color: #fff;
+  border: none;
+}
+.F-black:hover, .F-black:focus{
+  background:#000;
+  color: #fff;
+  border: none;
+}
 
 

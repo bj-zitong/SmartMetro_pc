@@ -154,7 +154,7 @@
                     <li>外来人员</li>
                   </ul>
                 </div>
-                <el-button type="primary" round icon="el-icon-view">质量安全管理</el-button>
+                <el-button type="primary" icon="el-icon-view">质量安全管理</el-button>
               </div>
             </el-col>
           </el-row>

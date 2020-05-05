@@ -3,82 +3,80 @@
     <el-main class="main">
       <p>添加设备专用人员</p>
       <div class="AddEquipment_form">
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form
+          :label-position="labelPosition"
+          label-width="160px"
+          :model="form"
+          :rules="rules"
+          ref="form"
+        >
           <el-col :span="10">
-            <el-form-item label="公司名称">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="公司名称" prop="corporateName">
+              <el-input v-model="form.corporateName" placeholder="请输入公司名称"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="姓名">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="姓名" prop="name">
+              <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="年龄">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="年龄" prop="age">
+              <el-input v-model="form.age" placeholder="请输入年龄"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="性别">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="性别" prop="gender">
+              <el-input v-model="form.gender" placeholder="请输入性别"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="手机号码">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="手机号码" prop="phoneNumber">
+              <el-input v-model="form.phoneNumber" placeholder="请输入手机号码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="专业">
-              <el-input v-model="form.name"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="证件类型">
-              <el-select v-model="form.region" placeholder="证件等级">
-                <el-option label="身份证" value="shanghai"></el-option>
-                <el-option label="护照" value="beijing"></el-option>
+            <el-form-item label="证件类型" prop="documentType">
+              <el-select v-model="form.documentType" placeholder="请选择证件类型">
+                <el-option label="身份证" value="id"></el-option>
+                <el-option label="护照" value="passport"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
-            <el-form-item label="政治面貌">
-              <el-select v-model="form.region" placeholder="政治面貌">
-                <el-option label="身份证" value="shanghai"></el-option>
-                <el-option label="护照" value="beijing"></el-option>
-              </el-select>
+          <el-col :span="10">
+            <el-form-item label="政治面貌" prop="politicalOutlook">
+              <el-input v-model="form.politicalOutlook" placeholder="请输入政治面貌"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="证件编码" prop="certificateCode">
+              <el-input v-model="form.certificateCode" placeholder="请输入证件编码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="20">
-            <el-form-item label="证件编码">
-              <el-input v-model="form.name"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="20">
-            <el-form-item label="籍贯">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="籍贯" prop="nativePlace">
+              <el-input v-model="form.nativePlace" placeholder="请输入籍贯"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="政治面貌">
-              <el-select v-model="form.region" placeholder="政治面貌">
-                <el-option label="身份证" value="shanghai"></el-option>
-                <el-option label="护照" value="beijing"></el-option>
+            <el-form-item label="职务" prop="post">
+              <el-select v-model="form.post" placeholder="请选择职务">
+                <el-option label="身份证" value="id"></el-option>
+                <el-option label="护照" value="passport"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="籍贯">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="合同名称" prop="contractName">
+              <el-input v-model="form.contractName" placeholder="请输入合同名称"></el-input>
             </el-form-item>
           </el-col>
-           <div style="float:right">
-              <div style="margin-top:50px">
-                <el-button type="primary" round style="background:#ccc;border:1px solid #ccc">取消</el-button>
-                <el-button type="primary" round>提交</el-button>
-              </div>
+          <div style="float:right">
+            <div style="margin-top:50px">
+              <el-button type="primary" round style="background:#ccc;border:1px solid #ccc">取消</el-button>
+              <el-button type="primary" round @click="submitForm('form')">提交</el-button>
             </div>
+          </div>
         </el-form>
       </div>
     </el-main>
@@ -88,73 +86,52 @@
 export default {
   data() {
     return {
-      activeName: "second",
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+      labelPosition: "left",
+      form:{
+
       },
-      //日历选择器
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [
-          {
-            text: "今天",
-            onClick(picker) {
-              picker.$emit("pick", new Date());
-            }
-          },
-          {
-            text: "昨天",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            }
-          },
-          {
-            text: "一周前",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            }
-          }
+      rules: {
+        corporateName: [
+          { required: true, message: "请输入公司名称", trigger: "blur" }
+        ],
+        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
+        gender: [{ required: true, message: "请输入年龄", trigger: "blur" }],
+        phoneNumber: [
+          { required: true, message: "请输入手机号码", trigger: "blur" }
+        ],
+        major: [{ required: true, message: "请输入专业", trigger: "blur" }],
+        documentType: [
+          { required: true, message: "请选择证件类型", trigger: "blur" }
+        ],
+        politicalOutlook: [
+          { required: true, message: "请选择专业", trigger: "blur" }
+        ],
+        certificateCode: [
+          { required: true, message: "请输入证件编码", trigger: "blur" }
+        ],
+        nativePlace: [
+          { required: true, message: "请输入籍贯", trigger: "blur" }
+        ],
+        post: [{ required: true, message: "请选择职务", trigger: "blur" }],
+        contractName: [
+          { required: true, message: "请输入合同名称", trigger: "blur" }
         ]
-      },
-      //图片上传
-      fileList: [
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
-      value1: "",
-      value2: ""
+      }
     };
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
-    onSubmit() {
-      console.log("submit!");
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleChange() {}
+    submitForm(formName) {
+      console.log(formName);
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    }
   }
 };
 </script>
@@ -175,13 +152,18 @@ export default {
   }
 }
 
+.AddEquipment_form {
+  padding: 0 20px;
+  margin-top: 30px;
+}
+
+.el-form-item {
+  margin-left: 10px;
+}
+
 .el-main {
   background: rgba(255, 255, 255, 1);
   color: #333;
   height: 100%;
-}
-
-.AddEquipment_form {
-  margin-top: 30px;
 }
 </style>

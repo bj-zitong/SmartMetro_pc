@@ -6,15 +6,6 @@
           <el-form-item label="姓名">
             <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item label="工号">
-            <el-input v-model="formInline.searchUname" placeholder="工号"></el-input>
-          </el-form-item>
-          <el-form-item label="工种" class="region">
-            <el-select v-model="formInline.region" placeholder="请选择">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
           <el-form-item label="时间" class="region">
             <el-date-picker v-model="value1" type="date" placeholder="时间"></el-date-picker>
           </el-form-item>
@@ -26,11 +17,9 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="deleteAll" class="deleteStyle">
-          <span class="deleteStyle-title">删除</span>
-        </el-button>
-        <el-button @click="poiExcel" class="exportStyle">
-          <span class="poiExcel-title">导出</span>
+        <el-button @click="deleteAll" class="T-H-B-Grey">删除</el-button>
+        <el-button @click="poiExcel" class="T-H-B-Cyan">
+          导出
         </el-button>
         <div class="table-content">
           <el-table
@@ -38,8 +27,8 @@
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
-            :header-cell-style="{background:'#0058A2'}"
-            style="width: 98%"
+            :header-cell-style="headClass"
+            style="width: 97%"
           >
             <el-table-column
               type="selection"
@@ -49,23 +38,16 @@
             ></el-table-column>
             <el-table-column prop="userName" label="姓名"></el-table-column>
             <el-table-column prop="idNum" label="身份证号"></el-table-column>
-            <el-table-column prop="phone" label="性别"></el-table-column>
-            <el-table-column prop="company" label="工号"></el-table-column>
-            <el-table-column prop="profession" label="所在班组"></el-table-column>
-            <el-table-column prop="interviewee" label="工种"></el-table-column>
-            <el-table-column prop="intervieweeReason" label="日期"></el-table-column>
-            <el-table-column prop="intervieweeDate" label="首次打卡"></el-table-column>
-            <el-table-column prop="direction" label="末次打卡"></el-table-column>
-            <el-table-column prop="attendanceEquipment" label="出勤时长"></el-table-column>
+            <el-table-column prop="gender" label="性别"></el-table-column>
+            <el-table-column prop="Jobnumber" label="工号"></el-table-column>
+            <el-table-column prop="company" label="岗位/职责"></el-table-column>
+            <el-table-column prop="date" label="日期"></el-table-column>
+            <el-table-column prop="firstDate" label="首次打卡"></el-table-column>
+            <el-table-column prop="lastDate" label="末次打卡"></el-table-column>
+            <el-table-column prop="attendanceDuration" label="出勤时长"></el-table-column>
           </el-table>
         </div>
-        <!-- 分页 total  //这是显示总共有多少数据，
-                    pagesize //显示当前行的条数
-                    sizes这是下拉框可以选择的，每选择一行，要展示多少内容
-                     :page-sizes="[5, 10, 20, 40]" 下拉选择
-                     layout="total, sizes, prev, pager, next, jumper"
-
-        -->
+      
         <el-pagination
           class="page-end"
           @size-change="handleSizeChange"
@@ -81,81 +63,15 @@
         ></el-pagination>
       </el-main>
     </div>
-    <!--新增-->
-    <div style="text-align:center">
-      <el-dialog :visible.sync="dialogFormVisible" style="width:40%;center:true">
-        <div class="button-head">
-          <span class="button-head-title">外来人员登记</span>
-        </div>
-        <div class="login_box">
-          <el-form
-            method="post"
-            enctype="multipart/form-data"
-            ref="form"
-            :rules="formRules"
-            :model="form"
-            action="http://192.168.1.164:8001/auth/user/baseUser"
-          >
-            <!-- 固定项目label="用户名"       label-width="80px" -->
-            <el-form-item prop="userName">
-              <el-input v-model="form.userName" type="text" placeholder="用户名"></el-input>
-            </el-form-item>
-            <el-form-item prop="idNum">
-              <el-input v-model="form.idNum" placeholder="身份证号"></el-input>
-            </el-form-item>
-            <el-form-item prop="phone">
-              <el-input v-model="form.phone" placeholder="请联系电话"></el-input>
-            </el-form-item>
-            <el-form-item prop="company">
-              <el-input v-model="form.company" placeholder="单位"></el-input>
-            </el-form-item>
-            <el-form-item prop="carNum">
-              <el-input v-model="form.carNum" placeholder="车牌号"></el-input>
-            </el-form-item>
-            <!-- <el-form-item    label="被访人部门">
-              <el-select v-model="form.profession" placeholder="请选择被访人部门">
-                <el-option
-                  v-for="item in options"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>-->
-            <el-select v-model="form.profession" placeholder="请选择被访人部门" @change="selectProfession">
-              <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
-            <el-form-item prop="interviewee" style="margin-top:20px">
-              <el-input v-model="form.interviewee" placeholder="被访人姓名"></el-input>
-            </el-form-item>
-            <br />
-            <el-form-item prop="intervieweeReason">
-              <el-input v-model="form.intervieweeReason" placeholder="来访事由"></el-input>
-            </el-form-item>
-            <br />
-            <!-- <el-form-item prop="intervieweeDate">
-              <el-input v-model="form.intervieweeDate" placeholder="来访时间"></el-input>
-            </el-form-item>-->
-            <el-date-picker
-              v-model="form.intervieweeDate"
-              type="datetime"
-              placeholder="选择日期时间"
-              default-time="12:00:00"
-            ></el-date-picker>
-            <div style="margin-top:20px">
-              <el-button type="info" round style="float:left" @click="concel()">取消</el-button>
-              <el-button type="primary" round @click="addUser('form')" style="float:right">确定</el-button>
-            </div>
-          </el-form>
-        </div>
-      </el-dialog>
-    </div>
   </div>
 </template>
 <script>
+import { handleCofirm } from "@/utils/confirm";
+import { headClass } from "@/utils";
 export default {
   data() {
     return {
+      headClass:headClass,
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -219,31 +135,6 @@ export default {
         intervieweeReason: "", // 被访来由
         intervieweeDate: "", // 来访时间
         dialogFormVisible: false
-      },
-      formRules: {
-        userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        phone: [
-          { required: true, message: "请输入手机号", trigger: "blur" },
-          {
-            pattern: /^1[34578]\d{9}$/,
-            message: "目前只支持中国大陆的手机号码"
-          }
-        ],
-        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
-        company: [{ required: true, message: "请输入单位", trigger: "blur" }],
-        carNum: [{ required: true, message: "请输入车牌号", trigger: "blur" }],
-        profession: [
-          { required: true, message: "请选择被访部门", trigger: "blur" }
-        ],
-        interviewee: [
-          { required: true, message: "请输入被访人姓名", trigger: "blur" }
-        ],
-        intervieweeReason: [
-          { required: true, message: "请输入被访事由", trigger: "blur" }
-        ],
-        intervieweeDate: [
-          { required: true, message: "请选择被访时间", trigger: "blur" }
-        ]
       }
     };
   },
@@ -374,7 +265,7 @@ export default {
           userId: 1,
           userName: "地铁安保部",
           idNum: "210234567898765876",
-          phone: 15236985236,
+          phone: '男',
           company: "安保部一",
           profession: "部门一",
           interviewee: "123",
@@ -558,29 +449,19 @@ export default {
       var ids = this.changeFun();
       console.log(ids);
       var url = "";
-      // this.$http({
-      //   // 头部信息及编码格式设置
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: sessionStorage.getItem('token')
-      //   },
-      //   method: 'DELETE', // 请求的方式
-      //   url: url, // 请求地址
-      //   // 传参
-      //   data: ids
-      // })
-      //   .then(function(response) {
-      //     var res = response.data
-      //     // 请求失败
-      //     if (res.code != '200') {
-      //     }
-      //     // 请求成功
-      //     if (res.code == '200') {
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error)
-      //   })
+      handleCofirm("确认删除", "warning")
+        .then(res => {
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };
@@ -665,18 +546,6 @@ export default {
       opacity: 1;
     }
 
-    .deleteStyle {
-      width: 80px;
-      height: 35px;
-      background: linear-gradient(
-        180deg,
-        rgba(225, 225, 225, 1) 0%,
-        rgba(190, 190, 190, 1) 100%
-      );
-      opacity: 1;
-      border-radius: 4px;
-    }
-
     .deleteStyle-title {
       width: 33px;
       height: 19px;
@@ -685,18 +554,6 @@ export default {
       font-weight: bold;
       color: rgba(99, 99, 99, 1);
       opacity: 1;
-    }
-
-    .exportStyle {
-      width: 80px;
-      height: 35px;
-      background: linear-gradient(
-        180deg,
-        rgba(58, 222, 214, 1) 0%,
-        rgba(0, 150, 143, 1) 100%
-      );
-      opacity: 1;
-      border-radius: 4px;
     }
 
     .poiExcel-title {
