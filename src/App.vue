@@ -14,4 +14,7 @@ export default {
   @import 'normalize.css/normalize.css';
   @import './style/index.css';
   @import './style/custom.css';
+  .el-menu{
+    margin-left:5px;
+  }
 </style>

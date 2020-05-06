@@ -119,5 +119,8 @@ function toggleClass(element, className) {
   }
   element.className = classString
 }
+function headClass() {
+  return "height: 60px; background:rgba(0,88,162,1); color: #fff;";
+}
 
-export { debounce, isDev, deepClone, hasClass, addClass, removeClass, toggleClass }
+export { debounce, isDev, deepClone, hasClass, addClass, removeClass, toggleClass,headClass}

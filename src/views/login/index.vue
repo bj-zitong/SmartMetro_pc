@@ -1,16 +1,12 @@
 <template>
   <el-container class="login-container">
-    <!-- <el-switch v-model="toggleParticles"
-      inactive-color="#ff4949">
-    ></el-switch>
-    <el-button class="show-account" type="text" @click="accountTip">提示帐号信息</el-button>-->
     <el-card class="animated flipInY">
       <div class="login_title">
-        <p>北京市轨道交通运营管理公司</p>
+        <p>城市轨道交通智慧工地管理系统</p>
         <p style="padding-top:20px">后台管理系统</p>
       </div>
       <div class="login_import">
-        <p class="rl_title">智慧地铁管理系统</p>
+        <p class="rl_title">城市轨道交通智慧工地管理系统</p>
         <p class="Under_the_line"></p>
         <el-form
           :rules="rules"
@@ -48,10 +44,14 @@
         </el-form>
       </div>
     </el-card>
+    <el-footer class="login-Footer">
+      <p>Copyright 2017 北京市轨道交通建设管理有限公司—北京城市轨道交通咨询有限公司 All Rights Reserved</p>
+      <p>京ICP备17067133号 京公网安备11010602006143号</p>
+    </el-footer>
   </el-container>
 </template>
 <script>
-import { isValidUsername } from '@/utils/validate'
+// import { isValidUsername } from '@/utils/validate'
 import { saveToLocal, loadFromLocal } from '@/common/local-storage'
 import { mapActions } from 'vuex'
 /* eslint-disable*/
@@ -59,13 +59,13 @@ import particles from "particles.js";
 export default {
   data() {
     // username 验证
-    const validateUsername = (rule, value, callback) => {
-      if (!isValidUsername(value)) {
-        callback(new Error("请输入正确的用户名"));
-      } else {
-        callback();
-      }
-    };
+    // const validateUsername = (rule, value, callback) => {
+      // if (!isValidUsername(value)) {
+      //   callback(new Error("请输入正确的用户名"));
+      // } else {
+      //   callback();
+      // }
+    // };
     // pwd 验证
     const validatePwd = (rule, value, callback) => {
       if (value.length < 6) {
@@ -76,7 +76,7 @@ export default {
     };
     return {
       // 粒子开关
-      toggleParticles: false,
+      // toggleParticles: false,
       loginForm: {
         username: "admin",
         pwd: "123456"
@@ -86,13 +86,13 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入账号", trigger: "blur" },
-          { required: true, trigger: "blur", validator: validateUsername },
-          { required: true, trigger: "change", validator: validateUsername }
+          // { required: true, trigger: "blur", validator: validateUsername },
+          // { required: true, trigger: "change", validator: validateUsername }
         ],
         pwd: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { required: true, trigger: "blur", validator: validatePwd },
-          { required: true, trigger: "change", validator: validatePwd }
+          // { required: true, trigger: "blur", validator: validatePwd },
+          // { required: true, trigger: "change", validator: validatePwd }
         ]
       }
     };
@@ -118,6 +118,7 @@ export default {
       this.$refs.pwd.$el.getElementsByTagName("input")[0].blur();
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          
           this.loading = true;
           this.login(this.loginForm)
             .then(() => {
@@ -152,118 +153,7 @@ export default {
     }
   },
   watch: {
-    toggleParticles(val) {
-      if (val) {
-        particlesJS("particles", {
-          particles: {
-            number: {
-              value: 15
-            },
-            color: {
-              value: "random"
-            },
-            shape: {
-              type: ["star", "image"],
-              stroke: {
-                width: 0,
-                color: "yellow"
-              },
-              polygon: {
-                nb_sides: 5
-              },
-              image: {
-                src: "https://neveryu.github.io/avatar/avatar.png",
-                width: 100,
-                height: 100
-              }
-            },
-            opacity: {
-              value: 1,
-              random: false,
-              anim: {
-                enable: true,
-                speed: 1,
-                opacity_min: 0.1,
-                sync: false
-              }
-            },
-            size: {
-              value: 10,
-              random: true,
-              anim: {
-                enable: true,
-                speed: 10,
-                size_min: 0.1,
-                sync: false
-              }
-            },
-            line_linked: {
-              enable: false,
-              distance: 150,
-              color: "#ccc",
-              opacity: 0.4,
-              width: 1
-            },
-            move: {
-              enable: true,
-              speed: 2,
-              direction: "random",
-              random: true,
-              straight: false,
-              out_mode: "out",
-              attract: {
-                enable: false,
-                rotateX: 600,
-                rotateY: 1200
-              }
-            }
-          },
-          interactivity: {
-            // "detect_on": "canvas",
-            detect_on: "window",
-            events: {
-              onhover: {
-                enable: false,
-                // "mode": "repulse"
-                mode: "grab"
-              },
-              onclick: {
-                enable: false,
-                mode: "repulse"
-                // "mode": "push"
-              },
-              resize: true
-            },
-            modes: {
-              grab: {
-                distance: 400,
-                line_linked: {
-                  opacity: 1
-                }
-              },
-              bubble: {
-                distance: 400,
-                size: 40,
-                duration: 2,
-                opacity: 8,
-                speed: 3
-              },
-              repulse: {
-                distance: 200
-              },
-              push: {
-                particles_nb: 4
-              },
-              remove: {
-                particles_nb: 2
-              }
-            }
-          }
-        });
-      } else {
-        document.getElementById("particles").innerHTML = "";
-      }
-    }
+   
   },
   mounted() {}
 };
@@ -317,7 +207,7 @@ export default {
 
       .rl_title {
         height: 37px;
-        font-size: 28px;
+        font-size: 24px;
         font-family: Microsoft YaHei;
         font-weight: bold;
         line-height: 37px;
@@ -428,5 +318,19 @@ export default {
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
+}
+.login-Footer{
+   position:absolute;
+   bottom :0;
+   text-align :center;
+   width :100%
+   p{
+      font-size:14px;
+      font-family:Microsoft YaHei;
+      font-weight:400;
+      line-height:19px;
+      color:rgba(255,255,255,1);
+      opacity:1;
+   }
 }
 </style>

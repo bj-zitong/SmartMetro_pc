@@ -10,7 +10,7 @@ export default {
     login: 'Login'
   },
   navbar: {
-    title: 'vue-cms',
+    title: '城市轨道交通智慧工地管理系统',
     screenfull: 'screenfull',
     profile: 'Profile',
     avatar: 'Avatar',

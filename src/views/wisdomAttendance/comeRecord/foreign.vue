@@ -4,7 +4,7 @@
       <el-main class="main-content">
         <el-form :inline="true" :model="formInline" class="search-head">
           <el-form-item label="姓名">
-            <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
+            <el-input v-model="formInline.searchUname" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item label="时间" class="region">
             <el-date-picker v-model="value1" type="date" placeholder="请选择时间"></el-date-picker>
@@ -20,20 +20,16 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="deleteAll" class="deleteStyle">
-          <span class="deleteStyle-title">删除</span>
-        </el-button>
-        <el-button @click="poiExcel" class="exportStyle">
-          <span class="poiExcel-title">导出</span>
-        </el-button>
+       <el-button @click="deleteAll" class="T-H-B-Grey">删除</el-button>
+        <el-button @click="poiExcel" class="T-H-B-Cyan">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
-            :header-cell-style="{background:'#0058A2'}"
-            style="width: 98%"
+            :header-cell-style="headClass"
+            style="width: 97%"
           >
             <el-table-column
               type="selection"
@@ -53,7 +49,7 @@
             <el-table-column prop="direction" label="出勤时长"></el-table-column> -->
             <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
-                <el-button type="warning" @click="personnelDetailClick(scope.row)">详情</el-button>
+                <el-button type="warning" size="mini" @click="personnelDetailClick(scope.row)">详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -81,27 +77,18 @@
       </el-main>
     </div>
     <!--新增-->
-    <div style="text-align:center">
-       <el-dialog :visible.sync="dialogFormVisible" width="20%">
-        <div class="addUser-content">
-          <p>出入记录</p>
-          <div style="border-bottom:1px solid #000">
-            <h6>作业区域：</h6>
-            <h6>考勤设备：</h6>
-            <h6>打卡时间：2019/12/12 10：30：23 出</h6>
-          </div>
-          <div>
-            <h6>作业区域：</h6>
-            <h6>考勤设备：</h6>
-            <h6>打卡时间：2019/12/12 10：30：23 出</h6>
-          </div>
-        </div>
-      </el-dialog>
-    </div>
+  <elDialog v-if="dialogFormVisible" ref="monitorFactor"></elDialog>
   </div>
 </template>
 <script>
+import options from "@/common/options";
+import { handleCofirm } from "@/utils/confirm";
+import { headClass } from "@/utils";
+import elDialog from "../el-dialog/el-dialog";
 export default {
+  components: {
+    elDialog
+  },
   data() {
     return {
       pickerOptions: {
@@ -133,6 +120,7 @@ export default {
           }
         ]
       },
+      headClass:headClass,
       value1: "",
       value2: "",
       token: null, // token
@@ -217,6 +205,9 @@ export default {
     },
     personnelDetailClick() {
       this.dialogFormVisible = true;
+       this.$nextTick(()=>{
+          this.$refs.monitorFactor.init()
+     })
     },
     //下一页
     next(cpage) {
@@ -509,6 +500,19 @@ export default {
       var ids = this.changeFun();
       console.log(ids);
       var url = "";
+      handleCofirm("确认删除吗？", "warning")
+        .then(res => {
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
       // this.$http({
       //   // 头部信息及编码格式设置
       //   headers: {

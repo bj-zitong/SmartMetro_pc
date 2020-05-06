@@ -1,8 +1,8 @@
 <template>
-  <el-container class="AddOther">
+  <el-container class="personal">
     <el-main class="main">
-      <p>添加管理人员</p>
-      <div class="AddEquipment_form">
+      <!-- <p>添加管理人员</p> -->
+      <div>
         <el-form
           :label-position="labelPosition"
           :rules="rules"
@@ -30,15 +30,27 @@
               <el-input v-model="form.nation" placeholder="请输入民族"></el-input>
             </el-form-item>
           </el-col>
-          
           <el-col :span="8">
-            <el-form-item label="电话" prop="telephone" class="el-form-item">
-              <el-input v-model="form.telephone" placeholder="请输入电话"></el-input>
+            <el-form-item label="工种" class="region" prop="region">
+              <el-select
+                v-model="form.region"
+                placeholder="请选择工种"
+                filterable
+                clearable
+                @change="handleButton"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="部门" prop="department" class="el-form-item">
-              <el-input v-model="form.department" placeholder="请输入部门"></el-input>
+            <el-form-item label="电话" prop="telephone" class="el-form-item">
+              <el-input v-model="form.telephone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -47,11 +59,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="岗位/职责" prop="post" class="el-form-item">
-              <el-select v-model="form.post" placeholder="请选择岗位/职责">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
+            <el-form-item label="部门" prop="department" class="el-form-item">
+              <el-input v-model="form.department" placeholder="请输入部门"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -107,13 +116,53 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件编码" prop="CertificateCode">
+            <el-form-item label="证件类型" prop="documentType" class="el-form-item">
+              <el-select v-model="form.documentType" placeholder="请选择证件类型">
+                <el-option label="身份证" value="shenfenzheng"></el-option>
+                <el-option label="护照" value="huzhao"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="户口类型" prop="accountType" class="el-form-item">
+              <el-select v-model="form.accountType" placeholder="请选择户口类型">
+                <el-option label="城市户口" value="chengshi"></el-option>
+                <el-option label="农村户口" value="nongchun"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="证件编码" prop="CertificateCode" placeholder="请填写证件编码">
               <el-input v-model="form.CertificateCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
+            <el-form-item label="班组长" prop="foreman">
+              <el-select v-model="form.foreman" placeholder="请选择班组长">
+                <el-option label="是" value="yes"></el-option>
+                <el-option label="否" value="no"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="参加培训" prop="training">
+              <el-select v-model="form.training" placeholder="请选择参加培训">
+                <el-option label="是" value="yes"></el-option>
+                <el-option label="否" value="no"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="持证上岗" prop="certificate">
+              <el-select v-model="form.certificate" placeholder="请选择持证上岗">
+                <el-option label="是" value="yes"></el-option>
+                <el-option label="否" value="no"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
             <el-form-item label="居住证" prop="residencePermit">
-              <el-select v-model="form.residencePermit" placeholder="持证上岗">
+              <el-select v-model="form.residencePermit" placeholder="请选择居住证">
                 <el-option label="是" value="yes"></el-option>
                 <el-option label="否" value="no"></el-option>
               </el-select>
@@ -125,16 +174,24 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="人员类型" prop="Personneltype">
-              <el-select v-model="form.Personneltype" placeholder="请选择人员类型">
-                <el-option label="企业自有职工" value="qiye"></el-option>
-                <el-option label="劳务派遣人员" value="laowu"></el-option>
+            <el-form-item label="特殊工种体检情况" prop="PhysicalExamination">
+              <el-select v-model="form.PhysicalExamination" placeholder="请选择特殊工种体检情况">
+                <el-option label="已通过" value="ytg"></el-option>
+                <el-option label="未通过" value="wtg"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="政治面貌" prop="PoliticalOutlook">
-              <el-select v-model="form.PoliticalOutlook" placeholder="请选择政治面貌">
+            <el-form-item label="班组" prop="Personneltype">
+              <el-select v-model="form.Personneltype" placeholder="请选择班组">
+                <el-option label="已通过" value="ytg"></el-option>
+                <el-option label="未通过" value="wtg"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="政治面貌" prop="Team">
+              <el-select v-model="form.Team" placeholder="请选择政治面貌">
                 <el-option label="企业自有职工" value="qiye"></el-option>
                 <el-option label="劳务派遣人员" value="laowu"></el-option>
               </el-select>
@@ -147,7 +204,7 @@
               </el-upload>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+          <!-- <el-col :span="24">
             <el-form-item label="角色" prop="type">
               <el-checkbox-group v-model="form.type">
                 <el-checkbox label="超级管理员" name="type"></el-checkbox>
@@ -163,32 +220,38 @@
                 <el-checkbox label="其他" name="type"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
+          </el-col>-->
+          <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
+            <el-form-item style="float:right">
+              <el-button type="primary" round style="text-aligin:center">保存</el-button>
+            </el-form-item>
           </el-col>
-          <el-form-item style="float:right">
-            <el-button type="primary" round class="cancel-style">取消</el-button>
-            <el-button type="primary" round @click="submitForm('form')">确认</el-button>
-          </el-form-item>
+          <el-col :span="24">
+            <el-form-item style="float:right;position:relative;bottom:6px;">
+              <el-button type="primary" round class="cancel-style">取消</el-button>
+              <el-button type="primary" round @click="submitForm('form')">提交</el-button>
+            </el-form-item>
+          </el-col>
         </el-form>
-        <!-- <el-form-item>
-          <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>-->
       </div>
     </el-main>
   </el-container>
 </template>
 <script>
 import rules from "@/utils/rules";
+import options from "@/common/options";
 // import { isValidUsername } from '@/utils/validate'
 export default {
   data() {
     return {
       activeName: "second",
       labelPosition: "left",
+      options: options,
       form: {
         name: "",
         gender: "",
-        type: []
+        type: [],
+        region: ""
       },
       getImgCodeResults: "",
       keyResults: "",
@@ -236,6 +299,9 @@ export default {
         date: [
           { required: true, message: "请选择居住证办理日期", trigger: "blur" }
         ],
+        documentType: [
+          { required: true, message: "请选择证件类型", trigger: "blur" }
+        ],
         Personneltype: [
           { required: true, message: "请选择人员类型", trigger: "blur" }
         ],
@@ -243,7 +309,24 @@ export default {
           { required: true, message: "请选择政治面貌", trigger: "blur" }
         ],
         UploadImg: [{ required: true, message: "请上传照片", trigger: "blur" }],
-        type: [{ required: true, message: "请选择人员类型", trigger: "blur" }]
+        type: [{ required: true, message: "请选择人员类型", trigger: "blur" }],
+        region: [
+          { required: true, message: "请选择人员类型", trigger: "blur" }
+        ],
+        accountType: [
+          { required: true, message: "请选择户口类型", trigger: "blur" }
+        ],
+        foreman: [{ required: true, message: "请选择班组长", trigger: "blur" }],
+        training: [
+          { required: true, message: "请选择参加培训", trigger: "blur" }
+        ],
+        certificate: [
+          { required: true, message: "请选择持证上岗", trigger: "blur" }
+        ],
+        PhysicalExamination: [
+          { required: true, message: "请选择特殊工种体检情况", trigger: "blur" }
+        ],
+        Team: [{ required: true, message: "请选择班组", trigger: "blur" }]
       },
       //日历选择器
       pickerOptions: {
@@ -305,13 +388,13 @@ export default {
         }
       });
     },
-    handleChange() {}
+    handleChange() {},
+    handleButton() {}
   }
 };
 </script>
 <style lang="stylus" scoped>
-.AddOther {
-  margin: 0 30px
+.personal {
   .main {
     p {
       text-align: center;
@@ -325,14 +408,9 @@ export default {
 }
 
 .el-main {
-  background: rgba(255, 255, 255, 1);
   color: #333;
   height: 100%;
-}
-
-.AddEquipment_form {
-  margin: 30px 25px 0 25px
-  
+  padding: 0;
 }
 
 .role {

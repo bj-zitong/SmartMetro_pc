@@ -4,10 +4,24 @@
       <el-main class="main-content">
         <el-form :inline="true" :model="formInline" class="search-head">
           <el-form-item label="姓名">
-            <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
+            <el-input v-model="formInline.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
-          <el-form-item label="来访单位" class="region">
-            <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+          <el-form-item label="工号">
+            <el-input v-model="formInline.idNum" placeholder="请输入工号"></el-input>
+          </el-form-item>
+
+          <el-form-item label="工种">
+            <el-select v-model="form.profession" placeholder="请选择工种" @change="selectProfession">
+              <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="时间">
+            <el-date-picker
+              v-model="form.intervieweeDate"
+              type="datetime"
+              placeholder="选择日期时间"
+              default-time="12:00:00"
+            ></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleUserList">搜索</el-button>
@@ -17,23 +31,17 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="dialogFormVisible = true" class="addStyle">
-          <span class="addStyle-title">新增</span>
-        </el-button>
-        <el-button @click="deleteAll" class="deleteStyle">
-          <span class="deleteStyle-title">删除</span>
-        </el-button>
-        <el-button @click="poiExcel" class="exportStyle">
-          <span class="poiExcel-title">导出</span>
-        </el-button>
+        <el-button @click="deleteAll" class="T-H-B-Grey">删除</el-button>
+        <el-button @click="poiExcel" class="T-H-B-Cyan">导出</el-button>
+
         <div class="table-content">
           <el-table
             :data="tableData"
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
-            :header-cell-style="{background:'#0058A2'}"
-            style="width: 98%"
+            :header-cell-style="headClass"
+            style="width: 97%"
           >
             <el-table-column
               type="selection"
@@ -45,19 +53,12 @@
             <el-table-column prop="idNum" label="身份证号"></el-table-column>
             <el-table-column prop="phone" label="性别"></el-table-column>
             <el-table-column prop="company" label="工号"></el-table-column>
-            <el-table-column prop="profession" label="岗位/职责"></el-table-column>
-            <el-table-column prop="interviewee" label="日期"></el-table-column>
-            <el-table-column prop="intervieweeReason" label="首次打卡"></el-table-column>
-            <el-table-column prop="intervieweeDate" label="末次打卡"></el-table-column>
-            <el-table-column prop="direction" label="出勤时长"></el-table-column>
-            <el-table-column prop="attendanceEquipment" label="考勤设备"></el-table-column>
-            <el-table-column prop="createTime" label="打卡时间"></el-table-column>
-            <!-- <el-table-column label="操作" style=" fixed="right">
-              <template slot-scope="scope">
-                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
-              </template>
-            </el-table-column>-->
+            <el-table-column prop="profession" label="所在班组"></el-table-column>
+            <el-table-column prop="profession" label="工种"></el-table-column>
+            <el-table-column prop="date" label="日期"></el-table-column>
+            <el-table-column prop="firstDate" label="首次打卡"></el-table-column>
+            <el-table-column prop="lastDate" label="末次打卡"></el-table-column>
+            <el-table-column prop="attendanceDuration" label="出勤时长"></el-table-column>
           </el-table>
         </div>
         <!-- 分页 total  //这是显示总共有多少数据，
@@ -83,80 +84,17 @@
       </el-main>
     </div>
     <!--新增-->
-    <div style="text-align:center">
-      <el-dialog :visible.sync="dialogFormVisible" style="width:40%;center:true">
-        <div class="button-head">
-          <span class="button-head-title">外来人员登记</span>
-        </div>
-        <div class="login_box">
-          <el-form
-            method="post"
-            enctype="multipart/form-data"
-            ref="form"
-            :rules="formRules"
-            :model="form"
-            action="http://192.168.1.164:8001/auth/user/baseUser"
-          >
-            <!-- 固定项目label="用户名"       label-width="80px" -->
-            <el-form-item prop="userName">
-              <el-input v-model="form.userName" type="text" placeholder="用户名"></el-input>
-            </el-form-item>
-            <el-form-item prop="idNum">
-              <el-input v-model="form.idNum" placeholder="身份证号"></el-input>
-            </el-form-item>
-            <el-form-item prop="phone">
-              <el-input v-model="form.phone" placeholder="请联系电话"></el-input>
-            </el-form-item>
-            <el-form-item prop="company">
-              <el-input v-model="form.company" placeholder="单位"></el-input>
-            </el-form-item>
-            <el-form-item prop="carNum">
-              <el-input v-model="form.carNum" placeholder="车牌号"></el-input>
-            </el-form-item>
-            <!-- <el-form-item    label="被访人部门">
-              <el-select v-model="form.profession" placeholder="请选择被访人部门">
-                <el-option
-                  v-for="item in options"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>-->
-            <el-select v-model="form.profession" placeholder="请选择被访人部门" @change="selectProfession">
-              <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
-            <el-form-item prop="interviewee" style="margin-top:20px">
-              <el-input v-model="form.interviewee" placeholder="被访人姓名"></el-input>
-            </el-form-item>
-            <br />
-            <el-form-item prop="intervieweeReason">
-              <el-input v-model="form.intervieweeReason" placeholder="来访事由"></el-input>
-            </el-form-item>
-            <br />
-            <!-- <el-form-item prop="intervieweeDate">
-              <el-input v-model="form.intervieweeDate" placeholder="来访时间"></el-input>
-            </el-form-item>-->
-            <el-date-picker
-              v-model="form.intervieweeDate"
-              type="datetime"
-              placeholder="选择日期时间"
-              default-time="12:00:00"
-            ></el-date-picker>
-            <div style="margin-top:20px">
-              <el-button type="info" round style="float:left" @click="concel()">取消</el-button>
-              <el-button type="primary" round @click="addUser('form')" style="float:right">确定</el-button>
-            </div>
-          </el-form>
-        </div>
-      </el-dialog>
-    </div>
   </div>
 </template>
 <script>
+import options from "@/common/options";
+import { handleCofirm } from "@/utils/confirm";
+import { headClass } from "@/utils";
 export default {
   data() {
     return {
+      options: options,
+      headClass: headClass,
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -557,31 +495,20 @@ export default {
     // 批量删除
     deleteAll() {
       var ids = this.changeFun();
-      console.log(ids);
       var url = "";
-      // this.$http({
-      //   // 头部信息及编码格式设置
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: sessionStorage.getItem('token')
-      //   },
-      //   method: 'DELETE', // 请求的方式
-      //   url: url, // 请求地址
-      //   // 传参
-      //   data: ids
-      // })
-      //   .then(function(response) {
-      //     var res = response.data
-      //     // 请求失败
-      //     if (res.code != '200') {
-      //     }
-      //     // 请求成功
-      //     if (res.code == '200') {
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error)
-      //   })
+      handleCofirm("确认删除吗？", "warning")
+        .then(res => {
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };

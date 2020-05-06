@@ -4,10 +4,10 @@
       <el-main class="main-content">
         <el-form :inline="true" :model="formInline" class="search-head">
           <el-form-item label="姓名">
-            <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
+            <el-input v-model="formInline.searchUname" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item label="工号" class="region">
-            <el-input v-model="formInline.searchUname" placeholder="工号"></el-input>
+            <el-input v-model="formInline.searchUname" placeholder="请输入工号"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleUserList">搜索</el-button>
@@ -17,17 +17,15 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="poiExcel" class="exportStyle">
-          <span class="poiExcel-title">导出</span>
-        </el-button>
+        <el-button @click="poiExcel" class="T-H-B-Cyan">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
-            :header-cell-style="{background:'#0058A2'}"
-            style="width: 98%"
+            :header-cell-style="headClass"
+            style="width: 97%"
           >
             <el-table-column
               type="selection"
@@ -68,25 +66,10 @@
       </el-main>
     </div>
     <!--新增-->
-    <el-dialog :visible.sync="dialogFormVisible" width="20%" style="padding: 0px 0px;">
-      <div class="addUser-content">
-     
-         <p>出入记录</p>
-         <div style="border-bottom:1px solid #000">
-           <h6>作业区域：</h6>
-           <h6>考勤设备：</h6>
-           <h6>打卡时间：2019/12/12 10：30：23      出 </h6>
-         </div>
-         <div>
-           <h6>作业区域：</h6>
-           <h6>考勤设备：</h6>
-           <h6>打卡时间：2019/12/12 10：30：23      出 </h6>
-         </div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
+import { headClass } from "@/utils";
 export default {
   data() {
     return {
@@ -119,6 +102,7 @@ export default {
           }
         ]
       },
+      headClass:headClass,
       value1: "",
       value2: "",
       token: null, // token

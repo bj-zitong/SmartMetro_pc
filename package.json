@@ -1,7 +1,7 @@
 {
-  "name": "vue-cms",
+  "name": "vue",
   "version": "1.0.0",
-  "description": "用vue做的一个内容管理系统",
+  "description": "城市轨道交通智慧工地管理系统",
   "author": "yu",
   "private": true,
   "scripts": {
@@ -90,6 +90,7 @@
     "vue-template-compiler": "^2.6.10",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },

@@ -4,10 +4,10 @@
       <el-main class="main-content">
         <el-form :inline="true" :model="formInline" class="search-head">
           <el-form-item label="姓名">
-            <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
+            <el-input v-model="formInline.searchUname" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item label="工号" class="region">
-            <el-input v-model="formInline.searchUname" placeholder="工号"></el-input>
+            <el-input v-model="formInline.searchUname" placeholder="请输入工号"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleUserList">搜索</el-button>
@@ -17,17 +17,15 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="poiExcel" class="exportStyle">
-          <span class="poiExcel-title">导出</span>
-        </el-button>
+        <el-button @click="poiExcel" class="T-H-B-Cyan">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
-            :header-cell-style="{background:'#0058A2'}"
-            style="width: 98%"
+            :header-cell-style="headClass"
+            style="width: 97%"
           >
             <el-table-column
               type="selection"
@@ -87,6 +85,9 @@
   </div>
 </template>
 <script>
+import options from "@/common/options";
+import { handleCofirm } from "@/utils/confirm";
+import { headClass } from "@/utils";
 export default {
   data() {
     return {
@@ -131,13 +132,7 @@ export default {
       ids: null, //选中的id
       searchUname: null, // 搜索
       searchNum: null,
-      options: [
-        // 来访部门
-        { id: "", name: "请选择来访部门" },
-        { id: 1, name: "部门一" },
-        { id: 2, name: "部门二" },
-        { id: 3, name: "部门三" }
-      ],
+      headClass: headClass,
       formInline: {
         searchUname: null, // 搜索
         searchNum: null

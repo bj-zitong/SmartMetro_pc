@@ -65,7 +65,7 @@
     <div style="text-align:center">
       <el-dialog
         :visible.sync="dialogFormVisible"
-        style="width:45%;center:true;left:28%;"
+        style="width:45%;left:28%;"
         title="公告"
       >
         <div class="login_box">
@@ -96,7 +96,7 @@
       <el-dialog
         :visible.sync="centerDialogVisible"
         width="18%"
-        center="true"
+        :center='true'
         class="del"
         top="35vh"
         style="border-radius:10px;"

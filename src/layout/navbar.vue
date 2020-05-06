@@ -1,7 +1,7 @@
 <template>
   <div class="top-navbar">
-    <div style="width:98%;margin:0 auto">
-      <el-menu mode="horizontal">
+    <div style="width:100%;margin:0 auto">
+      <el-menu mode="horizontal" style="margin-left:0px">
         <div>
           <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
           <div index="1" class="title-name">{{$t('navbar.title')}}</div>
@@ -18,50 +18,11 @@
         </div>
       </el-menu>
     </div>
-    <el-tabs type="border-card" class="hed_tab" @tab-click="handleClick">
-      <el-tab-pane name="home" style="margin-left:30px">
+    <el-tabs v-model="editableTabsValue" type="border-card" class="hed_tab" @tab-click="handleClick">
+      <el-tab-pane v-for="(item,index) in list" :key="index" :label="item.title">
         <span slot="label">
-          <img :src="objImg.home" alt class="icon_list" style="margin-left:20px" />首页
-        </span>
-      </el-tab-pane>
-      <el-tab-pane name="smrz">
-        <span slot="label">
-          <img :src="objImg.smrz" alt class="icon_list" />实名认证
-        </span>
-      </el-tab-pane>
-      <el-tab-pane name="kaoqin">
-        <span slot="label">
-          <img :src="objImg.kaoqin" alt class="icon_list" />智慧考勤
-        </span>
-      </el-tab-pane>
-      <el-tab-pane name="jypx">
-        <span slot="label">
-          <img :src="objImg.jypx" alt class="icon_list" />培训教育
-        </span>
-      </el-tab-pane>
-      <el-tab-pane name="cxgl">
-        <span slot="label">
-          <img :src="objImg.cxgl" alt class="icon_list" />诚信管理
-        </span>
-      </el-tab-pane>
-      <el-tab-pane name="rycw">
-        <span slot="label">
-          <img :src="objImg.rycw" alt class="icon_list" />人员测温
-        </span>
-      </el-tab-pane>
-      <el-tab-pane name="gyxz">
-        <span slot="label">
-          <img :src="objImg.gyxz" alt class="icon_list" />工友须知
-        </span>
-      </el-tab-pane>
-      <el-tab-pane name="yqgl">
-        <span slot="label">
-          <img :src="objImg.yqgl" alt class="icon_list" />疫情管理
-        </span>
-      </el-tab-pane>
-      <el-tab-pane name="kfg">
-        <span slot="label">
-          <img :src="objImg.kfg" alt class="icon_list" />开复工管理
+          <img :src="num==index?item.afterChangeimg:item.beforeChangeimg" alt class="icon_list" />
+          {{item.title}}
         </span>
       </el-tab-pane>
     </el-tabs>
@@ -71,22 +32,16 @@
 import { mapGetters, mapActions } from "vuex";
 import Screenfull from "@/components/screenfull";
 import ChangeTheme from "@/components/theme";
-import main from '../main'
-export default {  
+import main from "../main";
+//头部切换
+import list from "./sidebar/headerTab";
+export default {
   name: "top-navbar",
   data() {
     return {
-      objImg: {
-        home: "/static/image/home.png",
-        smrz: "/static/image/smrz.png",
-        kaoqin: "/static/image/kaoqin.png",
-        jypx: "/static/image/jypx.png",
-        cxgl: "/static/image/cxgl.png",
-        rycw: "/static/image/rycw.png",
-        gyxz: "/static/image/gyxz.png",
-        yqgl: "/static/image/yqgl.png",
-        kfg: "/static/image/kfg.png"
-      }
+       editableTabsValue: '1',
+       num: 1,
+       list:list,
     };
   },
   name: "",
@@ -97,39 +52,27 @@ export default {
   computed: {
     ...mapGetters(["name", "avatar"])
   },
+  watch: {
+      deep: true,
+      "$route"(newVal, oldVal) {     
+          this.tabsValue = newVal.meta.parent
+          // this.editBarImg(newVal.meta.parent);
+      },
+      tabsValue(newVal,oldVal){
+          this.$emit('selectNavBar',newVal);
+      }
+  },
+  mounted(){
+    this.$emit('selectNavBar',"实名认证");
+     
+  },
   methods: {
     ...mapActions({
       userLogout: "logout"
     }),
     handleClick(tab, event) {
-      // this.$router.push({ path: "/dome" });
-      tab.name == "home"
-        ? (this.objImg.home = "/static/image/selected_soye.png")
-        : (this.objImg.home = "/static/image/home.png");
-      tab.name == "smrz"
-        ? (this.objImg.smrz = "/static/image/selected_smrz.png")
-        : (this.objImg.smrz = "/static/image/smrz.png");
-      tab.name == "kaoqin"
-        ? (this.objImg.kaoqin = "/static/image/selected_zhkq.png")
-        : (this.objImg.kaoqin = "/static/image/kaoqin.png");
-      tab.name == "jypx"
-        ? (this.objImg.jypx = "/static/image/selected_pxjy.png")
-        : (this.objImg.jypx = "/static/image/jypx.png");
-      tab.name == "cxgl"
-        ? (this.objImg.cxgl = "/static/image/selected_cxjy.png")
-        : (this.objImg.cxgl = "/static/image/cxgl.png");
-      tab.name == "rycw"
-        ? (this.objImg.rycw = "/static/image/selected_rycw.png")
-        : (this.objImg.rycw = "/static/image/rycw.png");
-      tab.name == "gyxz"
-        ? (this.objImg.gyxz = "/static/image/selected_gyxz.png")
-        : (this.objImg.gyxz = "/static/image/gyxz.png");
-      tab.name == "yqgl"
-        ? (this.objImg.yqgl = "/static/image/selected_gyxz.png")
-        : (this.objImg.yqgl = "/static/image/yqgl.png");
-      tab.name == "kfg"
-        ? (this.objImg.kfg = "/static/image/selected_kfg.png")
-        : (this.objImg.kfg = "/static/image/kfg.png");
+      this.$emit('selectNavBar',tab.label);
+      this.num = tab.index;
     },
     logout() {
       this.userLogout()
@@ -156,6 +99,7 @@ export default {
     width: 500px;
     height: 36px;
     float: left;
+
     h6 {
       font-size: 24px;
       color: #fff;
@@ -166,6 +110,7 @@ export default {
       font-weight: normal;
     }
   }
+
   .WisdomSite_title_login {
     width: 36px;
     height: 36px;
@@ -176,6 +121,7 @@ export default {
   .el-menu {
     border-bottom: none !important;
     background: rgba(0, 88, 162, 1);
+
     .lang-select {
       position: absolute;
       top: 18px;
@@ -193,6 +139,7 @@ export default {
       right: -45px;
       width: 300px;
       outline: none;
+
       .avatar-wrapper {
         cursor: pointer;
       }
@@ -211,6 +158,7 @@ export default {
         margin: 1px 10px 0 20px;
         float: left;
       }
+
       .exit_login {
         float: left;
       }
@@ -272,7 +220,6 @@ export default {
 }
 
 .hed_tab>.el-tabs__header {
-
   border-radius: 30px !important;
 }
 
@@ -294,16 +241,16 @@ export default {
 
 .hed_tab {
   border: none;
-  width: 94.5%;
-  margin: 0 auto;
+  width: 95.5%;
+  margin: auto 30px;
   position: relative;
   top: 30px;
 }
 
 .icon_list {
-  width: 23px;
-  height: 23px;
-  margin: 6px 10px 0 0;
+  width: 20px;
+  height: 20px;
+  margin: 10px 10px 0 0;
   float: left;
 }
 
@@ -312,13 +259,24 @@ export default {
 }
 
 .hed_tab>.el-tabs__header .el-tabs__item {
+  padding: 0 20px;
   color: #fff;
+  width: 0;
+  width: 10%;
+  text-align: center;
 }
 
-.hed_tab>.el-tabs__header .el-tabs__item+.el-tabs__item {
-  margin-right: 60px;
+.hed_tab>.el-tabs__header .el-tabs__nav {
+  width: 100%;
 }
 
+.hed_tab>.el-tabs__header .el-tabs__item:first-child {
+  margin-left: 10px;
+  width :8%
+}
+.hed_tab>.el-tabs__header .el-tabs__item:last-child {
+  width :11%
+}
 .hed_tab>.el-tabs__nav-wrap.is-scrollable {
   padding: 0 0;
 }

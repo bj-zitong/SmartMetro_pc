@@ -6,15 +6,22 @@
           <el-form-item label="姓名">
             <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="工号">
-            <el-input v-model="formInline.searchUname" placeholder="工号"></el-input>
-          </el-form-item> -->
-          <el-form-item label="工种" class="region">
+          <el-form-item label="工种">
+            <el-select v-model="form.profession" placeholder="请选择工种" @change="selectProfession">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <!-- <el-form-item label="工种" class="region">
             <el-select v-model="formInline.region" placeholder="请选择">
               <el-option label="区域一" value="shanghai"></el-option>
               <el-option label="区域二" value="beijing"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item label="时间" class="region">
             <el-date-picker v-model="value1" type="date" placeholder="时间"></el-date-picker>
           </el-form-item>
@@ -26,19 +33,15 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="deleteAll" class="deleteStyle">
-          <span class="deleteStyle-title">删除</span>
-        </el-button>
-        <el-button @click="poiExcel" class="exportStyle">
-          <span class="poiExcel-title">导出</span>
-        </el-button>
+        <el-button @click="deleteAll" class="T-H-B-Grey">删除</el-button>
+        <el-button @click="poiExcel" class="T-H-B-Cyan">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
-            :header-cell-style="{background:'#0058A2'}"
+            :header-cell-style="headClass"
             style="width: 98%"
           >
             <el-table-column
@@ -52,9 +55,9 @@
             <el-table-column prop="phone" label="专业"></el-table-column>
             <el-table-column prop="company" label="职务"></el-table-column>
             <el-table-column prop="profession" label="日期"></el-table-column>
-            <el-table-column prop="intervieweeDate" label="首次打卡"></el-table-column>
-            <el-table-column prop="direction" label="末次打卡"></el-table-column>
-            <el-table-column prop="attendanceEquipment" label="出勤时长"></el-table-column>
+            <el-table-column prop="firstDate" label="首次打卡"></el-table-column>
+            <el-table-column prop="lastDate" label="末次打卡"></el-table-column>
+            <el-table-column prop="attendanceDuration" label="出勤时长"></el-table-column>
           </el-table>
         </div>
         <!-- 分页 total  //这是显示总共有多少数据，
@@ -120,9 +123,9 @@
                 ></el-option>
               </el-select>
             </el-form-item>-->
-            <el-select v-model="form.profession" placeholder="请选择被访人部门" @change="selectProfession">
+            <!-- <el-select v-model="form.profession" placeholder="请选择被访人部门" @change="selectProfession">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
+            </el-select>-->
             <el-form-item prop="interviewee" style="margin-top:20px">
               <el-input v-model="form.interviewee" placeholder="被访人姓名"></el-input>
             </el-form-item>
@@ -151,6 +154,9 @@
   </div>
 </template>
 <script>
+import options from "@/common/options";
+import { handleCofirm } from "@/utils/confirm";
+import { headClass } from "@/utils";
 export default {
   data() {
     return {
@@ -183,6 +189,8 @@ export default {
           }
         ]
       },
+      options: options,
+      headClass: headClass,
       value1: "",
       value2: "",
       token: null, // token
@@ -195,13 +203,6 @@ export default {
       ids: null, //选中的id
       searchUname: null, // 搜索
       searchNum: null,
-      options: [
-        // 来访部门
-        { id: "", name: "请选择来访部门" },
-        { id: 1, name: "部门一" },
-        { id: 2, name: "部门二" },
-        { id: 3, name: "部门三" }
-      ],
       formInline: {
         searchUname: null, // 搜索
         searchNum: null
@@ -273,11 +274,11 @@ export default {
     },
     // 下拉框获得值
     selectProfession(vid) {
-      let obj = {};
-      obj = this.options.find(item => {
-        return item.id == vid; // 筛选出匹配数据
-      });
-      this.form.profession = obj.id;
+      // let obj = {};
+      // obj = this.options.find(item => {
+      //   return item.id == vid; // 筛选出匹配数据
+      // });
+      // this.form.profession = obj.id;
     },
     //取消
     concel() {
@@ -556,6 +557,19 @@ export default {
       var ids = this.changeFun();
       console.log(ids);
       var url = "";
+      handleCofirm("确认删除吗？", "warning")
+        .then(res => {
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
       // this.$http({
       //   // 头部信息及编码格式设置
       //   headers: {

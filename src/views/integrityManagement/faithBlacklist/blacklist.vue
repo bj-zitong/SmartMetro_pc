@@ -4,7 +4,7 @@
       <el-main class="main-content">
         <el-form :inline="true" :model="formInline" class="search-head">
           <el-form-item label="姓名">
-            <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
+            <el-input v-model="formInline.searchUname" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <!-- <el-form-item label="工号" class="region">
             <el-input v-model="formInline.searchUname" placeholder="工号"></el-input>

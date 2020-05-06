@@ -87,7 +87,7 @@
         <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
       </div>
     </div>
-    <addDia v-if="isCreate"></addDia>
+    <!-- <addDia v-if="isCreate"></addDia> -->
   </div>
 </template>
 
@@ -129,7 +129,7 @@ export default {
 		},
         onScreen() {},
         addStaffClick() {
-            isCreate: true
+            // isCreate: true
             console.log(Utils);
             Utils.$emit("demo");
         },
