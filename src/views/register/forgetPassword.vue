@@ -1,72 +1,80 @@
 <template>
-  <!-- <div class="container-head">
-      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin: 10px 0 0 10px" />
-      <span class="register-head">智慧地铁管理系统</span>
-      <div class="accout-style">
-        <span>已有账号，</span>
-        <router-link :to="{path: '/login' }" style="color:#0058A2">马上登录</router-link>
-      </div>
-  </div>-->
   <div class="login_container">
     <!--头部-->
     <div class="container_center">
-      <el-button type="primary" class="button-head">
-        <span class="button-head-title">注册</span>
-      </el-button>
+      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin: 10px 0 0 10px" />
+      <span class="register-head">智慧地铁管理系统</span>
+      <!--表单-->
+      <div class="accout-style">
+        <router-link :to="{path: '/login' }" style="color:#0058A2">返回登录</router-link>
+      </div>
+      <div class="tab-title">
+        <el-button type="primary" class="button-head">
+          <span class="button-head-title">忘记密码</span>
+        </el-button>
+      </div>
       <div class="login_box">
-        <!-- 注册表单 -->
-        <el-form :rules="formRules" :model="form" ref="form" class="form-content">
-          <!-- 用户名-->
-          <el-form-item prop="username">
-            <el-input type="text" v-model="form.username" placeholder="用户名"></el-input>
-          </el-form-item>
+        <!--忘记密码 -->
+        <el-form
+          :rules="forgetFormRules"
+          :model="forgetForm"
+          ref="forgetForm"
+          class="form-content"
+          id="btn1"
+        >
           <!--手机号-->
-          <el-form-item prop="phone">
-            <el-input type="text" v-model="form.phone" placeholder="手机号码"></el-input>
+          <el-form-item prop="account">
+            <el-input type="text" v-model="forgetForm.account" placeholder="账号/手机号"></el-input>
+          </el-form-item>
+          <el-form-item prop="userName2">
+            <el-input type="text" v-model="forgetForm.userName2" placeholder="姓名"></el-input>
           </el-form-item>
           <!--身份证号-->
           <el-form-item prop="idNum">
-            <el-input type="text" v-model="form.idNum" placeholder="身份证号"></el-input>
+            <el-input type="text" v-model="forgetForm.idNum" placeholder="身份证号"></el-input>
           </el-form-item>
-          <!--账户-->
-          <el-form-item prop="account">
-            <el-input type="text" v-model="form.account" placeholder="账号"></el-input>
+          <el-form-item prop="phone2">
+            <el-input type="text" v-model="forgetForm.phone2" placeholder="手机号码"></el-input>
           </el-form-item>
           <!--密码-->
-          <el-form-item prop="password">
-            <el-input type="password" v-model="form.password" placeholder="密码"></el-input>
+          <el-form-item prop="password2">
+            <el-input type="password" v-model="forgetForm.password2" placeholder="重置密码"></el-input>
             <span style="position: absolute;top:3px;right: 8px;">
               <svg-icon icon-class="password" />
             </span>
           </el-form-item>
           <!--确认密码-->
-          <el-form-item prop="confirmPassword">
-            <el-input type="password" v-model="form.confirmPassword" placeholder="确认密码"></el-input>
+          <el-form-item prop="confirmPassword2">
+            <el-input type="password" v-model="forgetForm.confirmPassword2" placeholder="确认密码"></el-input>
             <span style="position: absolute;top:3px;right: 8px;">
               <svg-icon icon-class="password" />
             </span>
           </el-form-item>
           <!--验证码-->
           <div>
-            <el-form-item prop="authCode" style="width:100px;float:left">
-              <el-input type="text" v-model="form.authCode" placeholder="验证码"></el-input>
+            <el-form-item prop="authCode2" style="width:100px;float:left">
+              <el-input type="text" v-model="forgetForm.authCode2" placeholder="验证码"></el-input>
             </el-form-item>
-            <el-form-item style="width:100px;float:left;margin-left:15px;background-color:blue">
-              <el-input type="text" v-model="form.getCode" style="color:blue"></el-input>
+            <el-form-item prop="Code" style="width:100px;float:left;margin-left:15px">
+              <el-input type="text" v-model="forgetForm.Code"></el-input>
             </el-form-item>
+            <!-- <img
+              src="../../../resource/code.png"
+              style="width:94px;height:35px;vertical-align:middle;margin-left:15px"
+              alt="验证码"
+            />-->
             <img
               src="../../../resource/shuaxin.png"
-              style="width:16px;height:16px;margin-left:10px;margin-top:10px;"
+              style="width:16px;height:16px;margin-left:10px"
               @click="getNewCode()"
             />
           </div>
-          <el-button type="primary" class="button-end" @click="register('form')">
-            <span class="button-head-title">点击注册</span>
+          <el-button type="primary" class="button-end" @click="forgetPassword('forgetForm')">
+            <span class="button-head-title">确定</span>
           </el-button>
         </el-form>
       </div>
     </div>
-    <!--最后-->
     <div class="container_end">
       <p class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</p>
       <br />
@@ -74,60 +82,129 @@
     </div>
   </div>
 </template>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
 export default {
   data() {
     return {
-      form: {
-        username: "",
-        phone: "",
-        idNum: "",
-        account: "",
-        password: "",
-        confirmPassword: "",
-        authCode: "",
-        getCode: ""
-      },
-      formRules: {
-        username: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        phone: [
+      code: "",
+      forgetFormRules: {
+        phone2: [
           { required: true, message: "请输入手机号", trigger: "blur" },
           {
             pattern: /^1[34578]\d{9}$/,
-            message: "手机号格式"
+            message: "目前只支持中国大陆的手机号码"
           }
         ],
-        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
         account: [{ required: true, message: "请输入账号", trigger: "blur" }],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-        confirmPassword: [
+        userName2: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        password2: [
+          { required: true, message: "请输入重置密码", trigger: "blur" }
+        ],
+        confirmPassword2: [
           { required: true, message: "请输入确认密码", trigger: "blur" }
         ],
-        authCode: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+        authCode2: [
+          { required: true, message: "请输入验证码", trigger: "blur" }
+        ],
+        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
+        Code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+      },
+      forgetForm: {
+        account: "",
+        phone2: "",
+        userName2: "",
+        idNum: "",
+        password2: "",
+        confirmPassword2: "",
+        authCode2: "",
+        Code: ""
       }
     };
   },
   created() {
+    //  this.updateState1();
     this.createCode();
   },
   methods: {
-    // 注册
-    register() {
-      var form = this.form;
+    getNewCode() {
+      this.createCode();
+    },
+    // 生成验证码
+    createCode() {
+      var code;
+      // 首先默认code为空字符串
+      code = "";
+      // 设置长度，这里看需求，我这里设置了4
+      var codeLength = 4;
+      // 设置随机字符
+      var random = new Array(
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z"
+      );
+      // 循环codeLength 我设置的4就是循环4次
+      for (var i = 0; i < codeLength; i++) {
+        // 设置随机数范围,这设置为0 ~ 36
+        var index = Math.floor(Math.random() * 36);
+        // 字符串拼接 将每次随机的字符 进行拼接
+        code += random[index];
+      }
+      // 将拼接好的字符串赋值给展示的code
+      this.code = code;
+      // 将生成的验证码赋值给全局变量
+      this.forgetForm.Code = code;
+    },
+    // 忘记密码
+    forgetPassword(forgetForm) {
+      var form = this.forgetForm;
       //校验
       if (
-        form.username != undefined &&
-        form.phone != undefined &&
-        form.idNum != undefined &&
         form.account != undefined &&
-        form.password != undefined
+        form.userName2 != undefined &&
+        form.idNum != undefined &&
+        form.phone2 != undefined &&
+        form.password2 != undefined
       ) {
-        if (form.password != form.confirmPassword) {
+        if (form.password2 != form.confirmPassword2) {
           this.$message("密码不一致，请重新输入！");
           return;
         }
-        var inputcode = form.authCode.toUpperCase();
-        if (inputcode != form.getCode) {
+        var inputcode = form.authCode2.toUpperCase();
+        if (inputcode != form.Code) {
           this.$message("验证码输入不正确，请重新输入！");
           this.createCode();
           return;
@@ -139,15 +216,15 @@ export default {
         }
         //请求参数
         var params = JSON.stringify({
-          name: form.username,
-          cellPhone: form.phone,
+          name: form.userName2,
+          cellPhone: form.phone2,
           idNmun: form.idNum,
           account: form.account,
-          password: form.password
+          password: form.password2
         });
-        this.http.post("/smart/auth/regist", params).then(res => {
+        this.http.post("/smart/auth/password/forget", params).then(res => {
           if (res.code == 200) {
-            this.$message("注册成功！");
+            this.$message("修改成功！");
             this.$router.push({ path: "/login" });
           }
         });
@@ -232,82 +309,14 @@ export default {
       }
       return pass;
     },
-    getNewCode() {
-      this.createCode();
-    },
-    //生成验证码getCode
-    // 生成验证码
-    createCode() {
-      var code;
-      // 首先默认code为空字符串
-      code = "";
-      // 设置长度，这里看需求，我这里设置了4
-      var codeLength = 4;
-      // 设置随机字符
-      var random = new Array(
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z"
-      );
-      // 循环codeLength 我设置的4就是循环4次
-      for (var i = 0; i < codeLength; i++) {
-        // 设置随机数范围,这设置为0 ~ 36
-        var index = Math.floor(Math.random() * 36);
-        // 字符串拼接 将每次随机的字符 进行拼接
-        code += random[index];
-      }
-      // 将拼接好的字符串赋值给展示的code
-      this.code = code;
-      // 将生成的验证码赋值给全局变量
-      this.form.getCode = code;
+
+    register() {
+      this.$router.push({ path: "/register" });
     }
   }
 };
 </script>
 <style scoped lang="stylus">
-.container-head {
-  width: 100px;
-  height: 120px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -50px 0 0 -60px;
-  background-color: rgba(255, 255, 255, 1);
-}
-
 /* 总div */
 .login_container {
   width: 100%;
@@ -341,24 +350,56 @@ export default {
     margin-top: 14px;
   }
 
-  /* 头部head button */
-  .button-head {
+  .tab-title {
     width: 680px;
     height: 60px;
-    background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
     box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
     opacity: 1;
     border-radius: 4px;
 
+    /* 头部head button */
+    .button-head {
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
+      box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
+      opacity: 1;
+      border-radius: 0px 4px 4px 0px;
+    }
+
+    /*  */
+    .button-end {
+      width: 340px;
+      height: 60px;
+      background: rgba(246, 247, 248, 1);
+      box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
+      opacity: 1;
+      border-radius: 4px 0px 0px 4px;
+      position: absolute;
+      margin-left: 0px;
+    }
+
     /* 按钮文字 */
     .button-head-title {
-      width: 56px;
+      width: 120px;
       height: 31px;
       font-size: 24px;
       font-family: Microsoft YaHei;
       font-weight: bold;
       line-height: 31px;
       color: rgba(255, 255, 255, 1);
+      letter-spacing: 20px;
+      opacity: 1;
+    }
+
+    .button-head-title-end {
+      width: 120px;
+      height: 31px;
+      font-size: 24px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      line-height: 31px;
+      color: rgba(99, 99, 99, 1);
       letter-spacing: 20px;
       opacity: 1;
     }
