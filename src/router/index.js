@@ -75,7 +75,7 @@ export const constantRouterMap = [
         component: Layout,
         meta: {
             icon: '',
-            title: 'ssss',
+            title: '实名认证',
             enable: "Y",
             
         },
