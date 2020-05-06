@@ -157,12 +157,17 @@
             <el-input v-model="formSpeech.jobNum" placeholder="作业人数"></el-input>
           </el-form-item>
           <el-form-item label="安全防护用品配套使用：" prop="protective">
-                  <el-select
+            <el-select
               v-model="formSpeech.protective"
-              placeholder="请选择安全防护用品"
+              placeholder="请选择"
               @change="selectProtective"
             >
-              <el-option v-for="item in protectives" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              <el-option
+                v-for="item in protectives"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="作业内容:" prop="speachContent">
@@ -495,12 +500,12 @@ export default {
       datas.append("isSafety", this.formSpeech.protective);
       datas.append("jobContent", this.formSpeech.speachContent);
       datas.append("meetingContent", this.formSpeech.classContent);
-      datas.append("workerInfoIds", this.checkedCities);
+      datas.append("workerInfoIds", this.formSpeech.numbers);
        var url =
         "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team/meeting";
       this.http.post(url, datas).then(res => {
         if (res.code == 200) {
-          this.dialogFormVisible = false;
+          this.outerVisible = false;
         }
       });
     },
