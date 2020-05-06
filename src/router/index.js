@@ -103,7 +103,7 @@ export const constantRouterMap = [
         },
         //班组管理
         {
-            path: '/team_message/index',
+            path: '/team_message',
             component: () =>
                 import('@/views/team_message/index'),
 
