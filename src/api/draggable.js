@@ -5,7 +5,7 @@ function getFileList() {
   // 正在热映
   let url = 'https://douban.uieee.com/v2/movie/in_theaters'
   // 即将上映
-  let url2 = 'https://douban.uieee.com/v2/movie/coming_soon'
+  // let url2 = 'https://douban.uieee.com/v2/movie/coming_soon'
   let option = {
     param: 'callback'
   }

@@ -75,13 +75,7 @@ export default {
       this.num = tab.index;
     },
     logout() {
-      this.userLogout()
-        .then(() => {
-          location.reload(); // 为了重新实例化vue-router对象 避免bug
-        })
-        .catch(err => {
-          console.log(err);
-        });
+     this.$router.push({ path: "/login" })
     }
   }
 };

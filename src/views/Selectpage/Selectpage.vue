@@ -188,13 +188,15 @@ export default {
       this.$router.push({ path: "/home" })
     },
     logout() {
-      this.userLogout()
-        .then(() => {
-          location.reload(); // 为了重新实例化vue-router对象 避免bug
-        })
-        .catch(err => {
-          console.log(err);
-        });
+     
+      // this.userLogout()
+      //   .then(() => {
+      //     location.reload(); // 为了重新实例化vue-router对象 避免bug// 为了重新实例化vue-router对象 避免bug
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
+      this.$router.push({ path: "/login" })
     }
   },
   watch: {},

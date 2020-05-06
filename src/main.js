@@ -20,6 +20,18 @@ import './permission'
 import './icons'
 // 全局 Mock 接口
 import './mock'
+import api from './api/api'
+import http from '../src/api/https'
+// //挂载到VUE实例，以便全局使用
+Vue.prototype.api = api;
+Vue.prototype.http = http;
+// import axios from 'axios'
+// import {post,fetch,patch,put} from '../src/api/https'
+// //定义全局变量
+// Vue.prototype.$post=post;
+// Vue.prototype.$fetch=fetch;
+// Vue.prototype.$patch=patch;
+// Vue.prototype.$put=put;
 // 全局引入echarts
 Vue.use(ElementUI, {
     size: 'medium',

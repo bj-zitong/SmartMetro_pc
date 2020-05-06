@@ -52,19 +52,19 @@
 </template>
 <script>
 // import { isValidUsername } from '@/utils/validate'
-import { saveToLocal, loadFromLocal } from '@/common/local-storage'
-import { mapActions } from 'vuex'
+import { saveToLocal, loadFromLocal } from "@/common/local-storage";
+import { mapActions } from "vuex";
 /* eslint-disable*/
 import particles from "particles.js";
 export default {
   data() {
     // username 验证
     // const validateUsername = (rule, value, callback) => {
-      // if (!isValidUsername(value)) {
-      //   callback(new Error("请输入正确的用户名"));
-      // } else {
-      //   callback();
-      // }
+    // if (!isValidUsername(value)) {
+    //   callback(new Error("请输入正确的用户名"));
+    // } else {
+    //   callback();
+    // }
     // };
     // pwd 验证
     const validatePwd = (rule, value, callback) => {
@@ -85,12 +85,12 @@ export default {
       loading: false,
       rules: {
         username: [
-          { required: true, message: "请输入账号", trigger: "blur" },
+          { required: true, message: "请输入账号", trigger: "blur" }
           // { required: true, trigger: "blur", validator: validateUsername },
           // { required: true, trigger: "change", validator: validateUsername }
         ],
         pwd: [
-          { required: true, message: "请输入密码", trigger: "blur" },
+          { required: true, message: "请输入密码", trigger: "blur" }
           // { required: true, trigger: "blur", validator: validatePwd },
           // { required: true, trigger: "change", validator: validatePwd }
         ]
@@ -115,46 +115,55 @@ export default {
     },
     // 登录操作
     onLogin() {
+      
       this.$refs.pwd.$el.getElementsByTagName("input")[0].blur();
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          
           this.loading = true;
-          this.login(this.loginForm)
-            .then(() => {
-              // 保存账号
-              if (this.remember) {
-                saveToLocal("username", this.loginForm.username);
-                saveToLocal("password", this.loginForm.pwd);
-                saveToLocal("remember", true);
-              } else {
-                saveToLocal("username", "");
-                saveToLocal("password", "");
-                saveToLocal("remember", false);
-              }
-              this.$router.push({ path: "/Selectpage" });
-              // this.$router.push({ path: "/" })
-            })
-            .catch(() => {
-              this.loading = false;
-            });
+           this.$router.push({ path: "/Selectpage" });
+          // this.login(this.loginForm)
+            // .then(() => {
+            //   // 保存账号
+            //   if (this.remember) {
+            //     saveToLocal("username", this.loginForm.username);
+            //     saveToLocal("password", this.loginForm.pwd);
+            //     saveToLocal("remember", true);
+            //   } else {
+            //     saveToLocal("username", "");
+            //     saveToLocal("password", "");
+            //     saveToLocal("remember", false);
+            //   }
+             
+            //   // this.$router.push({ path: "/" })
+            // })
+            // .catch(() => {
+            //   this.loading = false;
+            // });
         } else {
           return false;
         }
       });
+      // var data ={
+      //   "account": "1111",
+      //   "password": "2222"
+      // }
+      // this.http.post('/smart/auth/login',data).then(res => {
+      //   // if (res.code == 200) {
+      //   //   // this.info = res.data.list;
+      //   //   // this.page = res.data;
+      //   // }
+      // });
     },
     //注册
     register() {
       this.$router.push({ path: "/register" });
     },
     //修改密码
-    updatePassword(){
-      this.$router.push({path:"/updatePassword"});
+    updatePassword() {
+      this.$router.push({ path: "/updatePassword" });
     }
   },
-  watch: {
-   
-  },
+  watch: {},
   mounted() {}
 };
 </script>
@@ -319,18 +328,20 @@ export default {
   background-position: 50% 50%;
   background-repeat: no-repeat;
 }
-.login-Footer{
-   position:absolute;
-   bottom :0;
-   text-align :center;
-   width :100%
-   p{
-      font-size:14px;
-      font-family:Microsoft YaHei;
-      font-weight:400;
-      line-height:19px;
-      color:rgba(255,255,255,1);
-      opacity:1;
-   }
+
+.login-Footer {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+
+  p {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    line-height: 19px;
+    color: rgba(255, 255, 255, 1);
+    opacity: 1;
+  }
 }
 </style>
