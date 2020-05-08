@@ -38,6 +38,11 @@ export const constantRouterMap = [
         name: 'updatePassword',
         component: () => import('@/views/register/updatePassword')
     },
+    {
+      path: '/forgetPassword',
+      name: 'forgetPassword',
+      component: () => import('@/views/register/forgetPassword')
+  },
     //点击进入首页
     {
         path: '/Selectpage',
@@ -71,13 +76,13 @@ export const constantRouterMap = [
         path: '/labor_Subcontract1',
         name: '实名认证',
         // hidden: true,
-        
+
         component: Layout,
         meta: {
             icon: '',
             title: '实名认证',
             enable: "Y",
-            
+
         },
         redirect: 'labor_Subcontract1',
         children: [
@@ -98,7 +103,7 @@ export const constantRouterMap = [
         },
         //班组管理
         {
-            path: '/team_message/index',
+            path: '/team_message',
             component: () =>
                 import('@/views/team_message/index'),
 

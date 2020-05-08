@@ -19,18 +19,19 @@
             <el-table-column
               type="selection"
               width="65"
-              prop="userId"
+              prop="id"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="number" label="编号" width="150"></el-table-column>
-            <el-table-column prop="createDate" label="创建日期" width="120"></el-table-column>
-            <el-table-column prop="jobSite" label="作业部位" width="120"></el-table-column>
-            <el-table-column prop="workNumber" label="作业人数" width="120"></el-table-column>
-            <el-table-column prop="workContent" label="作业内容" width="200"></el-table-column>
-            <el-table-column prop="safetyUse" label="安全防护用品配套使用" width="120"></el-table-column>
-            <el-table-column prop="speachContent" label="班前讲话内容" width="100"></el-table-column>
-            <el-table-column prop="workNum" label="参加活动作业人员名单" width="200"></el-table-column>
+            <el-table-column prop="uuid" label="编号" width="150"></el-table-column>
+            <el-table-column prop="createTime" label="创建日期" width="120"></el-table-column>
+            <el-table-column prop="homeworkPart" label="作业部位" width="120"></el-table-column>
+            <el-table-column prop="homeworkNumber" label="作业人数" width="120"></el-table-column>
+            <el-table-column prop="jobContent" label="作业内容" width="200"></el-table-column>
+            <el-table-column prop="isSafety" label="安全防护用品配套使用" width="120"></el-table-column>
+            <el-table-column prop="meetingContent" label="班前讲话内容" width="100"></el-table-column>
+            <el-table-column prop="workerInfo" label="参加活动作业人员名单" width="200"></el-table-column>
             <el-table-column label="视频附件" width="100" fixed="right">
+              <!--accessoryPath-->
               <template slot-scope="scope">
                 <img
                   src="../../../static/image/shangchuan.png"
@@ -115,33 +116,45 @@ export default {
         pageSize: this.pageSize,
         page: this.page
       });
-      var url = "";
+      var url =
+        "/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/team/meeting/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
+
       var result = [
         {
-          userId: 1,
-          number: "001",
-          createDate: "2020-4-12",
-          jobSite: "作业部位1",
-          company: "安保部一",
-          workNumber: 12,
-          workContent: "内容一",
-          safetyUse: "安全防护用品配套使用",
-          speachContent: "eeeeeee",
+          id: 1,
+          uuid: "001",
+          createTime: "2020-4-12",
+          homeworkPart: "作业部位1",
+          workerInfo: "安保部一",
+          homeworkNumber: 12,
+          jobContent: "内容一",
+          isSafety: "安全防护用品配套使用",
+          meetingContent: "eeeeeee",
           workNum: "44444444444",
-          videoUrl: "22222222"
+          accessoryPath: "22222222"
         },
         {
-          userId: 2,
-          number: "002",
-          createDate: "2020-4-13",
-          jobSite: "作业部位2",
-          company: "安保部2",
-          workNumber: 23,
-          workContent: "内容2",
-          safetyUse: "安全防护用品配套使用2",
-          speachContent: "33333333",
+          id: 2,
+          uuid: "002",
+          createTime: "2020-4-13",
+          homeworkPart: "作业部位2",
+          workerInfo: "安保部2",
+          homeworkNumber: 23,
+          jobContent: "内容2",
+          isSafety: "安全防护用品配套使用2",
+          meetingContent: "33333333",
           workNum: "44444322222",
-          videoUrl: "444323222"
+          accessoryPath: "444323222"
         }
       ];
       this.tableData = result;
@@ -152,7 +165,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].userId;
+        var id = arrays[i].id;
         ids.push(id);
         // console.log("获得id"+arrays[i].userId);
       }
@@ -164,68 +177,46 @@ export default {
     deleteAll() {
       var ids = this.changeFun();
       console.log(ids);
-      var url = "";
-      // this.$http({
-      //   // 头部信息及编码格式设置
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: sessionStorage.getItem('token')
-      //   },
-      //   method: 'DELETE', // 请求的方式
-      //   url: url, // 请求地址
-      //   // 传参
-      //   data: ids
-      // })
-      //   .then(function(response) {
-      //     var res = response.data
-      //     // 请求失败
-      //     if (res.code != '200') {
-      //     }
-      //     // 请求成功
-      //     if (res.code == '200') {
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error)
-      //   })
+      var data = JSON.stringify(ids);
+      var url =
+        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team/meeting";
+      this.http.delete(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
+
     },
     // 删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.userId;
-      var url = "";
+      var uid = row.id;
       console.log(uid);
-      // this.$http({
-      //   // 头部信息及编码格式设置
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: sessionStorage.getItem("token")
-      //   },
-      //   method: "DELETE", // 请求的方式
-      //   url: url, // 请求地址
-      //   // 传参
-      //   data: uid
-      // })
-      //   .then(function(response) {
-      //     var res = response.data;
-      //     // 请求失败
-      //     if (res.code != "200") {
-      //     }
-      //     // 请求成功
-      //     if (res.code == "200") {
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
+      var ids=[];
+      ids.push(uid);
+      var data = JSON.stringify(ids);
+      var url =
+        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team/meeting";
+      this.http.delete(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
+
     },
     uploadVideo(row) {
-      var uid = row.userId;
+      var uid = row.id;
       console.log(uid);
     },
     //编辑
     handleEdit(row) {
-      var uid = row.userId;
+      var uid = row.id;
       console.log(uid);
     }
   }

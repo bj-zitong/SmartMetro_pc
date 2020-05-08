@@ -17,10 +17,10 @@ axios.interceptors.response.use(response => {//数据拿到之后
 function successfun(res){//处理后台返回的非200错误
     if(res.code === 200){
         return res
-    }else{        
+    }else{
          Message.warning(res.message);
          return res;
-    } 
+    }
 }
 function errorfun(res){
     if(res.code != 200){
@@ -33,7 +33,8 @@ export default{
         return axios({
             method:'post',
             headers:{
-                // Authorization:
+                 Authorization:'bdcf1af9c1f9000e465cd970f5a46fbebc26fad7fee9f912d3e9546e023e170d',
+                 'Content-Type': 'application/json',
             },
             baseURL:localhosts,
             url,
@@ -50,7 +51,8 @@ export default{
         return axios({
             method:'get',
             headers:{
-                // Authorization:
+                Authorization:'bdcf1af9c1f9000e465cd970f5a46fbebc26fad7fee9f912d3e9546e023e170d',
+                'Content-Type': 'application/json',
             },
             baseURL:localhosts,
             url,
@@ -62,5 +64,23 @@ export default{
         },err => {
             return errorfun(err)
         })
-    }
+    },
+    delete(url,data){//delete请求
+      return axios({
+          method:'delete',
+          headers:{
+              Authorization:'bdcf1af9c1f9000e465cd970f5a46fbebc26fad7fee9f912d3e9546e023e170d',
+              'Content-Type': 'application/json',
+          },
+          baseURL:localhosts,
+          url,
+          data: data,
+          withCredentials: true,
+          timeout:5000,
+      }).then(res => {
+          return successfun(res)
+      },err => {
+          return errorfun(err)
+      })
+  }
 }

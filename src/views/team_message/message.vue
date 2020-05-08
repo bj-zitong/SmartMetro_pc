@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div class="container-head">
+    <!-- <div class="container-head">
       <div style="margin-top:33px; position: absolute;">
         <el-form ref="form" :model="form" label-width="90px">
           <el-form-item label="班组名称:">
-            <el-input v-model="form.className" style="height:35px;width:500px;"></el-input>
+            <el-input v-model="form.teamName" style="height:35px;width:500px;"></el-input>
             <i
               class="el-icon-search"
               style="position: absolute;top:8px;right: 8px;"
@@ -13,7 +13,7 @@
           </el-form-item>
         </el-form>
       </div>
-    </div>
+    </div>-->
     <div class="container-content">
       <div style="margin-top:30px;margin-left:30px;height:60px;width:100%;">
         <el-button @click="dialogFormVisible = true" class="addStyle">
@@ -26,7 +26,7 @@
         >删除</el-button>
       </div>
 
-      <div class="table-content">
+      <div class="table-content" style="line-height:26px">
         <el-table
           :data="tableData"
           ref="multipleTable"
@@ -34,13 +34,13 @@
           stripe
           :header-cell-style="{background:'#0058A2'}"
         >
-          <el-table-column type="selection" prop="userId" @selection-change="changeFun"></el-table-column>
+          <el-table-column type="selection" prop="id" @selection-change="changeFun"></el-table-column>
           <el-table-column prop="projectName" label="工程名称" width="150"></el-table-column>
-          <el-table-column prop="className" label="班组名称" width="150"></el-table-column>
-          <el-table-column prop="classType" label="班组类型" width="100"></el-table-column>
-          <el-table-column prop="classLeader" label="班组长" width="100"></el-table-column>
-          <el-table-column prop="phone" label="手机号" width="120"></el-table-column>
-          <el-table-column prop="createDate" label="创建日期" width="150"></el-table-column>
+          <el-table-column prop="teamName" label="班组名称" width="150"></el-table-column>
+          <el-table-column prop="teamType" label="班组类型" width="100"></el-table-column>
+          <el-table-column prop="teamLeaderName" label="班组长" width="100"></el-table-column>
+          <el-table-column prop="teamLeaderPhone" label="手机号" width="120"></el-table-column>
+          <el-table-column prop="createTime" label="创建日期" width="150"></el-table-column>
           <el-table-column label="操作" width="500" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
@@ -81,37 +81,37 @@
           <el-form
             method="post"
             enctype="multipart/form-data"
-            ref="form"
+            ref="formClass"
             :rules="formRules"
             :model="formClass"
             action="http://192.168.1.164:8001/auth/user/baseUser"
           >
             <el-form-item prop="projectName">
-              <el-input v-model="form.projectName" type="text" placeholder="工程名称"></el-input>
+              <el-input v-model="formClass.projectName" type="text" placeholder="工程名称"></el-input>
             </el-form-item>
             <el-form-item prop="groupName">
-              <el-input v-model="form.groupName" placeholder="班组名称"></el-input>
+              <el-input v-model="formClass.groupName" placeholder="班组名称"></el-input>
             </el-form-item>
             <el-form-item prop="phone">
-              <el-input v-model="form.phone" placeholder="手机号"></el-input>
+              <el-input v-model="formClass.phone" placeholder="手机号"></el-input>
             </el-form-item>
             <el-form-item prop="groupLeader">
-              <el-input v-model="form.groupLeader" placeholder="班组长"></el-input>
+              <el-input v-model="formClass.groupLeader" placeholder="班组长"></el-input>
             </el-form-item>
-            <el-select v-model="form.profession" placeholder="请选择班组类型" @change="selectProfession">
-              <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
             <el-select
-              v-model="form.profession"
+              v-model="formClass.profession"
               placeholder="请选择班组类型"
               @change="selectProfession"
-              hidden="true"
             >
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
             <div class="dialog-footer">
               <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
-              <el-button type="primary" @click="addClass('form')" style="border-radius:18px">确 定</el-button>
+              <el-button
+                type="primary"
+                @click="addClass('formClass')"
+                style="border-radius:18px"
+              >确 定</el-button>
             </div>
           </el-form>
         </div>
@@ -161,7 +161,6 @@
               v-model="formSpeech.protective"
               placeholder="请选择"
               @change="selectProtective"
-              hidden="true"
             >
               <el-option
                 v-for="item in protectives"
@@ -185,9 +184,14 @@
           <el-form-item label="参加活动人员名单:" prop="classContent">
             <el-button type="primary" @click="innerVisible = true">点击选择</el-button>
           </el-form-item>
+          <el-input v-if="checkedCities.length>0" v-model="checkedCities" placeholder></el-input>
           <div class="dialog-footer">
-            <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
-            <el-button type="primary" @click="addClass('form')" style="border-radius:18px">确 定</el-button>
+            <el-button @click="outerVisible = false" class="cancel-style">取 消</el-button>
+            <el-button
+              type="primary"
+              @click="addFormSpeech('formSpeech')"
+              style="border-radius:18px"
+            >确 定</el-button>
           </div>
         </el-form>
       </div>
@@ -202,15 +206,16 @@
         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
           <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
         </el-checkbox-group>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="innerVisible = false">取 消</el-button>
+          <el-button type="primary" @click="innerVisible= false" style="border-radius:18px">确 定</el-button>
+        </div>
       </el-dialog>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="outerVisible = false">取 消</el-button>
-      </div>
     </el-dialog>
   </div>
 </template>
 <script>
- const cityOptions = ['上海', '北京', '广州', '深圳'];
+const cityOptions = ["上海", "北京", "广州", "深圳"];
 export default {
   data() {
     return {
@@ -222,7 +227,7 @@ export default {
       total: 100, //总条数
       ids: null, //选中的id
       form: {
-        className: "" //搜索内容
+        teamName: "" //搜索内容
       },
       dialogFormVisible: false, //新增
       dialogVisible: false, //评价
@@ -259,9 +264,9 @@ export default {
       options: [
         // 来访部门
         { id: "", name: "请选择班组类型" },
-        { id: 1, name: "类型一" },
-        { id: 2, name: "类型二" },
-        { id: 3, name: "类型三" }
+        { id: "1", name: "类型一" },
+        { id: "2", name: "类型二" },
+        { id: "3", name: "类型三" }
       ],
       evaluatLevel: [
         { id: 1, name: "优" },
@@ -295,9 +300,9 @@ export default {
       },
       protectives: [
         { id: "", name: "请选择" },
-        { id: 1, name: "xxxxxx" },
-        { id: 2, name: "kkkkkk" },
-        { id: 3, name: "tttttt" }
+        { id: "1", name: "xxxxxx" },
+        { id: "2", name: "kkkkkk" },
+        { id: "3", name: "tttttt" }
       ],
       checkPerson: null, //选中的人员
       checkAll: false,
@@ -313,53 +318,66 @@ export default {
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
       this.pageSize = size;
-      // this.getTalks()
+      this.getTalks();
       // console.log(this.pageSize)  //每页下拉显示数据
     },
     handleCurrentChange: function(page) {
       this.page = page;
       this.getTalks();
-      console.log(this.page); //点击第几页
+      // console.log(this.page); //点击第几页
     },
     pre(cpage) {
       this.page = cpage;
-      console.log("cpage" + cpage);
-      // this.getTalks()
+      // console.log("cpage" + cpage);
+      this.getTalks();
     },
     //下一页
     next(cpage) {
       this.page = cpage;
-      console.log("下一页" + cpage);
-      // this.getTalks()
+      // console.log("下一页" + cpage);
+      this.getTalks();
     },
     //搜索
     searchClass() {
-      console.log(this.form.className);
+      console.log(this.form.teamName);
+      this.getTalks();
     },
     getTalks() {
       var data = JSON.stringify({
         pageSize: this.pageSize,
         page: this.page
       });
-      var url = "";
+      //请求
+      var url =
+        "/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/team/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
       var result = [
         {
-          userId: 1,
+          id: 1,
           projectName: "工程1",
-          className: "班组一",
-          classType: "工地",
-          classLeader: "XXX",
-          phone: "15236985369",
-          createDate: "2020-4-12"
+          teamName: "班组一",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236985369",
+          createTime: "2020-4-12"
         },
         {
-          userId: 2,
+          id: 2,
           projectName: "工程2",
-          className: "班组二",
-          classType: "工地",
-          classLeader: "XXX",
-          phone: "15236984469",
-          createDate: "2020-4-15"
+          teamName: "班组二",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236984469",
+          createTime: "2020-4-15"
         }
       ];
       this.tableData = result;
@@ -370,42 +388,29 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].userId;
+        var id = arrays[i].id;
         ids.push(id);
         // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      // console.log("选中的ids"+ids);
+      console.log("选中的ids" + ids);
       //  this.multipleSelection = val;
     },
     // 批量删除
     deleteAll() {
       var ids = this.changeFun();
       console.log(ids);
-      var url = "";
-      // this.$http({
-      //   // 头部信息及编码格式设置
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: sessionStorage.getItem('token')
-      //   },
-      //   method: 'DELETE', // 请求的方式
-      //   url: url, // 请求地址
-      //   // 传参
-      //   data: ids
-      // })
-      //   .then(function(response) {
-      //     var res = response.data
-      //     // 请求失败
-      //     if (res.code != '200') {
-      //     }
-      //     // 请求成功
-      //     if (res.code == '200') {
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error)
-      //   })
+      var data = JSON.stringify(ids);
+      var url =
+        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
+      this.http.delete(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
     },
     // 下拉框获得值
     selectProfession(vid) {
@@ -434,45 +439,44 @@ export default {
     // 删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.userId;
-      var url = "";
-      console.log(uid);
-      // this.$http({
-      //   // 头部信息及编码格式设置
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: sessionStorage.getItem("token")
-      //   },
-      //   method: "DELETE", // 请求的方式
-      //   url: url, // 请求地址
-      //   // 传参
-      //   data: uid
-      // })
-      //   .then(function(response) {
-      //     var res = response.data;
-      //     // 请求失败
-      //     if (res.code != "200") {
-      //     }
-      //     // 请求成功
-      //     if (res.code == "200") {
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
+      var uid = row.id;
+      var ids = [];
+      ids.push(uid);
+      var data = JSON.stringify(ids);
+      var url =
+        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
+      this.http.delete(url, data).then(res => {
+        if (res.code == 200) {
+          this.getTalks();
+        }
+      });
     },
     uploadVideo(row) {
-      var uid = row.userId;
+      var uid = row.id;
       console.log(uid);
     },
     //编辑
     handleEdit(row) {
-      var uid = row.userId;
+      var uid = row.id;
       console.log(uid);
     },
     //新增
-    addClass(form) {
-      console.log(this.form);
+    addClass(formClass) {
+      var form = this.formClass;
+      var params = JSON.stringify({
+        projectName: form.projectName,
+        teamName: form.groupName,
+        teamType: form.profession,
+        teamLeaderName: form.groupLeader,
+        teamLeaderPhone: form.phone
+      });
+      var url =
+        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
+      this.http.post(url, params).then(res => {
+        if (res.code == 200) {
+          this.dialogFormVisible = false;
+        }
+      });
     },
     //评价
     evaluate() {
@@ -480,7 +484,7 @@ export default {
       console.log(this.evaluated);
     },
     addEvalte(row) {
-      var uid = row.userId;
+      var uid = row.id;
       console.log(uid);
       this.dialogVisible = true;
     },
@@ -488,18 +492,36 @@ export default {
     addSpeech(row) {
       this.outerVisible = true;
     },
+    addFormSpeech(formSpeech) {
+      var datas = new FormData();
+      datas.append("userId", 1);
+      datas.append("homeworkPart", this.formSpeech.jobsite);
+      datas.append("homeworkNumber", this.formSpeech.jobNum);
+      datas.append("isSafety", this.formSpeech.protective);
+      datas.append("jobContent", this.formSpeech.speachContent);
+      datas.append("meetingContent", this.formSpeech.classContent);
+      datas.append("workerInfoIds", this.formSpeech.numbers);
+       var url =
+        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team/meeting";
+      this.http.post(url, datas).then(res => {
+        if (res.code == 200) {
+          this.outerVisible = false;
+        }
+      });
+    },
     cencal() {
       this.dialogFormVisible = false;
     },
-   handleCheckAllChange(val) {
-        this.checkedCities = val ? cityOptions : [];
-        this.isIndeterminate = false;
-      },
-      handleCheckedCitiesChange(value) {
-        let checkedCount = value.length;
-        this.checkAll = checkedCount === this.cities.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-      }
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? cityOptions : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.cities.length;
+    }
   }
 };
 </script>
