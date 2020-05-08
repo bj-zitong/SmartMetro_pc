@@ -221,6 +221,7 @@ export default {
   border-radius: 30px !important;
   background: #FFFFFF;
   color: rgba(0, 88, 162, 1);
+  font-weight: 400;
 }
 
 .hed_tab /deep/ .el-tabs__nav-scroll {
