@@ -66,7 +66,7 @@
           @prev-click="pre"
           @next-click="next"
           @current-change="handleCurrentChange"
-          hide-on-single-page
+
           :total="total"
         ></el-pagination>
       </div>
@@ -219,12 +219,13 @@ const cityOptions = ["上海", "北京", "广州", "深圳"];
 export default {
   data() {
     return {
+      id:null,//当前选中的id
       token: null, // token
       // 动态数据
       tableData: [],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
-      total: 100, //总条数
+      total: 0, //总条数
       ids: null, //选中的id
       form: {
         teamName: "" //搜索内容
@@ -378,9 +379,100 @@ export default {
           teamLeaderName: "XXX",
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
-        }
+        },
+         {
+          id: 2,
+          projectName: "工程2",
+          teamName: "班组二",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236984469",
+          createTime: "2020-4-15"
+        },
+         {
+          id: 2,
+          projectName: "工程2",
+          teamName: "班组二",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236984469",
+          createTime: "2020-4-15"
+        },
+         {
+          id: 2,
+          projectName: "工程2",
+          teamName: "班组二",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236984469",
+          createTime: "2020-4-15"
+        },
+         {
+          id: 2,
+          projectName: "工程2",
+          teamName: "班组二",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236984469",
+          createTime: "2020-4-15"
+        },
+         {
+          id: 2,
+          projectName: "工程2",
+          teamName: "班组二",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236984469",
+          createTime: "2020-4-15"
+        },
+         {
+          id: 2,
+          projectName: "工程2",
+          teamName: "班组二",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236984469",
+          createTime: "2020-4-15"
+        },
+         {
+          id: 2,
+          projectName: "工程2",
+          teamName: "班组二",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236984469",
+          createTime: "2020-4-15"
+        },
+         {
+          id: 2,
+          projectName: "工程2",
+          teamName: "班组二",
+          teamType: "工地",
+          teamLeaderName: "XXX",
+          teamLeaderPhone: "15236984469",
+          createTime: "2020-4-15"
+        },
+        //  {
+        //   id: 2,
+        //   projectName: "工程2",
+        //   teamName: "班组二",
+        //   teamType: "工地",
+        //   teamLeaderName: "XXX",
+        //   teamLeaderPhone: "15236984469",
+        //   createTime: "2020-4-15"
+        // },
+        //  {
+        //   id: 2,
+        //   projectName: "工程2",
+        //   teamName: "班组二",
+        //   teamType: "工地",
+        //   teamLeaderName: "XXX",
+        //   teamLeaderPhone: "15236984469",
+        //   createTime: "2020-4-15"
+        // }
       ];
       this.tableData = result;
+      this.total=result.length;
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -458,7 +550,18 @@ export default {
     //编辑
     handleEdit(row) {
       var uid = row.id;
+      this.id=uid;
       console.log(uid);
+      //获得详情
+      var params=null;
+      this.formClass.projectName='123'
+      var url=
+      "/smart/worker/labour/"+sessionStorage.getItem("userId")+"/team/"+uid+"/detail"
+       this.http.get(url, params).then(res => {
+        if (res.code == 200) {
+        }
+      });
+      this.dialogFormVisible=true;
     },
     //新增
     addClass(formClass) {
@@ -527,6 +630,11 @@ export default {
 </script>
 <style scoped lang="stylus">
 .container {
+
+  background-color:rgba(246,247,248,1);
+  opacity:1;
+    background:rgba(246,247,248,1);
+    opacity:1;
   .container-head {
     // width: 100%;
     height: 100px;
@@ -539,7 +647,7 @@ export default {
 
   .container-content {
     // width: 100%;
-    // height: 600px;
+    // height: 874px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.16);
     opacity: 1;

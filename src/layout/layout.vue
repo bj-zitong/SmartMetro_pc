@@ -27,17 +27,17 @@
       }
     },
     computed: {
-      
+
       ...mapGetters([
         'routers'
       ])
     },
     methods:{
-    
-      selectNavBar(param){ 
+
+      selectNavBar(param){
         this.sideBarData = [];
         this.routers.map((x)=>{
-          if(x.name == param){  
+          if(x.name == param){
             // console.log(x)
             this.sideBarData.push(x);
             this.$router.push({name: x.name});
@@ -53,6 +53,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  background:rgba(246,247,248,1);
   .main-container {
     padding-left: 201px;
     padding-top: 140px;

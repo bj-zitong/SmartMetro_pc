@@ -329,6 +329,146 @@ export default {
           direction: "444",
           attendanceEquipment: 44444,
           createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
+        },
+           {
+          userId: 2,
+          userName: "22222222",
+          idNum: "210234567898765789",
+          phone: 111,
+          company: "44444",
+          profession: "44444",
+          interviewee: "1111",
+          intervieweeReason: "44444",
+          intervieweeDate: "444",
+          direction: "444",
+          attendanceEquipment: 44444,
+          createTime: 1
         }
       ];
       this.tableData = result;
@@ -492,6 +632,12 @@ export default {
 };
 </script>
 <style scoped lang="stylus">
+.container{
+
+  background-color:rgba(246,247,248,1);
+  opacity:1;
+
+
 .el-header, .el-footer {
   background-color: #B3C0D1;
   color: #333;
@@ -680,6 +826,7 @@ export default {
     height:35px;
     background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
     opacity:1;
+  }
   }
 </style>
 

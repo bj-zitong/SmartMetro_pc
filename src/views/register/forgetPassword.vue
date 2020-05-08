@@ -1,18 +1,20 @@
 <template>
+  <div class="contain">
+    <div class="contain-title">
+      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin-top:0px;" />
+      <span class="register-head">城市轨道交通智慧工地管理系统</span>
+      <!--表单-->
+      <div class="container-head">
+        <span>已有账号，</span>
+        <router-link :to="{path: '/login' }" style="color:#0058A2">马上登录</router-link>
+      </div>
+    </div>
   <div class="login_container">
     <!--头部-->
     <div class="container_center">
-      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin: 10px 0 0 10px" />
-      <span class="register-head">智慧地铁管理系统</span>
-      <!--表单-->
-      <div class="accout-style">
-        <router-link :to="{path: '/login' }" style="color:#0058A2">返回登录</router-link>
-      </div>
-      <div class="tab-title">
         <el-button type="primary" class="button-head">
           <span class="button-head-title">忘记密码</span>
         </el-button>
-      </div>
       <div class="login_box">
         <!--忘记密码 -->
         <el-form
@@ -38,17 +40,27 @@
           </el-form-item>
           <!--密码-->
           <el-form-item prop="password2">
-            <el-input type="password" v-model="forgetForm.password2" placeholder="重置密码"></el-input>
-            <span style="position: absolute;top:3px;right: 8px;">
-              <svg-icon icon-class="password" />
-            </span>
+            <el-input  :type="passForm.show.new?'text':'password'"  v-model="forgetForm.password2" placeholder="重置密码">
+              <img
+                  :src="passForm.show.new?'/static/image/show.png':'/static/image/hide.png'"
+                  slot="suffix"
+                  alt
+                  style="margin: 10px 0;"
+                  @click="passForm.show.new=!passForm.show.new"
+                />
+            </el-input>
           </el-form-item>
           <!--确认密码-->
           <el-form-item prop="confirmPassword2">
-            <el-input type="password" v-model="forgetForm.confirmPassword2" placeholder="确认密码"></el-input>
-            <span style="position: absolute;top:3px;right: 8px;">
-              <svg-icon icon-class="password" />
-            </span>
+            <el-input  :type="passForm.show.check?'text':'password'" v-model="forgetForm.confirmPassword2" placeholder="确认密码">
+                <img
+                  :src="passForm.show.check?'/static/image/show.png':'/static/image/hide.png'"
+                  slot="suffix"
+                  alt
+                  style="margin: 10px 0;"
+                  @click="passForm.show.check=!passForm.show.check"
+                />
+            </el-input>
           </el-form-item>
           <!--验证码-->
           <div>
@@ -58,11 +70,6 @@
             <el-form-item prop="Code" style="width:100px;float:left;margin-left:15px">
               <el-input type="text" v-model="forgetForm.Code"></el-input>
             </el-form-item>
-            <!-- <img
-              src="../../../resource/code.png"
-              style="width:94px;height:35px;vertical-align:middle;margin-left:15px"
-              alt="验证码"
-            />-->
             <img
               src="../../../resource/shuaxin.png"
               style="width:16px;height:16px;margin-left:10px"
@@ -70,7 +77,7 @@
             />
           </div>
           <el-button type="primary" class="button-end" @click="forgetPassword('forgetForm')">
-            <span class="button-head-title">确定</span>
+            <span class="button-end-title">确定</span>
           </el-button>
         </el-form>
       </div>
@@ -81,6 +88,7 @@
       <p class="content-end1">京ICP备17067133号 京公网安备11010602006143号</p>
     </div>
   </div>
+</div>
 </template>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
@@ -119,6 +127,16 @@ export default {
         confirmPassword2: "",
         authCode2: "",
         Code: ""
+      },
+      passForm: {
+        oldPass: "",
+        newPass: "",
+        checkPass: "",
+        show: {
+          old: false,
+          new: false,
+          check: false
+        }
       }
     };
   },
@@ -218,7 +236,7 @@ export default {
         var params = JSON.stringify({
           name: form.userName2,
           cellPhone: form.phone2,
-          idNmun: form.idNum,
+          idNum: form.idNum,
           account: form.account,
           password: form.password2
         });
@@ -318,48 +336,51 @@ export default {
 </script>
 <style scoped lang="stylus">
 /* 总div */
-.login_container {
+.contain {
   width: 100%;
   height: 100vh;
   background-color: rgba(244, 244, 244, 1);
   opacity: 1; /* 不透明级别 */
 
-  /* 头部字体 */
-  .register-head {
-    width: 163px;
-    height: 26px;
-    font-size: 20px;
-    font-family: Microsoft YaHei;
-    font-weight: bold;
-    line-height: 26px;
-    color: rgba(0, 88, 162, 1);
-    opacity: 1;
-    margin-left: 20px;
-  }
-
-  .accout-style {
-    width: 125px;
-    height: 14px;
-    font-size: 10px;
-    font-family: Microsoft YaHei;
-    font-weight: 400;
-    line-height: 14px;
-    color: rgba(10, 96, 177, 1);
-    opacity: 1;
-    float: right;
-    margin-top: 14px;
-  }
-
-  .tab-title {
+  /* 头部 */
+  .contain-title {
+    height: 30px;
     width: 680px;
-    height: 60px;
-    box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
-    opacity: 1;
-    border-radius: 4px;
+    position: absolute;
+    top: 126px;
+    left: 614px;
 
-    /* 头部head button */
+    .register-head {
+      width: 163px;
+      height: 26px;
+      font-size: 20px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      line-height: 26px;
+      color: rgba(0, 88, 162, 1);
+      opacity: 1;
+      margin-left: 20px;
+      margin-top: 10px;
+    }
+
+    .container-head {
+      width: 125px;
+      height: 14px;
+      font-size: 10px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      line-height: 14px;
+      // color: rgba(10, 96, 177, 1);
+      opacity: 1;
+      float: right;
+      margin-top: 20px;
+    }
+  }
+
+.login_container {
+   /* 头部head button */
     .button-head {
-      width: 100%;
+      width: 680px;
       height: 60px;
       background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
       box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
@@ -367,17 +388,6 @@ export default {
       border-radius: 0px 4px 4px 0px;
     }
 
-    /*  */
-    .button-end {
-      width: 340px;
-      height: 60px;
-      background: rgba(246, 247, 248, 1);
-      box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
-      opacity: 1;
-      border-radius: 4px 0px 0px 4px;
-      position: absolute;
-      margin-left: 0px;
-    }
 
     /* 按钮文字 */
     .button-head-title {
@@ -388,18 +398,6 @@ export default {
       font-weight: bold;
       line-height: 31px;
       color: rgba(255, 255, 255, 1);
-      letter-spacing: 20px;
-      opacity: 1;
-    }
-
-    .button-head-title-end {
-      width: 120px;
-      height: 31px;
-      font-size: 24px;
-      font-family: Microsoft YaHei;
-      font-weight: 400;
-      line-height: 31px;
-      color: rgba(99, 99, 99, 1);
       letter-spacing: 20px;
       opacity: 1;
     }
@@ -455,6 +453,17 @@ export default {
         box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
         opacity: 1;
         border-radius: 4px;
+      }
+      .button-end-title{
+        width:30px;
+        height:17px;
+        font-size:13px;
+        font-family:Microsoft YaHei;
+        font-weight:bold;
+        line-height:17px;
+        color:rgba(255,255,255,1);
+        letter-spacing:20px;
+        opacity:1;
       }
     }
   }

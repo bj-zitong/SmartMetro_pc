@@ -115,7 +115,7 @@ export default {
     },
     // 登录操作
     onLogin() {
-      
+
       this.$refs.pwd.$el.getElementsByTagName("input")[0].blur();
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -133,7 +133,7 @@ export default {
             //     saveToLocal("password", "");
             //     saveToLocal("remember", false);
             //   }
-             
+
             //   // this.$router.push({ path: "/" })
             // })
             // .catch(() => {
@@ -160,7 +160,7 @@ export default {
     },
     //修改密码
     updatePassword() {
-      this.$router.push({ path: "/updatePassword" });
+      this.$router.push({ path: "/forgetPassword" });
     }
   },
   watch: {},
