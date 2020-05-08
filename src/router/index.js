@@ -484,6 +484,27 @@ export const constantRouterMap = [
         ]
     },
     {
+        path: '/positioning',
+        name: '人员定位',
+        component: Layout,
+        meta: {
+            icon: '',
+            title: '人员定位',
+            enable: "Y",
+            parent: '人员定位'
+        },
+        // redirect: '/realTimePreview',
+        children: [
+            {
+                path: '/realTimePreview',
+                name: '/realTimePreview',
+                component: () => import('@/views/positioning/Positioningof/Positioningof'),
+                meta: { title: '劳务公司二组', icon: '', enable: "Y", parent: '人员定位' },
+                children: []
+            }
+        ]
+    },
+    {
         path: '/testTemperature',
         name: '人员测温',
         component: Layout,

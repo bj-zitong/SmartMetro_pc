@@ -225,7 +225,6 @@ export default {
 <style lang="stylus">
 .el-message-box{
 	width:350px;
-	height:200px;
 	background:rgba(255,255,255,1);
 	opacity:1;
 	border-radius:10px;
