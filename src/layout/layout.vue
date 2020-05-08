@@ -39,7 +39,7 @@
         this.routers.map((x)=>{
           if(x.name == param){  
             // console.log(x)
-            this.sideBarData.push(x);
+            this.sideBarData=x;
             this.$router.push({name: x.name});
             return;
           }

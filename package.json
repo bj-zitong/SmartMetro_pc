@@ -33,12 +33,13 @@
     "script-load": "^0.1.0",
     "script-loader": "^0.7.2",
     "vue": "^2.6.10",
+    "vue-baidu-map": "^0.21.22",
     "vue-i18n": "^7.6.0",
     "vue-router": "^3.0.1",
+    "vuedraggable": "^2.23.0",
     "vuex": "^3.0.1",
     "wired-elements": "^0.5.8",
-    "xlsx": "^0.12.12",
-    "vuedraggable": "^2.23.0"
+    "xlsx": "^0.12.12"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
