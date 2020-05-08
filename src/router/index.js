@@ -297,8 +297,6 @@ export const constantRouterMap = [
             {
                 path: '/thereport',
                 component: () => import('@/views/wisdomAttendance/thereport/index'),
-
-
                 meta: {
                     icon: 'svg-layers',
                     title: '考勤报表',
@@ -501,8 +499,8 @@ export const constantRouterMap = [
         // redirect: '/realTimePreview',
         children: [
             {
-                path: '/realTimePreview',
-                name: '/realTimePreview',
+                path: '/Positioningof',
+                name: 'Positioningof',
                 component: () => import('@/views/positioning/Positioningof/Positioningof'),
                 meta: { title: '劳务公司二组', icon: '', enable: "Y", parent: '人员定位' },
                 children: []
@@ -578,7 +576,7 @@ export const constantRouterMap = [
                 name: 'workmateNotice',
                 component: () => import('@/views/WorkmateNotice/workmateNotice'),
                 meta: { icon: 'droplet', title: '工友须知', enable: "Y", parent: '工友须知' },
-                // children: []
+                children: []
             }
         ]
     },
