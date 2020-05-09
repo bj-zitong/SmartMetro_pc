@@ -312,25 +312,25 @@ export const constantRouterMap = [
                         component: () => import('@/views/nested/menu1/index'),
                         children: [
                             {
-                                path: 'menu1-1',
+                                path: '/menu1-1',
                                 name: 'menu1-1',
                                 component: () => import('@/views/wisdomAttendance/thereport/personnel'),
                                 meta: { title: '劳务人员', icon: '', enable: "Y", parent: '智慧考勤' }
                             },
                             {
-                                path: 'manager',
+                                path: '/manager',
                                 name: 'manager',
                                 component: () => import('@/views/wisdomAttendance/thereport/manager'),
                                 meta: { title: '管理人员', icon: '', enable: "Y", parent: '智慧考勤' }
                             },
                             {
-                                path: 'equipmentSpecialist',
+                                path: '/equipmentSpecialist',
                                 name: 'equipmentSpecialist',
                                 component: () => import('@/views/wisdomAttendance/thereport/equipmentSpecialist'),
                                 meta: { title: '设备专用人员', icon: '', enable: "Y", parent: '智慧考勤' }
                             },
                             {
-                                path: 'otherStaffs',
+                                path: '/otherStaffs',
                                 name: 'otherStaffs',
                                 component: () => import('@/views/wisdomAttendance/thereport/otherStaffs'),
                                 meta: { title: '其他服务类人员', icon: '', enable: "Y", parent: '智慧考勤' }

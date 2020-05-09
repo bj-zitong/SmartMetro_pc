@@ -81,7 +81,7 @@
             <el-button
               class="T-R-B-Violet"
               size="mini"
-              @click="seeSubRowClick(scope.$index, scope.row)"
+              @click="dialogTableVisible = true, seeSubRowClick(scope.$index, scope.row)"
             >查看下属</el-button>
           </template>
         </el-table-column>
@@ -91,6 +91,33 @@
       </div>
     </div>
     <addLabor v-if="isCreate"></addLabor>
+
+    <!-- 查看下属 -->
+    <el-dialog
+      :visible.sync="dialogTableVisible"
+      :close-on-click-modal="false"
+      top="140px"
+      width="1400px"
+    >
+      <el-table
+      :data="gridData"
+      :header-cell-style="headClass"
+      border
+      >
+        <el-table-column prop="company" label="劳务公司" min-width="150"></el-table-column>
+        <el-table-column prop="name" label="姓名" min-width="80"></el-table-column>
+        <el-table-column prop="gender" label="性别" width="60"></el-table-column>
+        <el-table-column prop="jobNumber" label="工号" min-width="110"></el-table-column>
+        <el-table-column prop="place" label="籍贯" min-width="100"></el-table-column>
+        <el-table-column prop="age" label="年龄" width="60"></el-table-column>
+        <el-table-column prop="team" label="班组" width="130"></el-table-column>
+        <el-table-column prop="jobType" label="工种" width="130"></el-table-column>
+        <el-table-column prop="phone" label="手机号码" width="120"></el-table-column>
+        <el-table-column prop="political" label="政治面貌" width="80"></el-table-column>
+        <el-table-column prop="enterDate" label="进场日期" width="120"></el-table-column>
+        <el-table-column prop="outDate" label="退场日期" width="120"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -98,46 +125,102 @@
 import Utils from "../../assets/js/util.js";
 import addLabor from "./add/add";
 export default {
-  data() {
-    return {
-    //  初始化页面
-    isCreate: false,//  初始化隐藏添加弹窗
-		tableData: [
+    data() {
+        return {
+        //  初始化页面 
+        gridData: [{
+          company: '上海虹桥医院',
+          name: '刘备',
+          gender: '男',
+          jobNumber: '13518138',
+          place: '天津市',
+          age: '26',
+          team: '第一班组',
+          jobType: '电焊',
+          phone: '13812345678',
+          political: '团员',
+          enterDate: '2020-01-07',
+          outDate: '2020-05-08',
+        },{
+          company: '上海虹桥医院',
+          name: '刘备',
+          gender: '男',
+          jobNumber: '13518138',
+          place: '天津市',
+          age: '26',
+          team: '第一班组',
+          jobType: '电焊',
+          phone: '13812345678',
+          political: '团员',
+          enterDate: '2020-01-07',
+          outDate: '2020-05-08',
+        },
         {
-			date: "第一公司",
-			name: "张三",
-			phone: "13888779977",
-			company: "第一单位",
-			projectCode: "007124241",
-			projectName: "第一项目",
-			contractCode: "HT123456",
-			contractDate: "2019-10-10 - 2020-10-09",
-			contractType: "专业分包",
-			mechanismCode: "354163831",
-			status: "未提交"
-        }
-		],
-		multipleSelection: [],
-		screenForm: {
-			grouping: "",
-			person: "",
-			type: ""
-		}
-    };
-  },
-  created() {
-    this.getLocalStorage()
-  },
-  components: {
-      addLabor
-  },
-	methods: {
-    getLocalStorage() {
-      this.username = window.localStorage.getItem('username');
-      this.userId = window.localStorage.getItem('userId');
-      this.admin = window.localStorage.getItem('admin');
-      this.token = window.localStorage.getItem('token');
+          company: '上海虹桥医院',
+          name: '刘备',
+          gender: '男',
+          jobNumber: '13518138',
+          place: '天津市',
+          age: '26',
+          team: '第一班组',
+          jobType: '电焊',
+          phone: '13812345678',
+          political: '团员',
+          enterDate: '2020-01-07',
+          outDate: '2020-05-08',
+        },
+        {
+          company: '上海虹桥医院',
+          name: '刘备',
+          gender: '男',
+          jobNumber: '13518138',
+          place: '天津市',
+          age: '26',
+          team: '第一班组',
+          jobType: '电焊',
+          phone: '13812345678',
+          political: '团员',
+          enterDate: '2020-01-07',
+          outDate: '2020-05-08',
+        }],
+        dialogTableVisible: false,
+        isCreate: false,//  初始化隐藏添加弹窗
+            tableData: [
+            {
+                date: "第一公司",
+                name: "张三",
+                phone: "13888779977",
+                company: "第一单位",
+                projectCode: "007124241",
+                projectName: "第一项目",
+                contractCode: "HT123456",
+                contractDate: "2019-10-10 - 2020-10-09",
+                contractType: "专业分包",
+                mechanismCode: "354163831",
+                status: "未提交"
+            }
+            ],
+            multipleSelection: [],
+            screenForm: {
+                grouping: "",
+                person: "",
+                type: ""
+            }
+        };
     },
+    created() {
+        this.getLocalStorage()
+    },
+    components: {
+        addLabor
+    },
+	methods: {
+        getLocalStorage() {
+            this.username = window.localStorage.getItem('username');
+            this.userId = window.localStorage.getItem('userId');
+            this.admin = window.localStorage.getItem('admin');
+            this.token = window.localStorage.getItem('token');
+        },
 		handleSelectionChange(val) {
 			this.multipleSelection = val;
 		},
@@ -157,7 +240,7 @@ export default {
             .then(res => {
                 this.$message({
                     type: "success",
-                    message: "删除成功!"
+                    message: res
                 });
             })
             .catch(() => {
