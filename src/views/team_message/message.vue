@@ -16,14 +16,11 @@
     </div>-->
     <div class="container-content">
       <div style="margin-top:30px;margin-left:30px;height:60px;width:100%;">
-        <el-button @click="dialogFormVisible = true" class="addStyle">
+        <!-- <el-button @click="dialogFormVisible = true" class="addStyle">
           <span class="addStyle-title">新增</span>
-        </el-button>
-        <el-button
-          type="info"
-          @click="deleteAll"
-          style="color:black;font-wight:bold;margin-left:15px;"
-        >删除</el-button>
+        </el-button>  -->
+        <el-button type="info" @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
+        <el-button type="info" @click="deleteAll" class="T-H-B-Grey">删除</el-button>
       </div>
 
       <div class="table-content" style="line-height:26px">
@@ -73,9 +70,6 @@
     <!-- 新增 修改-->
     <el-dialog :visible.sync="dialogFormVisible" width="20%" title="新增班组" :center="true">
       <div class="addUser-content">
-        <!-- <div class="button-head">
-          <span class="button-head-title"></span>
-        </div>-->
         <div class="login_box">
           <el-form
             method="post"
@@ -182,7 +176,6 @@
           <el-form-item label="参加活动人员名单:" prop="classContent">
             <el-button type="primary" @click="selectPerson()">点击选择</el-button>
           </el-form-item>
-          <el-input v-if="checkedCities.length>0" v-model="checkedCities" placeholder></el-input>
           <div class="dialog-footer">
             <el-button @click="outerVisible = false" class="cancel-style">取 消</el-button>
             <el-button
@@ -193,17 +186,19 @@
           </div>
         </el-form>
       </div>
-      <el-dialog width="25%" title="选择人员" :visible.sync="innerVisible" append-to-body>
-        <el-input v-model="checkedCities" placeholder></el-input>
-        <el-checkbox
-          :indeterminate="isIndeterminate"
-          v-model="checkAll"
-          @change="handleCheckAllChange"
-        >全选</el-checkbox>
-        <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-          <el-checkbox v-for="city in cities" :label="city.name" :key="city.id">{{city.name}}</el-checkbox>
-        </el-checkbox-group>
+      <el-dialog width="25%" title="选择人员" :visible.sync="innerVisible" append-to-body center="true">
+        <el-table
+          :data="persons"
+          style="width: 100%"
+          ref="multipleTable"
+          @selection-change="changeFunPerson"
+          :header-cell-style="headClass"
+          stripe
+        >
+          <el-table-column type="selection" prop="personId" @selection-change="changeFunPerson"></el-table-column>
+          <el-table-column prop="jobNumber" label="工号" width="180"></el-table-column>
+          <el-table-column prop="personName" label="姓名" width="180"></el-table-column>
+        </el-table>
         <div slot="footer" class="dialog-footer">
           <el-button @click="innerVisible = false">取 消</el-button>
           <el-button type="primary" @click="innerVisible= false" style="border-radius:18px">确 定</el-button>
@@ -214,8 +209,6 @@
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
-import { headClass } from "@/utils";
-// const  = ["上海", "北京", "广州", "深圳"];
 export default {
   data() {
     return {
@@ -223,6 +216,7 @@ export default {
       token: null, // token
       // 动态数据
       tableData: [],
+      persons: [],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
       total: 0, //总条数
@@ -234,7 +228,6 @@ export default {
       dialogVisible: false, //评价
       outerVisible: false, //新增讲话
       innerVisible: false, //二层
-      headClass:headClass,
       formClass: {
         projectName: "",
         groupName: "",
@@ -306,20 +299,16 @@ export default {
         { id: "1", name: "xxxxxx" },
         { id: "2", name: "kkkkkk" },
         { id: "3", name: "tttttt" }
-      ],
-      checkPerson: null, //选中的人员
-      checkAll: false,
-      cityOptions:null,
-      checkedCities: [],
-      cities:null,
-      isIndeterminate: true,
-      checkIds:[]
+      ]
     };
   },
   created: function() {
     this.getTalks();
   },
   methods: {
+    headClass() {
+      return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
+    },
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
       this.pageSize = size;
@@ -340,11 +329,6 @@ export default {
     next(cpage) {
       this.page = cpage;
       // console.log("下一页" + cpage);
-      this.getTalks();
-    },
-    //搜索
-    searchClass() {
-      console.log(this.form.teamName);
       this.getTalks();
     },
     getTalks() {
@@ -383,97 +367,7 @@ export default {
           teamLeaderName: "XXX",
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
-        },
-        {
-          id: 2,
-          projectName: "工程2",
-          teamName: "班组二",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236984469",
-          createTime: "2020-4-15"
-        },
-        {
-          id: 2,
-          projectName: "工程2",
-          teamName: "班组二",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236984469",
-          createTime: "2020-4-15"
-        },
-        {
-          id: 2,
-          projectName: "工程2",
-          teamName: "班组二",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236984469",
-          createTime: "2020-4-15"
-        },
-        {
-          id: 2,
-          projectName: "工程2",
-          teamName: "班组二",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236984469",
-          createTime: "2020-4-15"
-        },
-        {
-          id: 2,
-          projectName: "工程2",
-          teamName: "班组二",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236984469",
-          createTime: "2020-4-15"
-        },
-        {
-          id: 2,
-          projectName: "工程2",
-          teamName: "班组二",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236984469",
-          createTime: "2020-4-15"
-        },
-        {
-          id: 2,
-          projectName: "工程2",
-          teamName: "班组二",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236984469",
-          createTime: "2020-4-15"
-        },
-        {
-          id: 2,
-          projectName: "工程2",
-          teamName: "班组二",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236984469",
-          createTime: "2020-4-15"
         }
-        //  {
-        //   id: 2,
-        //   projectName: "工程2",
-        //   teamName: "班组二",
-        //   teamType: "工地",
-        //   teamLeaderName: "XXX",
-        //   teamLeaderPhone: "15236984469",
-        //   createTime: "2020-4-15"
-        // },
-        //  {
-        //   id: 2,
-        //   projectName: "工程2",
-        //   teamName: "班组二",
-        //   teamType: "工地",
-        //   teamLeaderName: "XXX",
-        //   teamLeaderPhone: "15236984469",
-        //   createTime: "2020-4-15"
-        // }
       ];
       this.tableData = result;
       this.total = result.length;
@@ -489,19 +383,28 @@ export default {
         // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      console.log("选中的ids" + ids);
       //  this.multipleSelection = val;
+    },
+    changeFunPerson() {
+      var ids = new Array();
+      var arrays = this.$refs.multipleTable.selection;
+      for (var i = 0; i < arrays.length; i++) {
+        // 获得id
+        var id = arrays[i].personId;
+        ids.push(id);
+      }
+      return ids;
+      // console.log("选中的pids" + ids);
     },
     // 批量删除
     deleteAll() {
       var ids = this.changeFun();
-      console.log(ids);
-
+      // console.log(ids);
       if (ids.length <= 0) {
         this.$message("请选择删除的数据！");
         return;
       }
-      handleCofirm("确认删除", "warning")
+      handleCofirm("确认删除")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
@@ -550,7 +453,7 @@ export default {
         return item.id == vid; // 筛选出匹配数据
       });
       this.evaluated = obj.id;
-      console.log("选中" + this.evaluated);
+      // console.log("选中" + this.evaluated);
     },
     // 删除
     handleDelete(row) {
@@ -584,13 +487,13 @@ export default {
     },
     uploadVideo(row) {
       var uid = row.id;
-      console.log(uid);
+      // console.log(uid);
     },
     //编辑
     handleEdit(row) {
       var uid = row.id;
       this.id = uid;
-      console.log(uid);
+      // console.log(uid);
       //获得详情
       var params = null;
       this.formClass.projectName = "123";
@@ -604,8 +507,7 @@ export default {
       this.http.get(url, params).then(res => {
         if (res.code == 200) {
           //渲染数据
-          var result=res.data;
-
+          var result = res.data;
         }
       });
       this.dialogFormVisible = true;
@@ -614,7 +516,7 @@ export default {
     addClass(formClass) {
       //this.$refs['formClass'].model.groupLeader
       //新增 id为空
-        var form = this.$refs[formClass].model;
+      var form = this.$refs[formClass].model;
       if (form.id == null) {
         var params = JSON.stringify({
           projectName: form.projectName,
@@ -632,14 +534,14 @@ export default {
         });
       }
       //修改
-      else{
+      else {
         var params = JSON.stringify({
           projectName: form.projectName,
           teamName: form.groupName,
           teamType: form.profession,
           teamLeaderName: form.groupLeader,
           teamLeaderPhone: form.phone,
-          id:form.id
+          id: form.id
         });
         var url =
           "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
@@ -653,33 +555,37 @@ export default {
     //评价
     evaluate() {
       this.dialogVisible = false;
-      console.log(this.evaluated);
+      // console.log(this.evaluated);
     },
     addEvalte(row) {
       var uid = row.id;
-      console.log(uid);
+      // console.log(uid);
       this.dialogVisible = true;
     },
-    selectPerson(){
+    //选择人员赋值
+    selectPerson() {
       this.innerVisible = true;
-      this.cityOptions=[{id:1,name:'1111'},{id:2,name:'2222'},{id:3,name:'3333'}];
-      this.cities=[{id:1,name:'1111'},{id:2,name:'2222'},{id:3,name:'3333'}];;
+      this.persons = [
+        { personId: 1, jobNumber: "1111", personName: "aaaaa" },
+        { personId: 2, jobNumber: "2222", personName: "bbbbb" },
+        { personId: 3, jobNumber: "3333", personName: "ccccc" }
+      ];
     },
     //讲话
     addSpeech(row) {
       this.outerVisible = true;
-
     },
     addFormSpeech(formSpeech) {
-      var form = this.$refs['formSpeech'].model;
+      var form = this.$refs["formSpeech"].model;
       var datas = new FormData();
+      var pids = this.changeFunPerson();
       datas.append("userId", 1);
       datas.append("homeworkPart", form.jobsite);
       datas.append("homeworkNumber", form.jobNum);
       datas.append("isSafety", form.protective);
       datas.append("jobContent", form.speachContent);
       datas.append("meetingContent", form.classContent);
-      datas.append("workerInfoIds", this.checkIds);
+      datas.append("workerInfoIds", pids);
       var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -692,53 +598,6 @@ export default {
     },
     cencal() {
       this.dialogFormVisible = false;
-    },
-    handleCheckAllChange(val) {
-      console.log(val);
-      this.checkedCities=[];
-      //选中的id
-      this.checkIds=[];
-     if(val){
-        for(var i=0;i<this.cities.length;i++){
-        this.checkedCities.push(this.cities[i].name);
-        this.checkIds.push(this.cities[i].id);
-      }
-      // this.checkedCities = val ? this.cityOptions.name : [];
-      this.isIndeterminate = false;
-      for(var j=0;j<this.checkIds.length;j++){
-        console.log(this.checkIds[j]);
-      }
-      for(var k=0;k<this.checkedCities.length;k++){
-        console.log(this.checkedCities[k]);
-      }
-     }
-      // console.log(this.checkIds);
-    },
-    handleCheckedCitiesChange(value) {
-      console.log(value);
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.cities.length;
-    if(value.length>0){
-      for(var i=0;i<value.length;i++){
-          for(var j=0;j<this.cities.length;j++){
-              if(value[i]==this.cities[j].name){
-                  this.checkIds.push(this.cities[j].id);
-              }
-          }
-      }
-       for(var k=0;k<this.checkIds.length;k++){
-        for(var h=k+1;h<this.checkIds.length;h++){
-            if(this.checkIds[k]==this.checkIds[h]){
-            //如果第一个等于第二个，splice方法删除第二个
-            this.checkIds.splice(h,1);
-            h--;
-            }
-        }
-    }
-      console.log('ids'+this.checkIds);//选中的ids
-    }
     }
   }
 };
@@ -751,7 +610,6 @@ export default {
   opacity: 1;
 
   .container-head {
-    // width: 100%;
     height: 100px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
@@ -761,8 +619,6 @@ export default {
   }
 
   .container-content {
-    // width: 100%;
-    // height: 874px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.16);
     opacity: 1;

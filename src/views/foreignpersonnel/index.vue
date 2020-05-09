@@ -35,12 +35,7 @@
             :header-cell-style="headClass"
             style="width: 100%"
           >
-            <el-table-column
-              type="selection"
-              width="65"
-              prop="id"
-              @selection-change="changeFun"
-            ></el-table-column>
+            <el-table-column type="selection" width="65" prop="id" @selection-change="changeFun"></el-table-column>
             <el-table-column prop="name" label="姓名" width="120"></el-table-column>
             <el-table-column prop="idNum" label="身份证号" width="150"></el-table-column>
             <el-table-column prop="phone" label="电话" width="150"></el-table-column>
@@ -79,7 +74,11 @@
     </div>
     <!--新增-->
     <div style="text-align:center">
-      <el-dialog :visible.sync="dialogFormVisible" style="width:45%;center:true;left:28%" title="外来人员登记">
+      <el-dialog
+        :visible.sync="dialogFormVisible"
+        style="width:45%;center:true;left:28%"
+        title="外来人员登记"
+      >
         <div class="login_box">
           <el-form
             method="post"
@@ -132,6 +131,7 @@
                 type="datetime"
                 placeholder="选择日期时间"
                 default-time="12:00:00"
+                value-format="yyyy-MM-dd HH:mm:ss"
               ></el-date-picker>
             </el-form-item>
             <div class="dialog-footer">
@@ -145,11 +145,10 @@
   </div>
 </template>
 <script>
-import { headClass } from "@/utils";
+import { handleCofirm } from "@/utils/confirm";
 export default {
   data() {
     return {
-      headClass:headClass,
       token: null, // token
       dialogFormVisible: false,
       // 动态数据
@@ -214,6 +213,9 @@ export default {
     this.handleUserList();
   },
   methods: {
+      headClass() {
+      return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
+    },
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
       this.pageSize = size; //每页下拉显示数据
@@ -246,50 +248,30 @@ export default {
     },
     addUser(form) {
       var params = JSON.stringify({
-        userName: this.form.userName,
+        name: this.form.userName,
         phone: this.form.phone,
         idNum: this.form.idNum,
         company: this.form.company,
-        profession: this.form.profession,
-        carNum: this.form.carNum,
+        intervieweeDepartmentId: this.form.profession,
+        busNum: this.form.carNum,
         interviewee: this.form.interviewee,
-        intervieweeReason: this.form.intervieweeReason,
-        intervieweeDate: this.form.intervieweeDate
+        visitReason: this.form.intervieweeReason,
+        visitTime: this.form.intervieweeDate
       });
-      // 获得值
-      // let _this = this
-      // _this.$http({
-      //       // 头部信息及编码格式设置
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //     'Authorization': sessionStorage.getItem('token')
-      //   },
-      //   method: 'POST', // 请求的方式
-      //   url: '/api/auth/user/baseUser', // 请求地址
-      //       // 传参
-      //   data: datas
-      // })
-      //       .then(function (response) {
-      //         var res = response.data
-      //         // 请求失败
-      //         if(res.code != '200') {
-      //           alert(res.code)
-      //         }
-      //         // 请求成功
-      //         if(res.code == '200') {
-      //           alert(res.code)
-      //         }
-      //       })
-      //       .catch(function(error) {
-      //         console.log(error)
-      //       })
+      var url =
+        "/smart/worker/roster/" + sessionStorage.getItem("userId") + "/outlander";
+      this.http.post(url, params).then(res => {
+        if (res.code == 200) {
+          this.dialogFormVisible = false;
+        }
+      });
       this.dialogFormVisible = false;
     },
     // 列表请求
     handleUserList() {
       // 获得搜索的内容
-      var uname = this.searchNum;
-      var unum = this.searchUname;
+      var uname = this.formInline.searchNum;
+      var unum = this.formInline.searchUname;
       //   // 获得当前用户的id
       // var  uid = sessionStorage.getItem('uid')
       var data = JSON.stringify({
@@ -298,7 +280,10 @@ export default {
         name: uname,
         company: unum
       });
-      var url = "/smart/worker/roster/"+sessionStorage.getItem('userId')+"/outlander/management";
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/outlander/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.total;
@@ -332,7 +317,7 @@ export default {
         }
       ];
       this.tableData = result;
-      this.total=result.length;
+      this.total = result.length;
       //  this.$http({
       //       // 头部信息及编码格式设置
       //       headers: {
@@ -360,30 +345,31 @@ export default {
     // 删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.userId;
-      var url = "";
-      this.$http({
-        // 头部信息及编码格式设置
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: sessionStorage.getItem("token")
-        },
-        method: "DELETE", // 请求的方式
-        url: url, // 请求地址
-        // 传参
-        data: uid
-      })
-        .then(function(response) {
-          var res = response.data;
-          // 请求失败
-          if (res.code != "200") {
-          }
-          // 请求成功
-          if (res.code == "200") {
-          }
+      var uid = row.id;
+      var ids = [];
+      ids.push(uid);
+      handleCofirm("确认删除", "warning")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/outlander";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.getTalks();
+            }
+          });
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
         });
     },
     //编辑
@@ -455,7 +441,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].userId;
+        var id = arrays[i].id;
         ids.push(id);
         // console.log("获得id"+arrays[i].userId);
       }
@@ -464,230 +450,241 @@ export default {
     // 批量删除
     deleteAll() {
       var ids = this.changeFun();
-      var url = "";
-      // this.$http({
-      //   // 头部信息及编码格式设置
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: sessionStorage.getItem('token')
-      //   },
-      //   method: 'DELETE', // 请求的方式
-      //   url: url, // 请求地址
-      //   // 传参
-      //   data: ids
-      // })
-      //   .then(function(response) {
-      //     var res = response.data
-      //     // 请求失败
-      //     if (res.code != '200') {
-      //     }
-      //     // 请求成功
-      //     if (res.code == '200') {
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error)
-      //   })
+      if (ids.length <= 0) {
+        this.$message("请选择删除的数据！");
+        return;
+      }
+      handleCofirm("确认删除")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/outlander";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };
 </script>
 <style scoped lang="stylus">
-.container{
-  background-color:rgba(246,247,248,1);
-  opacity:1;
-
-
-.el-header, .el-footer {
-  background-color: #B3C0D1;
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-}
-
-.el-aside {
-  background-color: #D3DCE6;
-  color: #333;
-  text-align: center;
-  line-height: 200px;
-}
-
-.el-main {
-  padding: 0px;
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
-  color: #333;
+.container {
+  background-color: rgba(246, 247, 248, 1);
   opacity: 1;
-  border-radius: 10px;
-  height: 100px;
-}
 
-.el-container {
-  margin-bottom: 40px;
-}
-
-.main-content {
-  padding-top: 30px;
-  margin-left: 30px;
-  margin-right: 30px;
-
-  .search-head {
-    margin-left: 30px;
-  }
-
-  .region {
-    margin-left: 60px;
-  }
-
-  el-input {
-    width: 180px;
-  }
-}
-
-.table-main {
-  margin-top: -30px;
-
-  .table-head {
-    height: 550px;
-    padding: 30px;
-
-  .addStyle {
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(
-    180deg,
-    rgba(54, 130, 243, 1) 0%,
-    rgba(0, 88, 162, 1) 100%
-  );
-  opacity: 1;
-  border-radius: 4px;
-  text-align: center;
-}
-.addStyle-title {
-  color: #ffffff;
-  width: 33px;
-  height: 19px;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  // line-height: 19px;
-  color: rgba(255, 255, 255, 1);
-  opacity: 1;
-}
-.deleteStyle {
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(
-    180deg,
-    rgba(225, 225, 225, 1) 0%,
-    rgba(190, 190, 190, 1) 100%
-  );
-  opacity: 1;
-  border-radius: 4px;
-}
-.deleteStyle-title {
-  width: 33px;
-  height: 19px;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  color: rgba(99, 99, 99, 1);
-  opacity: 1;
-}
-.exportStyle {
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(
-    180deg,
-    rgba(58, 222, 214, 1) 0%,
-    rgba(0, 150, 143, 1) 100%
-  );
-  opacity: 1;
-  border-radius: 4px;
-}
-.poiExcel-title {
-  width: 33px;
-  height: 19px;
-  font-size: 14px;
-  font-family: Microsoft YaHei;
-  font-weight: bold;
-  color: rgba(255, 255, 255, 1);
-  opacity: 1;
-}
-
-    .addStyle-title {
-      color: #ffffff;
-      width: 33px;
-      height: 19px;
-      font-size: 14px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: rgba(255, 255, 255, 1);
-      opacity: 1;
-    }
-
-    .deleteStyle {
-      width: 80px;
-      height: 35px;
-      background: linear-gradient(
-        180deg,
-        rgba(225, 225, 225, 1) 0%,
-        rgba(190, 190, 190, 1) 100%
-      );
-      opacity: 1;
-      border-radius: 4px;
-    }
-
-    .deleteStyle-title {
-      width: 33px;
-      height: 19px;
-      font-size: 14px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: rgba(99, 99, 99, 1);
-      opacity: 1;
-    }
-
-    .exportStyle {
-      width: 80px;
-      height: 35px;
-      background: linear-gradient(
-        180deg,
-        rgba(58, 222, 214, 1) 0%,
-        rgba(0, 150, 143, 1) 100%
-      );
-      opacity: 1;
-      border-radius: 4px;
-    }
-
-    .poiExcel-title {
-      width: 33px;
-      height: 19px;
-      font-size: 14px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: rgba(255, 255, 255, 1);
-      opacity: 1;
-    }
-  }
-
-  .table-content {
-    margin-top: 30px;
-  }
-
-  .page-end {
+  .el-header, .el-footer {
+    background-color: #B3C0D1;
+    color: #333;
     text-align: center;
-    margin-top: 30px;
+    line-height: 60px;
+  }
+
+  .el-aside {
+    background-color: #D3DCE6;
+    color: #333;
+    text-align: center;
+    line-height: 200px;
+  }
+
+  .el-main {
+    padding: 0px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
+    color: #333;
+    opacity: 1;
+    border-radius: 10px;
+    height: 100px;
+  }
+
+  .el-container {
+    margin-bottom: 40px;
+  }
+
+  .main-content {
+    padding-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+
+    .search-head {
+      margin-left: 30px;
+    }
+
+    .region {
+      margin-left: 60px;
+    }
+
+    el-input {
+      width: 180px;
+    }
+  }
+
+  .table-main {
+    margin-top: -30px;
+
+    .table-head {
+      height: 550px;
+      padding: 30px;
+
+      .addStyle {
+        width: 80px;
+        height: 35px;
+        background: linear-gradient(
+          180deg,
+          rgba(54, 130, 243, 1) 0%,
+          rgba(0, 88, 162, 1) 100%
+        );
+        opacity: 1;
+        border-radius: 4px;
+        text-align: center;
+      }
+
+      .addStyle-title {
+        color: #ffffff;
+        width: 33px;
+        height: 19px;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        // line-height: 19px;
+        color: rgba(255, 255, 255, 1);
+        opacity: 1;
+      }
+
+      .deleteStyle {
+        width: 80px;
+        height: 35px;
+        background: linear-gradient(
+          180deg,
+          rgba(225, 225, 225, 1) 0%,
+          rgba(190, 190, 190, 1) 100%
+        );
+        opacity: 1;
+        border-radius: 4px;
+      }
+
+      .deleteStyle-title {
+        width: 33px;
+        height: 19px;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: rgba(99, 99, 99, 1);
+        opacity: 1;
+      }
+
+      .exportStyle {
+        width: 80px;
+        height: 35px;
+        background: linear-gradient(
+          180deg,
+          rgba(58, 222, 214, 1) 0%,
+          rgba(0, 150, 143, 1) 100%
+        );
+        opacity: 1;
+        border-radius: 4px;
+      }
+
+      .poiExcel-title {
+        width: 33px;
+        height: 19px;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        opacity: 1;
+      }
+
+      .addStyle-title {
+        color: #ffffff;
+        width: 33px;
+        height: 19px;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        opacity: 1;
+      }
+
+      .deleteStyle {
+        width: 80px;
+        height: 35px;
+        background: linear-gradient(
+          180deg,
+          rgba(225, 225, 225, 1) 0%,
+          rgba(190, 190, 190, 1) 100%
+        );
+        opacity: 1;
+        border-radius: 4px;
+      }
+
+      .deleteStyle-title {
+        width: 33px;
+        height: 19px;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: rgba(99, 99, 99, 1);
+        opacity: 1;
+      }
+
+      .exportStyle {
+        width: 80px;
+        height: 35px;
+        background: linear-gradient(
+          180deg,
+          rgba(58, 222, 214, 1) 0%,
+          rgba(0, 150, 143, 1) 100%
+        );
+        opacity: 1;
+        border-radius: 4px;
+      }
+
+      .poiExcel-title {
+        width: 33px;
+        height: 19px;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        opacity: 1;
+      }
+    }
+
+    .table-content {
+      margin-top: 30px;
+    }
+
+    .page-end {
+      text-align: center;
+      margin-top: 30px;
+    }
+  }
+
+  .cancel-style {
+    border-radius: 18px;
+    width: 80px;
+    height: 35px;
+    background: linear-gradient(180deg, rgba(225, 225, 225, 1) 0%, rgba(190, 190, 190, 1) 100%);
+    opacity: 1;
   }
 }
-  .cancel-style{
-    border-radius:18px;
-    width:80px;
-    height:35px;
-    background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
-    opacity:1;
-  }
-  }
 </style>
 
 <style lang="stylus">

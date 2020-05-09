@@ -7,7 +7,6 @@
           @click="deleteAll"
           style="margin-top:30px;margin-left:60px;color:black;font-wight:bold"
         >删除</el-button>
-        <!-- :header-cell-style="{background:'#0058A2'}" -->
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -28,20 +27,22 @@
             <el-table-column label="视频附件" width="100" fixed="right">
               <!--accessoryPath-->
               <template slot-scope="scope">
+                  <!-- <input type="file">tt</input> -->
                 <el-upload
                   class="upload-demo"
-                  action=""
+                  action="http://localhost:8080/smart/worker/labour/1/team/1/meeting"
                   :on-progress="handleChange(scope.row)"
                   :file-list="fileList"
                   accept='.mp4,.qlv,.qsv,.ogg,.flv,.avi,.wmv,.rmvb'
                   multiple
                   v-model="fileList"
                   >
-                  <!-- <i class="el-icon-upload" style="width:26px;height:26px"></i> -->
                   <img
                   src="../../../static/image/shangchuan.png"
                   style="width:26px;height:26px">
                 </el-upload>
+                  <!--
+                    <i class="el-icon-upload" style="width:26px;height:26px"></i> -->
                  <!-- <img
                   src="../../../static/image/shangchuan.png"
                   style="width:26px;height:26px"
@@ -151,11 +152,12 @@
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
-import { headClass } from "@/utils";
 export default {
   data() {
     return {
-      headClass:headClass,
+      updateForm:{
+          file:''
+      },
       token: null, // token
       // 动态数据
       tableData: [],
@@ -210,11 +212,10 @@ export default {
     this.getTalks();
   },
   methods: {
+      headClass() {
+      return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
+    },
      handleChange(row,event,file,fileList) {
-        console.log(file);
-        console.log(fileList);
-        console.log(row.id);
-        console.log(event);
       },
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
@@ -386,7 +387,7 @@ export default {
       });
       this.formSpeech.protective = obj.id;
     },
-       selectPerson(){
+    selectPerson(){
       this.innerVisible = true;
       this.cityOptions=[{id:1,name:'1111'},{id:2,name:'2222'},{id:3,name:'3333'}];
       this.cities=this.cityOptions;
