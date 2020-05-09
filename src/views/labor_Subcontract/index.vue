@@ -42,6 +42,7 @@
         ref="multipleTable"
         :data="tableData"
         stripe
+        border
         :header-cell-style="headClass"
         tooltip-effect="dark"
         style="width: 100%;"
@@ -49,7 +50,9 @@
       >
         <el-table-column type="selection"></el-table-column>
         <el-table-column label="公司名称">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
+          <template slot-scope="scope">
+              <span>{{ scope.row.date }}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="name" label="负责人">
           <template slot-scope="scope">{{ scope.row.phone }}</template>
@@ -87,16 +90,18 @@
         <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
       </div>
     </div>
-    <!-- <addDia v-if="isCreate"></addDia> -->
+    <addLabor v-if="isCreate"></addLabor>
   </div>
 </template>
 
 <script>
 import Utils from "../../assets/js/util.js";
-import addDia from "./add/add";
+import addLabor from "./add/add";
 export default {
   data() {
     return {
+    //  初始化页面
+    isCreate: false,//  初始化隐藏添加弹窗
 		tableData: [
         {
 			date: "第一公司",
@@ -119,27 +124,33 @@ export default {
 			type: ""
 		}
     };
-	},
-    components: {
-        addDia
-    },
+  },
+  created() {
+    this.getLocalStorage()
+  },
+  components: {
+      addLabor
+  },
 	methods: {
+    getLocalStorage() {
+      this.username = window.localStorage.getItem('username');
+      this.userId = window.localStorage.getItem('userId');
+      this.admin = window.localStorage.getItem('admin');
+      this.token = window.localStorage.getItem('token');
+    },
 		handleSelectionChange(val) {
 			this.multipleSelection = val;
 		},
         onScreen() {},
         addStaffClick() {
-            // isCreate: true
-            console.log(Utils);
-            Utils.$emit("demo");
+            this.isCreate = true
+            Utils.$emit("addLabor");
         },
         //  批量删除
         deleteBatchClick() {
             this.$confirm("确定删除该员工信息吗？", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
-                confirmButtonClass: 'detDel',
-                cancelButtonClass: 'cancelClone',
                 center: true,
                 roundButton: true
             })
@@ -174,8 +185,6 @@ export default {
             this.$confirm("确定删除该员工信息吗？", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
-                confirmButtonClass: 'detDel',
-                cancelButtonClass: 'cancelClone',
                 center: true,
                 roundButton: true
             })
@@ -223,22 +232,5 @@ export default {
 </style>
 
 <style lang="stylus">
-.el-message-box{
-	width:350px;
-	background:rgba(255,255,255,1);
-	opacity:1;
-	border-radius:10px;
-}
-.el-message-box__content{
-	margin-bottom : 25px;
-}
-.detDel{
-	background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
-}
-.el-message-box__btns button:nth-child(2) {
-	margin-left: 56px;
-}
-.cancelClone{
-	background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
-}
+
 </style>
