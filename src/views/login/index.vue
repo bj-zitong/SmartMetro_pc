@@ -43,7 +43,7 @@
             :loading="loading"
           >{{$t('login.login')}}</el-button>
           <div class="register">
-            <el-button type="text" @click="updatePassword()">忘记/修改密码</el-button>
+            <el-button type="text" @click="updatePassword()">忘记密码</el-button>
             <el-button type="text" class="free_registration" @click="register()">免费注册</el-button>
           </div>
         </el-form>

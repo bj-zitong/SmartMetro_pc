@@ -30,10 +30,18 @@
                         <span>{{item.meta.title}}</span>
                     </template>
                     <template v-for="(itemChild, itemIndex) in item.children">
-                        <el-menu-item :index="itemChild.path" :key="itemChild.name" v-if="itemChild.meta.enable == 'Y'" :class="$route.meta.active == itemChild.name ? 'is-active' : ''">
-                            <i :class="itemChild.meta.icon" v-if="itemChild.meta.icon"></i>
+                        <template v-if="itemChild.children && itemChild.children.length > 0">
+                          <el-submenu>
                             <span slot="title">{{itemChild.meta.title}}</span>
-                        </el-menu-item>
+                            <el-menu-item v-for="(lastItem,lasrIndex) in itemChild.children" :index="lastItem.path">{{lastItem.meta.title}}</el-menu-item>
+                          </el-submenu>
+                        </template>                
+                        <template v-else>
+                          <el-menu-item :index="itemChild.path" :key="itemChild.name" v-if="itemChild.meta.enable == 'Y'" :class="$route.meta.active == itemChild.name ? 'is-active' : ''">
+                              <i :class="itemChild.meta.icon" v-if="itemChild.meta.icon"></i>
+                              <span slot="title">{{itemChild.meta.title}}</span>
+                          </el-menu-item>
+                        </template>
                     </template>
                 </template>
             </el-submenu>
