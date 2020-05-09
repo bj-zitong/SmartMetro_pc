@@ -38,6 +38,7 @@
         </el-form>
       </el-main>
     </el-container>
+
     <div class="glry_bottonView">
       <el-main class="btnView">
         <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
@@ -77,53 +78,77 @@
             <el-table-column label="进场日期" width="100"></el-table-column>
             <el-table-column label="退场日期" width="100"></el-table-column>
             <!-- <el-table-column fixed="right" label="状态" width="100"></el-table-column> -->
-            <el-table-column fixed="right" label="操作" width="620">
+            <el-table-column fixed="right" label="操作" :width="tableWidth">
               <template slot-scope="scope">
-                <el-button
-                  class="T-R-B-Green"
+                <div v-if="rowIndex!=scope.$index">
+                  <el-button
+                    class="T-R-B-Green"
+                    size="mini"
+                    @click="editRowClick(scope.$index, scope.row)"
+                  >{{operation.conversionCompile}}</el-button>
+                  <el-button
+                    class="T-R-B-Grey"
+                    size="mini"
+                    @click="deleteRowClick(scope.$index, scope.row)"
+                  >{{operation.conversionDelete}}</el-button>
+                  <el-button
+                    @click="evaluateClick(scope.row)"
+                    type="primary"
+                    size="mini"
+                    class="T-R-B-Grey"
+                  >{{operation.evaluateVonversion}}</el-button>
+                  <el-button
+                    @click.native="acrosstheClick(scope.$index, scope.row)"
+                    type="success"
+                    size="mini"
+                    class="T-R-B-BlackishGreen"
+                  >......</el-button>
+                </div>
+                <div v-if="rowIndex==scope.$index">
+                  <el-button
+                    @click="handleClick(scope.row)"
+                    type="success"
+                    size="mini"
+                    class="T-R-B-BlackishGreen btn"
+                  >培训通过</el-button>
+                  <el-button
+                    @click="blockClick(scope.row)"
+                    type="success"
+                    size="mini"
+                    class="F-black btn"
+                  >拉黑</el-button>
+                  <el-button
+                    @click="handleClick(scope.row)"
+                    type="success"
+                    size="mini"
+                    class="F-black btn"
+                  >退场</el-button>
+                  <el-button
+                    @click="handleClick(scope.row)"
+                    type="warning"
                   size="mini"
-                  @click="editRowClick(scope.$index, scope.row)"
-                >编辑</el-button>
-                <el-button
-                  class="T-R-B-Grey"
-                  size="mini"
-                  @click="deleteRowClick(scope.$index, scope.row)"
-                >删除</el-button>
-                <el-button
-                  @click="evaluateClick(scope.row)"
-                  type="primary"
-                  size="mini"
-                  class="T-R-B-Grey"
-                >评价</el-button>
-                <el-button
+                  >查看详情</el-button>
+                  <el-button
+                    @click="acrosstClick(scope.$index, scope.row)"
+                    type="success"
+                    size="mini"
+                     class="T-R-B-BlackishGreen"
+                  >......</el-button>
+                </div>
+
+                <!--  -->
+                <!-- <el-button
                   @click="handleClick(scope.row)"
                   type="success"
                   size="mini"
-                  class="T-R-B-BlackishGreen"
-                >培训通过</el-button>
-                <el-button
-                  @click="blockClick(scope.row)"
-                  type="success"
-                  size="mini"
-                  class="F-black"
-                >拉黑</el-button>
-                <el-button
-                  @click="handleClick(scope.row)"
-                  type="success"
-                  size="mini"
-                  class="F-black"
-                >退场</el-button>
-                <el-button
-                  @click="handleClick(scope.row)"
-                  type="success"
-                  size="mini"
                   class="T-R-B-Grey"
-                >签章</el-button>
-                <el-button @click="handleClick(scope.row)" type="success" size="mini">查看详情</el-button>
+                >签章</el-button>-->
+                <!-- <el-button @click="handleClick(scope.row)" type="success" size="mini">查看详情</el-button> -->
               </template>
             </el-table-column>
           </el-table>
         </div>
+
         <el-pagination background layout="prev, pager, next" :total="1000" class="paging"></el-pagination>
       </el-main>
     </div>
@@ -162,9 +187,7 @@
       <div>
         <div>
           <el-form label-width="80px">
-            
-              <el-input type="textarea" v-model="block"></el-input>
-            
+            <el-input type="textarea" v-model="block"></el-input>
           </el-form>
         </div>
       </div>
@@ -187,12 +210,19 @@ export default {
         user: "",
         region: ""
       },
+      operation: {
+        conversionCompile: "编辑",
+        conversionDelete: "删除",
+        evaluateVonversion: "评价"
+      },
       headClass: headClass,
       centerDialogVisible: false,
-      evaluatDialogVisible:false,
+      evaluatDialogVisible: false,
       options: options,
-      hide: false,
-      block: "", //拉黑原因描述
+      btnShow: false,
+      tableWidth:'300',
+      block: "", //拉黑原因描述,
+      rowIndex: null, //选中当前行下标
       fileList: [
         {
           name: "food.jpeg",
@@ -207,6 +237,7 @@ export default {
       ],
       tableData: [
         {
+          id: "1",
           date: "2016-05-025",
           name: "王小虎1",
           province: "上海",
@@ -215,48 +246,27 @@ export default {
           zip: 200333
         },
         {
-          date: "2016-05-04",
-          name: "王小虎2",
+          id: "2",
+          date: "2016-05-025",
+          name: "王小虎1",
           province: "上海",
           city: "普陀区",
-          address: "上海市普陀区金沙江路 1517 弄",
+          address: "上海市普陀区金沙江路 1518 弄",
           zip: 200333
         },
         {
-          date: "2016-05-01",
-          name: "王小虎3",
+          id: "3",
+          date: "2016-05-025",
+          name: "王小虎1",
           province: "上海",
           city: "普陀区",
-          address: "上海市普陀区金沙江路 1519 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎4",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1516 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1516 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1516 弄",
+          address: "上海市普陀区金沙江路 1518 弄",
           zip: 200333
         }
       ]
     };
   },
+  mounted() {},
   methods: {
     onSubmit() {
       console.log("submit!");
@@ -283,7 +293,18 @@ export default {
           });
         });
     },
-    
+    acrosstheClick(index, scope) {
+      console.log("mouseover");
+      this.tableWidth='400'
+      this.rowIndex = index;
+    },
+    acrosstClick(index, scope) {
+      var index = null
+      this.tableWidth='300'
+      this.rowIndex = index;
+      // this.btnShow =
+    },
+
     //导出
     importStaffClick() {},
     //导入
@@ -291,7 +312,6 @@ export default {
     handleSelectionChange(val) {},
     //拉黑
     blockClick() {
-      
       this.centerDialogVisible = true;
     },
     handleButton() {
@@ -299,7 +319,7 @@ export default {
     },
     //评价
     evaluateClick() {
-      this.evaluatDialogVisible=true
+      this.evaluatDialogVisible = true;
     },
     //文件上传
     handleRemove(file, fileList) {
@@ -328,9 +348,11 @@ export default {
   text-align: center;
   line-height: 60px;
 }
-.roster{
-   margin : 0 25px
+
+.roster {
+  margin: 0 25px;
 }
+
 .el-aside {
   background-color: #D3DCE6;
   color: #333;
@@ -391,7 +413,7 @@ body > .el-container {
   .paging {
     text-align: center;
     margin-top: 30px;
-    margin-bottom :30px
+    margin-bottom: 30px;
   }
 }
 
@@ -400,5 +422,17 @@ body > .el-container {
   color: #fff;
   width: 60px;
   height: 33px;
+}
+
+.showMore {
+  width: 100px;
+
+  // position: absolute;
+  // bottom : 0;
+  // right:0;
+  .btn {
+    margin-top: 10px;
+    float: left;
+  }
 }
 </style>

@@ -5,6 +5,7 @@ Vue.prototype.$echarts = echarts
 import 'element-ui/lib/theme-chalk/index.css'
 import './element-variables.scss'
 import './style/home.css'
+import './style/style.css'
 // animate动画库
 import 'animate.css'
 import App from './App'

@@ -1,0 +1,38 @@
+/* ele MessageBox 弹框样式覆盖 */
+.el-message-box{
+    width:350px;
+    height: 200px;
+	background:rgba(255,255,255,1);
+	opacity:1;
+    border-radius:10px;
+    padding-top: 40px;
+}
+.el-message-box .el-message-box__header{
+    display: none;
+}
+.el-message-box .el-message-box__content{
+    margin-bottom: 36px;
+}
+.el-message-box .el-message-box__btns button{
+    width:80px;
+    height:35px;
+    opacity:1;
+    border-radius:18px;
+}
+.el-message-box__btns button:nth-child(1) {
+    background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
+    color:rgba(99,99,99,1);
+}
+.el-message-box__btns button:nth-child(2) {
+    background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
+    color:rgba(255,255,255,1);
+    margin-left: 56px;
+}
+/* 表格文字居中 */
+.el-table td {
+    text-align: center !important;
+}
+/* 表格固定列 防止最后一行显示不全 */
+.el-table__fixed, .el-table__fixed-right{
+    height: 100% !important;
+}

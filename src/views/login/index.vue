@@ -12,13 +12,14 @@
           :rules="rules"
           :model="loginForm"
           ref="loginForm"
-          label-width="40px"
-          style="margin-top:130px"
+          label-width="30px"
+          style="margin-top:130px;background:rgba(255,255,255,1)"
         >
-          <el-form-item prop="username" style="position:relative">
-            <el-input type="text" v-model="loginForm.username" @keyup.enter.native="goToPwdInput"></el-input>
-            <span class="svg-container svg-container_user">
-              <svg-icon icon-class="user" />
+          <el-form-item prop="username" style="position:relative;background:rgba(255,255,255,1)">
+            <el-input type="text" v-model="loginForm.username" @keyup.enter.native="goToPwdInput" placeholder="请输入用户名称"></el-input>
+            <span class="svg-container svg-container_user" style="margin-top:2px">
+              <!-- <svg-icon icon-class="user" /> -->
+              <img src="../../../static/image/yonghu.png" class="yonghu"/>
             </span>
           </el-form-item>
           <el-form-item prop="pwd">
@@ -27,20 +28,24 @@
               v-model="loginForm.pwd"
               @keyup.enter.native="onLogin"
               ref="pwd"
+              placeholder="请输入密码"
+              style="margin-top:40px"
             ></el-input>
-            <span class="svg-container svg-container_password">
-              <svg-icon icon-class="password" />
+            <span class="svg-container svg-container_password"  style="margin-top:40px">
+              <img src="../../../static/image/login_zhengkai.png" class="yonghu"/>
             </span>
           </el-form-item>
-          <div class="register">
-            <el-button type="text" @click="updatePassword()">忘记/修改密码</el-button>
-            <el-button type="text" class="free_registration" @click="register()">免费注册</el-button>
-          </div>
+         
+          <code1></code1>
           <el-button
             type="primary"
             @click="onLogin('loginForm')"
             :loading="loading"
           >{{$t('login.login')}}</el-button>
+          <div class="register">
+            <el-button type="text" @click="updatePassword()">忘记/修改密码</el-button>
+            <el-button type="text" class="free_registration" @click="register()">免费注册</el-button>
+          </div>
         </el-form>
       </div>
     </el-card>
@@ -54,9 +59,13 @@
 // import { isValidUsername } from '@/utils/validate'
 import { saveToLocal, loadFromLocal } from "@/common/local-storage";
 import { mapActions } from "vuex";
+
 /* eslint-disable*/
-import particles from "particles.js";
+import code1 from "./securityCode/code";
 export default {
+  components: {
+    code1
+  },
   data() {
     // username 验证
     // const validateUsername = (rule, value, callback) => {
@@ -206,7 +215,7 @@ export default {
     border: none;
 
     .login_import {
-      width: 380px;
+      width:461px;
       height: 649px;
       background: rgba(255, 255, 255, 1);
       border: 1px solid rgba(112, 112, 112, 1);
@@ -236,11 +245,11 @@ export default {
       }
 
       .register {
-        margin-left: 40px;
+        margin-left: 44px;
       }
 
       .free_registration {
-        margin-left: 150px;
+        margin-left: 220px;
       }
 
       .r_login {
@@ -258,7 +267,7 @@ export default {
       font-family: Microsoft YaHei;
       font-weight: bold;
       color: rgba(255, 255, 255, 1);
-      margin-left: 350px;
+      margin-left: 240px;
       margin-top: 420px;
       opacity: 1;
       float: left;
@@ -279,8 +288,12 @@ export default {
     }
 
     .el-input /deep/ .el-input__inner {
-      text-indent: 12px;
-      width: 300px;
+      width:400px;
+      border-top:none;
+      border-left:none;
+      border-right:none;
+      border-radius:0;
+      border-bottom:1px solid rgba(225,225,225,1);
     }
 
     .svg-container {
@@ -288,14 +301,20 @@ export default {
       top: 0;
       right: 54px;
       color: #889aa4;
-
+      
       &_user {
         font-size: 20px;
+       
       }
 
       &_password {
         right: 54px;
         font-size: 16px;
+        
+      }
+      .yonghu{
+        width :20px;
+        height :20px
       }
     }
   }
@@ -304,8 +323,8 @@ export default {
 .el-button--primary {
   position: relative;
   left: 42px;
-  top: 90px;
-  width: 300px;
+  // top: 90px;
+  width: 385px;
   height: 60px;
   background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
   box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
@@ -315,6 +334,7 @@ export default {
   line-height: 20px;
   text-align: center;
   color: rgba(255, 255, 255, 1);
+  margin-top :80px
 }
 
 #particles {
@@ -331,10 +351,9 @@ export default {
 
 .login-Footer {
   position: absolute;
-  bottom: 0;
+  bottom: 35px;
   text-align: center;
   width: 100%;
-
   p {
     font-size: 14px;
     font-family: Microsoft YaHei;
@@ -342,6 +361,7 @@ export default {
     line-height: 19px;
     color: rgba(255, 255, 255, 1);
     opacity: 1;
+    padding-top:10px
   }
 }
 </style>
