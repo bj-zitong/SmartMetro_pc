@@ -82,5 +82,24 @@ export default{
       },err => {
           return errorfun(err)
       })
-  }
+  },
+    put(url,data){//put请求
+      return axios({
+          method:'put',
+          headers:{
+              Authorization:'bdcf1af9c1f9000e465cd970f5a46fbebc26fad7fee9f912d3e9546e023e170d',
+              'Content-Type': 'application/json',
+          },
+          baseURL:localhosts,
+          url,
+          data: data,
+          withCredentials: true,
+          timeout:5000,//响应时间
+      }).then(res => {
+          return successfun(res)
+      },err => {
+          return errorfun(err);
+      })
+},
+
 }

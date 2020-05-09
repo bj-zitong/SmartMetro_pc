@@ -32,27 +32,24 @@
             ref="multipleTable"
             @selection-change="changeFun"
             stripe
-            :header-cell-style="{background:'#0058A2'}"
+            :header-cell-style="headClass"
             style="width: 100%"
           >
             <el-table-column
               type="selection"
               width="65"
-              prop="userId"
+              prop="id"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="userName" label="姓名" width="120"></el-table-column>
+            <el-table-column prop="name" label="姓名" width="120"></el-table-column>
             <el-table-column prop="idNum" label="身份证号" width="150"></el-table-column>
             <el-table-column prop="phone" label="电话" width="150"></el-table-column>
             <el-table-column prop="company" label="来访单位" width="150"></el-table-column>
-            <el-table-column prop="profession" label="被访部门" width="100"></el-table-column>
+            <el-table-column prop="intervieweeDepartment" label="被访部门" width="100"></el-table-column>
             <el-table-column prop="interviewee" label="被访人姓名" width="100"></el-table-column>
-            <el-table-column prop="intervieweeReason" label="来访事由" width="120"></el-table-column>
-            <el-table-column prop="intervieweeDate" label="来访时间" width="100"></el-table-column>
-            <el-table-column prop="direction" label="进出方向" width="100"></el-table-column>
-            <el-table-column prop="attendanceEquipment" label="考勤设备" width="100"></el-table-column>
-            <el-table-column prop="createTime" label="打卡时间" width="150" fixed="right"></el-table-column>
-            <el-table-column label="操作" style="width:500px" fixed="right">
+            <el-table-column prop="visitReason" label="来访事由" width="120"></el-table-column>
+            <el-table-column prop="visitTime" label="来访时间" width="200"></el-table-column>
+            <el-table-column label="操作" width="300" fixed="right">
               <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
                 <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
@@ -75,7 +72,6 @@
           @prev-click="pre"
           @next-click="next"
           @current-change="handleCurrentChange"
-          hide-on-single-page
           :total="total"
           background
         ></el-pagination>
@@ -149,9 +145,11 @@
   </div>
 </template>
 <script>
+import { headClass } from "@/utils";
 export default {
   data() {
     return {
+      headClass:headClass,
       token: null, // token
       dialogFormVisible: false,
       // 动态数据
@@ -297,181 +295,44 @@ export default {
       var data = JSON.stringify({
         pageSize: this.pageSize,
         page: this.page,
-        userName: uname,
-        idNum: unum
+        name: uname,
+        company: unum
       });
-      var url = "";
+      var url = "/smart/worker/roster/"+sessionStorage.getItem('userId')+"/outlander/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
       var result = [
         {
-          userId: 1,
-          userName: "地铁安保部",
+          id: 1,
+          name: "地铁安保部",
           idNum: "210234567898765876",
           phone: 15236985236,
           company: "安保部一",
-          profession: "部门一",
+          intervieweeDepartment: "部门一",
           interviewee: "123",
-          intervieweeReason: "123",
-          intervieweeDate: "2020-4-12",
-          direction: "22222222",
-          attendanceEquipment: "22222222",
-          createTime: 2020 - 4 - 12
+          visitReason: "123",
+          visitTime: 2020 - 4 - 12
         },
         {
-          userId: 2,
-          userName: "22222222",
+          id: 2,
+          name: "22222222",
           idNum: "210234567898765789",
           phone: 111,
           company: "44444",
-          profession: "44444",
+          intervieweeDepartment: "44444",
           interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        },
-           {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
+          visitReason: "44444",
+          visitTime: 1
         }
       ];
       this.tableData = result;
+      this.total=result.length;
       //  this.$http({
       //       // 头部信息及编码格式设置
       //       headers: {
@@ -633,7 +494,6 @@ export default {
 </script>
 <style scoped lang="stylus">
 .container{
-
   background-color:rgba(246,247,248,1);
   opacity:1;
 
@@ -688,7 +548,7 @@ export default {
   margin-top: -30px;
 
   .table-head {
-    height: 500px;
+    height: 550px;
     padding: 30px;
 
   .addStyle {

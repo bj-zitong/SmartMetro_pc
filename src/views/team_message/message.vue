@@ -32,7 +32,7 @@
           ref="multipleTable"
           @selection-change="changeFun"
           stripe
-          :header-cell-style="{background:'#0058A2'}"
+          :header-cell-style="headClass"
         >
           <el-table-column type="selection" prop="id" @selection-change="changeFun"></el-table-column>
           <el-table-column prop="projectName" label="工程名称" width="150"></el-table-column>
@@ -41,7 +41,7 @@
           <el-table-column prop="teamLeaderName" label="班组长" width="100"></el-table-column>
           <el-table-column prop="teamLeaderPhone" label="手机号" width="120"></el-table-column>
           <el-table-column prop="createTime" label="创建日期" width="150"></el-table-column>
-          <el-table-column label="操作" width="500" fixed="right">
+          <el-table-column label="操作" width="400" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
               <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
@@ -66,12 +66,11 @@
           @prev-click="pre"
           @next-click="next"
           @current-change="handleCurrentChange"
-
           :total="total"
         ></el-pagination>
       </div>
     </div>
-    <!-- 新增-->
+    <!-- 新增 修改-->
     <el-dialog :visible.sync="dialogFormVisible" width="20%" title="新增班组" :center="true">
       <div class="addUser-content">
         <!-- <div class="button-head">
@@ -86,6 +85,9 @@
             :model="formClass"
             action="http://192.168.1.164:8001/auth/user/baseUser"
           >
+            <el-form-item prop="id">
+              <el-input v-model="formClass.id" type="text" hidden></el-input>
+            </el-form-item>
             <el-form-item prop="projectName">
               <el-input v-model="formClass.projectName" type="text" placeholder="工程名称"></el-input>
             </el-form-item>
@@ -157,11 +159,7 @@
             <el-input v-model="formSpeech.jobNum" placeholder="作业人数"></el-input>
           </el-form-item>
           <el-form-item label="安全防护用品配套使用：" prop="protective">
-            <el-select
-              v-model="formSpeech.protective"
-              placeholder="请选择"
-              @change="selectProtective"
-            >
+            <el-select v-model="formSpeech.protective" placeholder="请选择" @change="selectProtective">
               <el-option
                 v-for="item in protectives"
                 :key="item.id"
@@ -182,7 +180,7 @@
             <el-input type="textarea" :rows="6" placeholder="内容" v-model="formSpeech.classContent"></el-input>
           </el-form-item>
           <el-form-item label="参加活动人员名单:" prop="classContent">
-            <el-button type="primary" @click="innerVisible = true">点击选择</el-button>
+            <el-button type="primary" @click="selectPerson()">点击选择</el-button>
           </el-form-item>
           <el-input v-if="checkedCities.length>0" v-model="checkedCities" placeholder></el-input>
           <div class="dialog-footer">
@@ -204,7 +202,7 @@
         >全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-          <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+          <el-checkbox v-for="city in cities" :label="city.name" :key="city.id">{{city.name}}</el-checkbox>
         </el-checkbox-group>
         <div slot="footer" class="dialog-footer">
           <el-button @click="innerVisible = false">取 消</el-button>
@@ -215,11 +213,13 @@
   </div>
 </template>
 <script>
-const cityOptions = ["上海", "北京", "广州", "深圳"];
+import { handleCofirm } from "@/utils/confirm";
+import { headClass } from "@/utils";
+// const  = ["上海", "北京", "广州", "深圳"];
 export default {
   data() {
     return {
-      id:null,//当前选中的id
+      id: null, //当前选中的id
       token: null, // token
       // 动态数据
       tableData: [],
@@ -234,12 +234,14 @@ export default {
       dialogVisible: false, //评价
       outerVisible: false, //新增讲话
       innerVisible: false, //二层
+      headClass:headClass,
       formClass: {
         projectName: "",
         groupName: "",
         phone: "",
         groupLeader: "",
-        profession: ""
+        profession: "",
+        id: null
       },
       formRules: {
         projectName: [
@@ -307,9 +309,11 @@ export default {
       ],
       checkPerson: null, //选中的人员
       checkAll: false,
+      cityOptions:null,
       checkedCities: [],
-      cities: cityOptions,
-      isIndeterminate: true
+      cities:null,
+      isIndeterminate: true,
+      checkIds:[]
     };
   },
   created: function() {
@@ -380,7 +384,7 @@ export default {
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
         },
-         {
+        {
           id: 2,
           projectName: "工程2",
           teamName: "班组二",
@@ -389,7 +393,7 @@ export default {
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
         },
-         {
+        {
           id: 2,
           projectName: "工程2",
           teamName: "班组二",
@@ -398,7 +402,7 @@ export default {
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
         },
-         {
+        {
           id: 2,
           projectName: "工程2",
           teamName: "班组二",
@@ -407,7 +411,7 @@ export default {
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
         },
-         {
+        {
           id: 2,
           projectName: "工程2",
           teamName: "班组二",
@@ -416,7 +420,7 @@ export default {
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
         },
-         {
+        {
           id: 2,
           projectName: "工程2",
           teamName: "班组二",
@@ -425,7 +429,7 @@ export default {
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
         },
-         {
+        {
           id: 2,
           projectName: "工程2",
           teamName: "班组二",
@@ -434,7 +438,7 @@ export default {
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
         },
-         {
+        {
           id: 2,
           projectName: "工程2",
           teamName: "班组二",
@@ -443,7 +447,7 @@ export default {
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
         },
-         {
+        {
           id: 2,
           projectName: "工程2",
           teamName: "班组二",
@@ -451,7 +455,7 @@ export default {
           teamLeaderName: "XXX",
           teamLeaderPhone: "15236984469",
           createTime: "2020-4-15"
-        },
+        }
         //  {
         //   id: 2,
         //   projectName: "工程2",
@@ -472,7 +476,7 @@ export default {
         // }
       ];
       this.tableData = result;
-      this.total=result.length;
+      this.total = result.length;
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -492,17 +496,37 @@ export default {
     deleteAll() {
       var ids = this.changeFun();
       console.log(ids);
-      var data = JSON.stringify(ids);
-      var url =
-        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
-      this.http.delete(url, data).then(res => {
-        if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
-          this.tableData = rows;
-          this.total = total;
-        }
-      });
+
+      if (ids.length <= 0) {
+        this.$message("请选择删除的数据！");
+        return;
+      }
+      handleCofirm("确认删除", "warning")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/labour/" +
+            sessionStorage.getItem("userId") +
+            "/team";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     },
     // 下拉框获得值
     selectProfession(vid) {
@@ -534,14 +558,29 @@ export default {
       var uid = row.id;
       var ids = [];
       ids.push(uid);
-      var data = JSON.stringify(ids);
-      var url =
-        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
-      this.http.delete(url, data).then(res => {
-        if (res.code == 200) {
-          this.getTalks();
-        }
-      });
+      handleCofirm("确认删除", "warning")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/labour/" +
+            sessionStorage.getItem("userId") +
+            "/team";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.getTalks();
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     },
     uploadVideo(row) {
       var uid = row.id;
@@ -550,36 +589,66 @@ export default {
     //编辑
     handleEdit(row) {
       var uid = row.id;
-      this.id=uid;
+      this.id = uid;
       console.log(uid);
       //获得详情
-      var params=null;
-      this.formClass.projectName='123'
-      var url=
-      "/smart/worker/labour/"+sessionStorage.getItem("userId")+"/team/"+uid+"/detail"
-       this.http.get(url, params).then(res => {
+      var params = null;
+      this.formClass.projectName = "123";
+      this.formClass.id = 1;
+      var url =
+        "/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/team/" +
+        uid +
+        "/detail";
+      this.http.get(url, params).then(res => {
         if (res.code == 200) {
+          //渲染数据
+          var result=res.data;
+
         }
       });
-      this.dialogFormVisible=true;
+      this.dialogFormVisible = true;
     },
     //新增
     addClass(formClass) {
-      var form = this.formClass;
-      var params = JSON.stringify({
-        projectName: form.projectName,
-        teamName: form.groupName,
-        teamType: form.profession,
-        teamLeaderName: form.groupLeader,
-        teamLeaderPhone: form.phone
-      });
-      var url =
-        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
-      this.http.post(url, params).then(res => {
-        if (res.code == 200) {
-          this.dialogFormVisible = false;
-        }
-      });
+      //this.$refs['formClass'].model.groupLeader
+      //新增 id为空
+        var form = this.$refs[formClass].model;
+      if (form.id == null) {
+        var params = JSON.stringify({
+          projectName: form.projectName,
+          teamName: form.groupName,
+          teamType: form.profession,
+          teamLeaderName: form.groupLeader,
+          teamLeaderPhone: form.phone
+        });
+        var url =
+          "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
+        this.http.post(url, params).then(res => {
+          if (res.code == 200) {
+            this.dialogFormVisible = false;
+          }
+        });
+      }
+      //修改
+      else{
+        var params = JSON.stringify({
+          projectName: form.projectName,
+          teamName: form.groupName,
+          teamType: form.profession,
+          teamLeaderName: form.groupLeader,
+          teamLeaderPhone: form.phone,
+          id:form.id
+        });
+        var url =
+          "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
+        this.http.put(url, params).then(res => {
+          if (res.code == 200) {
+            this.dialogFormVisible = false;
+          }
+        });
+      }
     },
     //评价
     evaluate() {
@@ -591,21 +660,30 @@ export default {
       console.log(uid);
       this.dialogVisible = true;
     },
+    selectPerson(){
+      this.innerVisible = true;
+      this.cityOptions=[{id:1,name:'1111'},{id:2,name:'2222'},{id:3,name:'3333'}];
+      this.cities=[{id:1,name:'1111'},{id:2,name:'2222'},{id:3,name:'3333'}];;
+    },
     //讲话
     addSpeech(row) {
       this.outerVisible = true;
+
     },
     addFormSpeech(formSpeech) {
+      var form = this.$refs['formSpeech'].model;
       var datas = new FormData();
       datas.append("userId", 1);
-      datas.append("homeworkPart", this.formSpeech.jobsite);
-      datas.append("homeworkNumber", this.formSpeech.jobNum);
-      datas.append("isSafety", this.formSpeech.protective);
-      datas.append("jobContent", this.formSpeech.speachContent);
-      datas.append("meetingContent", this.formSpeech.classContent);
-      datas.append("workerInfoIds", this.formSpeech.numbers);
-       var url =
-        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team/meeting";
+      datas.append("homeworkPart", form.jobsite);
+      datas.append("homeworkNumber", form.jobNum);
+      datas.append("isSafety", form.protective);
+      datas.append("jobContent", form.speachContent);
+      datas.append("meetingContent", form.classContent);
+      datas.append("workerInfoIds", this.checkIds);
+      var url =
+        "/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/team/meeting";
       this.http.post(url, datas).then(res => {
         if (res.code == 200) {
           this.outerVisible = false;
@@ -616,25 +694,62 @@ export default {
       this.dialogFormVisible = false;
     },
     handleCheckAllChange(val) {
-      this.checkedCities = val ? cityOptions : [];
+      console.log(val);
+      this.checkedCities=[];
+      //选中的id
+      this.checkIds=[];
+     if(val){
+        for(var i=0;i<this.cities.length;i++){
+        this.checkedCities.push(this.cities[i].name);
+        this.checkIds.push(this.cities[i].id);
+      }
+      // this.checkedCities = val ? this.cityOptions.name : [];
       this.isIndeterminate = false;
+      for(var j=0;j<this.checkIds.length;j++){
+        console.log(this.checkIds[j]);
+      }
+      for(var k=0;k<this.checkedCities.length;k++){
+        console.log(this.checkedCities[k]);
+      }
+     }
+      // console.log(this.checkIds);
     },
     handleCheckedCitiesChange(value) {
+      console.log(value);
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.cities.length;
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.cities.length;
+    if(value.length>0){
+      for(var i=0;i<value.length;i++){
+          for(var j=0;j<this.cities.length;j++){
+              if(value[i]==this.cities[j].name){
+                  this.checkIds.push(this.cities[j].id);
+              }
+          }
+      }
+       for(var k=0;k<this.checkIds.length;k++){
+        for(var h=k+1;h<this.checkIds.length;h++){
+            if(this.checkIds[k]==this.checkIds[h]){
+            //如果第一个等于第二个，splice方法删除第二个
+            this.checkIds.splice(h,1);
+            h--;
+            }
+        }
+    }
+      console.log('ids'+this.checkIds);//选中的ids
+    }
     }
   }
 };
 </script>
 <style scoped lang="stylus">
 .container {
+  background-color: rgba(246, 247, 248, 1);
+  opacity: 1;
+  background: rgba(246, 247, 248, 1);
+  opacity: 1;
 
-  background-color:rgba(246,247,248,1);
-  opacity:1;
-    background:rgba(246,247,248,1);
-    opacity:1;
   .container-head {
     // width: 100%;
     height: 100px;
