@@ -2,7 +2,7 @@
   <div class="app-wrapper">
     <navbar @selectNavBar="selectNavBar"></navbar>
     <sidebar :sideBarData="sideBarData"></sidebar>
-    <div class="main-container">
+    <div :class="hideMainContainer=='工友须知'?'main-container1':'main-container'">
       <tabs-view></tabs-view>
       <app-main></app-main>
     </div>
@@ -24,6 +24,7 @@
     data() {
       return {
         sideBarData:'',
+        hideMainContainer:''
       }
     },
     computed: {
@@ -38,7 +39,7 @@
         this.sideBarData = [];
         this.routers.map((x)=>{
           if(x.name == param){
-            // console.log(x)
+            this.hideMainContainer=x.name
             this.sideBarData=x;
             this.$router.push({name: x.name});
             return;
@@ -55,7 +56,11 @@
   height: 100%;
   background:rgba(246,247,248,1);
   .main-container {
-    padding-left: 201px;
+    padding-left: 260px;
+    padding-top: 140px;
+  }
+  .main-container1{
+    padding-left:0;
     padding-top: 140px;
   }
 }

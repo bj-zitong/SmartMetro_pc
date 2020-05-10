@@ -1,35 +1,35 @@
 <template>
   <el-container class="personal">
     <el-main class="main">
-      <el-form :label-position="labelPosition" label-width="160px" :model="form">
+      <el-form :label-position="labelPosition" label-width="160px" :model="form" :rules="rules" ref="form">
         <el-col>
-          <el-form-item label="项目编号">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="项目编号" prop="projectNo">
+            <el-input v-model="form.projectNo"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="项目名称">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="项目名称" prop="projectName">
+            <el-input v-model="form.projectName"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="合同编号">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="合同编号" prop="contractNo">
+            <el-input v-model="form.contractNo"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="合同期限">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="合同期限" prop="contractPeriod">
+            <el-input v-model="form.contractPeriod"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="结算方式">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="结算方式" prop="settlementMethod">
+            <el-input v-model="form.settlementMethod"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="所属企业组织机构代码">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="所属企业组织机构代码" prop="enterpriseCode">
+            <el-input v-model="form.enterpriseCode"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
@@ -57,12 +57,45 @@ export default {
         gender: "",
         type: [],
         region: ""
-      }
-      // 校验规则
-      //日历选择器
+      },
+      rules: {
+        projectNo: [
+          { required: true, message: "请输入项目编号", trigger: "blur" }
+        ],
+        projectName: [
+          { required: true, message: "请输入项目名称", trigger: "blur" }
+        ],
+        contractNo: [
+          { required: true, message: "请输入合同编号", trigger: "blur" }
+        ],
+        contractPeriod: [
+          { required: true, message: "请输入合同期限", trigger: "blur" }
+        ],
+        ProfessionalCode: [
+          { required: true, message: "请输入结算方式", trigger: "blur" }
+        ],
+        enterpriseCode: [
+          { required: true, message: "请输入企业代码", trigger: "blur" }
+        ],
+        settlementMethod: [
+          { required: true, message: "请输入结算方式", trigger: "blur" }
+        ],
+      },
     };
   },
-  methods: {}
+  methods: {
+     submitForm(formName) {
+      console.log(formName);
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    }
+  }
 };
 </script>
 <style lang="stylus" scoped>

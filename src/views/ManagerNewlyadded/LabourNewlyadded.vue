@@ -3,30 +3,31 @@
     <el-container class="LabourNewlyadded">
       <el-main>
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <!-- 来源地消息 -->
-          <el-tab-pane label="来源地消息" name="first">
-            <asource></asource>
-           
-          </el-tab-pane>
+          
           <!-- 个人基本信息 -->
           <el-tab-pane label="个人基本信息" name="second" class="information">
             <personal></personal>
           </el-tab-pane>
           <!-- 合同信息 -->
-          <el-tab-pane label="合同信息" name="third">
+          <el-tab-pane label="合同信息" name="third" disabled="false">
             <contract></contract>
           </el-tab-pane>
           <!-- 工资记录 -->
-          <el-tab-pane label="工资记录" name="fourth">
+          <el-tab-pane label="工资记录" name="fourth" disabled="false">
             <payrollRecords></payrollRecords>
           </el-tab-pane>
           <!-- 资质证书 -->
-          <el-tab-pane label="资质证书" name="certificate">
+          <el-tab-pane label="资质证书" name="certificate" disabled="false">
             <certificate></certificate>
           </el-tab-pane>
           <!-- 历史评价记录 -->
-          <el-tab-pane label="历史评价记录" name="evaluate">
+          <el-tab-pane label="历史评价记录" name="evaluate" disabled="false">
             <evaluationRecord></evaluationRecord>
+          </el-tab-pane>
+          <!-- 来源地消息 -->
+          <el-tab-pane label="来源地消息" name="first" disabled="false">
+            <asource></asource>
+           
           </el-tab-pane>
         </el-tabs>
       </el-main>

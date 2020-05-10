@@ -1,10 +1,10 @@
 <template>
   <div class="top-navbar">
-    <div style="width:100%;margin:0 auto">
+    <div style="width:100%;margin:0 auto;height:70px">
       <el-menu mode="horizontal" style="margin-left:0px">
         <div>
           <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
-          <div index="1" class="title-name">{{$t('navbar.title')}}</div>
+          <div index="1" class="title-name">城市轨道交通智慧工地管理系统—人员智慧管理</div>
         </div>
         <div class="avatar-container">
           <div class="exit_login">
@@ -106,10 +106,10 @@ export default {
   }
 
   .WisdomSite_title_login {
-    width: 36px;
-    height: 36px;
+    width: 50px;
+    height: 50px;
     float: left;
-    margin: 17px 0 0 30px;
+    margin: 10px 0 0 43px;
   }
 
   .el-menu {
@@ -130,7 +130,7 @@ export default {
     .avatar-container {
       position: absolute;
       top: 20px;
-      right: -45px;
+      right: -80px;
       width: 300px;
       outline: none;
 
@@ -191,7 +191,7 @@ export default {
 }
 
 .title-name {
-  padding: 20px 0 0 20px;
+  padding: 20px 0 0 13px;
   float: left;
   font-size: 24px;
   font-weight: bold;
@@ -237,15 +237,15 @@ export default {
 .hed_tab {
   border: none;
   width: 95.5%;
-  margin: auto 30px;
+  margin: auto 50px;
   position: relative;
-  top: 30px;
+  top: 10px;
 }
 
 .icon_list {
-  width: 20px;
-  height: 20px;
-  margin: 10px 10px 0 0;
+  width: 23px;
+  height: 23px;
+  margin: 13px 10px 0 0;
   float: left;
 }
 
@@ -256,9 +256,11 @@ export default {
 .hed_tab>.el-tabs__header .el-tabs__item {
   padding: 0 20px;
   color: #fff;
-  width: 0;
   width: 10%;
   text-align: center;
+  height:50px;
+  line-height: 50px;
+  // font-size :20px  
 }
 
 .hed_tab>.el-tabs__header .el-tabs__nav {

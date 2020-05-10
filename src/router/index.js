@@ -39,10 +39,10 @@ export const constantRouterMap = [
         component: () => import('@/views/register/updatePassword')
     },
     {
-      path: '/forgetPassword',
-      name: 'forgetPassword',
-      component: () => import('@/views/register/forgetPassword')
-  },
+        path: '/forgetPassword',
+        name: 'forgetPassword',
+        component: () => import('@/views/register/forgetPassword')
+    },
     //点击进入首页
     {
         path: '/Selectpage',
@@ -88,106 +88,108 @@ export const constantRouterMap = [
         children: [
             {
 
-            path: '/labor_Subcontract1',
-            component: () =>
-                import('@/views/labor_Subcontract/index'),
-            // alwaysShow: false,
-            meta: {
-                icon: 's-order',
-                title: '劳务分包管理',
-                enable: "Y",
-                parent: '实名认证',
+                path: '/labor_Subcontract1',
+                component: () =>
+                    import('@/views/labor_Subcontract/index'),
+                // alwaysShow: false,
+                meta: {
+                    icon: '../../static/image/laowu.png',
+                    AfterIcon: '../../static/image/Team.png',
+                    title: '劳务分包管理',
+                    enable: "Y",
+                    parent: '实名认证',
+                },
+                // // redirect: 'labor_Subcontract1',
+                children: []
             },
-            // // redirect: 'labor_Subcontract1',
-            children: []
-        },
-        //班组管理
-        {
-            path: '/team_message',
-            component: () =>
-                import('@/views/team_message/index'),
+            //班组管理
+            {
+                path: '/team_message',
+                component: () =>
+                    import('@/views/team_message/index'),
 
-            // alwaysShow: true,
-            meta: {
-                title: '班组管理',
-                icon: 'svg-droplet',
-                enable: "Y",
-                parent: '实名认证'
+                // alwaysShow: true,
+                meta: {
+                    title: '班组管理',
+                    icon: '../../static/image/Team.png',
+                    enable: "Y",
+                    parent: '实名认证'
+                },
+                children: [{
+                    path: '/team_message/message',
+                    name: 'message',
+                    component: () =>
+                        import('@/views/team_message/message'),
+                    meta: { title: '班前信息', icon: '', enable: "Y", parent: '实名认证' }
+                },
+                {
+                    path: '/team_message/talkrecord',
+                    name: 'talkrecord',
+                    component: () =>
+                        import('@/views/team_message/talkrecord'),
+                    meta: { title: '班前讲话记录', icon: '', enable: "Y", parent: '实名认证' }
+                }
+                ]
             },
-            children: [{
-                path: '/team_message/message',
-                name: 'message',
-                component: () =>
-                    import('@/views/team_message/message'),
-                meta: { title: '班前信息', icon: '', enable: "Y", parent: '实名认证' }
-            },
+            // 花名册
             {
-                path: '/team_message/talkrecord',
-                name: 'talkrecord',
+                path: '/roster',
                 component: () =>
-                    import('@/views/team_message/talkrecord'),
-                meta: { title: '班前讲话记录', icon: '', enable: "Y", parent: '实名认证' }
-            }
-            ]
-        },
-        // 花名册
-        {
-            path: '/roster',
-            component: () =>
-                import('@/views/roster/index'),
-            // alwaysShow: true,
-            meta: {
-                title: '花名册',
-                icon: 'svg-droplet',
-                enable: "Y",
-                parent: '实名认证'
+                    import('@/views/roster/index'),
+                // alwaysShow: true,
+                meta: {
+                    title: '花名册',
+                    icon: '../../static/image/roster.png',
+                    enable: "Y",
+                    parent: '实名认证'
+                },
+                // redirect: '/roster/manager',
+                children: [{
+                    path: '/roster/manager',
+                    name: 'manager',
+                    component: () =>
+                        import('@/views/roster/manager'),
+                    meta: { title: '管理人员', icon: '', enable: "Y", parent: '实名认证' }
+                },
+                {
+                    path: '/roster/personnel',
+                    name: 'personnel',
+                    component: () =>
+                        import('@/views/roster/personnel'),
+                    meta: { title: '劳务人员', icon: '', enable: "Y", parent: '实名认证' }
+                },
+                {
+                    path: '/roster/equipmentSpecialist',
+                    name: 'equipmentSpecialist',
+                    component: () =>
+                        import('@/views/roster/equipmentSpecialist'),
+                    meta: { title: '设备专用人员', icon: '', enable: "Y", parent: '实名认证' }
+                },
+                {
+                    path: '/roster/otherStaffs',
+                    name: 'otherStaffs',
+                    component: () =>
+                        import('@/views/roster/otherStaffs'),
+                    meta: { title: '其他服务类人员', icon: '', enable: "Y", parent: '实名认证' }
+                }
+                ]
             },
-            // redirect: '/roster/manager',
-            children: [{
-                path: '/roster/manager',
-                name: 'manager',
-                component: () =>
-                    import('@/views/roster/manager'),
-                meta: { title: '管理人员', icon: '', enable: "Y", parent: '实名认证' }
-            },
+            // 外来人员
             {
-                path: '/roster/personnel',
-                name: 'personnel',
+                path: '/foreignpersonnel/index',
+                name: 'CustomComponent',
+                // alwaysShow: true,
                 component: () =>
-                    import('@/views/roster/personnel'),
-                meta: { title: '劳务人员', icon: '', enable: "Y", parent: '实名认证' }
+                    import('@/views/foreignpersonnel/index'),
+                meta: {
+                    icon: '../../static/image/wlry.png',
+                    AfterIcon: '../../static/image/wlry.png',
+                    title: '外来人员',
+                    enable: "Y",
+                    parent: '实名认证'
+                },
+                children: []
             },
-            {
-                path: '/roster/equipmentSpecialist',
-                name: 'equipmentSpecialist',
-                component: () =>
-                    import('@/views/roster/equipmentSpecialist'),
-                meta: { title: '设备专用人员', icon: '', enable: "Y", parent: '实名认证' }
-            },
-            {
-                path: '/roster/otherStaffs',
-                name: 'otherStaffs',
-                component: () =>
-                    import('@/views/roster/otherStaffs'),
-                meta: { title: '其他服务类人员', icon: '', enable: "Y", parent: '实名认证' }
-            }
-            ]
-        },
-        // 外来人员
-        {
-            path: '/foreignpersonnel/index',
-            name: 'CustomComponent',
-            // alwaysShow: true,
-            component: () =>
-                import('@/views/foreignpersonnel/index'),
-            meta: {
-                icon: 'guide',
-                title: '外来人员',
-                enable: "Y",
-                parent: '实名认证'
-            },
-            children: []
-        },
         ]
     },
     {
@@ -208,7 +210,8 @@ export const constantRouterMap = [
                     import('@/views/wisdomAttendance/comeRecord/index'),
                 meta: {
                     title: '出入记录',
-                    icon: 'svg-droplet',
+                    icon: '../../static/image/attendanceRecord.png',
+                    AfterIcon: '../../static/image/attendanceRecord.png',
                     enable: "Y",
                     parent: '智慧考勤',
                 },
@@ -261,7 +264,8 @@ export const constantRouterMap = [
                 // alwaysShow: true,
                 meta: {
                     title: '出勤记录',
-                    icon: 'svg-droplet',
+                    icon: '../../static/image/accessRecords.png',
+                    AfterIcon: '../../static/image/accessRecords.png',
                     enable: "Y",
                     parent: '智慧考勤'
                 },
@@ -298,7 +302,9 @@ export const constantRouterMap = [
                 path: '/thereport',
                 component: () => import('@/views/wisdomAttendance/thereport/index'),
                 meta: {
-                    icon: 'svg-layers',
+
+                    icon: '../../static/image/attendanceReport.png',
+                    AfterIcon: '../../static/image/attendanceReport.png',
                     title: '考勤报表',
                     enable: "Y",
                     parent: '智慧考勤'
@@ -306,9 +312,14 @@ export const constantRouterMap = [
                 children: [
                     {
                         path: '/menu1',
-                        meta: { icon: 'share', title: '详细信息', enable: "Y", parent: '智慧考勤' },
-                        // alwaysShow: true,
-                        // component: Layout,
+                        meta: {
+                            // icon: '../../static/image/attendanceReport.png',
+                            // AfterIcon: '../../static/image/attendanceReport.png',
+                            title: '详细信息',
+                            enable: "Y",
+                            parent: '智慧考勤'
+                        },
+
                         component: () => import('@/views/nested/menu1/index'),
                         children: [
                             {
@@ -364,35 +375,65 @@ export const constantRouterMap = [
                 path: '/skillDisclose',
                 // name: 'skillDisclose',
                 component: () => import('@/views/trainEducation/skillDisclose/skillDisclose'),
-                meta: { title: '技术交底', icon: '', enable: "Y", parent: '培训教育' },
+                meta: {
+                    title: '技术交底',
+                    icon: '../../static/image/technology.png',
+                    AfterIcon: '../../static/image/technology.png',
+                    enable: "Y",
+                    parent: '培训教育'
+                },
                 children: []
             },
             {
                 path: '/securitySkillDisclose',
                 name: 'securitySkillDisclose',
                 component: () => import('@/views/trainEducation/securitySkillDisclose/securitySkillDisclose'),
-                meta: { title: '安全技术交底', icon: '', enable: "Y", parent: '培训教育' },
+                meta: {
+                    title: '安全技术交底',
+                    icon: '../../static/image/security.png',
+                    AfterIcon: '../../static/image/security.png',
+                    enable: "Y",
+                    parent: '培训教育'
+                },
                 children: []
             },
             {
                 path: '/videoLibrary',
                 name: 'videoLibrary',
                 component: () => import('@/views/trainEducation/videoLibrary/videoLibrary'),
-                meta: { title: '视频库', icon: '', enable: "Y", parent: '培训教育' },
+                meta: {
+                    title: '视频库',
+                    icon: '../../static/image/Video.png',
+                    AfterIcon: '../../static/image/Video.png',
+                    enable: "Y",
+                    parent: '培训教育'
+                },
                 children: []
             },
             {
                 path: '/questionsLibrary',
                 name: 'questionsLibrary',
                 component: () => import('@/views/trainEducation/questionsLibrary/questionsLibrary'),
-                meta: { title: '试题库', icon: '', enable: "Y", parent: '培训教育' },
+                meta: {
+                    title: '试题库',
+                    icon: '../../static/image/testQuestions.png',
+                    AfterIcon: '../../static/image/testQuestions.png',
+                    enable: "Y",
+                    parent: '培训教育'
+                },
                 children: []
             },
             {
                 path: '/resultStatistics',
                 name: 'resultStatistics',
                 component: () => import('@/views/trainEducation/resultStatistics/index'),
-                meta: { title: '成绩统计', icon: '', enable: "Y", parent: '培训教育' },
+                meta: {
+                    title: '成绩统计',
+                    icon: '../../static/image/Achievement.png',
+                    AfterIcon: '../../static/image/Achievement.png',
+                    enable: "Y",
+                    parent: '培训教育'
+                },
                 children: [
                     {
                         path: '/resultAnalysis',
@@ -415,8 +456,10 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 meta: {
                     title: '培训记录',
-                    icon: 'svg-droplet',
-                    enable: "Y", parent: '培训教育'
+                    icon: '../../static/image/peixun1.png',
+                    AfterIcon: '../../static/image/peixun1.png',
+                    enable: "Y",
+                    parent: '培训教育'
                 },
                 children: [
                     {
@@ -454,7 +497,8 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 meta: {
                     title: '人员评价',
-                    icon: 'svg-droplet',
+                    icon: '../../static/image/pingjia.png',
+                    AfterIcon: '../../static/image/pingjia.png',
                     enable: "Y",
                     parent: '诚信管理'
                 },
@@ -477,7 +521,8 @@ export const constantRouterMap = [
                 path: '/blacklist',
                 component: () => import('@/views/integrityManagement/blacklist/blacklist'),
                 meta: {
-                    icon: 'question',
+                    icon: '../../static/image/blacklist.png',
+                    AfterIcon: '../../static/image/blacklist.png',
                     title: '黑名单',
                     enable: "Y",
                     parent: '诚信管理'
@@ -496,15 +541,28 @@ export const constantRouterMap = [
             enable: "Y",
             parent: '人员定位'
         },
-        // redirect: '/realTimePreview',
         children: [
             {
-                path: '/Positioningof',
-                name: 'Positioningof',
-                component: () => import('@/views/positioning/Positioningof/Positioningof'),
-                meta: { title: '劳务公司二组', icon: '', enable: "Y", parent: '人员定位' },
-                children: []
-            }
+                path: '/personnelEvaluate',
+                component: () => import('@/views/integrityManagement/index'),
+                alwaysShow: true,
+                meta: {
+                    title: '劳务公司管理',
+                    icon: '../../static/image/blacklist.png',
+                    AfterIcon: '../../static/image/blacklist.png',
+                    enable: "Y",
+                    parent: '人员定位'
+                },
+                children: [
+                    {
+                        path: '/Positioningof',
+                        name: 'Positioningof',
+                        component: () => import('@/views/positioning/Positioningof/Positioningof'),
+                        meta: { title: '劳务公司二组', icon: '', enable: "Y", parent: '人员定位' },
+                        children: []
+                    }
+                ]
+            },
         ]
     },
     {
@@ -523,7 +581,13 @@ export const constantRouterMap = [
                 path: '/realTimePreview',
                 name: '/realTimePreview',
                 component: () => import('@/views/testTemperature/realTimePreview/realTimePreview'),
-                meta: { title: '实时预览', icon: '', enable: "Y", parent: '人员测温' },
+                meta: { 
+                    title: '实时预览', 
+                    icon: '../../static/image/yulan.png',
+                    AfterIcon: '../../static/image/yulan.png',
+                    enable: "Y", 
+                    parent: '人员测温' 
+                },
                 children: []
             },
             {
@@ -532,7 +596,8 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 meta: {
                     title: '预警事件',
-                    icon: 'svg-droplet',
+                    icon: '../../static/image/yujing.png',
+                    AfterIcon: '../../static/image/yujing.png',
                     enable: "Y",
                     arent: '人员测温'
                 },

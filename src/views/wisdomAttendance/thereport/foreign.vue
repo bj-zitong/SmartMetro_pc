@@ -1,16 +1,22 @@
 <template>
   <div class="foreign">
     <el-container class="left_echarts">
-      <div id="main" style="width: 600px;height: 400px;"></div>
+      <div id="main" style="width: 813px;height: 426px;"></div>
       <div class="boxbtn">
         <el-button
+          v-for="(item,index) in lists"
+          :key="index"
+          :class="[idx == index?'active':'btn']"
+          @click="isActive(index)"
+        >{{item}}</el-button>
+        <!-- <el-button
           class="btn"
           style="background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);color:rgba(255,255,255,1);"
         >出勤天数（工时）/年</el-button>
         <br />
         <el-button class="btn">出勤天数（工时)/季度</el-button>
         <el-button class="btn">出勤天数（工时）/月</el-button>
-        <el-button class="btn">出勤天数（工时）/周</el-button>
+        <el-button class="btn">出勤天数（工时）/周</el-button>-->
       </div>
     </el-container>
     <el-container class="right_echarts">
@@ -31,22 +37,21 @@
         <p>土方</p>
         <p>机修长</p>
         <p>水电工</p>
-        <p>消防安装工</p>
+        <p style="padding-top:4px">消防安装工</p>
         <p>结构工</p>
         <p>筑路工</p>
         <p>电工</p>
       </div>
       <div class="sign_classify_price">
-
         <p>30%</p>
-         <p>30%</p>
-          <p>30%</p>
-           <p>30%</p>
-            <p>30%</p>
-             <p>30%</p>
-              <p>30%</p>
-               <p>30%</p>
-                <p>30%</p>
+        <p>30%</p>
+        <p>30%</p>
+        <p>30%</p>
+        <p>30%</p>
+        <p>30%</p>
+        <p>30%</p>
+        <p>30%</p>
+        <p>30%</p>
       </div>
     </el-container>
     <el-container class="bottom_echarts">
@@ -60,6 +65,13 @@ export default {
   name: "",
   data() {
     return {
+      lists: [
+        "出勤天数（工时）/年",
+        "出勤天数（工时）/季度",
+        "出勤天数（工时）/月",
+        "出勤天数（工时）/周"
+      ],
+      idx: 0,
       charts: "",
       opinion: [],
       opinionData: [
@@ -89,7 +101,7 @@ export default {
           {
             name: "访问来源",
             type: "pie",
-            radius: ["50%", "70%"],
+            radius: ["30%", "50%"],
             center: ["50%", "45%"],
             avoidLabelOverlap: false,
             // label: {
@@ -213,6 +225,10 @@ export default {
           }
         ]
       });
+    },
+    isActive(index) {
+      console.log(index);
+      this.idx = index;
     }
   },
   //调用
@@ -227,22 +243,23 @@ export default {
 <style scoped lang="stylus">
 .foreign {
   width: 100%;
+  margin : 0 25px
 }
 
 .left_echarts {
-  width: 60%;
-  height: 350px;
+  width:60%;
+  height: 422px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
   opacity: 1;
   border-radius: 10px;
-  margin-left: 25px;
+  // margin-left: 25px;
   float: left;
 }
 
 .right_echarts {
   width: 35%;
-  height: 350px;
+  height:422px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
   opacity: 1;
@@ -252,32 +269,25 @@ export default {
 }
 
 .bottom_echarts {
-  width: 96.5%;
+  width: 97.5%;
   height: 350px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
   opacity: 1;
   border-radius: 10px;
   float: left;
-  margin-left: 27px;
+  // margin-left: 27px;
   margin-top: 30px;
 }
 
 .boxbtn {
-  width: 200px;
-  margin-top: 30px;
-  text-align: center;
-  margin-left: 80px;
-
-  .btn {
-    height: 35px;
-    background: rgba(246, 247, 248, 1);
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-    opacity: 1;
-    border-radius: 4px;
-    font-size: 12px;
-    margin-top: 30px;
-  }
+  width: 138px;
+  margin-right: 77px;
+  margin-top :65px;
+  // margin-top: 30px;
+  // text-align: center;
+  // margin-left: 80px;
+  float: left;
 }
 
 .quan {
@@ -293,9 +303,9 @@ export default {
   .sign {
     width: 60px;
     height: 280px;
-   
-     margin-left:111px;
-      margin-top:10px
+    margin-left: 111px;
+    margin-top: 10px;
+
     p {
       width: 25px;
       height: 25px;
@@ -303,29 +313,60 @@ export default {
       border: 4px solid rgba(79, 197, 234, 1);
       opacity: 1;
       border-radius: 13px;
-      margin-top :10px;
-      
+      margin-top: 15px;
     }
   }
 
   .sign_classify {
     width: 200px;
     height: 280px;
-   
-    margin-top :10px;
-    p{
-      margin-top :17px;
+    margin-top: 10px;
+
+    p {
+      margin-top: 21px;
     }
   }
 
   .sign_classify_price {
     width: 80px;
     height: 280px;
-    
-    margin-top :10px;
-    p{
-      margin-top :17px;
+    margin-top: 10px;
+
+    p {
+      margin-top: 21.5px;
     }
   }
+}
+
+.active {
+  font-size: 12px;
+  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
+  opacity: 1;
+  border-radius: 4px;
+  width: 138px;
+  height: 35px;
+  font-size: 12px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+  text-align: center;
+  padding: 0;
+  margin-top: 30px;
+  margin-left: 0;
+}
+
+.btn {
+  width: 138px;
+  height: 35px;
+  padding: 0;
+  margin-top: 30px;
+  font-size: 12px;
+  text-align: center;
+  background: rgba(246, 247, 248, 1);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  opacity: 1;
+  border-radius: 4px;
+  margin-left: 0;
 }
 </style>
