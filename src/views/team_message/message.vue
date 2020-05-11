@@ -593,8 +593,8 @@ export default {
       this.innerVisible = true;
       this.persons = [
         { personId: 1, jobNumber: "1111", personName: "aaaaa" },
-        { personId: 2, jobNumber: "2222", personName: "bbbbb" },
-        { personId: 3, jobNumber: "3333", personName: "ccccc" }
+        { personId: 2, jobNumber: "2222", personName: "b5bbbb" },
+        { personId: 3, jobNumber: "3333", personName: "cc999ccc" }
       ];
        if (this.selectedPersonIds != undefined) {
         for (var i = 0; i < this.selectedPersonIds.length; i++) {
