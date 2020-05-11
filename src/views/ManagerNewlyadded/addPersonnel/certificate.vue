@@ -124,7 +124,7 @@
             <el-form-item style="float:right">
               <!-- <i class="el-icon-circle-plus-outline" @click="addLadder"÷ v-if="index==0"></i> -->
               <el-button type="primary" round style="text-aligin:center" @click="addLadder">添加更多</el-button>
-              <el-button type="primary" round style="text-aligin:center">保存</el-button>
+              <!-- <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button> -->
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -141,12 +141,15 @@
 <script>
 import rules from "@/utils/rules";
 import options from "@/common/options";
+//  field:"payrollRecords",
+import { handleCofirm } from "@/utils/confirm";
 export default {
   data() {
     return {
-      activeName: "second",
+      activeName: "",
       labelPosition: "left",
       options: options,
+      field: "certificate",
       form: {
         productGroup: [
           {
@@ -193,7 +196,7 @@ export default {
         status: [
           { required: true, message: "请选择资格状态", trigger: "blur" }
         ],
-        upload: [{ required: true, message: "请选择附件上传", trigger: "blur" }]
+        upload: [{ required: false, message: "请选择附件上传", trigger: "blur" }]
       },
       //日历选择器
       pickerOptions: {
@@ -231,6 +234,11 @@ export default {
       value2: ""
     };
   },
+  mounted() {
+    if (localStorage.getItem("certificate") != null) {
+      this.form = JSON.parse(localStorage.getItem("certificate"));
+    }
+  },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
@@ -245,10 +253,23 @@ export default {
       console.log(file);
     },
     submitForm(formName) {
-      console.log(formName);
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          handleCofirm("确认保存吗", "warning")
+            .then(res => {
+              localStorage.setItem("certificate", JSON.stringify(this.form));
+              this.$emit("field", this.field);
+              this.$message({
+                type: "success",
+                message: "保存成功!"
+              });
+            })
+            .catch(err => {
+              this.$message({
+                type: "info",
+                message: "已取消保存"
+              });
+            });
         } else {
           console.log("error submit!!");
           return false;

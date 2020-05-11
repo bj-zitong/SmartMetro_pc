@@ -1,46 +1,52 @@
 <template>
   <el-container class="personal">
     <el-main class="main">
-      <el-form :label-position="labelPosition" label-width="160px" :model="form" :rules="rules" ref="form">
+      <el-form
+        :label-position="labelPosition"
+        label-width="160px"
+        :model="contract"
+        :rules="rules"
+        ref="contract"
+      >
         <el-col>
           <el-form-item label="项目编号" prop="projectNo">
-            <el-input v-model="form.projectNo"></el-input>
+            <el-input v-model="contract.projectNo"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
           <el-form-item label="项目名称" prop="projectName">
-            <el-input v-model="form.projectName"></el-input>
+            <el-input v-model="contract.projectName"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
           <el-form-item label="合同编号" prop="contractNo">
-            <el-input v-model="form.contractNo"></el-input>
+            <el-input v-model="contract.contractNo"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
           <el-form-item label="合同期限" prop="contractPeriod">
-            <el-input v-model="form.contractPeriod"></el-input>
+            <el-input v-model="contract.contractPeriod"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
           <el-form-item label="结算方式" prop="settlementMethod">
-            <el-input v-model="form.settlementMethod"></el-input>
+            <el-input v-model="contract.settlementMethod"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
           <el-form-item label="所属企业组织机构代码" prop="enterpriseCode">
-            <el-input v-model="form.enterpriseCode"></el-input>
+            <el-input v-model="contract.enterpriseCode"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
+        <!-- <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
           <el-form-item style="float:right">
-            <el-button type="primary" round style="text-aligin:center">保存</el-button>
+            <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :span="24">
           <el-form-item style="float:right;position:relative;bottom:6px;">
             <el-button type="primary" round class="cancel-style">取消</el-button>
-            <el-button type="primary" round @click="submitForm('form')">提交</el-button>
+            <el-button type="primary" round @click="submitForm('contract')">提交</el-button>
           </el-form-item>
         </el-col>
       </el-form>
@@ -48,15 +54,19 @@
   </el-container>
 </template>
 <script>
+import { handleCofirm } from "@/utils/confirm";
 export default {
   data() {
     return {
       labelPosition: "left",
-      form: {
-        name: "",
-        gender: "",
-        type: [],
-        region: ""
+      field: "contractInformation", // 合同信息字段
+      contract: {
+        projectNo: "",
+        projectName: "",
+        contractNo: "",
+        contractPeriod: "",
+        settlementMethod: "",
+        enterpriseCode: ""
       },
       rules: {
         projectNo: [
@@ -79,16 +89,39 @@ export default {
         ],
         settlementMethod: [
           { required: true, message: "请输入结算方式", trigger: "blur" }
-        ],
-      },
+        ]
+      }
     };
   },
+  mounted() {
+    if (localStorage.getItem("contractInformation") != null) {
+      this.contract = JSON.parse(localStorage.getItem("contractInformation"));
+    }
+  },
   methods: {
-     submitForm(formName) {
-      console.log(formName);
-      this.$refs[formName].validate(valid => {
+    submitForm(contract) {
+     
+      this.$refs[contract].validate(valid => {
         if (valid) {
-          alert("submit!");
+          handleCofirm("确认保存吗", "warning")
+            .then(res => {
+              console.log(JSON.stringify(this.contract));
+              localStorage.setItem(
+                "contractInformation",
+                JSON.stringify(this.contract)
+              );
+              this.$emit("field", this.field);
+              this.$message({
+                type: "success",
+                message: "保存成功!"
+              });
+            })
+            .catch(err => {
+              this.$message({
+                type: "info",
+                message: "已取消保存"
+              });
+            });
         } else {
           console.log("error submit!!");
           return false;

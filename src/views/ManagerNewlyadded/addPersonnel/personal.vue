@@ -132,8 +132,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件编码" prop="CertificateCode" placeholder="请填写证件编码">
-              <el-input v-model="form.CertificateCode"></el-input>
+            <el-form-item label="证件编码" prop="CertificateCode">
+              <el-input v-model="form.CertificateCode" placeholder="请填写证件编码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -170,7 +170,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="居住证办理日期" prop="date">
-              <el-date-picker v-model="value1" type="date" placeholder="请选择日期"></el-date-picker>
+              <el-date-picker v-model="form.date" type="date" placeholder="请选择日期"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -221,11 +221,11 @@
               </el-checkbox-group>
             </el-form-item>
           </el-col>-->
-          <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
+          <!-- <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
             <el-form-item style="float:right">
-              <el-button type="primary" round style="text-aligin:center">保存</el-button>
+              <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-col :span="24">
             <el-form-item style="float:right;position:relative;bottom:6px;">
               <el-button type="primary" round class="cancel-style">取消</el-button>
@@ -240,6 +240,7 @@
 <script>
 import rules from "@/utils/rules";
 import options from "@/common/options";
+import { handleCofirm } from "@/utils/confirm";
 // import { isValidUsername } from '@/utils/validate'
 export default {
   data() {
@@ -250,11 +251,37 @@ export default {
       form: {
         name: "",
         gender: "",
-        type: [],
-        region: ""
+        age: "",
+        nation: "",
+        department: "",
+        Company: "",
+        post: "",
+        emergencycontact: "",
+        emergencyTelephone: "",
+        Currentresidence: "",
+        nativeplace: "",
+        maritalStatus: "",
+        AcademicDegree: "",
+        degree: "",
+        CertificateCode: "",
+        residencePermit: "",
+        date: "",
+        documentType: "",
+        Personneltype: "",
+        PoliticalOutlook: "",
+        UploadImg: "",
+        type: "",
+        region: "",
+        accountType: "",
+        foreman: "",
+        training: "",
+        certificate: "",
+        PhysicalExamination: "",
+        Team: ""
       },
       getImgCodeResults: "",
       keyResults: "",
+      field: "personalPersonal", // 个人基本信息字段
       // 校验规则
       rules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -308,7 +335,7 @@ export default {
         PoliticalOutlook: [
           { required: true, message: "请选择政治面貌", trigger: "blur" }
         ],
-        UploadImg: [{ required: true, message: "请上传照片", trigger: "blur" }],
+        // UploadImg: [{ required: true, message: "请上传照片", trigger: "blur" }],
         type: [{ required: true, message: "请选择人员类型", trigger: "blur" }],
         region: [
           { required: true, message: "请选择人员类型", trigger: "blur" }
@@ -364,6 +391,11 @@ export default {
       value2: ""
     };
   },
+  mounted() {
+    if (localStorage.getItem("data") != null) {
+      this.form = JSON.parse(localStorage.getItem("data"));
+    }
+  },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
@@ -378,16 +410,31 @@ export default {
       console.log(file);
     },
     submitForm(formName) {
-      console.log(formName);
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          handleCofirm("确认保存吗", "warning")
+            .then(res => {
+              localStorage.setItem("data", JSON.stringify(this.form));
+              this.$emit("field", this.field);
+              this.$message({
+                type: "success",
+                message: "保存成功!"
+              });
+            })
+            .catch(err => {
+              this.$message({
+                type: "info",
+                message: "已取消保存"
+              });
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
+    //保存
+    preservationClick() {},
     handleChange() {},
     handleButton() {}
   }

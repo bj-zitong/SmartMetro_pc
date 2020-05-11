@@ -13,7 +13,7 @@
         </el-form-item>
         <el-col :span="24" style="float:right;height:40px;">
           <el-form-item style="float:right">
-            <el-button type="primary" round style="text-aligin:center">保存</el-button>
+            <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button>
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -27,20 +27,25 @@
   </el-container>
 </template>
 <script>
+import { handleCofirm } from "@/utils/confirm";
 export default {
   data() {
     return {
       labelPosition: "left",
+      field: "evaluationRecord",
       form: {
-        PayrollNo: ""
+        desc: ""
       },
       value1: "",
       rules: {
-        desc: [
-          { required: true, message: "请输入评价记录", trigger: "blur" }
-        ]
+        desc: [{ required: true, message: "请输入评价记录", trigger: "blur" }]
       }
     };
+  },
+  mounted() {
+    if (localStorage.getItem("History") != null) {
+      this.form = JSON.parse(localStorage.getItem("History"));
+    }
   },
   methods: {
     submitForm(formName) {
@@ -53,6 +58,23 @@ export default {
           return false;
         }
       });
+    },
+    preservationClick() {
+      handleCofirm("确认保存吗", "warning")
+        .then(res => {
+          localStorage.setItem("History", JSON.stringify(this.form));
+          this.$emit("field", this.field);
+          this.$message({
+            type: "success",
+            message: "保存成功!"
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消保存"
+          });
+        });
     }
   }
 };
