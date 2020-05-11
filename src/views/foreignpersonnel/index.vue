@@ -10,7 +10,7 @@
             <el-input v-model="formInline.searchNum" placeholder="来访单位"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleUserList">搜索</el-button>
+            <el-button type="primary" @click="handleUserList" style="margin-left:30px;">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-main>
