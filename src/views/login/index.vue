@@ -35,15 +35,14 @@
               <img src="../../../static/image/login_zhengkai.png" class="yonghu"/>
             </span>
           </el-form-item>
-         
-          <code1></code1>
+          <code1 :message="istrue"></code1>
           <el-button
             type="primary"
             @click="onLogin('loginForm')"
             :loading="loading"
           >{{$t('login.login')}}</el-button>
           <div class="register">
-            <el-button type="text" @click="updatePassword()">忘记密码</el-button>
+            <el-button type="text" @click="updatePassword()" class="updatePassword">忘记密码</el-button>
             <el-button type="text" class="free_registration" @click="register()">免费注册</el-button>
           </div>
         </el-form>
@@ -90,6 +89,7 @@ export default {
         username: "admin",
         pwd: "123456"
       },
+      istrue:0,
       remember: false,
       loading: false,
       rules: {
@@ -124,7 +124,8 @@ export default {
     },
     // 登录操作
     onLogin() {
-
+      this.istrue++
+      // return
       this.$refs.pwd.$el.getElementsByTagName("input")[0].blur();
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -241,15 +242,20 @@ export default {
         width: 100px;
         margin-top: 45px;
         text-align: center;
-        margin-left: 140px;
+        margin-left: 181px;
       }
 
       .register {
         margin-left: 44px;
+       
+        .updatePassword{
+            font-size:12px;
+            color:rgba(192,192,192,1);
+        }
       }
-
       .free_registration {
-        margin-left: 220px;
+         font-size:12px;
+        margin-left: 272px;
       }
 
       .r_login {
