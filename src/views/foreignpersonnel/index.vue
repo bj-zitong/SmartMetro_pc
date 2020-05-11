@@ -17,15 +17,9 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="dialogFormVisible = true" class="addStyle">
-          <span class="addStyle-title">新增</span>
-        </el-button>
-        <el-button @click="deleteAll" class="deleteStyle">
-          <span class="deleteStyle-title">删除</span>
-        </el-button>
-        <el-button @click="poiExcel" class="exportStyle">
-          <span class="poiExcel-title">导出</span>
-        </el-button>
+        <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
+        <el-button @click="deleteAll" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
+        <el-button @click="poiExcel" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -46,8 +40,8 @@
             <el-table-column prop="visitTime" label="来访时间" width="200"></el-table-column>
             <el-table-column label="操作" width="300" fixed="right">
               <template slot-scope="scope">
-                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
+                <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
+                <el-button size="mini" @click="handleDelete(scope.row)" class="T-R-B-Grey">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -138,8 +132,14 @@
               ></el-date-picker>
             </el-form-item>
             <div class="dialog-footer">
-              <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
-              <el-button type="primary" @click="addUser('form')" style="border-radius:18px">确 定</el-button>
+              <el-button @click="dialogFormVisible = false" class="F-Grey" round>取 消</el-button>
+              <el-button
+                type="primary"
+                @click="addUser('form')"
+                style="margin-left:60px;"
+                class="F-Blue"
+                round
+              >确 定</el-button>
             </div>
           </el-form>
         </div>
@@ -247,71 +247,74 @@ export default {
       });
       this.form.profession = obj.id;
     },
-    //取消
-    concel() {
-      this.dialogFormVisible = false;
-    },
     addUser(form) {
       //获得所选的form表单
-      var form = this.$refs[form].model;
-      if (form.id == null) {
-        var idNumState = this.IdentityCode(form.idNum);
-        if (idNumState == false) {
-          this.$message("身份证号格式不正确！");
-          return;
-        }
-        var params = JSON.stringify({
-          name: form.userName,
-          phone: form.phone,
-          idNum: form.idNum,
-          company: form.company,
-          intervieweeDepartmentId: form.profession,
-          busNum: form.carNum,
-          interviewee: form.interviewee,
-          visitReason: form.intervieweeReason,
-          visitTime: form.intervieweeDate
-        });
-        var url =
-          "/smart/worker/roster/" +
-          sessionStorage.getItem("userId") +
-          "/outlander";
-        this.http.post(url, params).then(res => {
-          if (res.code == 200) {
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          var form = this.$refs["form"].model;
+          if (form.id == null) {
+            var idNumState = this.IdentityCode(form.idNum);
+            console.log(idNumState);
+            if (!idNumState) {
+              this.$message("身份证号格式不正确！");
+              return;
+            }
+            var params = JSON.stringify({
+              name: form.userName,
+              phone: form.phone,
+              idNum: form.idNum,
+              company: form.company,
+              intervieweeDepartmentId: form.profession,
+              busNum: form.carNum,
+              interviewee: form.interviewee,
+              visitReason: form.intervieweeReason,
+              visitTime: form.intervieweeDate
+            });
+            var url =
+              "/smart/worker/roster/" +
+              sessionStorage.getItem("userId") +
+              "/outlander";
+            this.http.post(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+              }
+            });
+            this.dialogFormVisible = false;
+          } else {
+            if (form.idNum != undefined) {
+              var idNumState = this.IdentityCode(form.idNum);
+              if (idNumState == false) {
+                this.$message("身份证号格式不正确！");
+                return;
+              }
+            }
+            var params = JSON.stringify({
+              name: form.userName,
+              phone: form.phone,
+              idNum: form.idNum,
+              company: this.form.company,
+              intervieweeDepartmentId: this.form.profession,
+              busNum: this.form.carNum,
+              interviewee: this.form.interviewee,
+              visitReason: this.form.intervieweeReason,
+              visitTime: this.form.intervieweeDate
+            });
+            var url =
+              "/smart/worker/roster/" +
+              sessionStorage.getItem("userId") +
+              "/outlander/" +
+              form.id;
+            this.http.put(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+              }
+            });
             this.dialogFormVisible = false;
           }
-        });
-        this.dialogFormVisible = false;
-      } else {
-        if (form.idNum != undefined) {
-          var idNumState = this.IdentityCode(form.idNum);
-          if (idNumState == false) {
-            this.$message("身份证号格式不正确！");
-            return;
-          }
+        } else {
+          return false;
         }
-        var params = JSON.stringify({
-          name: form.userName,
-          phone: form.phone,
-          idNum: form.idNum,
-          company: this.form.company,
-          intervieweeDepartmentId: this.form.profession,
-          busNum: this.form.carNum,
-          interviewee: this.form.interviewee,
-          visitReason: this.form.intervieweeReason,
-          visitTime: this.form.intervieweeDate
-        });
-        var url =
-          "/smart/worker/roster/" +
-          sessionStorage.getItem("userId") +
-          "/outlander/" +
-          form.id;
-        this.http.put(url, params).then(res => {
-          if (res.code == 200) {
-            this.dialogFormVisible = false;
-          }
-        });
-        this.dialogFormVisible = false;
-      }
+      });
     },
     //身份证号校验
     IdentityCode(code) {
@@ -397,7 +400,6 @@ export default {
       var uname = this.formInline.searchNum;
       var unum = this.formInline.searchUname;
       //   // 获得当前用户的id
-      // var  uid = sessionStorage.getItem('uid')
       var data = JSON.stringify({
         pageSize: this.pageSize,
         page: this.page,
@@ -587,9 +589,6 @@ export default {
 </script>
 <style scoped lang="stylus">
 .container {
-  background-color: rgba(246, 247, 248, 1);
-  opacity: 1;
-
   .el-header, .el-footer {
     background-color: #B3C0D1;
     color: #333;
@@ -642,130 +641,6 @@ export default {
     .table-head {
       height: 550px;
       padding: 30px;
-
-      .addStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(54, 130, 243, 1) 0%,
-          rgba(0, 88, 162, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-        text-align: center;
-      }
-
-      .addStyle-title {
-        color: #ffffff;
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        // line-height: 19px;
-        color: rgba(255, 255, 255, 1);
-        opacity: 1;
-      }
-
-      .deleteStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(225, 225, 225, 1) 0%,
-          rgba(190, 190, 190, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-      }
-
-      .deleteStyle-title {
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(99, 99, 99, 1);
-        opacity: 1;
-      }
-
-      .exportStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(58, 222, 214, 1) 0%,
-          rgba(0, 150, 143, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-      }
-
-      .poiExcel-title {
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(255, 255, 255, 1);
-        opacity: 1;
-      }
-
-      .addStyle-title {
-        color: #ffffff;
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(255, 255, 255, 1);
-        opacity: 1;
-      }
-
-      .deleteStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(225, 225, 225, 1) 0%,
-          rgba(190, 190, 190, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-      }
-
-      .deleteStyle-title {
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(99, 99, 99, 1);
-        opacity: 1;
-      }
-
-      .exportStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(58, 222, 214, 1) 0%,
-          rgba(0, 150, 143, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-      }
-
-      .poiExcel-title {
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(255, 255, 255, 1);
-        opacity: 1;
-      }
     }
 
     .table-content {
@@ -776,14 +651,6 @@ export default {
       text-align: center;
       margin-top: 30px;
     }
-  }
-
-  .cancel-style {
-    border-radius: 18px;
-    width: 80px;
-    height: 35px;
-    background: linear-gradient(180deg, rgba(225, 225, 225, 1) 0%, rgba(190, 190, 190, 1) 100%);
-    opacity: 1;
   }
 }
 </style>

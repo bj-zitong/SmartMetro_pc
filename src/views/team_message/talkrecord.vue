@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div>
     <div class="main-content">
       <el-main class="button-head">
         <el-button
-          type="info"
+          class="T-H-B-Grey"
           @click="deleteAll"
-          style="margin-top:30px;margin-left:60px;color:black;font-wight:bold"
+          style="margin-left:30px;color:black;font-wight:bold"
         >删除</el-button>
         <div class="table-content">
           <el-table
@@ -25,11 +25,9 @@
             <el-table-column prop="meetingContent" label="班前讲话内容" width="100"></el-table-column>
             <el-table-column prop="workerInfo" label="参加活动作业人员名单" width="200"></el-table-column>
             <el-table-column label="视频附件" width="100" fixed="right">
-              <!--accessoryPath-->
               <template slot-scope="scope">
                 <!-- <input type="file">tt</input> -->
                 <el-upload
-                  class="upload-demo"
                   :action="uploadUrl"
                   :on-progress="handleChange(scope.row)"
                   :file-list="fileList"
@@ -51,8 +49,8 @@
             </el-table-column>
             <el-table-column label="操作" width="200" fixed="right">
               <template slot-scope="scope">
-                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
+                <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
+                <el-button size="mini" @click="handleDelete(scope.row)" class="T-R-B-Grey">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -77,60 +75,55 @@
         ></el-pagination>
       </el-main>
     </div>
-    <!--新增讲话-->
+    <!--编辑讲话-->
     <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true">
-      <div>
-        <el-form
-          method="post"
-          enctype="multipart/form-data"
-          ref="formSpeech"
-          :rules="formSpeechRules"
-          :model="formSpeech"
-          action="http://192.168.1.164:8001/auth/user/baseUser"
-        >
-          <el-form-item prop="id">
-            <el-input v-model="formSpeech.id" type="text" hidden></el-input>
-          </el-form-item>
-          <el-form-item prop="jobsite" label="作业部位:">
-            <el-input v-model="formSpeech.jobsite" placeholder="作业部位"></el-input>
-          </el-form-item>
-          <el-form-item prop="jobNum" label="作业人数：">
-            <el-input v-model="formSpeech.jobNum" placeholder="作业人数"></el-input>
-          </el-form-item>
-          <el-form-item label="安全防护用品配套使用：" prop="protective">
-            <el-select v-model="formSpeech.protective" placeholder="请选择" @change="selectProtective">
-              <el-option
-                v-for="item in protectives"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="作业内容:" prop="speachContent">
-            <el-input
-              type="textarea"
-              :rows="6"
-              placeholder="作业内容"
-              v-model="formSpeech.speachContent"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="班前讲话内容:" prop="classContent">
-            <el-input type="textarea" :rows="6" placeholder="内容" v-model="formSpeech.classContent"></el-input>
-          </el-form-item>
-          <el-form-item label="参加活动人员名单:" prop="classContent">
-            <el-button type="primary" @click="selectPerson()">点击选择</el-button>
-          </el-form-item>
-          <div class="dialog-footer">
-            <el-button @click="outerVisible = false" class="cancel-style">取 消</el-button>
-            <el-button
-              type="primary"
-              @click="editFormSpeech('formSpeech')"
-              style="border-radius:18px"
-            >确 定</el-button>
-          </div>
-        </el-form>
-      </div>
+      <el-form
+        method="post"
+        enctype="multipart/form-data"
+        ref="formSpeech"
+        :rules="formSpeechRules"
+        :model="formSpeech"
+        action="http://192.168.1.164:8001/auth/user/baseUser"
+      >
+        <el-form-item prop="id">
+          <el-input v-model="formSpeech.id" type="text" hidden></el-input>
+        </el-form-item>
+        <el-form-item prop="jobsite" label="作业部位:">
+          <el-input v-model="formSpeech.jobsite" placeholder="作业部位"></el-input>
+        </el-form-item>
+        <el-form-item prop="jobNum" label="作业人数：">
+          <el-input v-model="formSpeech.jobNum" placeholder="作业人数"></el-input>
+        </el-form-item>
+        <el-form-item label="安全防护用品配套使用：" prop="protective">
+          <el-select v-model="formSpeech.protective" placeholder="请选择" @change="selectProtective">
+            <el-option
+              v-for="item in protectives"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="作业内容:" prop="speachContent">
+          <el-input type="textarea" :rows="6" placeholder="作业内容" v-model="formSpeech.speachContent"></el-input>
+        </el-form-item>
+        <el-form-item label="班前讲话内容:" prop="classContent">
+          <el-input type="textarea" :rows="6" placeholder="内容" v-model="formSpeech.classContent"></el-input>
+        </el-form-item>
+        <el-form-item label="参加活动人员名单:">
+          <el-button type="primary" @click="selectPerson()">点击选择</el-button>
+        </el-form-item>
+        <div class="dialog-footer" style="text-align:center;">
+          <el-button @click="outerVisible = false" class="F-Grey" round>取 消</el-button>
+          <el-button
+            type="primary"
+            @click="editFormSpeech('formSpeech')"
+            class="F-Blue"
+            round
+            style="margin-left:60px"
+          >确 定</el-button>
+        </div>
+      </el-form>
       <el-dialog
         width="25%"
         title="选择人员"
@@ -151,8 +144,14 @@
           <el-table-column prop="personName" label="姓名" width="180"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="innerVisible = false">取 消</el-button>
-          <el-button type="primary" @click="innerVisible= false" style="border-radius:18px">确 定</el-button>
+          <el-button @click="innerVisible = false" class="F-Grey" round>取 消</el-button>
+          <el-button
+            type="primary"
+            @click="innerVisible= false"
+            class="F-Blue"
+            round
+            style="margin-left:60px"
+          >确 定</el-button>
         </div>
       </el-dialog>
     </el-dialog>
@@ -357,18 +356,6 @@ export default {
       var ids = [];
       ids.push(uid);
       var data = JSON.stringify(ids);
-      // var url =
-      //   "/smart/worker/labour/" +
-      //   sessionStorage.getItem("userId") +
-      //   "/team/meeting";
-      // this.http.delete(url, data).then(res => {
-      //   if (res.code == 200) {
-      //     var total = res.total;
-      //     var rows = res.rows;
-      //     this.tableData = rows;
-      //     this.total = total;
-      //   }
-      // });
       handleCofirm("确认删除", "warning")
         .then(res => {
           var data = JSON.stringify(ids);
@@ -454,27 +441,30 @@ export default {
     },
     //修改讲话
     editFormSpeech(formSpeech) {
-      var form = this.$refs["formSpeech"].model;
-      var datas = new FormData();
-      datas.append("homeworkPart", form.jobsite);
-      datas.append("homeworkNumber", form.jobNum);
-      datas.append("isSafety", form.protective);
-      datas.append("jobContent", form.speachContent);
-      datas.append("meetingContent", form.classContent);
-      datas.append("workerInfoIds", this.checkIds);
-      datas.append("teamId", form.id);
-      var url =
-        "/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/team/meeting";
-      this.http.put(url, datas).then(res => {
-        if (res.code == 200) {
-          this.outerVisible = false;
+      this.$refs[formSpeech].validate(valid => {
+        if (valid) {
+          var form = this.$refs["formSpeech"].model;
+          var datas = new FormData();
+          datas.append("homeworkPart", form.jobsite);
+          datas.append("homeworkNumber", form.jobNum);
+          datas.append("isSafety", form.protective);
+          datas.append("jobContent", form.speachContent);
+          datas.append("meetingContent", form.classContent);
+          datas.append("workerInfoIds", this.checkIds);
+          datas.append("teamId", form.id);
+          var url =
+            "/smart/worker/labour/" +
+            sessionStorage.getItem("userId") +
+            "/team/meeting";
+          this.http.put(url, datas).then(res => {
+            if (res.code == 200) {
+              this.outerVisible = false;
+            }
+          });
+        } else {
+          return false;
         }
       });
-    },
-    cencal() {
-      this.dialogFormVisible = false;
     }
   }
 };
@@ -525,13 +515,11 @@ export default {
 }
 
 .main-content {
-  margin-top: 36px;
+  margin-top: 10px;
   margin-left: 30px;
   margin-right: 30px;
 
   .button-head {
-    // padding-left: 30px;
-    // padding-top: 30px;
     padding: 30px;
     height: 600px;
   }

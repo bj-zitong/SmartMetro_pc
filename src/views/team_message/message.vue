@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="container-content">
-      <div style="margin-top:30px;margin-left:30px;height:60px;width:100%;">
+      <div style="margin-left:30px;height:60px;width:100%;">
         <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
         <el-button @click="deleteAll" class="T-H-B-Grey" style="margin-left:30px">删除</el-button>
       </div>
