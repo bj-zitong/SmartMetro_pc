@@ -18,7 +18,7 @@
       <div style="margin-top:30px;margin-left:30px;height:60px;width:100%;">
         <!-- <el-button @click="dialogFormVisible = true" class="addStyle">
           <span class="addStyle-title">新增</span>
-        </el-button>  -->
+        </el-button>-->
         <el-button type="info" @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
         <el-button type="info" @click="deleteAll" class="T-H-B-Grey">删除</el-button>
       </div>
@@ -186,11 +186,17 @@
           </div>
         </el-form>
       </div>
-      <el-dialog width="25%" title="选择人员" :visible.sync="innerVisible" append-to-body center="true">
+      <el-dialog
+        width="25%"
+        title="选择人员"
+        :visible.sync="innerVisible"
+        append-to-body
+        :center="true"
+      >
         <el-table
           :data="persons"
           style="width: 100%"
-          ref="multipleTable"
+          ref="multipleTable2"
           @selection-change="changeFunPerson"
           :header-cell-style="headClass"
           stripe
@@ -301,6 +307,7 @@ export default {
         { id: "3", name: "tttttt" }
       ]
     };
+    selectedPersonIds: [];
   },
   created: function() {
     this.getTalks();
@@ -375,6 +382,7 @@ export default {
     //获得表格前面选中的id值
     changeFun() {
       var ids = new Array();
+      console.log(this.$refs.multipleTable);
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
@@ -386,13 +394,16 @@ export default {
       //  this.multipleSelection = val;
     },
     changeFunPerson() {
-      var ids = new Array();
-      var arrays = this.$refs.multipleTable.selection;
+
+      var ids =[];
+      var arrays = this.$refs.multipleTable2.selection;
+      console.log(this.$refs.multipleTable2)
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].personId;
-        ids.push(id);
+        ids.push(arrays[i].personId);
       }
+      console.log(ids)
+      this.selectedPersonIds = ids;
       return ids;
       // console.log("选中的pids" + ids);
     },
@@ -554,13 +565,28 @@ export default {
     },
     //评价
     evaluate() {
-      this.dialogVisible = false;
-      // console.log(this.evaluated);
+      //选中等级
+      var evaluated = this.evaluated;
+      var id = this.id;
+      ///smart/worker/labour/{userId}/team
+      var url =
+        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
+      var params = JSON.stringify({ id: id, evaluate: evaluated });
+      this.http.put(url, params).then(res => {
+        if (res.code == 200) {
+          this.dialogVisible = false;
+          this.getTalks();
+        }
+      });
+      console.log(this.evaluated);
     },
+    //添加评价
     addEvalte(row) {
       var uid = row.id;
-      // console.log(uid);
+      console.log(uid);
       this.dialogVisible = true;
+      //设置全局变量
+      this.id = uid;
     },
     //选择人员赋值
     selectPerson() {
@@ -570,22 +596,32 @@ export default {
         { personId: 2, jobNumber: "2222", personName: "bbbbb" },
         { personId: 3, jobNumber: "3333", personName: "ccccc" }
       ];
+       if (this.selectedPersonIds != undefined) {
+        for (var i = 0; i < this.selectedPersonIds.length; i++) {
+          console.log(this.persons[i]);
+          // this.$refs.multipleTable2.toggleRowSelection(
+          //   this.persons[i],
+          //   true
+          // );
+        }
+      }
     },
     //讲话
     addSpeech(row) {
       this.outerVisible = true;
+      this.id = row.id;
     },
     addFormSpeech(formSpeech) {
       var form = this.$refs["formSpeech"].model;
       var datas = new FormData();
       var pids = this.changeFunPerson();
-      datas.append("userId", 1);
       datas.append("homeworkPart", form.jobsite);
       datas.append("homeworkNumber", form.jobNum);
       datas.append("isSafety", form.protective);
       datas.append("jobContent", form.speachContent);
       datas.append("meetingContent", form.classContent);
       datas.append("workerInfoIds", pids);
+
       var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +

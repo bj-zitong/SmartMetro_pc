@@ -74,7 +74,6 @@
           @prev-click="pre"
           @next-click="next"
           @current-change="handleCurrentChange"
-          hide-on-single-page
           :total="total"
         ></el-pagination>
       </el-main>
@@ -163,7 +162,7 @@ export default {
       tableData: [],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
-      total: 100, //总条数
+      total:0, //总条数
       ids: null, //选中的id
       outerVisible: false, //新增讲话
       innerVisible: false, //二层
@@ -286,6 +285,8 @@ export default {
         }
       ];
       this.tableData = result;
+      this.total=result.length;
+      console.log(result.length);
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -538,8 +539,9 @@ export default {
   margin-right: 30px;
 
   .button-head {
-    padding-left: 30px;
-    padding-top: 30px;
+    // padding-left: 30px;
+    // padding-top: 30px;
+    padding 30px;
     height: 600px;
   }
 

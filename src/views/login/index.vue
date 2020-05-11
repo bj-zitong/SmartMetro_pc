@@ -35,7 +35,7 @@
               <img src="../../../static/image/login_zhengkai.png" class="yonghu"/>
             </span>
           </el-form-item>
-         
+
           <code1></code1>
           <el-button
             type="primary"
@@ -59,8 +59,6 @@
 // import { isValidUsername } from '@/utils/validate'
 import { saveToLocal, loadFromLocal } from "@/common/local-storage";
 import { mapActions } from "vuex";
-
-/* eslint-disable*/
 import code1 from "./securityCode/code";
 export default {
   components: {
@@ -301,16 +299,16 @@ export default {
       top: 0;
       right: 54px;
       color: #889aa4;
-      
+
       &_user {
         font-size: 20px;
-       
+
       }
 
       &_password {
         right: 54px;
         font-size: 16px;
-        
+
       }
       .yonghu{
         width :20px;
