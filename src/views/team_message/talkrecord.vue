@@ -27,30 +27,29 @@
             <el-table-column label="视频附件" width="100" fixed="right">
               <!--accessoryPath-->
               <template slot-scope="scope">
-                  <!-- <input type="file">tt</input> -->
+                <!-- <input type="file">tt</input> -->
                 <el-upload
                   class="upload-demo"
-                  action="http://localhost:8080/smart/worker/labour/1/team/1/meeting"
+                  :action="uploadUrl"
                   :on-progress="handleChange(scope.row)"
                   :file-list="fileList"
-                  accept='.mp4,.qlv,.qsv,.ogg,.flv,.avi,.wmv,.rmvb'
+                  accept=".mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb"
                   multiple
                   v-model="fileList"
-                  >
-                  <img
-                  src="../../../static/image/shangchuan.png"
-                  style="width:26px;height:26px">
+                  @click="uploadVideo(scope.row)"
+                >
+                  <img src="../../../static/image/shangchuan.png" style="width:26px;height:26px" />
                 </el-upload>
-                  <!--
-                    <i class="el-icon-upload" style="width:26px;height:26px"></i> -->
-                 <!-- <img
+                <!--
+                <i class="el-icon-upload" style="width:26px;height:26px"></i>-->
+                <!-- <img
                   src="../../../static/image/shangchuan.png"
                   style="width:26px;height:26px"
                   @click="uploadVideo(scope.row)"
-                /> -->
-             </template>
+                />-->
+              </template>
             </el-table-column>
-            <el-table-column label="操作" width="200"  fixed="right">
+            <el-table-column label="操作" width="200" fixed="right">
               <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
                 <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
@@ -78,7 +77,7 @@
         ></el-pagination>
       </el-main>
     </div>
-     <!--新增讲话-->
+    <!--新增讲话-->
     <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true">
       <div>
         <el-form
@@ -89,6 +88,9 @@
           :model="formSpeech"
           action="http://192.168.1.164:8001/auth/user/baseUser"
         >
+          <el-form-item prop="id">
+            <el-input v-model="formSpeech.id" type="text" hidden></el-input>
+          </el-form-item>
           <el-form-item prop="jobsite" label="作业部位:">
             <el-input v-model="formSpeech.jobsite" placeholder="作业部位"></el-input>
           </el-form-item>
@@ -119,7 +121,6 @@
           <el-form-item label="参加活动人员名单:" prop="classContent">
             <el-button type="primary" @click="selectPerson()">点击选择</el-button>
           </el-form-item>
-          <el-input v-if="checkedCities.length>0" v-model="checkedCities" placeholder></el-input>
           <div class="dialog-footer">
             <el-button @click="outerVisible = false" class="cancel-style">取 消</el-button>
             <el-button
@@ -130,17 +131,25 @@
           </div>
         </el-form>
       </div>
-      <el-dialog width="25%" title="选择人员" :visible.sync="innerVisible" append-to-body>
-        <el-input v-model="checkedCities" placeholder></el-input>
-        <el-checkbox
-          :indeterminate="isIndeterminate"
-          v-model="checkAll"
-          @change="handleCheckAllChange"
-        >全选</el-checkbox>
-        <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-          <el-checkbox v-for="city in cities" :label="city.name" :key="city.id">{{city.name}}</el-checkbox>
-        </el-checkbox-group>
+      <el-dialog
+        width="25%"
+        title="选择人员"
+        :visible.sync="innerVisible"
+        append-to-body
+        :center="true"
+      >
+        <el-table
+          :data="persons"
+          style="width: 100%"
+          ref="multipleTable2"
+          @selection-change="changeFunPerson"
+          :header-cell-style="headClass"
+          stripe
+        >
+          <el-table-column type="selection" prop="personId" @selection-change="changeFunPerson"></el-table-column>
+          <el-table-column prop="jobNumber" label="工号" width="180"></el-table-column>
+          <el-table-column prop="personName" label="姓名" width="180"></el-table-column>
+        </el-table>
         <div slot="footer" class="dialog-footer">
           <el-button @click="innerVisible = false">取 消</el-button>
           <el-button type="primary" @click="innerVisible= false" style="border-radius:18px">确 定</el-button>
@@ -154,19 +163,21 @@ import { handleCofirm } from "@/utils/confirm";
 export default {
   data() {
     return {
-      updateForm:{
-          file:''
+      id: null, //当前选中的id
+      updateForm: {
+        file: ""
       },
       token: null, // token
       // 动态数据
       tableData: [],
+      persons: [],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
-      total:0, //总条数
+      total: 0, //总条数
       ids: null, //选中的id
       outerVisible: false, //新增讲话
       innerVisible: false, //二层
-      fileList:[],//上传
+      fileList: [], //上传
       formSpeech: {
         //班前讲话
         jobsite: "",
@@ -175,7 +186,7 @@ export default {
         speachContent: "",
         classContent: "",
         numbers: null,
-        id:null
+        id: null
       },
       formSpeechRules: {
         jobsite: [
@@ -192,30 +203,27 @@ export default {
           { required: true, message: "请输入班前讲话内容", trigger: "blur" }
         ]
       },
-       protectives: [
+      protectives: [
         { id: "", name: "请选择" },
         { id: "1", name: "xxxxxx" },
         { id: "2", name: "kkkkkk" },
         { id: "3", name: "tttttt" }
       ],
-      checkPerson: null, //选中的人员
-      checkAll: false,
-      cityOptions:null,
-      checkedCities: [],
-      cities:null,
-      isIndeterminate: true,
-      checkIds:[]
+      selectedPersonIds: [],
+      uploadUrl: ""
     };
   },
   created: function() {
     this.getTalks();
   },
   methods: {
-      headClass() {
+    headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
-     handleChange(row,event,file,fileList) {
-      },
+    handleChange(row) {
+      // console.log(row.id);
+    },
+    handlePreview(row, file) {},
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
       this.pageSize = size;
@@ -225,17 +233,17 @@ export default {
     handleCurrentChange: function(page) {
       this.page = page;
       this.getTalks();
-      console.log(this.page); //点击第几页
+      // console.log(this.page); //点击第几页
     },
     pre(cpage) {
       this.page = cpage;
-      console.log("cpage" + cpage);
+      // console.log("cpage" + cpage);
       // this.getTalks()
     },
     //下一页
     next(cpage) {
       this.page = cpage;
-      console.log("下一页" + cpage);
+      // console.log("下一页" + cpage);
       // this.getTalks()
     },
     getTalks() {
@@ -285,8 +293,7 @@ export default {
         }
       ];
       this.tableData = result;
-      this.total=result.length;
-      console.log(result.length);
+      this.total = result.length;
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -299,13 +306,23 @@ export default {
         // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      // console.log("选中的ids"+ids);
       //  this.multipleSelection = val;
+    },
+    changeFunPerson() {
+      var ids = [];
+      var arrays = this.$refs.multipleTable2.selection;
+      for (var i = 0; i < arrays.length; i++) {
+        // 获得id
+        ids.push(arrays[i].personId);
+      }
+
+      this.selectedPersonIds = ids;
+      return ids;
+      // console.log("选中的pids" + ids);
     },
     // 批量删除
     deleteAll() {
       var ids = this.changeFun();
-      console.log(ids);
       if (ids.length <= 0) {
         this.$message("请选择删除的数据！");
         return;
@@ -337,7 +354,6 @@ export default {
     handleDelete(row) {
       // 删除用户id
       var uid = row.id;
-      console.log(uid);
       var ids = [];
       ids.push(uid);
       var data = JSON.stringify(ids);
@@ -353,7 +369,7 @@ export default {
       //     this.total = total;
       //   }
       // });
-       handleCofirm("确认删除", "warning")
+      handleCofirm("确认删除", "warning")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
@@ -378,9 +394,15 @@ export default {
     },
     uploadVideo(row) {
       var uid = row.id;
-      console.log(uid);
+      this.id = uid;
+      this.uploadUrl =
+        "/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/team/" +
+        uid +
+        "/meeting/upload";
     },
-     //选择下拉安全用品
+    //选择下拉安全用品
     selectProtective(vid) {
       let obj = {};
       obj = this.protectives.find(item => {
@@ -388,43 +410,59 @@ export default {
       });
       this.formSpeech.protective = obj.id;
     },
-    selectPerson(){
+    selectPerson() {
       this.innerVisible = true;
-      this.cityOptions=[{id:1,name:'1111'},{id:2,name:'2222'},{id:3,name:'3333'}];
-      this.cities=this.cityOptions;
+      this.persons = [
+        { personId: 1, jobNumber: "1111", personName: "aaaaa" },
+        { personId: 2, jobNumber: "2222", personName: "b5bbbb" },
+        { personId: 3, jobNumber: "3333", personName: "cc999ccc" }
+      ];
+      if (this.selectedPersonIds != undefined) {
+        for (var i = 0; i < this.selectedPersonIds.length; i++) {
+          if (this.persons[i].containSpace == 1) {
+            //这是默认选中上的
+            this.$refs.multipleTable2.toggleRowSelection(this.persons[i], true);
+          }
+        }
+      }
     },
     //编辑讲话
     handleEdit(row) {
       var uid = row.id;
-      console.log(uid);
       //获得详情
-      var url="/smart/worker/labour/"+sessionStorage.getItem('userId')+"/team/meeting/"+uid+"/detail";
-      var datas=null;
+      var url =
+        "/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/team/meeting/" +
+        uid +
+        "/detail";
+      var datas = null;
       this.http.get(url, datas).then(res => {
         if (res.code == 200) {
           //回显
-          var result=res.data;
-          this.formSpeech.jobsite=result.homeworkPart;
-          this.formSpeech.jobNum=result.homeworkNumber;
-          this.formSpeech.protective=result.isSafety;
-          this.formSpeech.speachContent=result.jobContent;
-          this.formSpeech.classContent=result.meetingContent;
-          this.formSpeech.checkIds=result.workerInfoIds;
+          var result = res.data;
+          this.formSpeech.jobsite = result.homeworkPart;
+          this.formSpeech.jobNum = result.homeworkNumber;
+          this.formSpeech.protective = result.isSafety;
+          this.formSpeech.speachContent = result.jobContent;
+          this.formSpeech.classContent = result.meetingContent;
+          this.formSpeech.checkIds = result.workerInfoIds;
         }
       });
+      this.formSpeech.id = uid;
       this.outerVisible = true;
     },
     //修改讲话
     editFormSpeech(formSpeech) {
-      var form = this.$refs['formSpeech'].model;
+      var form = this.$refs["formSpeech"].model;
       var datas = new FormData();
-      datas.append("userId", 1);
       datas.append("homeworkPart", form.jobsite);
       datas.append("homeworkNumber", form.jobNum);
       datas.append("isSafety", form.protective);
       datas.append("jobContent", form.speachContent);
       datas.append("meetingContent", form.classContent);
       datas.append("workerInfoIds", this.checkIds);
+      datas.append("teamId", form.id);
       var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -435,55 +473,8 @@ export default {
         }
       });
     },
-     cencal() {
+    cencal() {
       this.dialogFormVisible = false;
-    },
-     handleCheckAllChange(val) {
-      console.log(val);
-      this.checkedCities=[];
-      //选中的id
-      this.checkIds=[];
-     if(val){
-        for(var i=0;i<this.cities.length;i++){
-        this.checkedCities.push(this.cities[i].name);
-        this.checkIds.push(this.cities[i].id);
-      }
-      // this.checkedCities = val ? this.cityOptions.name : [];
-      this.isIndeterminate = false;
-      for(var j=0;j<this.checkIds.length;j++){
-        console.log(this.checkIds[j]);
-      }
-      for(var k=0;k<this.checkedCities.length;k++){
-        console.log(this.checkedCities[k]);
-      }
-     }
-      // console.log(this.checkIds);
-    },
-    handleCheckedCitiesChange(value) {
-      console.log(value);
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.cities.length;
-    if(value.length>0){
-      for(var i=0;i<value.length;i++){
-          for(var j=0;j<this.cities.length;j++){
-              if(value[i]==this.cities[j].name){
-                  this.checkIds.push(this.cities[j].id);
-              }
-          }
-      }
-       for(var k=0;k<this.checkIds.length;k++){
-        for(var h=k+1;h<this.checkIds.length;h++){
-            if(this.checkIds[k]==this.checkIds[h]){
-            //如果第一个等于第二个，splice方法删除第二个
-            this.checkIds.splice(h,1);
-            h--;
-            }
-        }
-    }
-      console.log('ids'+this.checkIds);//选中的ids
-    }
     }
   }
 };
@@ -541,7 +532,7 @@ export default {
   .button-head {
     // padding-left: 30px;
     // padding-top: 30px;
-    padding 30px;
+    padding: 30px;
     height: 600px;
   }
 

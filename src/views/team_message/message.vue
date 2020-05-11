@@ -1,29 +1,11 @@
 <template>
   <div class="container">
-    <!-- <div class="container-head">
-      <div style="margin-top:33px; position: absolute;">
-        <el-form ref="form" :model="form" label-width="90px">
-          <el-form-item label="班组名称:">
-            <el-input v-model="form.teamName" style="height:35px;width:500px;"></el-input>
-            <i
-              class="el-icon-search"
-              style="position: absolute;top:8px;right: 8px;"
-              @click="searchClass()"
-            ></i>
-          </el-form-item>
-        </el-form>
-      </div>
-    </div>-->
     <div class="container-content">
       <div style="margin-top:30px;margin-left:30px;height:60px;width:100%;">
-        <!-- <el-button @click="dialogFormVisible = true" class="addStyle">
-          <span class="addStyle-title">新增</span>
-        </el-button>-->
-        <el-button type="info" @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
-        <el-button type="info" @click="deleteAll" class="T-H-B-Grey">删除</el-button>
+        <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
+        <el-button @click="deleteAll" class="T-H-B-Grey" style="margin-left:30px">删除</el-button>
       </div>
-
-      <div class="table-content" style="line-height:26px">
+      <div class="table-content">
         <el-table
           :data="tableData"
           ref="multipleTable"
@@ -40,10 +22,10 @@
           <el-table-column prop="createTime" label="创建日期" width="150"></el-table-column>
           <el-table-column label="操作" width="400" fixed="right">
             <template slot-scope="scope">
-              <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-              <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
-              <el-button size="mini" type="danger" @click="addEvalte(scope.row)">评价</el-button>
-              <el-button size="mini" @click="addSpeech(scope.row)" type="primary">新增讲话</el-button>
+              <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
+              <el-button size="mini" @click="handleDelete(scope.row)" class="T-R-B-Grey">删除</el-button>
+              <el-button size="mini" class="T-R-B-Orange" @click="addEvalte(scope.row)">评价</el-button>
+              <el-button size="mini" @click="addSpeech(scope.row)" class="T-R-B-Blue">新增讲话</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -69,49 +51,42 @@
     </div>
     <!-- 新增 修改-->
     <el-dialog :visible.sync="dialogFormVisible" width="20%" title="新增班组" :center="true">
-      <div class="addUser-content">
-        <div class="login_box">
-          <el-form
-            method="post"
-            enctype="multipart/form-data"
-            ref="formClass"
-            :rules="formRules"
-            :model="formClass"
-            action="http://192.168.1.164:8001/auth/user/baseUser"
-          >
-            <el-form-item prop="id">
-              <el-input v-model="formClass.id" type="text" hidden></el-input>
-            </el-form-item>
-            <el-form-item prop="projectName">
-              <el-input v-model="formClass.projectName" type="text" placeholder="工程名称"></el-input>
-            </el-form-item>
-            <el-form-item prop="groupName">
-              <el-input v-model="formClass.groupName" placeholder="班组名称"></el-input>
-            </el-form-item>
-            <el-form-item prop="phone">
-              <el-input v-model="formClass.phone" placeholder="手机号"></el-input>
-            </el-form-item>
-            <el-form-item prop="groupLeader">
-              <el-input v-model="formClass.groupLeader" placeholder="班组长"></el-input>
-            </el-form-item>
-            <el-select
-              v-model="formClass.profession"
-              placeholder="请选择班组类型"
-              @change="selectProfession"
-            >
-              <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
-            <div class="dialog-footer">
-              <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
-              <el-button
-                type="primary"
-                @click="addClass('formClass')"
-                style="border-radius:18px"
-              >确 定</el-button>
-            </div>
-          </el-form>
+      <el-form
+        method="post"
+        enctype="multipart/form-data"
+        ref="formClass"
+        :rules="formRules"
+        :model="formClass"
+        action="http://192.168.1.164:8001/auth/user/baseUser"
+      >
+        <el-form-item prop="id">
+          <el-input v-model="formClass.id" type="text" hidden></el-input>
+        </el-form-item>
+        <el-form-item prop="projectName">
+          <el-input v-model="formClass.projectName" type="text" placeholder="工程名称"></el-input>
+        </el-form-item>
+        <el-form-item prop="groupName">
+          <el-input v-model="formClass.groupName" placeholder="班组名称"></el-input>
+        </el-form-item>
+        <el-form-item prop="phone">
+          <el-input v-model="formClass.phone" placeholder="手机号"></el-input>
+        </el-form-item>
+        <el-form-item prop="groupLeader">
+          <el-input v-model="formClass.groupLeader" placeholder="班组长"></el-input>
+        </el-form-item>
+        <el-select v-model="formClass.profession" placeholder="请选择班组类型" @change="selectProfession">
+          <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+        </el-select>
+        <div class="dialog-footer">
+          <el-button @click="dialogFormVisible = false" round class="F-Grey">取 消</el-button>
+          <el-button
+            class="F-Blue"
+            @click="addClass('formClass')"
+            round
+            style="margin-left:60px"
+          >确 定</el-button>
         </div>
-      </div>
+      </el-form>
     </el-dialog>
     <!-- 评价-->
     <el-dialog title="评价" :visible.sync="dialogVisible" width="20%" :center="true" top="33vh">
@@ -130,8 +105,8 @@
           ></el-option>
         </el-select>
         <div class="dialog-footer">
-          <el-button @click="dialogVisible = false" class="cancel-style">取 消</el-button>
-          <el-button type="primary" @click="evaluate()" style="border-radius:18px">确 定</el-button>
+          <el-button @click="dialogVisible = false" class="F-Grey" round>取 消</el-button>
+          <el-button @click="evaluate()" class="F-Blue" style="margin-left:60px" round>确 定</el-button>
         </div>
       </span>
     </el-dialog>
@@ -173,15 +148,16 @@
           <el-form-item label="班前讲话内容:" prop="classContent">
             <el-input type="textarea" :rows="6" placeholder="内容" v-model="formSpeech.classContent"></el-input>
           </el-form-item>
-          <el-form-item label="参加活动人员名单:" prop="classContent">
+          <el-form-item label="参加活动人员名单:">
             <el-button type="primary" @click="selectPerson()">点击选择</el-button>
           </el-form-item>
           <div class="dialog-footer">
-            <el-button @click="outerVisible = false" class="cancel-style">取 消</el-button>
+            <el-button @click="outerVisible = false" class="F-Grey" round>取 消</el-button>
             <el-button
-              type="primary"
+              class="F-Blue"
               @click="addFormSpeech('formSpeech')"
-              style="border-radius:18px"
+              round
+              style="margin-left:60px"
             >确 定</el-button>
           </div>
         </el-form>
@@ -206,8 +182,8 @@
           <el-table-column prop="personName" label="姓名" width="180"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="innerVisible = false">取 消</el-button>
-          <el-button type="primary" @click="innerVisible= false" style="border-radius:18px">确 定</el-button>
+          <el-button @click="innerVisible = false" class="F-Grey" round>取 消</el-button>
+          <el-button @click="innerVisible= false" class="F-Blue" round style="margin-left:60px">确 定</el-button>
         </div>
       </el-dialog>
     </el-dialog>
@@ -265,7 +241,7 @@ export default {
       },
       options: [
         // 来访部门
-        { id: "", name: "请选择班组类型" },
+        { id: undefined, name: "请选择班组类型" },
         { id: "1", name: "类型一" },
         { id: "2", name: "类型二" },
         { id: "3", name: "类型三" }
@@ -305,9 +281,9 @@ export default {
         { id: "1", name: "xxxxxx" },
         { id: "2", name: "kkkkkk" },
         { id: "3", name: "tttttt" }
-      ]
+      ],
+      selectedPersonIds: []
     };
-    selectedPersonIds: [];
   },
   created: function() {
     this.getTalks();
@@ -382,7 +358,6 @@ export default {
     //获得表格前面选中的id值
     changeFun() {
       var ids = new Array();
-      console.log(this.$refs.multipleTable);
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
@@ -394,15 +369,12 @@ export default {
       //  this.multipleSelection = val;
     },
     changeFunPerson() {
-
-      var ids =[];
+      var ids = [];
       var arrays = this.$refs.multipleTable2.selection;
-      console.log(this.$refs.multipleTable2)
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
         ids.push(arrays[i].personId);
       }
-      console.log(ids)
       this.selectedPersonIds = ids;
       return ids;
       // console.log("选中的pids" + ids);
@@ -525,50 +497,72 @@ export default {
     },
     //新增
     addClass(formClass) {
-      //this.$refs['formClass'].model.groupLeader
-      //新增 id为空
-      var form = this.$refs[formClass].model;
-      if (form.id == null) {
-        var params = JSON.stringify({
-          projectName: form.projectName,
-          teamName: form.groupName,
-          teamType: form.profession,
-          teamLeaderName: form.groupLeader,
-          teamLeaderPhone: form.phone
-        });
-        var url =
-          "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
-        this.http.post(url, params).then(res => {
-          if (res.code == 200) {
-            this.dialogFormVisible = false;
+      this.$refs[formClass].validate(valid => {
+        //校验
+        if (valid) {
+          //新增 id为空
+          var form = this.$refs[formClass].model;
+          if (form.id == null) {
+            if (!form.profession) {
+              this.$message("请选择班组类型");
+              return false;
+            }
+            var params = JSON.stringify({
+              projectName: form.projectName,
+              teamName: form.groupName,
+              teamType: form.profession,
+              teamLeaderName: form.groupLeader,
+              teamLeaderPhone: form.phone
+            });
+            var url =
+              "/smart/worker/labour/" +
+              sessionStorage.getItem("userId") +
+              "/team";
+            this.http.post(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+              }
+            });
           }
-        });
-      }
-      //修改
-      else {
-        var params = JSON.stringify({
-          projectName: form.projectName,
-          teamName: form.groupName,
-          teamType: form.profession,
-          teamLeaderName: form.groupLeader,
-          teamLeaderPhone: form.phone,
-          id: form.id
-        });
-        var url =
-          "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
-        this.http.put(url, params).then(res => {
-          if (res.code == 200) {
-            this.dialogFormVisible = false;
+          //修改
+          else {
+            if (!form.profession) {
+              this.$message("请选择班组类型");
+              return false;
+            }
+            var params = JSON.stringify({
+              projectName: form.projectName,
+              teamName: form.groupName,
+              teamType: form.profession,
+              teamLeaderName: form.groupLeader,
+              teamLeaderPhone: form.phone,
+              id: form.id
+            });
+            var url =
+              "/smart/worker/labour/" +
+              sessionStorage.getItem("userId") +
+              "/team";
+            this.http.put(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+              }
+            });
           }
-        });
-      }
+        } else {
+          console.log("error");
+          return false;
+        }
+      });
     },
     //评价
     evaluate() {
       //选中等级
       var evaluated = this.evaluated;
       var id = this.id;
-      ///smart/worker/labour/{userId}/team
+      if (!evaluated) {
+        this.$message("请选择");
+        return false;
+      }
       var url =
         "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
       var params = JSON.stringify({ id: id, evaluate: evaluated });
@@ -578,12 +572,10 @@ export default {
           this.getTalks();
         }
       });
-      console.log(this.evaluated);
     },
     //添加评价
     addEvalte(row) {
       var uid = row.id;
-      console.log(uid);
       this.dialogVisible = true;
       //设置全局变量
       this.id = uid;
@@ -596,13 +588,12 @@ export default {
         { personId: 2, jobNumber: "2222", personName: "b5bbbb" },
         { personId: 3, jobNumber: "3333", personName: "cc999ccc" }
       ];
-       if (this.selectedPersonIds != undefined) {
+      if (this.selectedPersonIds != undefined) {
         for (var i = 0; i < this.selectedPersonIds.length; i++) {
-          console.log(this.persons[i]);
-          // this.$refs.multipleTable2.toggleRowSelection(
-          //   this.persons[i],
-          //   true
-          // );
+          if (this.persons[i].containSpace == 1) {
+            //这是默认选中上的
+            this.$refs.multipleTable2.toggleRowSelection(this.persons[i], true);
+          }
         }
       }
     },
@@ -612,23 +603,29 @@ export default {
       this.id = row.id;
     },
     addFormSpeech(formSpeech) {
-      var form = this.$refs["formSpeech"].model;
-      var datas = new FormData();
-      var pids = this.changeFunPerson();
-      datas.append("homeworkPart", form.jobsite);
-      datas.append("homeworkNumber", form.jobNum);
-      datas.append("isSafety", form.protective);
-      datas.append("jobContent", form.speachContent);
-      datas.append("meetingContent", form.classContent);
-      datas.append("workerInfoIds", pids);
-
-      var url =
-        "/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/team/meeting";
-      this.http.post(url, datas).then(res => {
-        if (res.code == 200) {
-          this.outerVisible = false;
+      this.$refs[formSpeech].validate(valid => {
+        if (valid) {
+          var form = this.$refs["formSpeech"].model;
+          var datas = new FormData();
+          var pids = this.changeFunPerson();
+          datas.append("homeworkPart", form.jobsite);
+          datas.append("homeworkNumber", form.jobNum);
+          datas.append("isSafety", form.protective);
+          datas.append("jobContent", form.speachContent);
+          datas.append("meetingContent", form.classContent);
+          datas.append("workerInfoIds", pids);
+          datas.append("teamId", this.id);
+          var url =
+            "/smart/worker/labour/" +
+            sessionStorage.getItem("userId") +
+            "/team/meeting";
+          this.http.post(url, datas).then(res => {
+            if (res.code == 200) {
+              this.outerVisible = false;
+            }
+          });
+        }else{
+          return false;
         }
       });
     },
@@ -645,15 +642,6 @@ export default {
   background: rgba(246, 247, 248, 1);
   opacity: 1;
 
-  .container-head {
-    height: 100px;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
-    opacity: 1;
-    border-radius: 10px;
-    margin: 30px 30px 0 30px;
-  }
-
   .container-content {
     background: rgba(255, 255, 255, 1);
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.16);
@@ -661,48 +649,17 @@ export default {
     border-radius: 10px;
     padding: 30px;
     margin: 30px 30px 0 30px;
-
-    .addStyle {
-      width: 80px;
-      height: 35px;
-      background: linear-gradient(
-        180deg,
-        rgba(54, 130, 243, 1) 0%,
-        rgba(0, 88, 162, 1) 100%
-      );
-      opacity: 1;
-      border-radius: 4px;
-      text-align: center;
-    }
-
-    .addStyle-title {
-      color: #ffffff;
-      width: 33px;
-      height: 19px;
-      font-size: 14px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: rgba(255, 255, 255, 1);
-      opacity: 1;
-    }
   }
 
   .table-content {
     margin-top: 10px;
+    line-height: 26px;
   }
 }
 
 .dialog-footer {
   text-align: center;
   margin-top: 20px;
-}
-
-.cancel-style {
-  border-radius: 18px;
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(180deg, rgba(225, 225, 225, 1) 0%, rgba(190, 190, 190, 1) 100%);
-  opacity: 1;
 }
 </style>
 <style lang="stylus">
