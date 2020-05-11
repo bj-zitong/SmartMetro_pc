@@ -194,10 +194,4 @@ export default {
 .login-form {
   margin-top: 60px;
 }
-.Verification{
-   font-size:12px;
-  font-weight:normal;
-  color:red;
-  margin:0 0;
-}
 </style>
