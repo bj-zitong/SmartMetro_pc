@@ -16,10 +16,16 @@
           style="margin-top:130px;background:rgba(255,255,255,1)"
         >
           <el-form-item prop="username" style="position:relative;background:rgba(255,255,255,1)">
-            <el-input type="text" v-model="loginForm.username" @keyup.enter.native="goToPwdInput" placeholder="请输入用户名称"></el-input>
+            <el-input
+              type="text"
+              v-model="loginForm.username"
+              @keyup.enter.native="goToPwdInput"
+              placeholder="请输入用户名称"
+              style="width:400px"
+            ></el-input>
             <span class="svg-container svg-container_user" style="margin-top:2px">
               <!-- <svg-icon icon-class="user" /> -->
-              <img src="../../../static/image/yonghu.png" class="yonghu"/>
+              <img src="../../../static/image/yonghu.png" class="yonghu" />
             </span>
           </el-form-item>
           <el-form-item prop="pwd">
@@ -29,21 +35,32 @@
               @keyup.enter.native="onLogin"
               ref="pwd"
               placeholder="请输入密码"
-              style="margin-top:40px"
+              style="margin-top:30px;width:400px"
             ></el-input>
-            <span class="svg-container svg-container_password"  style="margin-top:40px">
-              <img src="../../../static/image/login_zhengkai.png" class="yonghu"/>
+            <span class="svg-container svg-container_password" style="margin-top:35px">
+              <img src="../../../static/image/login_zhengkai.png" class="yonghu" />
             </span>
           </el-form-item>
-
-          <code1></code1>
+          <el-form-item prop="verifycode">
+            <el-input v-model="loginForm.verifycode" placeholder="请输入验证码" style="width:210px;float:left;margin-top:27px"></el-input>
+            <div class="identifybox">
+              <div @click="refreshCode">
+                <s-identify :identifyCode="identifyCode"></s-identify>
+              </div>
+              <el-button @click="refreshCode" type="text" class="textbtn">
+                <img src="../../../static/image/shuaxin.png" class="textbtnImg" />
+              </el-button>
+            </div>
+          </el-form-item>
+          <!-- <code1 :message="istrue" @fromChild="getChild"></code1>
+          <h6 class="Verification">{{text}}</h6>-->
           <el-button
             type="primary"
             @click="onLogin('loginForm')"
             :loading="loading"
           >{{$t('login.login')}}</el-button>
           <div class="register">
-            <el-button type="text" @click="updatePassword()">忘记密码</el-button>
+            <el-button type="text" @click="updatePassword()" class="updatePassword">忘记密码</el-button>
             <el-button type="text" class="free_registration" @click="register()">免费注册</el-button>
           </div>
         </el-form>
@@ -59,10 +76,13 @@
 // import { isValidUsername } from '@/utils/validate'
 import { saveToLocal, loadFromLocal } from "@/common/local-storage";
 import { mapActions } from "vuex";
+
+/* eslint-disable*/
 import code1 from "./securityCode/code";
+import SIdentify from "./securityCode/securityCode";
 export default {
   components: {
-    code1
+    SIdentify
   },
   data() {
     // username 验证
@@ -81,6 +101,17 @@ export default {
         callback();
       }
     };
+    const validateVerifycode = (rule, value, callback) => {
+     console.log(value)
+      if (value === undefined) {
+        callback(new Error("请输入验证码"));
+      } else if (value !== this.identifyCode) {
+        console.log("validateVerifycode:", value);
+        callback(new Error("验证码不正确!"));
+      } else {
+        callback();
+      }
+    };
     return {
       // 粒子开关
       // toggleParticles: false,
@@ -88,8 +119,13 @@ export default {
         username: "admin",
         pwd: "123456"
       },
+      istrue: 0,
       remember: false,
       loading: false,
+      getvalue: "",
+      text: "",
+      identifyCodes: "1234567890",
+      identifyCode: "",
       rules: {
         username: [
           { required: true, message: "请输入账号", trigger: "blur" }
@@ -100,6 +136,10 @@ export default {
           { required: true, message: "请输入密码", trigger: "blur" }
           // { required: true, trigger: "blur", validator: validatePwd },
           // { required: true, trigger: "change", validator: validatePwd }
+        ],
+        verifycode:[
+          //  { required: true, message: "请输入验证码", trigger: "blur" }
+          { required: true, trigger: "blur", validator: validateVerifycode }
         ]
       }
     };
@@ -122,30 +162,31 @@ export default {
     },
     // 登录操作
     onLogin() {
-
+      this.istrue++;
       this.$refs.pwd.$el.getElementsByTagName("input")[0].blur();
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
-           this.$router.push({ path: "/Selectpage" });
-          // this.login(this.loginForm)
-            // .then(() => {
-            //   // 保存账号
-            //   if (this.remember) {
-            //     saveToLocal("username", this.loginForm.username);
-            //     saveToLocal("password", this.loginForm.pwd);
-            //     saveToLocal("remember", true);
-            //   } else {
-            //     saveToLocal("username", "");
-            //     saveToLocal("password", "");
-            //     saveToLocal("remember", false);
-            //   }
+          this.$router.push({ path: "/Selectpage" });
 
-            //   // this.$router.push({ path: "/" })
-            // })
-            // .catch(() => {
-            //   this.loading = false;
-            // });
+          // this.login(this.loginForm)
+          // .then(() => {
+          //   // 保存账号
+          //   if (this.remember) {
+          //     saveToLocal("username", this.loginForm.username);
+          //     saveToLocal("password", this.loginForm.pwd);
+          //     saveToLocal("remember", true);
+          //   } else {
+          //     saveToLocal("username", "");
+          //     saveToLocal("password", "");
+          //     saveToLocal("remember", false);
+          //   }
+
+          //   // this.$router.push({ path: "/" })
+          // })
+          // .catch(() => {
+          //   this.loading = false;
+          // });
         } else {
           return false;
         }
@@ -161,6 +202,9 @@ export default {
       //   // }
       // });
     },
+    getChild(v) {
+      this.getvalue = v;
+    },
     //注册
     register() {
       this.$router.push({ path: "/register" });
@@ -168,6 +212,22 @@ export default {
     //修改密码
     updatePassword() {
       this.$router.push({ path: "/forgetPassword" });
+    },
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+    },
+    // 生成四位随机验证码
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
+      }
+      console.log(this.identifyCode);
+    },
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
     }
   },
   watch: {},
@@ -213,14 +273,13 @@ export default {
     border: none;
 
     .login_import {
-      width:461px;
+      width: 461px;
       height: 649px;
       background: rgba(255, 255, 255, 1);
       border: 1px solid rgba(112, 112, 112, 1);
       opacity: 1;
       float: right;
       margin: 45px 30px 0 0;
-
       .rl_title {
         height: 37px;
         font-size: 24px;
@@ -232,22 +291,25 @@ export default {
         text-align: center;
         padding-top: 60px;
       }
-
       .Under_the_line {
         border-bottom: 2px solid #00206a;
         float: left;
         width: 100px;
         margin-top: 45px;
         text-align: center;
-        margin-left: 140px;
+        margin-left: 181px;
       }
-
       .register {
         margin-left: 44px;
+        .updatePassword {
+          font-size: 12px;
+          color: rgba(192, 192, 192, 1);
+        }
       }
 
       .free_registration {
-        margin-left: 220px;
+        font-size: 12px;
+        margin-left: 272px;
       }
 
       .r_login {
@@ -285,14 +347,6 @@ export default {
       text-align: center;
     }
 
-    .el-input /deep/ .el-input__inner {
-      width:400px;
-      border-top:none;
-      border-left:none;
-      border-right:none;
-      border-radius:0;
-      border-bottom:1px solid rgba(225,225,225,1);
-    }
 
     .svg-container {
       position: absolute;
@@ -302,17 +356,16 @@ export default {
 
       &_user {
         font-size: 20px;
-
       }
 
       &_password {
         right: 54px;
         font-size: 16px;
-
       }
-      .yonghu{
-        width :20px;
-        height :20px
+
+      .yonghu {
+        width: 20px;
+        height: 20px;
       }
     }
   }
@@ -332,9 +385,17 @@ export default {
   line-height: 20px;
   text-align: center;
   color: rgba(255, 255, 255, 1);
-  margin-top :80px
+  margin-top: 80px;
 }
 
+    .el-input /deep/ .el-input__inner {
+      // width: 400px;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+      border-bottom: 1px solid rgba(225, 225, 225, 1);
+    }
 #particles {
   width: 100%;
   height: 100%;
@@ -352,6 +413,7 @@ export default {
   bottom: 35px;
   text-align: center;
   width: 100%;
+
   p {
     font-size: 14px;
     font-family: Microsoft YaHei;
@@ -359,7 +421,57 @@ export default {
     line-height: 19px;
     color: rgba(255, 255, 255, 1);
     opacity: 1;
-    padding-top:10px
+    padding-top: 10px;
   }
+}
+
+.Verification {
+  font-size: 12px;
+  font-weight: normal;
+  color: red;
+  margin-top: 0;
+  margin-bottom: 0;
+  // float:left
+}
+
+#s-canvas {
+  margin-left: 60px;
+}
+
+.iconstyle {
+  color: #409eff;
+}
+
+
+
+.identifyinput /deep/ .el-input__inner {
+  width: 210px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  border-bottom: 1px solid rgba(225, 225, 225, 1);
+  margin-top: 10px;
+  margin-right: 60px;
+  float: left;
+}
+
+.textbtnImg {
+  width: 16px;
+  height: 16px;
+  margin-left: 115px;
+}
+
+.verifycode {
+  float: left;
+}
+
+.login-form {
+  margin-top: 60px;
+}
+.identifybox{
+  margin-top:20px;
+  margin-left :60px;
+  float:left
 }
 </style>
