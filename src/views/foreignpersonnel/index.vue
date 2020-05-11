@@ -10,22 +10,16 @@
             <el-input v-model="formInline.searchNum" placeholder="来访单位"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleUserList">搜索</el-button>
+            <el-button type="primary" @click="handleUserList" style="margin-left:30px;">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-main>
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="dialogFormVisible = true" class="addStyle">
-          <span class="addStyle-title">新增</span>
-        </el-button>
-        <el-button @click="deleteAll" class="deleteStyle">
-          <span class="deleteStyle-title">删除</span>
-        </el-button>
-        <el-button @click="poiExcel" class="exportStyle">
-          <span class="poiExcel-title">导出</span>
-        </el-button>
+        <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
+        <el-button @click="deleteAll" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
+        <el-button @click="poiExcel" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -46,8 +40,8 @@
             <el-table-column prop="visitTime" label="来访时间" width="200"></el-table-column>
             <el-table-column label="操作" width="300" fixed="right">
               <template slot-scope="scope">
-                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
+                <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
+                <el-button size="mini" @click="handleDelete(scope.row)" class="T-R-B-Grey">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -88,6 +82,9 @@
             :model="form"
             action="http://192.168.1.164:8001/auth/user/baseUser"
           >
+            <el-form-item prop="id">
+              <el-input v-model="form.id" type="text" hidden></el-input>
+            </el-form-item>
             <el-form-item prop="userName" label="用户名">
               <el-input v-model="form.userName" type="text" placeholder="用户名" style="width:290px;"></el-input>
             </el-form-item>
@@ -135,8 +132,14 @@
               ></el-date-picker>
             </el-form-item>
             <div class="dialog-footer">
-              <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
-              <el-button type="primary" @click="addUser('form')" style="border-radius:18px">确 定</el-button>
+              <el-button @click="dialogFormVisible = false" class="F-Grey" round>取 消</el-button>
+              <el-button
+                type="primary"
+                @click="addUser('form')"
+                style="margin-left:60px;"
+                class="F-Blue"
+                round
+              >确 定</el-button>
             </div>
           </el-form>
         </div>
@@ -159,6 +162,7 @@ export default {
       ids: null, //选中的id
       searchUname: null, // 搜索
       searchNum: null,
+      id: null,
       options: [
         // 来访部门
         { id: "", name: "请选择来访部门" },
@@ -180,7 +184,8 @@ export default {
         interviewee: "", // 被访姓名
         intervieweeReason: "", // 被访来由
         intervieweeDate: "", // 来访时间
-        dialogFormVisible: false
+        dialogFormVisible: false,
+        id: null
       },
       formRules: {
         userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -213,7 +218,7 @@ export default {
     this.handleUserList();
   },
   methods: {
-      headClass() {
+    headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
     // 初始页Page、初始每页数据数pagesize和数据data
@@ -242,30 +247,152 @@ export default {
       });
       this.form.profession = obj.id;
     },
-    //取消
-    concel() {
-      this.dialogFormVisible = false;
-    },
     addUser(form) {
-      var params = JSON.stringify({
-        name: this.form.userName,
-        phone: this.form.phone,
-        idNum: this.form.idNum,
-        company: this.form.company,
-        intervieweeDepartmentId: this.form.profession,
-        busNum: this.form.carNum,
-        interviewee: this.form.interviewee,
-        visitReason: this.form.intervieweeReason,
-        visitTime: this.form.intervieweeDate
-      });
-      var url =
-        "/smart/worker/roster/" + sessionStorage.getItem("userId") + "/outlander";
-      this.http.post(url, params).then(res => {
-        if (res.code == 200) {
-          this.dialogFormVisible = false;
+      //获得所选的form表单
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          var form = this.$refs["form"].model;
+          if (form.id == null) {
+            var idNumState = this.IdentityCode(form.idNum);
+            console.log(idNumState);
+            if (!idNumState) {
+              this.$message("身份证号格式不正确！");
+              return;
+            }
+            var params = JSON.stringify({
+              name: form.userName,
+              phone: form.phone,
+              idNum: form.idNum,
+              company: form.company,
+              intervieweeDepartmentId: form.profession,
+              busNum: form.carNum,
+              interviewee: form.interviewee,
+              visitReason: form.intervieweeReason,
+              visitTime: form.intervieweeDate
+            });
+            var url =
+              "/smart/worker/roster/" +
+              sessionStorage.getItem("userId") +
+              "/outlander";
+            this.http.post(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+              }
+            });
+            this.dialogFormVisible = false;
+          } else {
+            if (form.idNum != undefined) {
+              var idNumState = this.IdentityCode(form.idNum);
+              if (idNumState == false) {
+                this.$message("身份证号格式不正确！");
+                return;
+              }
+            }
+            var params = JSON.stringify({
+              name: form.userName,
+              phone: form.phone,
+              idNum: form.idNum,
+              company: this.form.company,
+              intervieweeDepartmentId: this.form.profession,
+              busNum: this.form.carNum,
+              interviewee: this.form.interviewee,
+              visitReason: this.form.intervieweeReason,
+              visitTime: this.form.intervieweeDate
+            });
+            var url =
+              "/smart/worker/roster/" +
+              sessionStorage.getItem("userId") +
+              "/outlander/" +
+              form.id;
+            this.http.put(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+              }
+            });
+            this.dialogFormVisible = false;
+          }
+        } else {
+          return false;
         }
       });
-      this.dialogFormVisible = false;
+    },
+    //身份证号校验
+    IdentityCode(code) {
+      var city = {
+        11: "北京",
+        12: "天津",
+        13: "河北",
+        14: "山西",
+        15: "内蒙古",
+        21: "辽宁",
+        22: "吉林",
+        23: "黑龙江 ",
+        31: "上海",
+        32: "江苏",
+        33: "浙江",
+        34: "安徽",
+        35: "福建",
+        36: "江西",
+        37: "山东",
+        41: "河南",
+        42: "湖北 ",
+        43: "湖南",
+        44: "广东",
+        45: "广西",
+        46: "海南",
+        50: "重庆",
+        51: "四川",
+        52: "贵州",
+        53: "云南",
+        54: "西藏 ",
+        61: "陕西",
+        62: "甘肃",
+        63: "青海",
+        64: "宁夏",
+        65: "新疆",
+        71: "台湾",
+        81: "香港",
+        82: "澳门",
+        91: "国外 "
+      };
+      var pass = true;
+      var msg = "验证成功";
+      //验证身份证格式（6个地区编码，8位出生日期，3位顺序号，1位校验位）
+      if (
+        !code ||
+        !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|[xX])$/.test(
+          code
+        )
+      ) {
+        pass = false;
+        msg = "身份证号格式错误";
+      } else if (!city[code.substr(0, 2)]) {
+        pass = false;
+        msg = "身份证号地址编码错误";
+      } else {
+        //18位身份证需要验证最后一位校验位
+        if (code.length == 18) {
+          code = code.split("");
+          //∑(ai×Wi)(mod 11)
+          //加权因子
+          var factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+          //校验位
+          var parity = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];
+          var sum = 0;
+          var ai = 0;
+          var wi = 0;
+          for (var i = 0; i < 17; i++) {
+            ai = code[i];
+            wi = factor[i];
+            sum += ai * wi;
+          }
+          if (parity[sum % 11] != code[17].toUpperCase()) {
+            pass = false;
+            msg = "身份证号校验位错误";
+          }
+        }
+      }
+      return pass;
     },
     // 列表请求
     handleUserList() {
@@ -273,7 +400,6 @@ export default {
       var uname = this.formInline.searchNum;
       var unum = this.formInline.searchUname;
       //   // 获得当前用户的id
-      // var  uid = sessionStorage.getItem('uid')
       var data = JSON.stringify({
         pageSize: this.pageSize,
         page: this.page,
@@ -318,29 +444,6 @@ export default {
       ];
       this.tableData = result;
       this.total = result.length;
-      //  this.$http({
-      //       // 头部信息及编码格式设置
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //         Authorization: sessionStorage.getItem('token')
-      //       },
-      //       method: 'POST', // 请求的方式
-      //       url: url, // 请求地址
-      //       // 传参
-      //       data: data
-      //     })
-      //     .then(function(response) {
-      //       var res = response.data
-      //       // 请求成功
-      //       if (res.code == '200') {
-      //         this.total = res.data.total
-      //         // 获得列表数据
-      //         this.tableData = res.data.rows
-      //       }
-      //     })
-      //     .catch(function(error) {
-      //       console.log(error)
-      //     })
     },
     // 删除
     handleDelete(row) {
@@ -372,68 +475,69 @@ export default {
           });
         });
     },
-    //编辑
+    //编辑 回显
     handleEdit(row) {
       // 用户id
-      var uid = row.userId;
+      var uid = row.id;
+      this.form.id = uid;
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/outlander/" +
+        uid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+        }
+      });
+      this.dialogFormVisible = true;
     },
     // poi导出
     poiExcel() {
       // //获得token
       // var token = sessionStorage.getItem("token");
-      var uname = this.userName;
-      var unum = this.company;
+      var uname = this.formInline.searchNum;
+      var unum = this.formInline.searchUname;
       let _this = this;
       var data = JSON.stringify({
-        userName: uname,
+        name: uname,
         company: unum,
         pageSize: _this.pageSize,
         page: _this.page
       });
-      var url = "";
-      _this
-        .$http({
-          // 头部信息编码格式
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token
-          },
-          method: "POST",
-          url: url,
-          data: {
-            userParams: data
-          },
-          responseType: "arraybuffer"
-        })
-        .then(function(res) {
-          // // 创建Blob对象，设置文件类型
-          // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
-          // let objectUrl = URL.createObjectURL(blob) // 创建URL
-          // location.href = objectUrl;
-          // URL.revokeObjectURL(objectUrl); // 释放内存
-          // 创建Blob对象，设置文件类型
-          // 自定义文件下载名称  Subway-User-20191223114607
-          var d = new Date();
-          var month = d.getMonth() + 1;
-          var excelName =
-            "Subway-User-" +
-            d.getFullYear() +
-            month +
-            d.getDate() +
-            d.getHours() +
-            d.getMinutes() +
-            d.getSeconds();
-          let blob = new Blob([res.data], { type: "application/vnd.ms-excel" });
-          let objectUrl = URL.createObjectURL(blob); // 创建URL
-          link.href = objectUrl;
-          link.download = excelName; // 自定义文件名
-          link.click(); // 下载文件
-          URL.revokeObjectURL(objectUrl); // 释放内存
-          // alert("调用导出！");
-        })
-        .catch(function(error) {
-          console.log(error);
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/outlander/export";
+      this.http.post(url, data).then(res => {
+        // // 创建Blob对象，设置文件类型
+        // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
+        // let objectUrl = URL.createObjectURL(blob) // 创建URL
+        // location.href = objectUrl;
+        // URL.revokeObjectURL(objectUrl); // 释放内存
+        // 创建Blob对象，设置文件类型
+        // 自定义文件下载名称  Subway-User-20191223114607
+        var d = new Date();
+        var month = d.getMonth() + 1;
+        var excelName =
+          "Subway-User-" +
+          d.getFullYear() +
+          month +
+          d.getDate() +
+          d.getHours() +
+          d.getMinutes() +
+          d.getSeconds();
+        let blob = new Blob([res.data], {
+          type: "application/vnd.ms-excel"
         });
+        let objectUrl = URL.createObjectURL(blob); // 创建URL
+        link.href = objectUrl;
+        link.download = excelName; // 自定义文件名
+        link.click(); // 下载文件
+        URL.revokeObjectURL(objectUrl); // 释放内存
+        // alert("调用导出！");
+      });
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -443,7 +547,6 @@ export default {
         // 获得id
         var id = arrays[i].id;
         ids.push(id);
-        // console.log("获得id"+arrays[i].userId);
       }
       return ids;
     },
@@ -486,9 +589,6 @@ export default {
 </script>
 <style scoped lang="stylus">
 .container {
-  background-color: rgba(246, 247, 248, 1);
-  opacity: 1;
-
   .el-header, .el-footer {
     background-color: #B3C0D1;
     color: #333;
@@ -541,130 +641,6 @@ export default {
     .table-head {
       height: 550px;
       padding: 30px;
-
-      .addStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(54, 130, 243, 1) 0%,
-          rgba(0, 88, 162, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-        text-align: center;
-      }
-
-      .addStyle-title {
-        color: #ffffff;
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        // line-height: 19px;
-        color: rgba(255, 255, 255, 1);
-        opacity: 1;
-      }
-
-      .deleteStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(225, 225, 225, 1) 0%,
-          rgba(190, 190, 190, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-      }
-
-      .deleteStyle-title {
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(99, 99, 99, 1);
-        opacity: 1;
-      }
-
-      .exportStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(58, 222, 214, 1) 0%,
-          rgba(0, 150, 143, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-      }
-
-      .poiExcel-title {
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(255, 255, 255, 1);
-        opacity: 1;
-      }
-
-      .addStyle-title {
-        color: #ffffff;
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(255, 255, 255, 1);
-        opacity: 1;
-      }
-
-      .deleteStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(225, 225, 225, 1) 0%,
-          rgba(190, 190, 190, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-      }
-
-      .deleteStyle-title {
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(99, 99, 99, 1);
-        opacity: 1;
-      }
-
-      .exportStyle {
-        width: 80px;
-        height: 35px;
-        background: linear-gradient(
-          180deg,
-          rgba(58, 222, 214, 1) 0%,
-          rgba(0, 150, 143, 1) 100%
-        );
-        opacity: 1;
-        border-radius: 4px;
-      }
-
-      .poiExcel-title {
-        width: 33px;
-        height: 19px;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: rgba(255, 255, 255, 1);
-        opacity: 1;
-      }
     }
 
     .table-content {
@@ -675,14 +651,6 @@ export default {
       text-align: center;
       margin-top: 30px;
     }
-  }
-
-  .cancel-style {
-    border-radius: 18px;
-    width: 80px;
-    height: 35px;
-    background: linear-gradient(180deg, rgba(225, 225, 225, 1) 0%, rgba(190, 190, 190, 1) 100%);
-    opacity: 1;
   }
 }
 </style>

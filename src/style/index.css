@@ -93,7 +93,7 @@ ul, ol, li{
   content: "";
   clear: both;
 }
-/* 
+/*
 表格头部按钮
 T 表格 H 头部 B 按钮 - 颜色
 
@@ -182,7 +182,7 @@ T-H-B-DarkGreen 深绿色
   color:rgba(255,255,255,1);
   border: none;
 }
-/* 
+/*
 表格行按钮
 T 表格 R 行内 B 按钮 -颜色
 T-R-B-Green         绿色
@@ -191,6 +191,7 @@ T-R-B-Violet        紫色
 T-R-B-BlackishGreen 墨绿色
 T-R-B-Orange        橘色
 T-R-B-DarkViolet    暗紫色
+T-R-B-Blue  蓝色
 */
 
 .T-R-B-Green{
@@ -289,7 +290,23 @@ T-R-B-DarkViolet    暗紫色
   border: none;
 }
 
-/* 
+.T-R-B-Blue{
+  background:rgba(74,141,240,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Blue:hover, .T-R-B-Blue:focus{
+  background:rgb(102, 161, 250);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Blue:active{
+  background:rgba(74,141,240,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+/*
 表单按钮
 F 表单 -颜色
 
