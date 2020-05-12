@@ -25,6 +25,4 @@
 </script>
 
 <style scoped lang="stylus">
-.main-app
-  padding 5px
 </style>
