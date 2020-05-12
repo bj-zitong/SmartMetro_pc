@@ -28,7 +28,7 @@
             <el-date-picker v-model="formInline.time" type="date" placeholder="选择时间"></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="selectSkillList()">查询</el-button>
+            <el-button type="primary" @click="selectSkillList()" style="margin-left:30px;">查询</el-button>
           </el-form-item>
         </el-form>
       </el-main>
@@ -36,8 +36,8 @@
     <div class="table-main">
       <el-main class="table-button">
         <el-button @click="dialogFormVisible = true" type="success" class="T-H-B-DarkBlue">新增</el-button>
-        <el-button @click="deleteAllClick()" type="danger" class="T-H-B-Grey">删除</el-button>
-        <el-button @click="download()" type="primary" class="T-H-B-Cyan">下载</el-button>
+        <el-button @click="deleteAllClick()" type="danger" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
+        <el-button @click="download()" type="primary" class="T-H-B-Cyan" style="margin-left:30px;">下载</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -354,7 +354,7 @@ export default {
 
     .table-content {
       margin-top: 30px;
-      padding: 30px;
+      // padding: 30px;
     }
   }
 
