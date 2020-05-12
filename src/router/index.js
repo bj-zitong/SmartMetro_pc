@@ -581,12 +581,12 @@ export const constantRouterMap = [
                 path: '/realTimePreview',
                 name: '/realTimePreview',
                 component: () => import('@/views/testTemperature/realTimePreview/realTimePreview'),
-                meta: { 
-                    title: '实时预览', 
+                meta: {
+                    title: '实时预览',
                     icon: '../../static/image/yulan.png',
                     AfterIcon: '../../static/image/yulan.png',
-                    enable: "Y", 
-                    parent: '人员测温' 
+                    enable: "Y",
+                    parent: '人员测温'
                 },
                 children: []
             },
@@ -703,6 +703,31 @@ export const constantRouterMap = [
             }
         ]
     },
+       // 开复工
+       {
+        path: '/backWork',
+        component: Layout,
+        alwaysShow: true,
+        name: "开复工管理",
+        meta: {
+            icon: 'question',
+            title: '开复工管理',
+            enable: "Y",
+            parent: '开复工管理'
+        },
+        redirect: '/backwork',
+        children: [
+            {
+                path: '/backwork',
+                alwaysShow: true,
+                name: 'backwork',
+                component: () => import('@/views/backWork/backwork'),
+                meta: { icon: 'droplet', title: '开复工管理', enable: "Y", parent: '开复工管理' },
+                children: []
+            }
+        ]
+    },
+
 ]
 export default new Router({
     // mode: 'history',  require service support
