@@ -93,15 +93,19 @@
         ></el-pagination>
       </el-main>
     </div>
+    <equipmentdialog v-if="changOrder" ref="turnOrder"/>
   </div>
 </template>
 <script>
 import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
-
+import equipmentdialog from "./dialog/equipmentdialog";
 export default {
   name: "echarts",
+  components: {
+    equipmentdialog
+  },
   data() {
     return {
       headClass: headClass,
@@ -340,7 +344,14 @@ export default {
             message: "已取消删除"
           });
         });
-    }
+    },
+     detailsRowClick() {
+      let _this = this;
+      _this.changOrder = true;
+      _this.$nextTick(() => {
+        _this.$refs.turnOrder.init();
+      });
+    },
   }
 };
 </script>

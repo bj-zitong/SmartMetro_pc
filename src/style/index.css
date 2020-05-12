@@ -68,12 +68,38 @@ ul, ol, li{
 .components-container {
   margin: 20px 30px;
 }
-.main-box{
-  width:100%;
-  height:100%;
-  background:rgba(246,247,248,1);
-  opacity:1;
+/* --------修改的公共样式----------- */
+/* 主体盒子 */
+.main-box {
   padding: 0 30px;
+}
+.main-top-box, .main-con-box {
+    width: 100%;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
+    opacity: 1;
+    border-radius: 10px;
+}
+.main-top-box {
+    margin-bottom: 30px;
+    padding: 32px 0 10px 60px;
+}
+.main-con-box {
+    width: 100%;
+    padding: 30px;
+}
+.main-btn-box{
+    padding-left: 30px;
+    margin-bottom: 30px;
+}
+.upload{
+    display:inline-block;
+    margin: 0 10px;
+}
+/* 分页居中 */
+.pagination-box{
+    text-align: center;
+    padding-top:32px;
 }
 /* 筛选 表格 按钮 公共共样式 */
 
@@ -191,10 +217,10 @@ T-R-B-Violet        紫色
 T-R-B-BlackishGreen 墨绿色
 T-R-B-Orange        橘色
 T-R-B-DarkViolet    暗紫色
-T-R-B-Blue  蓝色
-T-R-B-Red 红色
-T-R-B-Yellow 黄色
-
+T-R-B-Blue          蓝色
+T-R-B-Red           红色
+T-R-B-Yellow        黄色
+T-R-B-Cyan          青色
 */
 
 .T-R-B-Green{
@@ -341,7 +367,24 @@ T-R-B-Yellow 黄色
   color:rgba(255,255,255,1);
   border: none;
 }
+.T-R-B-Cyan {
+  background: rgb(29, 187, 179);
+  color: rgba(255, 255, 255, 1);
+  border: none;
+}
 
+.T-R-B-Cyan:hover,
+.T-R-B-Cyan:focus {
+  background: rgb(50, 219, 211);
+  color: rgba(255, 255, 255, 1);
+  border: none;
+}
+
+.T-R-B-Cyan:active {
+  background: rgb(29, 187, 179);
+  color: rgba(255, 255, 255, 1);
+  border: none;
+}
 /*
 表单按钮
 F 表单 -颜色

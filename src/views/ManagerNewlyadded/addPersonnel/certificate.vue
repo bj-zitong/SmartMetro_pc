@@ -80,7 +80,8 @@
                 :prop="`productGroup.${index}.value1`"
                 :rules="rules.value1"
               >
-                <el-date-picker v-model="item.value1" type="date" placeholder="请选择日期"></el-date-picker>
+              <el-date-picker v-model="item.value1" type="datetime" placeholder="请选择日期"></el-date-picker>
+                <!-- <el-date-picker v-model="item.value1" type="date" placeholder="请选择日期"></el-date-picker> -->
               </el-form-item>
             </el-col>
             <el-col>
@@ -89,7 +90,8 @@
                 :prop="`productGroup.${index}.value2`"
                 :rules="rules.value2"
               >
-                <el-date-picker v-model="item.value2" type="date" placeholder="请选择有效时间"></el-date-picker>
+              <el-date-picker v-model="item.value2" type="datetime" placeholder="请选择有效时间"></el-date-picker>
+                <!-- <el-date-picker v-model="item.value2" type="date" placeholder="请选择有效时间"></el-date-picker> -->
               </el-form-item>
             </el-col>
             <el-col>

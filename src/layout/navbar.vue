@@ -260,7 +260,7 @@ export default {
   text-align: center;
   height:50px;
   line-height: 50px;
-  // font-size :20px  
+  font-size :20px  
 }
 
 .hed_tab>.el-tabs__header .el-tabs__nav {

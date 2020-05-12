@@ -9,16 +9,16 @@
       <el-form :inline="true" ref="screenForm" :model="screenForm" class="screen-form-h">
         <el-form-item label="劳务公司：">
           <el-select v-model="screenForm.company" placeholder="请选择劳务公司">
-              <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              <el-option v-for="item in screenSompany" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="负责人：">
           <el-input v-model="screenForm.responsiblePersonName" placeholder="请输入负责人"></el-input>
         </el-form-item>
         <el-form-item label="合同类型：">
-          <el-select v-model="screenForm.contractPeriodType" placeholder="请选择合同类型">
-            <el-option label="劳务分包" value="0"></el-option>
-            <el-option label="专业分包" value="1"></el-option>
+          <el-select v-model="screenForm.contractPeriodType">
+            <el-option label="固定期限合同" value="0"></el-option>
+            <el-option label="以完成一定工作为期限的合同" value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -60,18 +60,18 @@
         <el-table-column prop="contractCode" label="合同编号" min-width="120"></el-table-column>
         <el-table-column label="有效时间" min-width="200">
             <template slot-scope="scope">
-                <span>{{scope.row.start}} </span> 至 <span> {{scope.row.end}}</span>
+                <span>{{scope.row.startDate}} </span> 至 <span> {{scope.row.endDate}}</span>
             </template>
         </el-table-column>
-        <el-table-column prop="contractPeriodType" label="合同期限类型" min-width="200"></el-table-column>
-        <el-table-column prop="mechanismCode" label="组织机构代码" min-width="120"></el-table-column>
+        <el-table-column prop="contractPeriodType" label="合同期限类型" min-width="210"></el-table-column>
+        <el-table-column prop="corpCode" label="组织机构代码" min-width="120"></el-table-column>
         <el-table-column prop="status" label="状态"></el-table-column>
         <el-table-column label="操作" width="240" fixed="right">
           <template slot-scope="scope">
             <el-button
               class="T-R-B-Green"
               size="mini"
-              @click="editRowClick(scope.$index, scope.row)"
+              @click="editOpen = true, editRowClick(scope.$index, scope.row)"
             >编辑</el-button>
             <el-button
               class="T-R-B-Grey"
@@ -109,7 +109,6 @@
       :close-on-click-modal="false"
       class="popupDialog"
       :center="true"
-      :show-close="false"
     >
       <el-form
         ref="addFormRef"
@@ -141,24 +140,24 @@
         </el-form-item>
         <el-form-item label="有效时间" required>
           <el-col :span="11">
-            <el-form-item prop="start">
+            <el-form-item prop="startDate">
               <el-date-picker
                 type="date"
                 :editable="false"
                 placeholder="开始日期"
-                v-model="addLabor.start"
+                v-model="addLabor.startDate"
                 style="width: 100%;"
               ></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col class="line" :span="2">至</el-col>
           <el-col :span="11">
-            <el-form-item prop="end">
+            <el-form-item prop="endDate">
               <el-date-picker
                 type="date"
                 :editable="false"
                 placeholder="结束日期"
-                v-model="addLabor.end"
+                v-model="addLabor.endDate"
                 style="width: 100%;"
               ></el-date-picker>
             </el-form-item>
@@ -179,7 +178,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <!-- 编辑 -->
+<!-- 编辑 -->
     <el-dialog
       title="编辑劳务公司"
       width="450px"
@@ -211,14 +210,14 @@
         </el-form-item>
         <el-form-item label="有效时间" required>
           <el-col :span="11">
-            <el-form-item prop="start">
-              <el-date-picker type="date" :editable="false" placeholder="开始日期" v-model="editLabor.start" style="width: 100%;"></el-date-picker>
+            <el-form-item prop="startDate">
+              <el-date-picker type="date" :editable="false" placeholder="开始日期" v-model="editLabor.startDate" style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="11">
-            <el-form-item prop="end">
-              <el-date-picker type="date" :editable="false" placeholder="结束日期" v-model="editLabor.start" style="width: 100%;"></el-date-picker>
+            <el-form-item prop="endDate">
+              <el-date-picker type="date" :editable="false" placeholder="结束日期" v-model="editLabor.endDate" style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -232,8 +231,8 @@
           <el-input v-model="editLabor.corpCode"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="dialogTableVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogTableVisible = false, submitForm('editLabor')">确定</el-button>
+          <el-button @click="cloneEditForm('editFormRef')">取消</el-button>
+          <el-button type="primary" @click="editSubmitForm('editFormRef')">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -278,26 +277,42 @@ export default {
       addOpen: false,// 添加弹窗初始隐藏
       editOpen: false,// 编辑弹窗初始隐藏
       seeBranch: false,// 查看下属弹窗初始隐藏
-      options: [{
-          id: 1,
-          name:'第一公司'
-      }],
+      screenForm: {
+        company: "",
+        responsiblePersonName: "",
+        contractPeriodType: ""
+      },
+      screenSompany: [
+        { id: 0, name:'第一公司' },
+        { id: 1, name:'第二公司' }
+      ],
       // 添加劳务人员初始化
-    //   addLabor: {
-    //     company: "",
-    //     responsiblePersonName: "",
-    //     responsiblePersonPhone: "",
-    //     serviceCompany: "",
-    //     projectCode: "",
-    //     projectName: "",
-    //     contractCode: "",
-    //     start: "",
-    //     end: "",
-    //     contractPeriodType: "",
-    //     corpCode: ""
-    //   },
-    addLabor: {},
-    editLabor: {},
+      addLabor: {
+        company: "",
+        responsiblePersonName: "",
+        responsiblePersonPhone: "",
+        serviceCompany: "",
+        projectCode: "",
+        projectName: "",
+        contractCode: "",
+        startDate: "",
+        endDate: "",
+        contractPeriodType: "",
+        corpCode: ""
+      },
+        editLabor: {
+            company: "",
+            responsiblePersonName: "",
+            responsiblePersonPhone: "",
+            serviceCompany: "",
+            projectCode: "",
+            projectName: "",
+            contractCode: "",
+            startDate: "",
+            endDate: "",
+            contractPeriodType: "",
+            corpCode: ""
+        },
       // 自定义表单验证
       rulesForm: {
         company: [
@@ -321,10 +336,12 @@ export default {
         contractCode: [
           { required: true, message: "请输入合同编号", trigger: "blur" }
         ],
-        start: [
+        startDate: [
           { required: true, message: "请选择开始日期", trigger: "change" }
         ],
-        end: [{ required: true, message: "请选择结束日期", trigger: "change" }],
+        endDate: [
+            { required: true, message: "请选择结束日期", trigger: "change" }
+        ],
         contractPeriodType: [
           { required: true, message: "请选择合同期限类型", trigger: "change" }
         ],
@@ -334,12 +351,7 @@ export default {
       },
       rulesFormLabor: [],
       addUser: {},
-      multipleSelection: [],
-      screenForm: {
-        company: "",
-        responsiblePersonName: "",
-        contractPeriodType: ""
-      }
+      multipleSelection: []
     };
   },
   created() {
@@ -406,10 +418,10 @@ export default {
                 projectCode: "007124241",
                 projectName: "第一项目",
                 contractCode: "HT123456",
-                start: "2019-10-10",
-                end: "2020-10-09",
+                startDate: "2019-10-01",
+                endDate: "2020-10-07",
                 contractPeriodType: "固定期限合同",
-                mechanismCode: "354163831",
+                corpCode: "354163831",
                 status: "未提交"
             },
             {
@@ -421,160 +433,10 @@ export default {
                 projectCode: "558244568",
                 projectName: "第二项目",
                 contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
+                startDate: "2019-10-01",
+                endDate: "2020-10-07",
                 contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 3,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 4,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 5,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 6,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 7,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 8,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 9,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 10,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 11,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
-                status: "未提交"
-            },
-            {
-                id: 12,
-                company: "第二公司",
-                responsiblePersonName: "李四",
-                responsiblePersonPhone: "13881234123",
-                serviceCompany: "第二单位",
-                projectCode: "558244568",
-                projectName: "第二项目",
-                contractCode: "HT654321",
-                start: "2019-10-02",
-                end: "2020-10-05",
-                contractPeriodType: "以完成一定工作为期限的合同",
-                mechanismCode: "68461684",
+                corpCode: "68461684",
                 status: "未提交"
             }
         ];
@@ -607,29 +469,33 @@ export default {
       // 验证
       this.$refs[addFormRef].validate((valid) => {
         if (valid) {
-            console.log(valid)
-        //   this.addOpen = false;
+            // 添加劳务人员请求
+            var params = JSON.stringify(this.addLabor);
+            this.http
+                .post("smart/worker/labour/1/company/management", params)
+                .then(res => {
+                if (res.code == 200) {
+                    this.$message({
+                        type: "success",
+                        message: "添加成功!"
+                    });
+                }
+                })
+                .catch(res => {
+                    if(res.code === 404) {
+                        this.$message({
+                            type: "success",
+                            message: "预留跳转404页面!"
+                        });
+                    }
+                });
+            this.addOpen = false;
         } else {
           console.log('error submit!!');
           return false;
         }
       });
-      // 添加劳务人员请求
-      var params = JSON.stringify({
-        name: form.userName2,
-        cellPhone: form.phone2,
-        idNum: form.idNum,
-        account: form.account,
-        password: form.password2
-      });
-      this.http
-        .post("smart/worker/labour/" + userId + "/company/management", params)
-        .then(res => {
-          if (res.code == 200) {
-            this.$message("添加成功");
-          }
-        })
-        .catch(res => {});
+      
     },
     // 关闭添加弹窗
     cloneAddForm(addFormRef) {
@@ -674,30 +540,86 @@ export default {
     exportStaffClick() {},
     //  导入
     importStaffClick() {},
-    //  表格操作
-    //  编辑
-    editRowClick() {
-        this.editOpen = true;
+//  表格操作
+//  编辑 editSubmitForm cloneEditForm
+    editRowClick(inedx, row) {
+        this.editLabor.company = row.company;
+        this.editLabor.responsiblePersonName = row.responsiblePersonName;
+        this.editLabor.responsiblePersonPhone = row.responsiblePersonPhone;
+        this.editLabor.serviceCompany = row.serviceCompany;
+        this.editLabor.projectCode = row.projectCode;
+        this.editLabor.projectName = row.projectName;
+        this.editLabor.contractCode = row.contractCode;
+        this.editLabor.startDate = row.startDate;
+        this.editLabor.endDate = row.endDate;
+        this.editLabor.contractPeriodType = row.contractPeriodType;
+        this.editLabor.corpCode = row.corpCode;
     },
-    //  删除
+
+    editSubmitForm(editFormRef) {
+      // 验证
+      this.$refs[editFormRef].validate((valid) => {
+        if (valid) {
+            // 添加劳务人员请求
+            var params = JSON.stringify(this.editLabor);
+            this.http
+                .put("smart/worker/labour/1/company/management", params)
+                .then(res => {
+                if (res.code == 200) {
+                    this.$message({
+                        type: "success",
+                        message: "添加成功!"
+                    });
+                }
+                })
+                .catch(res => {
+                    if(res.code === 404) {
+                        this.$message({
+                            type: "success",
+                            message: "预留跳转404页面!"
+                        });
+                    }
+                });
+            this.editOpen = false;
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+      
+    },
+    // 关闭添加弹窗
+    cloneEditForm(editFormRef) {
+      this.$refs[editFormRef].resetFields();
+      this.editOpen = false;
+    },
+//  删除
     deleteRowClick() {
-      this.$confirm("确定删除该员工信息吗？", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        center: true,
-        roundButton: true
-      })
+        handleCofirm("确定删除该员工信息吗？")
         .then(res => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+            var data = JSON.stringify(ids);
+            var url =
+                "/smart/worker/labour/" +
+                sessionStorage.getItem("userId") +
+                "/company";
+            this.http.delete(url, data).then(res => {
+                if (res.code == 200) {
+                    var total = res.total;
+                    var rows = res.rows;
+                    this.tableData = rows;
+                    this.total = total;
+                    this.$message({
+                        type: "success",
+                        message: "删除成功!"
+                    });
+                }
+            });
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
+        .catch(err => {
+            this.$message({
+                type: "info",
+                message: "已取消删除"
+            });
         });
     },
     //  查看下属

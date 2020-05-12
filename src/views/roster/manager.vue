@@ -22,7 +22,7 @@
       <el-main class="btnView">
         <div style="margin-bottom: 30px;">
           <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
-          <el-button class="T-H-B-Grey" @click="deleteRowClick">删除</el-button>
+          <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
           <el-upload
             style="display:inline-block; margin-left: 10px;"
@@ -41,10 +41,9 @@
             :header-cell-style="headClass"
             tooltip-effect="dark"
             style="width: 97%;"
-            @selection-change="handleSelectionChange"
-            border
+            @selection-change="changeFun"
           >
-            <el-table-column type="selection"></el-table-column>
+            <el-table-column type="selection" prop="id" @selection-change="changeFun"></el-table-column>
             <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
             <el-table-column prop="department" label="部门"></el-table-column>
             <el-table-column prop="jobType" label="岗位/职责"></el-table-column>
@@ -57,7 +56,7 @@
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
             <el-table-column prop="address" label="住址"></el-table-column>
             <el-table-column prop="politicsType" label="政治面貌"></el-table-column>
-            
+
             <el-table-column fixed="right" label="操作" width="270">
               <template slot-scope="scope">
                 <el-button
@@ -82,13 +81,17 @@
         <el-pagination background layout="prev, pager, next" :total="1000" class="paging"></el-pagination>
       </el-main>
     </div>
+    <managerDialog v-if="changOrder" ref="turnOrder" />
   </div>
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
-
+import managerDialog from "./dialog/managerdialog";
 export default {
   name: "echarts",
+  components: {
+    managerDialog
+  },
   data() {
     return {
       formInline: {
@@ -104,6 +107,14 @@ export default {
         cellPhone: "",
         address: "",
         politicsType: ""
+      },
+      changOrder: false, //查看详情
+      page: 1, // 初始页
+      pageSize: 10, //    每页的数据
+      total: 100, //总条数
+      formInline: {
+        searchUname: null, // 搜索
+        searchNum: null
       },
       tableData: [
         {
@@ -134,20 +145,6 @@ export default {
           address: "河北省张家口",
           politicsType: "群众"
         },
-         {
-          buildCorpName: "北京公司",
-          department: "运维部",
-          jobType: "司机",
-          workerType: "司机",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "河北省张家口",
-          idNum: "6932589565555747888",
-          age: 0,
-          cellPhone: "1234568793",
-          address: "河北省张家口",
-          politicsType: "群众"
-        },
         {
           buildCorpName: "北京公司",
           department: "运维部",
@@ -190,6 +187,20 @@ export default {
           address: "河北省张家口",
           politicsType: "群众"
         },
+        {
+          buildCorpName: "北京公司",
+          department: "运维部",
+          jobType: "司机",
+          workerType: "司机",
+          name: "王小虎",
+          gender: "男",
+          birthPlace: "河北省张家口",
+          idNum: "6932589565555747888",
+          age: 0,
+          cellPhone: "1234568793",
+          address: "河北省张家口",
+          politicsType: "群众"
+        }
       ]
     };
   },
@@ -204,7 +215,62 @@ export default {
       this.$router.push({ path: "/AddAdministration" });
     },
     //  导出
-    exportStaffClick() {},
+    exportStaffClick() {
+      handleCofirm("确认导出")
+        .then(res => {
+          // this.$message({
+          //   type: "success",
+          //   message: "导出成功!"
+          // });
+          var uname = this.formInline.searchNum;
+          var unum = this.formInline.searchUname;
+          let _this = this;
+          var data = JSON.stringify({
+            name: uname,
+            company: unum,
+            pageSize: _this.pageSize,
+            page: _this.page
+          });
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/manager/export";
+          this.http.post(url, data).then(res => {
+            // // 创建Blob对象，设置文件类型
+            // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
+            // let objectUrl = URL.createObjectURL(blob) // 创建URL
+            // location.href = objectUrl;
+            // URL.revokeObjectURL(objectUrl); // 释放内存
+            // 创建Blob对象，设置文件类型
+            // 自定义文件下载名称  Subway-User-20191223114607
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            var excelName =
+              "Subway-User-" +
+              d.getFullYear() +
+              month +
+              d.getDate() +
+              d.getHours() +
+              d.getMinutes() +
+              d.getSeconds();
+            let blob = new Blob([res.data], {
+              type: "application/vnd.ms-excel"
+            });
+            let objectUrl = URL.createObjectURL(blob); // 创建URL
+            link.href = objectUrl;
+            link.download = excelName; // 自定义文件名
+            link.click(); // 下载文件
+            URL.revokeObjectURL(objectUrl); // 释放内存
+            // alert("调用导出！");
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消导出"
+          });
+        });
+    },
     //  导入
     importStaffClick() {},
     //  表格操作
@@ -212,13 +278,42 @@ export default {
     editRowClick() {
       this.$router.push({ path: "/AddAdministration" });
     },
-    //批量删除
-    deleteRowClick() {
-      handleCofirm("确认删除吗？", "warning")
+    //获得表格前面选中的id值
+    changeFun() {
+      var ids = new Array();
+      var arrays = this.$refs.multipleTable.selection;
+      for (var i = 0; i < arrays.length; i++) {
+        // 获得id
+        var id = arrays[i].id;
+        ids.push(id);
+      }
+      return ids;
+    },
+    // 批量删除
+    deleteAllClick() {
+      var ids = this.changeFun();
+      if (ids.length <= 0) {
+        this.$message("请选择删除的数据！");
+        return;
+      }
+      handleCofirm("确认删除")
         .then(res => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/manager";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              // var total = res.total;
+              // var rows = res.rows;
+              // this.tableData = rows;
+              // this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
           });
         })
         .catch(err => {
@@ -228,12 +323,46 @@ export default {
           });
         });
     },
+    //删除
+    deleteRowClick(row) {
+      var uid = row.id;
+      var ids = [];
+      ids.push(uid);
+      handleCofirm("确认删除吗？", "warning")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/manager";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    detailsRowClick() {
+      let _this = this;
+      _this.changOrder = true;
+      _this.$nextTick(() => {
+        _this.$refs.turnOrder.init();
+      });
+    },
     seeSubRowClick() {},
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
     handleSelectionChange(val) {},
-    detailsRowClick() {}
   }
 };
 </script>
