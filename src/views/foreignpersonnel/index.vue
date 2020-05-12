@@ -68,7 +68,7 @@
       </el-main>
     </div>
     <!--新增-->
-    <div style="text-align:center">
+    <div style="text-align:center;">
       <el-dialog
         :visible.sync="dialogFormVisible"
         width="450px"
@@ -76,6 +76,7 @@
         :show-close="false"
         class="popupDialog"
         :center="true"
+        :lockScroll="true"
       >
         <div class="login_box">
           <el-form
