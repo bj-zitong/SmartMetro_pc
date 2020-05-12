@@ -70,11 +70,16 @@
     <div style="text-align:center">
       <el-dialog
         :visible.sync="dialogFormVisible"
-        style="width:45%;center:true;left:28%"
+        width="450px"
         title="外来人员登记"
+        :show-close="false"
+        class="popupDialog"
+        :center="true"
       >
         <div class="login_box">
           <el-form
+            label-width="80px"
+            class="demo-ruleForm"
             method="post"
             enctype="multipart/form-data"
             ref="form"
@@ -86,21 +91,21 @@
               <el-input v-model="form.id" type="text" hidden></el-input>
             </el-form-item>
             <el-form-item prop="userName" label="用户名">
-              <el-input v-model="form.userName" type="text" placeholder="用户名" style="width:290px;"></el-input>
+              <el-input v-model="form.userName" type="text" placeholder="用户名"></el-input>
             </el-form-item>
             <el-form-item prop="idNum" label="身份证号">
-              <el-input v-model="form.idNum" placeholder="身份证号" style="width:270px;"></el-input>
+              <el-input v-model="form.idNum" placeholder="身份证号"></el-input>
             </el-form-item>
             <el-form-item prop="phone" label="电话">
-              <el-input v-model="form.phone" placeholder="联系电话" style="width:270px;"></el-input>
+              <el-input v-model="form.phone" placeholder="联系电话"></el-input>
             </el-form-item>
             <el-form-item prop="company" label="单位">
-              <el-input v-model="form.company" placeholder="单位" style="width:270px;"></el-input>
+              <el-input v-model="form.company" placeholder="单位"></el-input>
             </el-form-item>
             <el-form-item prop="carNum" label="车牌号">
-              <el-input v-model="form.carNum" placeholder="车牌号" style="width:290px;"></el-input>
+              <el-input v-model="form.carNum" placeholder="车牌号"></el-input>
             </el-form-item>
-            <el-form-item label="被访人部门">
+            <el-form-item label="被访人部门" prop="profession">
               <el-select
                 v-model="form.profession"
                 placeholder="请选择被访人部门"
@@ -114,12 +119,12 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item prop="interviewee" style="margin-top:20px" label="被访人姓名">
-              <el-input v-model="form.interviewee" placeholder="被访人姓名" style="width:285px"></el-input>
+            <el-form-item prop="interviewee" label="被访人姓名">
+              <el-input v-model="form.interviewee" placeholder="被访人姓名"></el-input>
             </el-form-item>
             <br />
             <el-form-item prop="intervieweeReason" label="来访事由">
-              <el-input v-model="form.intervieweeReason" placeholder="来访事由" style="width:275px"></el-input>
+              <el-input v-model="form.intervieweeReason" placeholder="来访事由"></el-input>
             </el-form-item>
             <br />
             <el-form-item prop="intervieweeDate" label="日期">
@@ -131,7 +136,7 @@
                 value-format="yyyy-MM-dd HH:mm:ss"
               ></el-date-picker>
             </el-form-item>
-            <div class="dialog-footer">
+            <div class="dialog-footer" style="text-align:center;">
               <el-button @click="dialogFormVisible = false" class="F-Grey" round>取 消</el-button>
               <el-button
                 type="primary"
@@ -193,14 +198,14 @@ export default {
           { required: true, message: "请输入手机号", trigger: "blur" },
           {
             pattern: /^1[34578]\d{9}$/,
-            message: "目前只支持中国大陆的手机号码"
+            message: "手机号格式不正确"
           }
         ],
         idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
         company: [{ required: true, message: "请输入单位", trigger: "blur" }],
         carNum: [{ required: true, message: "请输入车牌号", trigger: "blur" }],
         profession: [
-          { required: true, message: "请选择被访部门", trigger: "blur" }
+          { required: true, message: "请选择被访部门", trigger: "change" }
         ],
         interviewee: [
           { required: true, message: "请输入被访人姓名", trigger: "blur" }
@@ -209,7 +214,7 @@ export default {
           { required: true, message: "请输入被访事由", trigger: "blur" }
         ],
         intervieweeDate: [
-          { required: true, message: "请选择被访时间", trigger: "blur" }
+          { required: true, message: "请选择被访时间", trigger: "change" }
         ]
       }
     };

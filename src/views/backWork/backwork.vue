@@ -25,15 +25,15 @@
     <div class="R-L-T table-main">
       <div style="margin-bottom: 30px;">
         <el-button class="T-H-B-DarkBlue" @click="addOpen = true">新增</el-button>
-        <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
-        <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
+        <el-button class="T-H-B-Grey" @click="deleteBatchClick" style="margin-left:30px;">删除</el-button>
+        <el-button class="T-H-B-Cyan" @click="exportStaffClick" style="margin-left:30px;">导出</el-button>
         <el-upload
           style="display:inline-block; margin-left: 10px;"
           class="upload-demo"
           action
           :show-file-list="false"
         >
-          <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick(this)">导入</el-button>
+          <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick(this)" style="margin-left:30px;">导入</el-button>
         </el-upload>
       </div>
       <el-table
@@ -177,7 +177,7 @@
         </el-form-item>
         <el-form-item>
           <el-button class="F-Grey" round @click="cloneAddForm('addFormRef')">取消</el-button>
-          <el-button class="F-Blue" round @click="addSubmitForm('addFormRef')">确定</el-button>
+          <el-button class="F-Blue" round @click="addSubmitForm('addFormRef')" style="margin-left:60px;">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
