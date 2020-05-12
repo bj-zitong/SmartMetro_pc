@@ -271,27 +271,27 @@ export const constantRouterMap = [
                 },
                 children: [
                     {
-                        path: '/manager',
+                        path: '/wisdomAttendance/attendanceRecord/manager',
                         name: 'manager',
                         component: () => import('@/views/wisdomAttendance/attendanceRecord/manager'),
                         meta: { title: '管理人员', icon: '', enable: "Y", parent: '智慧考勤' }
                         // meta: { title: '班前讲话记录', icon: '', enable: "Y", parent: '实名认证' }
                     },
                     {
-                        path: '/personnel',
+                        path: '/wisdomAttendance/attendanceRecord/personnel',
                         name: 'personnel',
                         component: () => import('@/views/wisdomAttendance/attendanceRecord/personnel'),
                         meta: { title: '劳务人员', icon: '', enable: "Y", parent: '智慧考勤' }
                     },
 
                     {
-                        path: '/equipmentSpecialist',
+                        path: '/wisdomAttendance/attendanceRecord/equipmentSpecialist',
                         name: 'equipmentSpecialist',
                         component: () => import('@/views/wisdomAttendance/attendanceRecord/equipmentSpecialist'),
                         meta: { title: '设备专用人员', icon: '', enable: "Y", parent: '智慧考勤' }
                     },
                     {
-                        path: '/otherStaffs',
+                        path: '/wisdomAttendance/attendanceRecord/otherStaffs',
                         name: 'otherStaffs',
                         component: () => import('@/views/wisdomAttendance/attendanceRecord/otherStaffs'),
                         meta: { title: '其他服务类人员', icon: '', enable: "Y", parent: '智慧考勤' }

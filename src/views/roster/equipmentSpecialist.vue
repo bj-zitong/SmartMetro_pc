@@ -39,7 +39,6 @@
             tooltip-effect="dark"
             style="width: 97%;"
             @selection-change="handleSelectionChange"
-            border
           >
             <el-table-column
               type="selection"
@@ -113,6 +112,7 @@ export default {
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
       total: 100, //总条数
+      changOrder:false,
       form: {
         major: "",
         name: ""

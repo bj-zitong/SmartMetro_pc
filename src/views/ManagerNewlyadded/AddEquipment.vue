@@ -213,9 +213,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .AddEquipment {
-  background: red;
-  margin: 0 25px;
-
+  margin: 0 30px;
   .main {
     p {
       text-align: center;
