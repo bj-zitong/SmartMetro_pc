@@ -45,18 +45,19 @@
             border
           >
             <el-table-column type="selection"></el-table-column>
-            <el-table-column fixed prop="Company" label="承建单位"></el-table-column>
-            <el-table-column prop="name" label="部门"></el-table-column>
-            <el-table-column prop="post" label="岗位/职责"></el-table-column>
-            <el-table-column prop="Personneltype" label="人员类型"></el-table-column>
+            <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
+            <el-table-column prop="department" label="部门"></el-table-column>
+            <el-table-column prop="jobType" label="岗位/职责"></el-table-column>
+            <el-table-column prop="workerType" label="人员类型"></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="gender" label="性别"></el-table-column>
-            <el-table-column prop="nativeplace" label="籍贯"></el-table-column>
-            <el-table-column prop="numberId" label="身份证号"></el-table-column>
+            <el-table-column prop="birthPlace" label="籍贯"></el-table-column>
+            <el-table-column prop="idNum" label="身份证号"></el-table-column>
             <el-table-column prop="age" label="年龄"></el-table-column>
-            <el-table-column prop="emergencyTelephone" label="手机号码"></el-table-column>
-            <el-table-column prop="Currentresidence" label="住址"></el-table-column>
-            <el-table-column prop="PoliticalOutlook" label="政治面貌"></el-table-column>
+            <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
+            <el-table-column prop="address" label="住址"></el-table-column>
+            <el-table-column prop="politicsType" label="政治面貌"></el-table-column>
+            
             <el-table-column fixed="right" label="操作" width="270">
               <template slot-scope="scope">
                 <el-button
@@ -91,46 +92,104 @@ export default {
   data() {
     return {
       formInline: {
-        user: "",
-        region: ""
+        buildCorpName: "",
+        department: "",
+        jobType: "",
+        workerType: "",
+        name: "",
+        gender: "",
+        birthPlace: "",
+        idNum: "",
+        age: 0,
+        cellPhone: "",
+        address: "",
+        politicsType: ""
       },
       tableData: [
         {
-          Company: "wwww",
-          department: "department",
-          date: "2016-05-02",
+          buildCorpName: "北京公司",
+          department: "运维部",
+          jobType: "司机",
+          workerType: "司机",
           name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
+          gender: "男",
+          birthPlace: "河北省张家口",
+          idNum: "6932589565555747888",
+          age: 0,
+          cellPhone: "1234568793",
+          address: "河北省张家口",
+          politicsType: "群众"
         },
         {
-          Company: "wwww",
-          date: "2016-05-04",
+          buildCorpName: "北京公司",
+          department: "运维部",
+          jobType: "司机",
+          workerType: "司机",
           name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1517 弄",
-          zip: 200333
+          gender: "男",
+          birthPlace: "河北省张家口",
+          idNum: "6932589565555747888",
+          age: 0,
+          cellPhone: "1234568793",
+          address: "河北省张家口",
+          politicsType: "群众"
+        },
+         {
+          buildCorpName: "北京公司",
+          department: "运维部",
+          jobType: "司机",
+          workerType: "司机",
+          name: "王小虎",
+          gender: "男",
+          birthPlace: "河北省张家口",
+          idNum: "6932589565555747888",
+          age: 0,
+          cellPhone: "1234568793",
+          address: "河北省张家口",
+          politicsType: "群众"
         },
         {
-          date: "2016-05-01",
+          buildCorpName: "北京公司",
+          department: "运维部",
+          jobType: "司机",
+          workerType: "司机",
           name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1519 弄",
-          zip: 200333
+          gender: "男",
+          birthPlace: "河北省张家口",
+          idNum: "6932589565555747888",
+          age: 0,
+          cellPhone: "1234568793",
+          address: "河北省张家口",
+          politicsType: "群众"
         },
         {
-          Company: "wwww",
-          date: "2016-05-03",
+          buildCorpName: "北京公司",
+          department: "运维部",
+          jobType: "司机",
+          workerType: "司机",
           name: "王小虎",
-          province: "上54海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1516 弄",
-          zip: 200333
-        }
+          gender: "男",
+          birthPlace: "河北省张家口",
+          idNum: "6932589565555747888",
+          age: 0,
+          cellPhone: "1234568793",
+          address: "河北省张家口",
+          politicsType: "群众"
+        },
+        {
+          buildCorpName: "北京公司",
+          department: "运维部",
+          jobType: "司机",
+          workerType: "司机",
+          name: "王小虎",
+          gender: "男",
+          birthPlace: "河北省张家口",
+          idNum: "6932589565555747888",
+          age: 0,
+          cellPhone: "1234568793",
+          address: "河北省张家口",
+          politicsType: "群众"
+        },
       ]
     };
   },

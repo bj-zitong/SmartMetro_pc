@@ -106,18 +106,24 @@
             </el-col>
             <el-col>
               <el-form-item label="附件上传" prop="upload">
-                <el-upload
+                <!-- <el-upload
                   class="upload-demo"
                   action="https://jsonplaceholder.typicode.com/posts/"
                   :on-preview="handlePreview"
                   :on-remove="handleRemove"
                   :file-list="fileList"
+                  :on-change="getFile" 
+                  :on-success="getsuccessFile"
                   list-type="picture"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
-                  <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-                </el-upload>
+                  
+                </el-upload> -->
+                
               </el-form-item>
+              <!-- <input type="file" v-model="item.ProfessionalCode" name="photoFile" /> -->
+              <!-- <input type="text" v-model="item.count" readonly="readonly"/> -->
+              <!-- $("#photoFile")[0].files[0] -->
             </el-col>
           </div>
           <el-col :span="24" style="float:right;height:40px;margin-top:20px">
@@ -293,6 +299,16 @@ export default {
       if (this.form.productGroup.length > 1) {
         this.form.productGroup.splice(index, 1);
       }
+    },
+    getFile(file, fileList){
+      console.log(file.file)
+      console.log(file, fileList)
+    },
+    getsuccessFile(response, file, fileList){
+     console.log(response, file, fileList)
+    },
+    uploadFile(){
+      
     },
     handleChange() {},
     handleButton() {}

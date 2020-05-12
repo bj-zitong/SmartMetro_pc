@@ -253,8 +253,7 @@ export default {
         if (valid) {
           var form = this.$refs["form"].model;
           if (form.id == null) {
-            var idNumState = this.IdentityCode(form.idNum);
-            console.log(idNumState);
+            var idNumState = this.IdentityCode(form.idNum);;
             if (!idNumState) {
               this.$message("身份证号格式不正确！");
               return;
