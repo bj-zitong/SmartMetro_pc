@@ -111,7 +111,7 @@ export default {
           address: "上海市普陀区金沙江路 1518 弄",
           gender: 200333,
           major:'dddd',
-          post:'dddd',
+          post:'dd555dd',
           nativePlace:'dddd',
           numberId:'dddd',
           age:'dddd',

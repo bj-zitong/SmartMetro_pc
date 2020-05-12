@@ -126,7 +126,7 @@ export default {
           Company: "wwww",
           date: "2016-05-03",
           name: "王小虎",
-          province: "上海",
+          province: "上54海",
           city: "普陀区",
           address: "上海市普陀区金沙江路 1516 弄",
           zip: 200333

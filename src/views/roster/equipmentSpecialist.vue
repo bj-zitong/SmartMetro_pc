@@ -81,6 +81,7 @@
 import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
+
 export default {
   name: "echarts",
   data() {
@@ -95,7 +96,7 @@ export default {
           corporateName: "2016-05-02",
           contractName: "王小虎",
           name: "上海",
-          Jobnumber: "普陀区",
+          Jobnumber: "普陀54区",
           address: "上海市普陀区金沙江路 1518 弄",
           gender: 200333,
           major:'dddd',
