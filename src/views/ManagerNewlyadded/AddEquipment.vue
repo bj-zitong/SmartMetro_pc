@@ -10,6 +10,9 @@
           :rules="rules"
           ref="form"
         >
+          <el-form-item prop="id">
+              <el-input v-model="form.id" type="text" hidden></el-input>
+            </el-form-item>
           <el-col :span="10">
             <el-form-item label="公司名称" prop="corporateName">
               <el-input v-model="form.corporateName" placeholder="请输入公司名称"></el-input>
@@ -38,8 +41,8 @@
           <el-col :span="10">
             <el-form-item label="证件类型" prop="documentType">
               <el-select v-model="form.documentType" placeholder="请选择证件类型">
-                <el-option label="身份证" value="id"></el-option>
-                <el-option label="护照" value="passport"></el-option>
+                <el-option label="身份证" value="1"></el-option>
+                <el-option label="护照" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -61,8 +64,8 @@
           <el-col :span="10">
             <el-form-item label="职务" prop="post">
               <el-select v-model="form.post" placeholder="请选择职务">
-                <el-option label="身份证" value="id"></el-option>
-                <el-option label="护照" value="passport"></el-option>
+                <el-option label="身份证" value="1"></el-option>
+                <el-option label="护照" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -73,7 +76,7 @@
           </el-col>
           <div style="float:right">
             <div style="margin-top:50px">
-              <el-button type="primary" round style="background:#ccc;border:1px solid #ccc">取消</el-button>
+              <el-button type="primary" round style="background:#ccc;border:1px solid #ccc" @click="cancel()">取消</el-button>
               <el-button type="primary" round @click="submitForm('form')">提交</el-button>
             </div>
           </div>
@@ -87,9 +90,7 @@ export default {
   data() {
     return {
       labelPosition: "left",
-      form:{
-
-      },
+      form:{},
       rules: {
         corporateName: [
           { required: true, message: "请输入公司名称", trigger: "blur" }
@@ -117,17 +118,92 @@ export default {
         contractName: [
           { required: true, message: "请输入合同名称", trigger: "blur" }
         ]
-      }
+      },
+      id:null
     };
   },
+  activated() {
+        var uid= this.$route.params.id;
+        this.id=uid;
+        if(this.id==0){
+          this.getDeatli(this.id);
+        }
+       console.log('id====',this.id);
+        },
   methods: {
-    submitForm(formName) {
-      console.log(formName);
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert("submit!");
+    cancel(){      
+       this.$router.push({ path: "/roster/equipmentSpecialist" });
+    },
+    //获得详情
+    getDeatli(id){
+      this.form.corporateName="1111";
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/equipment/" +
+        id;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+        }
+      });    
+    },
+    submitForm(form) {
+      this.$refs[form].validate(valid => {
+          if (valid) {
+          var form = this.$refs["form"].model;
+          if (this.id == 0) {
+            var params = JSON.stringify({
+              company: form.corporateName,
+              age: form.age,
+              cellPhone: form.phoneNumber,
+              name: form.name,
+              gender: form.gender,
+              politicsType: form.politicalOutlook,
+              birthPlace: form.nativePlace,
+              duty: form.post,
+              idCardType:form.documentType,
+              idCardCode:form.certificateCode,
+              buildCorpName: form.contractName
+            });
+            var url =
+              "/smart/worker/roster/" +
+              sessionStorage.getItem("userId") +
+              "/equipment";
+            this.http.post(url, params).then(res => {
+              if (res.code == 200) {
+                this.$router.push({ path: "/equipmentSpecialist" });
+              }
+            });
+          } else {
+            var params = JSON.stringify({
+              company: form.corporateName,
+              age: form.age,
+              cellPhone: form.phoneNumber,
+              name: form.name,
+              gender: form.gender,
+              politicsType: form.politicalOutlook,
+              birthPlace: form.nativePlace,
+              duty: form.post,
+              idCardType:form.documentType,
+              idCardCode:form.certificateCode,
+              buildCorpName: form.contractName
+            });
+            ///smart/worker/roster/{userId}/equipment/{id}
+            var url =
+              "/smart/worker/roster/" +
+              sessionStorage.getItem("userId") +
+              "/equipment/" +
+              this.id;
+            this.http.put(url, params).then(res => {
+              if (res.code == 200) {
+               
+              }
+            });
+            
+          }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

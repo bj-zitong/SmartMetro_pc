@@ -20,7 +20,8 @@
         </el-col>
         <el-col>
           <el-form-item label="发放日期" prop="value1">
-            <el-date-picker v-model="form.value1" type="date" placeholder="请选择日期"></el-date-picker>
+            <el-date-picker v-model="form.value1" type="datetime" placeholder="请选择日期"></el-date-picker>
+            <!-- <el-date-picker v-model="form.value1" type="date" placeholder="请选择日期"></el-date-picker> -->
           </el-form-item>
         </el-col>
         <el-col :span="24">

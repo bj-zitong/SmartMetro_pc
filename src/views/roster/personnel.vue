@@ -42,7 +42,7 @@
     <div class="glry_bottonView">
       <el-main class="btnView">
         <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
-        <el-button class="T-H-B-Grey" @click="deleteRowClick">删除</el-button>
+        <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
         <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
         <el-upload
           style="display:inline-block; margin-left: 10px;"
@@ -61,10 +61,9 @@
             :header-cell-style="headClass"
             tooltip-effect="dark"
             style="width: 100%;"
-            @selection-change="handleSelectionChange"
-            border
+            @selection-change="changeFun"
           >
-            <el-table-column fixed type="selection"></el-table-column>
+            <el-table-column fixed type="selection" prop="id" @selection-change="changeFun"></el-table-column>
             <el-table-column prop="date" label="劳务公司" width="150"></el-table-column>
             <el-table-column prop="name" label="姓名" width="120"></el-table-column>
             <el-table-column prop="province" label="性别" width="120"></el-table-column>
@@ -197,14 +196,19 @@
         <el-button type="primary" @click="evaluatDialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
+    <personneldialog v-if="changOrder" ref="turnOrder" />
   </div>
 </template>
 <script>
 import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
+import personneldialog from "./dialog/personneldialog";
 export default {
   name: "echarts",
+  components: {
+    personneldialog
+  },
   data() {
     return {
       formInline: {
@@ -224,6 +228,7 @@ export default {
       tableWidth:'300',
       block: "", //拉黑原因描述,
       rowIndex: null, //选中当前行下标
+       changOrder: false, //查看详情
       fileList: [
         {
           name: "food.jpeg",
@@ -294,6 +299,22 @@ export default {
           });
         });
     },
+    //批量删除
+    deleteAllClick() {
+      handleCofirm("确认删除", "warning")
+        .then(res => {
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     acrosstheClick(index, scope) {
       console.log("mouseover");
       this.tableWidth='400'
@@ -328,6 +349,25 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
+    },
+    //获取删除所有勾选项
+    changeFun() {
+      var ids = new Array();
+      var arrays = this.$refs.multipleTable.selection;
+      for (var i = 0; i < arrays.length; i++) {
+        // 获得id
+        var id = arrays[i].id;
+        ids.push(id);
+      }
+      return ids;
+    },
+    //查看详情
+    handleClick() {
+      let _this = this;
+      _this.changOrder = true;
+      _this.$nextTick(() => {
+        _this.$refs.turnOrder.init();
+      });
     },
     handleExceed(files, fileList) {
       this.$message.warning(

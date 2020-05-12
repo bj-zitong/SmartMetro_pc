@@ -697,9 +697,3 @@ export default {
   }
 }
 </style>
-
-<style lang="stylus">
-.el-dialog__header {
-  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
-}
-</style>
