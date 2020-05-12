@@ -148,6 +148,7 @@
                 action
                 :on-change="handleChange"
                 :file-list="fileList"
+                :auto-upload="false"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
@@ -378,6 +379,7 @@ export default {
     },
     handleChange(file, fileList) {
       this.$refs.form.clearValidate();
+      this.form.photo=fileList;
     }
   }
 };
