@@ -5,27 +5,27 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           
           <!-- 个人基本信息 -->
-          <el-tab-pane label="个人基本信息" name="second" class="information">
-            <personal></personal>
+          <el-tab-pane label="个人基本信息" name="second" class="information" :disabled="personalPersonal">
+            <personal @field="getField"></personal>
           </el-tab-pane>
           <!-- 合同信息 -->
-          <el-tab-pane label="合同信息" name="third" disabled="false">
-            <contract></contract>
+          <el-tab-pane label="合同信息" name="third" :disabled="contractInformation">
+            <contract @field="getContractInformation"></contract>
           </el-tab-pane>
           <!-- 工资记录 -->
-          <el-tab-pane label="工资记录" name="fourth" disabled="false">
-            <payrollRecords></payrollRecords>
+          <el-tab-pane label="工资记录" name="fourth" :disabled="payrollRecords">
+            <payrollRecords @field="getPayrollRecords"></payrollRecords>
           </el-tab-pane>
           <!-- 资质证书 -->
-          <el-tab-pane label="资质证书" name="certificate" disabled="false">
-            <certificate></certificate>
+          <el-tab-pane label="资质证书" name="certificate" :disabled="qualification">
+            <certificate @field="getQualification"></certificate>
           </el-tab-pane>
           <!-- 历史评价记录 -->
-          <el-tab-pane label="历史评价记录" name="evaluate" disabled="false">
-            <evaluationRecord></evaluationRecord>
+          <el-tab-pane label="历史评价记录" name="evaluate" :disabled="History">
+            <evaluationRecord @field="getHistory"></evaluationRecord>
           </el-tab-pane>
           <!-- 来源地消息 -->
-          <el-tab-pane label="来源地消息" name="first" disabled="false">
+          <el-tab-pane label="来源地消息" name="first" :disabled="SourceInformation">
             <asource></asource>
            
           </el-tab-pane>
@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       activeName: "second",
+      allArr:[],
       form: {
         name: "",
         region: "",
@@ -70,6 +71,12 @@ export default {
         resource: "",
         desc: ""
       },
+      personalPersonal:false,//个人基本信息
+      contractInformation:true,//合同信息
+      payrollRecords:true,//工资记录
+      qualification:true,//资质证书
+      History:true,//I历史评价记录
+      SourceInformation:true,//来源地信息,
       //日历选择器
       pickerOptions: {
         disabledDate(time) {
@@ -112,8 +119,46 @@ export default {
       value2: ""
     };
   },
+  mounted(){
+         let getArr= JSON.parse(localStorage.getItem("personalPersonal"))
+         if(getArr!=null){
+            this.contractInformation=false
+            this.activeName='third'
+         }
+          let getContract= JSON.parse(localStorage.getItem("getContractInformation"))
+         if(getContract!=null){
+            this.payrollRecords=false
+         }
+          let getpayroll= JSON.parse(localStorage.getItem("payrollRecords"))
+         if(getpayroll!=null){
+            this.qualification=false
+         }
+          let getqualification= JSON.parse(localStorage.getItem("qualification"))
+         if(getqualification!=null){
+            this.History=false
+         }
+          let getHistoryRecord= JSON.parse(localStorage.getItem("HistoryRecord"))
+         if(getHistoryRecord!=null){
+            this.SourceInformation=false
+         }
+        //  console.log(getArr)
+        //  if(Array.from(new Set(getArr[0])).indexOf('personalPersonal')!=-1){
+        //    this.contractInformation=false
+        //  }
+        //  if(Array.from(new Set(getArr[0])).indexOf('contractInformation')!=-1){
+        //    this.payrollRecords=false
+        //  }
+  },
+  watch:{
+      // allArr(newName, oldName) {
+      //   var arr = []
+      //   arr.push(newName)
+      //   localStorage.setItem('arr',JSON.stringify(arr))
+      // }
+  },
   methods: {
     handleClick(tab, event) {
+
       console.log(tab, event);
     },
     onSubmit() {
@@ -125,7 +170,43 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    handleChange() {}
+    handleChange() {},
+    //个人基本信息
+    getField(v){
+      localStorage.setItem('personalPersonal',JSON.stringify(v))
+      this.contractInformation=false
+      this.activeName='third'
+    },
+
+     //合同信息
+    getContractInformation(v){
+      localStorage.setItem('getContractInformation',JSON.stringify(v))
+      this.payrollRecords=false
+      this.activeName='fourth'
+    },
+    //工资记录
+    getPayrollRecords(v){
+      localStorage.setItem('payrollRecords',JSON.stringify(v))
+      this.activeName='certificate'
+      this.qualification=false
+    },
+    //历史评价记录
+    getQualification(v){
+      localStorage.setItem('qualification',JSON.stringify(v))
+      this.activeName='evaluate'
+      this.History=false
+    },
+    
+    getHistory(v){
+      localStorage.setItem('HistoryRecord',JSON.stringify(v))
+      this.activeName='first'
+      this.SourceInformation=false
+    },
+    // getHistory(v){
+    //    localStorage.setItem('qualification',JSON.stringify(v))
+    //   this.activeName='evaluate'
+    //   this.History=false
+    // }
   }
 };
 </script>

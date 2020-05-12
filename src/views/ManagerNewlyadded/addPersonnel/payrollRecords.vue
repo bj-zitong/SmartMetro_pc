@@ -20,7 +20,7 @@
         </el-col>
         <el-col>
           <el-form-item label="发放日期" prop="value1">
-            <el-date-picker v-model="value1" type="date" placeholder="请选择日期"></el-date-picker>
+            <el-date-picker v-model="form.value1" type="date" placeholder="请选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -47,11 +47,11 @@
             <el-input v-model="form.bankCardNo" placeholder="请输入银行卡号"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
+        <!-- <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
           <el-form-item style="float:right">
-            <el-button type="primary" round style="text-aligin:center">保存</el-button>
+            <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :span="24">
           <el-form-item style="float:right;position:relative;bottom:6px;">
             <el-button type="primary" round class="cancel-style">取消</el-button>
@@ -63,13 +63,20 @@
   </el-container>
 </template>
 <script>
+import { handleCofirm } from "@/utils/confirm";
 export default {
   data() {
     return {
       labelPosition: "left",
       form: {
-        PayrollNo: ""
+        PayrollNo: "",
+        IssuedAmount: "",
+        value1: "",
+        distributionMethod: "",
+        Bank: "",
+        bankCardNo: ""
       },
+      field: "payrollRecords",
       value1: "",
       rules: {
         PayrollNo: [
@@ -113,12 +120,35 @@ export default {
       ]
     };
   },
+  mounted() {
+    if (localStorage.getItem("payrollRecords1") != null) {
+      this.form = JSON.parse(localStorage.getItem("payrollRecords1"));
+    }
+  },
   methods: {
     submitForm(formName) {
       console.log(formName);
       this.$refs[formName].validate(valid => {
+        // localStorage.setItem('payrollRecords',JSON.stringify(this.form))
         if (valid) {
-          alert("submit!");
+          handleCofirm("确认保存吗", "warning")
+            .then(res => {
+              localStorage.setItem(
+                "payrollRecords1",
+                JSON.stringify(this.form)
+              );
+              this.$emit("field", this.field);
+              this.$message({
+                type: "success",
+                message: "保存成功!"
+              });
+            })
+            .catch(err => {
+              this.$message({
+                type: "info",
+                message: "已取消保存"
+              });
+            });
         } else {
           console.log("error submit!!");
           return false;

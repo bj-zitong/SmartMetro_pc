@@ -20,7 +20,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="到京时间" prop="value1">
-            <el-date-picker v-model="value1" type="date" placeholder="请选择到京时间"></el-date-picker>
+            <el-date-picker v-model="form.value1" type="date" placeholder="请选择到京时间"></el-date-picker>
           </el-form-item>
         </el-col>
 
@@ -101,7 +101,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="返场时间" prop="value2">
-            <el-date-picker v-model="value2" type="date" placeholder="返场时间"></el-date-picker>
+            <el-date-picker v-model="form.value2" type="date" placeholder="返场时间"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="16">
@@ -133,7 +133,7 @@
           </p>
         </el-col>
         <div style="float:right">
-          <el-button type="primary" round style="margin-top:60px;margin-left:80px">保存</el-button>
+          <el-button type="primary" round style="margin-top:60px;margin-left:80px" @click="preservationClick">保存</el-button>
           <div style="margin-top:20px">
             <el-button type="primary" round style="background:#ccc;border:1px solid #ccc">取消</el-button>
             <el-button type="primary" round @click="submitForm('form')">提交</el-button>
@@ -144,15 +144,27 @@
   </el-container>
 </template>
 <script>
+import { handleCofirm } from "@/utils/confirm";
 export default {
   data() {
     return {
       labelPosition: "left",
       form: {
-        PayrollNo: ""
+        post:'',
+        returnto:'', 
+        riskLevel:'', 
+        sfyhbjcs:'', 
+        suspectedPerson:'', 
+        Confirmed :'',
+        whetherTo:'', 
+        wayto :'',
+        flightno:'', 
+        isolation:'', 
+        MeetTheConditions:'', 
+        value2:'',  
+        constraints:'',
+        desc:''
       },
-      value1: "",
-      value2:'',//返场时间
       rules: {
         post: [{ required: true, message: "请选择职务", trigger: "blur" }],
         returnto: [
@@ -215,6 +227,11 @@ export default {
       ]
     };
   },
+  mounted() {
+    if (localStorage.getItem("source") != null) {
+      this.form = JSON.parse(localStorage.getItem("source"));
+    }
+  },
   methods: {
     submitForm(formName) {
       console.log(formName);
@@ -226,6 +243,24 @@ export default {
           return false;
         }
       });
+    },
+    //保存
+    preservationClick() {
+      handleCofirm("确认保存吗", "warning")
+        .then(res => {
+          localStorage.setItem("source", JSON.stringify(this.form));
+          this.$emit("field", this.field);
+          this.$message({
+            type: "success",
+            message: "保存成功!"
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消保存"
+          });
+        });
     }
   }
 };

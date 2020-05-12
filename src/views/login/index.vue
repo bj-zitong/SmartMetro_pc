@@ -42,7 +42,11 @@
             </span>
           </el-form-item>
           <el-form-item prop="verifycode">
-            <el-input v-model="loginForm.verifycode" placeholder="请输入验证码" style="width:210px;float:left;margin-top:27px"></el-input>
+            <el-input
+              v-model="loginForm.verifycode"
+              placeholder="请输入验证码"
+              style="width:210px;float:left;margin-top:27px"
+            ></el-input>
             <div class="identifybox">
               <div @click="refreshCode">
                 <s-identify :identifyCode="identifyCode"></s-identify>
@@ -102,7 +106,7 @@ export default {
       }
     };
     const validateVerifycode = (rule, value, callback) => {
-     console.log(value)
+      console.log(value);
       if (value === undefined) {
         callback(new Error("请输入验证码"));
       } else if (value !== this.identifyCode) {
@@ -137,7 +141,7 @@ export default {
           // { required: true, trigger: "blur", validator: validatePwd },
           // { required: true, trigger: "change", validator: validatePwd }
         ],
-        verifycode:[
+        verifycode: [
           //  { required: true, message: "请输入验证码", trigger: "blur" }
           { required: true, trigger: "blur", validator: validateVerifycode }
         ]
@@ -162,7 +166,17 @@ export default {
     },
     // 登录操作
     onLogin() {
-      this.istrue++;
+        var params = JSON.stringify({
+           "account": "123",
+            "password": "123"
+        });
+        this.http.post("/smart/auth/login", params).then(res => {
+        console.log(res)
+          // if (res.code == 200) {
+            // this.$message("注册成功！");
+            // this.$router.push({ path: "/login" });
+          // }
+        });
       this.$refs.pwd.$el.getElementsByTagName("input")[0].blur();
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -280,6 +294,7 @@ export default {
       opacity: 1;
       float: right;
       margin: 45px 30px 0 0;
+
       .rl_title {
         height: 37px;
         font-size: 24px;
@@ -291,6 +306,7 @@ export default {
         text-align: center;
         padding-top: 60px;
       }
+
       .Under_the_line {
         border-bottom: 2px solid #00206a;
         float: left;
@@ -299,8 +315,10 @@ export default {
         text-align: center;
         margin-left: 181px;
       }
+
       .register {
         margin-left: 44px;
+
         .updatePassword {
           font-size: 12px;
           color: rgba(192, 192, 192, 1);
@@ -347,7 +365,6 @@ export default {
       text-align: center;
     }
 
-
     .svg-container {
       position: absolute;
       top: 0;
@@ -388,14 +405,15 @@ export default {
   margin-top: 80px;
 }
 
-    .el-input /deep/ .el-input__inner {
-      // width: 400px;
-      border-top: none;
-      border-left: none;
-      border-right: none;
-      border-radius: 0;
-      border-bottom: 1px solid rgba(225, 225, 225, 1);
-    }
+.el-input /deep/ .el-input__inner {
+  // width: 400px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  border-bottom: 1px solid rgba(225, 225, 225, 1);
+}
+
 #particles {
   width: 100%;
   height: 100%;
@@ -442,8 +460,6 @@ export default {
   color: #409eff;
 }
 
-
-
 .identifyinput /deep/ .el-input__inner {
   width: 210px;
   border-top: none;
@@ -469,9 +485,10 @@ export default {
 .login-form {
   margin-top: 60px;
 }
-.identifybox{
-  margin-top:20px;
-  margin-left :60px;
-  float:left
+
+.identifybox {
+  margin-top: 20px;
+  margin-left: 60px;
+  float: left;
 }
 </style>
