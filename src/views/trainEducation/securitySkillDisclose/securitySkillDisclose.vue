@@ -35,9 +35,9 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-button">
-        <el-button @click="dialogFormVisible = true" type="success">新增</el-button>
-        <el-button @click="deleteAllClick()" type="danger">删除</el-button>
-        <el-button @click="download()" type="primary">下载</el-button>
+        <el-button @click="dialogFormVisible = true" type="success" class="T-H-B-DarkBlue">新增</el-button>
+        <el-button @click="deleteAllClick()" type="danger" class="T-H-B-Grey">删除</el-button>
+        <el-button @click="download()" type="primary" class="T-H-B-Cyan">下载</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -64,11 +64,11 @@
             <el-table-column prop="accessory" label="附件" width="100" fixed="right"></el-table-column>
             <el-table-column label="操作" style="width:500px" fixed="right">
               <template slot-scope="scope">
-                <el-button size="mini" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-                <el-button size="mini" @click="download(scope.row)" type="primary">下载</el-button>
-                <el-button size="mini" @click="handleDelete(scope.row)" type="info">删除</el-button>
-                <el-button size="mini" @click="getDetail(scope.row)" type="success">查看详情</el-button>
-                <el-button size="mini" @click="upload(scope.row)" type="primary">上传</el-button>
+                <el-button size="mini" class="T-R-B-Green" @click="handleEdit(scope.row)" type="success">编辑</el-button>
+                <el-button size="mini" class="T-R-B-Violet" @click="download(scope.row)" type="primary">下载</el-button>
+                <el-button size="mini" class="T-R-B-Grey" @click="handleDelete(scope.row)" type="info">删除</el-button>
+                <el-button size="mini" class="T-R-B-Orange" @click="getDetail(scope.row)" type="success">查看详情</el-button>
+                <el-button size="mini" class="T-R-B-Cyan" @click="upload(scope.row)" type="primary">上传</el-button>
               </template>
             </el-table-column>
           </el-table>

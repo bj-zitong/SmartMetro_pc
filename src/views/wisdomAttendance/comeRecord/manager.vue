@@ -49,7 +49,7 @@
             <el-table-column prop="direction" label="出勤时长"></el-table-column>-->
             <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
-                <el-button type="warning" size="mini" @click="personnelDetailClick(scope.row)">查看详情</el-button>
+                <el-button type="warning" class="T-R-B-Orange" size="mini" @click="personnelDetailClick(scope.row)">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
