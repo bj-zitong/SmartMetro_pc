@@ -4,7 +4,7 @@
         <el-menu class="main-top-box pl30">
             <div class="main-btn-box" style="margin-bottom: 30px; padding-left: 0;">
                 <el-button class="T-H-B-DarkBlue" @click="addOpen = true">添加</el-button>
-                <el-button class="T-H-B-DarkGreen" @click="editPlanClick">编辑</el-button>
+                <el-button class="T-H-B-DarkGreen" @click="editOpen = true, editPlanClick">编辑</el-button>
             </div>
             <div class="plan-list">
                 <el-row :gutter="20">
@@ -60,6 +60,64 @@
             <div style="width: 100%;height: 450px;" id="myChart"></div>
         </el-menu>
         </el-container>
+
+<!-- 添加 -->
+        <el-dialog
+        title="添加计划人员"
+        width="450px"
+        :visible.sync="addOpen"
+        :close-on-click-modal="false"
+        class="popupDialog"
+        :center="true"
+        >
+        <el-form
+            ref="addFormRef"
+            :rules="rulesForm"
+            :model="addPlan"
+            :label-position="labelPosition"
+            class="demo-ruleForm"
+        >
+            <el-form-item prop="laborPersonnelPlan" label="满足全面复工工点劳务人员计划人数：">
+                <el-input v-model.number="addPlan.laborPersonnelPlan"></el-input>
+            </el-form-item>
+            <el-form-item prop="adminPersonnelPlan" label="满足全面复工工点管理人员计划人数：">
+                <el-input v-model.number="addPlan.adminPersonnelPlan"></el-input>
+            </el-form-item>
+            <el-form-item class="btn-box">
+                <el-button class="F-Grey" round @click="cloneAddForm('addFormRef')">取消</el-button>
+                <el-button class="F-Blue" round @click="submitAddForm('addFormRef')">确定</el-button>
+            </el-form-item>
+        </el-form>
+        </el-dialog>
+
+<!-- 编辑 -->
+        <el-dialog
+        title="编辑计划人员"
+        width="450px"
+        :visible.sync="editOpen"
+        :close-on-click-modal="false"
+        class="popupDialog"
+        :center="true"
+        >
+        <el-form
+            ref="editFormRef"
+            :rules="rulesForm"
+            :model="editPlan"
+            :label-position="labelPosition"
+            class="demo-ruleForm"
+        >
+            <el-form-item prop="laborPersonnelPlan" label="满足全面复工工点劳务人员计划人数：">
+                <el-input v-model.number="editPlan.laborPersonnelPlan"></el-input>
+            </el-form-item>
+            <el-form-item prop="adminPersonnelPlan" label="满足全面复工工点管理人员计划人数：">
+                <el-input v-model.number="editPlan.adminPersonnelPlan"></el-input>
+            </el-form-item>
+            <el-form-item class="btn-box">
+                <el-button class="F-Grey" round @click="cloneEditForm('editFormRef')">取消</el-button>
+                <el-button class="F-Blue" round @click="submitEditForm('editFormRef')">确定</el-button>
+            </el-form-item>
+        </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -69,7 +127,23 @@ import { handleCofirm } from "@/utils/confirm";
 export default {
     name: "echarts",
     data() {
-        editPlanClick: {
+        return {
+            labelPosition: 'top',
+            addOpen: false,
+            editOpen: false,
+            addPlan: {},
+            editPlan: {},
+            // 自定义验证规则
+            rulesForm: {
+                laborPersonnelPlan: [
+                    { required: true, message: "请输入劳务人员计划人数", trigger: "blur" },
+                    { type: 'number', message: "人数必须为数字值" }
+                ],
+                adminPersonnelPlan: [
+                    { required: true, message: "请输入管理人员计划人数", trigger: "blur" },
+                    { type: 'number', message: "人数必须为数字值" }
+                ]
+            }
         }
     },
     created: {},
@@ -77,8 +151,80 @@ export default {
         this.drawBar();
     },
     methods: {
-        
-        editPlanClick() {},
+        // 添加
+        submitAddForm(addFormRef) {
+            // 验证
+            this.$refs[addFormRef].validate((valid) => {
+                if (valid) {
+                    // 添加计划人员
+                    var params = JSON.stringify(this.addLabor);
+                    this.http
+                        .post("smart/worker/labour/1/company/management", params)
+                        .then(res => {
+                        if (res.code == 200) {
+                            this.$message({
+                                type: "success",
+                                message: "添加成功!"
+                            });
+                        }
+                        })
+                        .catch(res => {
+                            if(res.code === 404) {
+                                this.$message({
+                                    type: "success",
+                                    message: "预留跳转404页面!"
+                                });
+                            }
+                        });
+                    this.addOpen = false;
+                } else {
+                console.log('error submit!!');
+                return false;
+                }
+            });
+        },
+        // 关闭添加弹窗
+        cloneAddForm(addFormRef) {
+            this.$refs[addFormRef].resetFields();
+            this.addOpen = false;
+        },
+        // 添加
+        submitEditForm(editFormRef) {
+            // 验证
+            this.$refs[editFormRef].validate((valid) => {
+                if (valid) {
+                    // 添加计划人员
+                    var params = JSON.stringify(this.editLabor);
+                    this.http
+                        .post("smart/worker/labour/1/company/management", params)
+                        .then(res => {
+                        if (res.code == 200) {
+                            this.$message({
+                                type: "success",
+                                message: "修改成功!"
+                            });
+                        }
+                        })
+                        .catch(res => {
+                            if(res.code === 404) {
+                                this.$message({
+                                    type: "success",
+                                    message: "预留跳转404页面!"
+                                });
+                            }
+                        });
+                    this.editOpen = false;
+                } else {
+                console.log('error submit!!');
+                return false;
+                }
+            });
+        },
+        // 关闭编辑弹窗
+        cloneEditForm(editFormRef) {
+            this.$refs[editFormRef].resetFields();
+            this.editOpen = false;
+        },
         drawBar() {
         //  获取echarts
         let myChart = this.$echarts.init(document.getElementById("myChart"));
@@ -241,4 +387,8 @@ export default {
 }
 </style>
 
-<style lang="stylus"></style>
+<style lang="stylus">
+.btn-box {
+    padding-left:100px;
+}
+</style>

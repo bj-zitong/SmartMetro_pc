@@ -161,7 +161,7 @@ T-H-B-DarkGreen 深绿色
   border: none;
 }
 
-.T-H-B-Cyan, .T-H-B-Cyan{
+.T-H-B-Cyan{
   background:linear-gradient(180deg,rgba(58,222,214,1) 0%,rgba(0,150,143,1) 100%);
   color:rgba(255,255,255,1);
   border: none;
@@ -171,7 +171,7 @@ T-H-B-DarkGreen 深绿色
   color:rgba(255,255,255,1);
   border: none;
 }
-.T-H-B-Cyan:active, .T-H-B-Cyan:active{
+.T-H-B-Cyan:active{
   background:linear-gradient(180deg,rgb(72, 226, 218) 0%,rgb(2, 172, 163) 100%);
   color:rgba(255,255,255,1);
   border: none;

@@ -42,7 +42,7 @@
     <div class="glry_bottonView">
       <el-main class="btnView">
         <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
-        <el-button class="T-H-B-Grey" @click="deleteRowClick">删除</el-button>
+        <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
         <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
         <el-upload
           style="display:inline-block; margin-left: 10px;"
@@ -61,9 +61,9 @@
             :header-cell-style="headClass"
             tooltip-effect="dark"
             style="width: 100%;"
-            @selection-change="handleSelectionChange"
+            @selection-change="changeFun"
           >
-            <el-table-column fixed type="selection"></el-table-column>
+            <el-table-column fixed type="selection" prop="id" @selection-change="changeFun"></el-table-column>
             <el-table-column prop="date" label="劳务公司" width="150"></el-table-column>
             <el-table-column prop="name" label="姓名" width="120"></el-table-column>
             <el-table-column prop="province" label="性别" width="120"></el-table-column>
@@ -123,6 +123,7 @@
                     class="F-black btn"
                   >退场</el-button>
                   <el-button
+                    class="T-R-B-Orange"
                     @click="handleClick(scope.row)"
                     type="warning"
                   size="mini"
@@ -298,6 +299,22 @@ export default {
           });
         });
     },
+    //批量删除
+    deleteAllClick() {
+      handleCofirm("确认删除", "warning")
+        .then(res => {
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     acrosstheClick(index, scope) {
       console.log("mouseover");
       this.tableWidth='400'
@@ -332,6 +349,17 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
+    },
+    //获取删除所有勾选项
+    changeFun() {
+      var ids = new Array();
+      var arrays = this.$refs.multipleTable.selection;
+      for (var i = 0; i < arrays.length; i++) {
+        // 获得id
+        var id = arrays[i].id;
+        ids.push(id);
+      }
+      return ids;
     },
     //查看详情
     handleClick() {

@@ -42,7 +42,7 @@
               <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
                 <el-button size="mini" @click="handleDelete(scope.row)" class="T-R-B-Grey">删除</el-button>
-                <el-button size="mini" @click="getDetail(scope.row)" class="T-R-B-Violet">查看详情</el-button>
+                <el-button size="mini" @click="getDetail(scope.row)" class="T-R-B-Orange">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -696,11 +696,5 @@ export default {
       margin-top: 30px;
     }
   }
-}
-</style>
-
-<style lang="stylus">
-.el-dialog__header {
-  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
 }
 </style>

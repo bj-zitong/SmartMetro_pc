@@ -29,7 +29,6 @@
             <el-menu class="main-con-box">
 <!-- 按钮 -->
                 <div class="main-btn-box">
-                    <el-button class="T-H-B-DarkBlue" @click="addOpen = true">新增</el-button>
                     <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
                     <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
                     <el-upload
@@ -82,7 +81,7 @@
                             @click="submitRowClick(scope.$index, scope.row)"
                         >提交</el-button>
                         <el-button
-                            class="T-R-B-Violet"
+                            class="T-R-B-Orange"
                             size="mini"
                             @click="seeDetailsRowClick(scope.$index, scope.row)"
                         >查看详情</el-button>
@@ -106,91 +105,6 @@
             </el-menu>
         </el-container>
 
-<!-- 添加 -->
-        <el-dialog
-        title="添加来源地统计"
-        width="450px"
-        :visible.sync="addOpen"
-        :close-on-click-modal="false"
-        class="popupDialog"
-        :center="true"
-        >
-            <el-form
-                ref="addFormRef"
-                :rules="rulesForm"
-                :model="addSource"
-                label-width="120px"
-                class="demo-ruleForm"
-            >
-                <el-form-item prop="name" label="姓名">
-                    <el-input v-model="addSource.name" placeholder="请输入姓名"></el-input>
-                </el-form-item>
-                <el-form-item prop="belongLabor" label="所属劳务队">
-                    <el-select v-model="addSource.belongLabor" placeholder="请选择所属劳务队">
-                        <el-option v-for="(item, index) in addSource.belongLabor" :key="index" label="item.name" value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="profession" label="工种">
-                    <el-select v-model="addSource.profession" placeholder="请选择工种">
-                        <el-option v-for="(item, index) in addSource.profession" :key="index" label="item.name" value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="nativePlace" label="籍贯">
-                    <el-select v-model="addSource.nativePlace" placeholder="请选择籍贯">
-                        <el-option v-for="(item, index) in addSource.nativePlace" :key="index" label="item.name" value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="todayTem" label="今日体温">
-                    <el-input v-model="addSource.todayTem" placeholder="请输入体温"></el-input>
-                </el-form-item>
-                <el-form-item prop="bjReturn" label="返京地">
-                    <el-select v-model="addSource.bjReturn" placeholder="请选择返京地">
-                        <el-option v-for="(item, index) in addSource.bjReturn" :key="index" label="item.name" value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="bjRiskdegree" label="返京地风险程度">
-                    <el-select v-model="addSource.bjRiskdegree" placeholder="请选择风险程度">
-                        <el-option label="低" value="0"></el-option>
-                        <el-option label="中" value="1"></el-option>
-                        <el-option label="高" value="2"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="address" label="暂住地址">
-                    <el-select v-model="addSource.address" placeholder="请选择暂住地址">
-                        <el-option v-for="(item, index) in addSource.address" :key="index" label="item.name" value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="barrier" label="隔离情况">
-                    <el-select v-model="addSource.barrier" placeholder="请选择隔离情况">
-                        <el-option label="满足隔离条件" value="0"></el-option>
-                        <el-option label="未满足隔离条件" value="1"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="returnDate" label="返场时间">
-                    <el-date-picker
-                        v-model="addSource.returnDate"
-                        type="date"
-                        placeholder="选择日期"
-                        :editable="false"
-                    >
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item prop="createDate" label="创建日期">
-                    <el-date-picker
-                        v-model="addSource.createDate"
-                        type="date"
-                        placeholder="选择日期"
-                        :editable="false"
-                    >
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item>
-                    <el-button class="F-Grey" round @click="cloneAddForm('addFormRef')">取消</el-button>
-                    <el-button class="F-Blue" round @click="submitAddForm('addFormRef')">确定</el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog>
-
 <!-- 编辑 -->
         <el-dialog
         title="编辑来源地统计"
@@ -201,7 +115,7 @@
         :center="true"
         >
             <el-form
-                ref="addFormRef"
+                ref="editFormRef"
                 :rules="rulesForm"
                 :model="editSource"
                 label-width="120px"
@@ -321,22 +235,6 @@ export default {
             screenForm: {
                 degree: "",
                 returnDate: ""
-            },
-            // 添加初始化
-            addSource: {
-                id: null,
-                name: "",
-                belongLabor: "",
-                profession: "",
-                nativePlace: "",
-                todayTem: "",
-                bjReturn: "",
-                bjRiskdegree: "",
-                address: "",
-                barrier: "",
-                returnDate: "",
-                status: "",
-                createDate: ""
             },
             // 编辑初始化
             editSource: {
@@ -502,43 +400,6 @@ export default {
             .then(res => {
                 console.log(res)
             })
-        },
-        // 添加
-        submitAddForm(addFormRef) {
-        // 验证
-            this.$refs[addFormRef].validate((valid) => {
-                if (valid) {
-                    // 添加来源地
-                    var params = JSON.stringify(this.addSource);
-                    this.http
-                        .post("smart/worker/labour/1/company/management", params)
-                        .then(res => {
-                        if (res.code == 200) {
-                            this.$message({
-                                type: "success",
-                                message: "添加成功!"
-                            });
-                        }
-                        })
-                        .catch(res => {
-                            if(res.code === 404) {
-                                this.$message({
-                                    type: "success",
-                                    message: "预留跳转404页面!"
-                                });
-                            }
-                        });
-                    this.addOpen = false;
-                } else {
-                console.log('error submit!!');
-                return false;
-                }
-            });
-        },
-        // 关闭添加弹窗
-        cloneAddForm(addFormRef) {
-        this.$refs[addFormRef].resetFields();
-        this.addOpen = false;
         },
     //  批量删除
         deleteBatchClick() {

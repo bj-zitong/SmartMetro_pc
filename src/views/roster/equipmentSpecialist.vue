@@ -71,7 +71,7 @@
                   @click="deleteRowClick(scope.row)"
                 >删除</el-button>
                 <el-button
-                  class="T-R-B-Violet"
+                  class="T-R-B-Orange"
                   size="mini"
                   @click="detailsRowClick(scope.$index, scope.row)"
                 >查看详情</el-button>
