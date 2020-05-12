@@ -112,7 +112,7 @@ export default {
   },
   watch: {
     sideBarData(newV,oldV) {
-        if(newV.name=="工友须知"){
+        if(newV.name=="工友须知" || newV.name=="开复工管理"){
            this.hideSidebar='display:none'
         }else{
            this.hideSidebar='display:block'

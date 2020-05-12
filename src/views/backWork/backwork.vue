@@ -563,6 +563,9 @@ export default {
 .screen-form-h {
   height: 36px;
 }
+.app-wrapper{
+    padding-left: 0;
+    padding-top: 140px;
+}
 </style>
 
-<style lang="stylus"></style>
