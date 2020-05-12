@@ -42,6 +42,7 @@
               <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
                 <el-button size="mini" @click="handleDelete(scope.row)" class="T-R-B-Grey">删除</el-button>
+                <el-button size="mini" @click="getDetail(scope.row)" class="T-R-B-Violet">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -150,6 +151,27 @@
         </div>
       </el-dialog>
     </div>
+    <!-- 详情-->
+    <el-dialog
+      :visible.sync="dialogFormVisibleDetail"
+      width="300px"
+      title="外来人员详情"
+      :show-close="false"
+      class="popupDialog"
+      :center="true"
+    >
+      <p>姓名 ： xxxxx</p>
+      <p>身份证号 ： xxxxx</p>
+      <p>电话 ： xxxxx</p>
+      <p>来访单位 ： xxxxx</p>
+      <p>被访部门 ： xxxxx</p>
+      <p>被访人姓名 ： xxxxx</p>
+      <p>来访事由 ： xxxxx</p>
+      <p>来访时间 ： xxxxx</p>
+      <div class="dialog-footer" style="text-align:center;margin-top:20px;">
+        <el-button @click="dialogFormVisibleDetail = false" class="F-Grey" round>取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -159,6 +181,7 @@ export default {
     return {
       token: null, // token
       dialogFormVisible: false,
+      dialogFormVisibleDetail: false,
       // 动态数据
       tableData: [],
       page: 1, // 初始页
@@ -226,6 +249,22 @@ export default {
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
+    getDetail(row) {
+      var id = row.id;
+      this.form.id = id;
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/outlander/" +
+        id;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+        }
+      });
+      this.dialogFormVisibleDetail = true;
+    },
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
       this.pageSize = size; //每页下拉显示数据
@@ -258,7 +297,7 @@ export default {
         if (valid) {
           var form = this.$refs["form"].model;
           if (form.id == null) {
-            var idNumState = this.IdentityCode(form.idNum);;
+            var idNumState = this.IdentityCode(form.idNum);
             if (!idNumState) {
               this.$message("身份证号格式不正确！");
               return;
