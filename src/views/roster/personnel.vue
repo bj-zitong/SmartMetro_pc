@@ -123,6 +123,7 @@
                     class="F-black btn"
                   >退场</el-button>
                   <el-button
+                    class="T-R-B-Orange"
                     @click="handleClick(scope.row)"
                     type="warning"
                   size="mini"
