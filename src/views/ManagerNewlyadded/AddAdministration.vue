@@ -15,7 +15,7 @@
               <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="8">
+          <el-col :span="8">
             <el-form-item label="性别" prop="gender" class="el-form-item">
               <el-input v-model="form.gender" placeholder="请输入性别"></el-input>
             </el-form-item>
@@ -49,8 +49,8 @@
           <el-col :span="8">
             <el-form-item label="岗位/职责" prop="jobType" class="el-form-item">
               <el-select v-model="form.jobType" placeholder="请选择岗位/职责">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+                <el-option label="区域一" value="区域一"></el-option>
+                <el-option label="区域二" value="区域二"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -77,32 +77,32 @@
           <el-col :span="8">
             <el-form-item label="婚姻状况" prop="maritalStatus">
               <el-select v-model="form.maritalStatus" placeholder="请选择婚姻状况">
-                <el-option label="已婚" value="yihun"></el-option>
-                <el-option label="未婚" value="weihun"></el-option>
-                <el-option label="离异" value="liyi"></el-option>
-                <el-option label="丧偶" value="sango"></el-option>
+                <el-option label="已婚" value="已婚"></el-option>
+                <el-option label="未婚" value="未婚"></el-option>
+                <el-option label="离异" value="离异"></el-option>
+                <el-option label="丧偶" value="丧偶"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="学位" prop="degree">
               <el-select v-model="form.degree" placeholder="请选择学位">
-                <el-option label="身份证" value="sfz"></el-option>
-                <el-option label="护照" value="hz"></el-option>
+                <el-option label="身份证" value="身份证"></el-option>
+                <el-option label="护照" value="护照"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="文化程度" prop="cultureLevelType">
               <el-select v-model="form.cultureLevelType" placeholder="请选择文化程度">
-                <el-option label="大专" value="dazhuan"></el-option>
-                <el-option label="小学" value="xiaoxue"></el-option>
-                <el-option label="初中" value="chuzhong"></el-option>
-                <el-option label="高中" value="gaozhong"></el-option>
-                <el-option label="本科" value="benke"></el-option>
-                <el-option label="研究生" value="yjs"></el-option>
-                <el-option label="博士" value="boshi"></el-option>
-                <el-option label="硕士" value="shuoshi"></el-option>
+                <el-option label="大专" value="大专"></el-option>
+                <el-option label="小学" value="小学"></el-option>
+                <el-option label="初中" value="初中"></el-option>
+                <el-option label="高中" value="高中"></el-option>
+                <el-option label="本科" value="本科"></el-option>
+                <el-option label="研究生" value="研究生"></el-option>
+                <el-option label="博士" value="博士"></el-option>
+                <el-option label="硕士" value="硕士"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -114,33 +114,40 @@
           <el-col :span="8">
             <el-form-item label="居住证" prop="idCardType">
               <el-select v-model="form.idCardType" placeholder="持证上岗">
-                <el-option label="是" value="yes"></el-option>
-                <el-option label="否" value="no"></el-option>
+                <el-option label="是" value="是"></el-option>
+                <el-option label="否" value="否"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="居住证办理日期" prop="residencePermitDate">
-              <el-date-picker v-model="form.residencePermitDate" type="date" placeholder="请选择日期"></el-date-picker>
+              <!-- <el-date-picker v-model="form.residencePermitDate" type="date" placeholder="请选择日期"></el-date-picker> -->
+               <el-date-picker
+                v-model="form.residencePermitDate"
+                type="datetime"
+                placeholder="请选择居住证办理日期"
+                default-time="12:00:00"
+                value-format="yyyy-MM-dd HH:mm:ss"
+              ></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="人员类型" prop="workerType">
               <el-select v-model="form.workerType" placeholder="请选择人员类型">
-                <el-option label="企业自有职工" value="qiye"></el-option>
-                <el-option label="劳务派遣人员" value="laowu"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>-->
-          <el-col :span="8">
-            <el-form-item label="政治面貌" prop="politicsType">
-              <el-select v-model="form.politicsType" placeholder="请选择政治面貌">
-                <el-option label="企业自有职工" value="qiye"></el-option>
-                <el-option label="劳务派遣人员" value="laowu"></el-option>
+                <el-option label="企业自有职工" value="企业自有职工"></el-option>
+                <el-option label="劳务派遣人员" value="劳务派遣人员"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
+            <el-form-item label="政治面貌" prop="politicsType">
+              <el-select v-model="form.politicsType" placeholder="请选择政治面貌">
+                <el-option label="企业自有职工" value="企业自有职工"></el-option>
+                <el-option label="劳务派遣人员" value="劳务派遣人员"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <!-- <el-col :span="8">
             <el-form-item label="一寸照片" prop="photo">
               <el-upload
                 class="upload-demo"
@@ -152,7 +159,7 @@
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
             </el-form-item>
-          </el-col> 
+          </el-col>-->
           <el-col :span="24">
             <el-form-item label="角色" prop="roleIds">
               <el-checkbox-group v-model="form.roleIds">
@@ -194,23 +201,23 @@ export default {
       labelPosition: "left",
       form: {
         name: "",
-        // gender: "",
-        // age: "",
-        // nation: "",
-        // cellPhone: "",
-        // department: "",
-        // buildCorpName: "",
-        // jobType: "",
-        // urgentLinkMan: "",
-        // urgentLinkManPhone: "",
-        // address: "",
-        // birthPlace: "",
-        // degree: "",
-        // cultureLevelType: "",
-        // idCardCode: "",
-        // residencePermitDate: "",
-        // workerType: "",
-        // politicsType: "",
+        gender: "",
+        age: "",
+        nation: "",
+        cellPhone: "",
+        department: "",
+        buildCorpName: "",
+        jobType: "",
+        urgentLinkMan: "",
+        urgentLinkManPhone: "",
+        address: "",
+        birthPlace: "",
+        degree: "",
+        cultureLevelType: "",
+        idCardCode: "",
+        residencePermitDate: "",
+        workerType: "",
+        politicsType: "",
         roleIds: [],
         photo: ""
       },
@@ -338,38 +345,53 @@ export default {
         });
     },
     submitForm(formName) {
-      // console.log(this.$refs[formName])
-      // console.log(formName);
       this.$refs[formName].validate(valid => {
-        // this.rules.photo[0].required = false;
         if (valid) {
-          // console.log(this.$refs["form"].model)
-          // var form = this.$refs["form"].model;
-
-          handleCofirm("确认添加吗？", "warning")
-            .then(res => {
-              this.$message({
-                type: "success",
-                message: "添加成功!"
-              });
-              // var params = JSON.stringify({
-              //   name: form.userName,
-              //   phone: form.phone,
-              //   idNum: form.idNum,
-              //   company: form.company,
-              //   intervieweeDepartmentId: form.profession,
-              //   busNum: form.carNum,
-              //   interviewee: form.interviewee,
-              //   visitReason: form.intervieweeReason,
-              //   visitTime: form.intervieweeDate
-              // });
-            })
-            .catch(err => {
-              this.$message({
-                type: "info",
-                message: "已取消添加"
-              });
+          var form = this.$refs["form"].model;
+          handleCofirm("确认添加吗？", "warning").then(res => {
+            this.$message({
+              type: "success",
+              message: "添加成功!"
             });
+            var params = JSON.stringify({
+              name: form.name,
+              gender: form.gender,
+              age: form.age,
+              nation: form.nation,
+              cellPhone: form.cellPhone,
+              department: form.department,
+              buildCorpName: form.buildCorpName,
+              jobType: form.jobType,
+              urgentLinkMan: form.urgentLinkMan,
+              urgentLinkManPhone: form.urgentLinkManPhone,
+              address: form.address,
+              birthPlace: form.birthPlace,
+              degree: form.degree,
+              cultureLevelType: form.cultureLevelType,
+              idCardCode: form.idCardCode,
+              intervieweeDepartmentId: form.profession,
+              residencePermitDate: form.residencePermitDate,
+              workerType: form.workerType,
+              politicsType: form.politicsType,
+              photo: form.photo
+            });
+            this.$router.push({ path: "/roster/manager" });
+            var url =
+              "/smart/worker/roster/" +
+              sessionStorage.getItem("userId") +
+              "/manager";
+            this.http.post(url, params).then(res => {
+              if (res.code == 200) {
+                 
+              }
+            });
+          });
+          console.log(params).catch(err => {
+            this.$message({
+              type: "info",
+              message: "已取消添加"
+            });
+          });
         } else {
           console.log("error submit!!");
           return false;

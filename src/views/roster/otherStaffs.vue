@@ -37,8 +37,7 @@
             :header-cell-style="headClass"
             tooltip-effect="dark"
             style="width: 97%;"
-            @selection-change="handleSelectionChange"
-            border>
+            @selection-change="handleSelectionChange">
             <el-table-column fixed type="selection"></el-table-column>
              <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="Jobnumber" label="工号"></el-table-column>
@@ -73,14 +72,19 @@
         <el-pagination background layout="prev, pager, next" :total="1000" class="paging"></el-pagination>
       </el-main>
     </div>
+     <otherStaffsdialog v-if="changOrder" ref="turnOrder" />
   </div>
 </template>
 <script>
 import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
+import otherStaffsdialog from "./dialog/otherStaffsdialog";
 export default {
   name: "echarts",
+  components: {
+    otherStaffsdialog
+  },
   data() {
     return {
       headClass: headClass,
@@ -88,6 +92,7 @@ export default {
         major: "",
         name: ""
       },
+      changOrder: false, //查看详情
       tableData: [
         {
           corporateName: "2016-05-02",
@@ -157,7 +162,14 @@ export default {
             message: "已取消删除"
           });
         });
-    }
+    },
+      detailsRowClick() {
+      let _this = this;
+      _this.changOrder = true;
+      _this.$nextTick(() => {
+        _this.$refs.turnOrder.init();
+      });
+    },
   }
 };
 </script>

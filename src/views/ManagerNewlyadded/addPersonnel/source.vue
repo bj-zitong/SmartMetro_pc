@@ -101,7 +101,8 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="返场时间" prop="value2">
-            <el-date-picker v-model="form.value2" type="date" placeholder="返场时间"></el-date-picker>
+             <el-date-picker v-model="form.value2" type="datetime" placeholder="请选择返场时间"></el-date-picker>
+            <!-- <el-date-picker v-model="form.value2" type="date" placeholder="返场时间"></el-date-picker> -->
           </el-form-item>
         </el-col>
         <el-col :span="16">
