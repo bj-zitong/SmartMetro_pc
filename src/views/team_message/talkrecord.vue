@@ -76,7 +76,7 @@
       </el-main>
     </div>
     <!--编辑讲话-->
-    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true">
+    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true" :show-close="false">
       <el-form
         method="post"
         enctype="multipart/form-data"

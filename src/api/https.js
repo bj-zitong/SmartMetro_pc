@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 // import router from '../router';
-let localhosts = 'http://192.168.1.101:9001';   //请求的后台域名
+let localhosts = 'http://localhost:8080';   //请求的后台域名
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
     return config
 },error =>{

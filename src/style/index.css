@@ -192,6 +192,9 @@ T-R-B-BlackishGreen 墨绿色
 T-R-B-Orange        橘色
 T-R-B-DarkViolet    暗紫色
 T-R-B-Blue  蓝色
+T-R-B-Red 红色
+T-R-B-Yellow 黄色
+
 */
 
 .T-R-B-Green{
@@ -302,6 +305,39 @@ T-R-B-Blue  蓝色
 }
 .T-R-B-Blue:active{
   background:rgba(74,141,240,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-R-B-Red{
+  background:rgba(219,36,28,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Red:hover, .T-R-B-Red:focus{
+  background:rgba(219,36,28,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Red:active{
+  background:rgba(219,36,28,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-R-B-Yellow{
+  background:rgba(242,224,58,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
+.T-R-B-Yellow:hover, .T-R-B-Yellow:focus{
+  background:rgba(242,224,58,1);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-R-B-Yellow:active{
+  background:rgba(242,224,58,1);
   color:rgba(255,255,255,1);
   border: none;
 }

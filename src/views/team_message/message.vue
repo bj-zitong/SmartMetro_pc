@@ -50,14 +50,14 @@
       </div>
     </div>
     <!-- 新增 修改-->
-    <el-dialog :visible.sync="dialogFormVisible" width="20%" title="新增班组" :center="true">
+    <el-dialog :visible.sync="dialogFormVisible" width="20%" title="新增班组" :center="true" :show-close="false">
       <el-form
         method="post"
         enctype="multipart/form-data"
         ref="formClass"
         :rules="formRules"
         :model="formClass"
-        action="http://192.168.1.164:8001/auth/user/baseUser"
+        action="http://192.168.1.164:8001/auth/user/baseUser" 
       >
         <el-form-item prop="id">
           <el-input v-model="formClass.id" type="text" hidden></el-input>
@@ -74,9 +74,15 @@
         <el-form-item prop="groupLeader">
           <el-input v-model="formClass.groupLeader" placeholder="班组长"></el-input>
         </el-form-item>
-        <el-select v-model="formClass.profession" placeholder="请选择班组类型" @change="selectProfession">
-          <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-        </el-select>
+        <el-form-item prop="profession" label="班组类型">
+          <el-select
+            v-model="formClass.profession"
+            placeholder="请选择班组类型"
+            @change="selectProfession"
+          >
+            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
         <div class="dialog-footer">
           <el-button @click="dialogFormVisible = false" round class="F-Grey">取 消</el-button>
           <el-button
@@ -89,7 +95,7 @@
       </el-form>
     </el-dialog>
     <!-- 评价-->
-    <el-dialog title="评价" :visible.sync="dialogVisible" width="20%" :center="true" top="33vh">
+    <el-dialog title="评价" :visible.sync="dialogVisible" width="20%" :center="true" top="33vh" :show-close="false">
       <span slot="footer" class="dialog-footer">
         <el-select
           v-model="evaluated"
@@ -111,7 +117,7 @@
       </span>
     </el-dialog>
     <!--新增讲话-->
-    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true">
+    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true" :show-close="false">
       <div>
         <el-form
           method="post"
@@ -236,7 +242,7 @@ export default {
           { required: true, message: "请输入班组长", trigger: "blur" }
         ],
         profession: [
-          { required: true, message: "请选择班组类型", trigger: "blur" }
+          { required: true, message: "请选择班组类型", trigger: "change" }
         ]
       },
       options: [
@@ -503,10 +509,6 @@ export default {
           //新增 id为空
           var form = this.$refs[formClass].model;
           if (form.id == null) {
-            if (!form.profession) {
-              this.$message("请选择班组类型");
-              return false;
-            }
             var params = JSON.stringify({
               projectName: form.projectName,
               teamName: form.groupName,
@@ -526,10 +528,6 @@ export default {
           }
           //修改
           else {
-            if (!form.profession) {
-              this.$message("请选择班组类型");
-              return false;
-            }
             var params = JSON.stringify({
               projectName: form.projectName,
               teamName: form.groupName,
@@ -624,7 +622,7 @@ export default {
               this.outerVisible = false;
             }
           });
-        }else{
+        } else {
           return false;
         }
       });
