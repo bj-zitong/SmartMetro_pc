@@ -191,10 +191,10 @@ T-R-B-Violet        紫色
 T-R-B-BlackishGreen 墨绿色
 T-R-B-Orange        橘色
 T-R-B-DarkViolet    暗紫色
-T-R-B-Blue  蓝色
-T-R-B-Red 红色
-T-R-B-Yellow 黄色
-
+T-R-B-Blue          蓝色
+T-R-B-Red           红色
+T-R-B-Yellow        黄色
+T-R-B-Cyan          青色
 */
 
 .T-R-B-Green{
@@ -341,7 +341,24 @@ T-R-B-Yellow 黄色
   color:rgba(255,255,255,1);
   border: none;
 }
+.T-R-B-Cyan {
+  background: rgb(29, 187, 179);
+  color: rgba(255, 255, 255, 1);
+  border: none;
+}
 
+.T-R-B-Cyan:hover,
+.T-R-B-Cyan:focus {
+  background: rgb(50, 219, 211);
+  color: rgba(255, 255, 255, 1);
+  border: none;
+}
+
+.T-R-B-Cyan:active {
+  background: rgb(29, 187, 179);
+  color: rgba(255, 255, 255, 1);
+  border: none;
+}
 /*
 表单按钮
 F 表单 -颜色

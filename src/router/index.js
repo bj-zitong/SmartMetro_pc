@@ -463,14 +463,14 @@ export const constantRouterMap = [
                 },
                 children: [
                     {
-                        path: '/dd',
-                        name: 'dd',
+                        path: '/lineUpperTrain',
+                        name: 'lineUpperTrain',
                         component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
                         meta: { title: '线上培训记录', icon: '', enable: "Y", parent: '培训教育' }
                     },
                     {
-                        path: '/ss',
-                        name: 'ss',
+                        path: '/lineLowerTrain',
+                        name: 'lineLowerTrain',
                         component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
                         meta: { title: '线下视频培训记录', icon: '', enable: "Y", parent: '培训教育' }
                     }
@@ -700,6 +700,47 @@ export const constantRouterMap = [
                 name: 'AddAdministration',
                 component: () => import('@/views/ManagerNewlyadded/AddAdministration'),
                 meta: { icon: '', title: '添加管理人员' },
+            }
+        ]
+    },
+    //疫情管理
+    {
+        path: '/sicknessManage',
+        name: '疫情管理',
+        component: Layout,
+        meta: {
+            icon: '',
+            title: '疫情管理',
+            enable: "Y",
+            parent: '疫情管理'
+        },
+        redirect: '/sourceStatistics',
+        children: [
+            {
+                path: '/sourceStatistics',
+                name: 'sourceStatistics',
+                component: () => import('@/views/sicknessManage/sourceStatistics/sourceStatistics'),
+                meta: {
+                    title: '来源地统计',
+                    icon: '../../static/image/technology.png',
+                    AfterIcon: '../../static/image/technology.png',
+                    enable: "Y",
+                    parent: '疫情管理'
+                },
+                children: []
+            },
+            {
+                path: '/plan',
+                name: 'plan',
+                component: () => import('@/views/sicknessManage/plan/plan'),
+                meta: {
+                    title: '计划',
+                    icon: '../../static/image/security.png',
+                    AfterIcon: '../../static/image/security.png',
+                    enable: "Y",
+                    parent: '疫情管理'
+                },
+                children: []
             }
         ]
     },
