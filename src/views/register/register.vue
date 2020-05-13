@@ -1,7 +1,10 @@
 <template>
   <div class="contain">
     <div class="contain-title">
-      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin-top:0px;float:left;margin-left:7px" />
+      <img
+        src="../../../resource/logo.png"
+        style="width:30px;height:30px;margin-top:0px;float:left;margin-left:10px"
+      />
       <span class="register-head">城市轨道交通智慧工地管理系统</span>
       <!--表单-->
       <div class="container-head">
@@ -67,18 +70,31 @@
               </el-input>
             </el-form-item>
             <!--验证码-->
-            <div>
+            <!-- <div>
               <el-form-item prop="authCode" style="width:100px;float:left">
                 <el-input type="text" v-model="form.authCode" placeholder="验证码"></el-input>
               </el-form-item>
-              <el-form-item style="width:100px;float:left;margin-left:15px;background-color:blue">
-                <el-input type="text" v-model="form.getCode" style="color:blue"></el-input>
+               <div class="identifybox">
+              <div @click="refreshCode">
+                <s-identify :identifyCode="identifyCode"></s-identify>
+              </div>
+              <el-button @click="refreshCode" type="text" class="textbtn">
+                <img src="../../../static/image/shuaxin.png" class="textbtnImg" />
+              </el-button>
+            </div>
+            </div>-->
+            <div>
+              <el-form-item prop="authCode" style="width:100px;float:left;margin-right:20px;">
+                <el-input v-model="form.authCode" placeholder="验证码"></el-input>
               </el-form-item>
-              <img
-                src="../../../resource/shuaxin.png"
-                style="width:16px;height:16px;margin-left:10px;margin-top:10px;"
-                @click="getNewCode()"
-              />
+              <!-- <div class="identifybox"> -->
+              <div @click="refreshCode" style="margin-left:20px;">
+                <s-identify :identifyCode="identifyCode"></s-identify>
+              </div>
+              <el-button @click="refreshCode" type="text" class="textbtn">
+                <img src="../../../static/image/shuaxin.png" class="textbtnImg" />
+              </el-button>
+              <!-- </div> -->
             </div>
             <el-button type="primary" class="button-end" @click="register('form')">
               <span class="button-end-title">点击注册</span>
@@ -96,9 +112,27 @@
   </div>
 </template>
 <script>
+import SIdentify from "../login/securityCode/securityCode";
 export default {
+  components: {
+    SIdentify
+  },
   data() {
+    const validateVerifycode = (rule, value, callback) => {
+      console.log(value);
+      if (value === undefined) {
+        callback(new Error("请输入验证码"));
+      } else if (value !== this.identifyCode) {
+        console.log("validateVerifycode:", value);
+        callback(new Error("验证码不正确!"));
+      } else {
+        callback();
+      }
+    };
     return {
+      text: "",
+      identifyCodes: "1234567890",
+      identifyCode: "",
       form: {
         username: "",
         phone: "",
@@ -124,7 +158,9 @@ export default {
         confirmPassword: [
           { required: true, message: "请输入确认密码", trigger: "blur" }
         ],
-        authCode: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+        authCode: [
+          { required: true, trigger: "blur", validator: validateVerifycode }
+        ]
       },
       passForm: {
         oldPass: "",
@@ -139,51 +175,56 @@ export default {
     };
   },
   created() {
-    this.createCode();
+
   },
   methods: {
-    // 注册
-    register() {
-      var form = this.form;
-      //校验
-      if (
-        form.username != undefined &&
-        form.phone != undefined &&
-        form.idNum != undefined &&
-        form.account != undefined &&
-        form.password != undefined
-      ) {
-        if (form.password != form.confirmPassword) {
-          this.$message("密码不一致，请重新输入！");
-          return;
-        }
-        var inputcode = form.authCode.toUpperCase();
-        if (inputcode != form.getCode) {
-          this.$message("验证码输入不正确，请重新输入！");
-          this.createCode();
-          return;
-        }
-        var idNumState = this.IdentityCode(form.idNum);
-        if (idNumState == false) {
-          this.$message("身份证号格式不正确！");
-          return;
-        }
-        //请求参数
-        var params = JSON.stringify({
-          name: form.username,
-          cellPhone: form.phone,
-          idNum: form.idNum,
-          account: form.account,
-          password: form.password
-        });
-        this.http.post("/smart/auth/regist", params).then(res => {
-          if (res.code == 200) {
-            this.$message("注册成功！");
-            this.$router.push({ path: "/login" });
-          }
-        });
-        // console.log(params);
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+    },
+    // 生成四位随机验证码
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
       }
+      console.log(this.identifyCode);
+    },
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    // 注册
+    register(form) {
+      var form = this.form;
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          var idNumState = this.IdentityCode(form.idNum);
+          if (idNumState == false) {
+            this.$message("身份证号格式不正确！");
+            return;
+          }
+          if (form.password != form.confirmPassword) {
+            this.$message("密码不一致，请重新输入！");
+            return;
+          }
+          //请求参数
+          var params = JSON.stringify({
+            name: form.username,
+            cellPhone: form.phone,
+            idNum: form.idNum,
+            account: form.account,
+            password: form.password
+          });
+          this.http.post("/smart/auth/regist", params).then(res => {
+            if (res.code == 200) {
+              this.$message("注册成功！");
+              this.$router.push({ path: "/login" });
+            }
+          });
+        } else {
+        }
+      });
     },
     //身份证号校验
     IdentityCode(code) {
@@ -265,65 +306,6 @@ export default {
     },
     getNewCode() {
       this.createCode();
-    },
-    //生成验证码getCode
-    // 生成验证码
-    createCode() {
-      var code;
-      // 首先默认code为空字符串
-      code = "";
-      // 设置长度，这里看需求，我这里设置了4
-      var codeLength = 4;
-      // 设置随机字符
-      var random = new Array(
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z"
-      );
-      // 循环codeLength 我设置的4就是循环4次
-      for (var i = 0; i < codeLength; i++) {
-        // 设置随机数范围,这设置为0 ~ 36
-        var index = Math.floor(Math.random() * 36);
-        // 字符串拼接 将每次随机的字符 进行拼接
-        code += random[index];
-      }
-      // 将拼接好的字符串赋值给展示的code
-      this.code = code;
-      // 将生成的验证码赋值给全局变量
-      this.form.getCode = code;
     }
   }
 };
@@ -383,15 +365,15 @@ export default {
 
       /* 按钮文字 */
       .button-head-title {
-        width:56px;
-        height:31px;
-        font-size:24px;
-        font-family:Microsoft YaHei;
-        font-weight:bold;
-        line-height:31px;
-        color:rgba(255,255,255,1);
-        letter-spacing:20px;
-        opacity:1;
+        width: 56px;
+        height: 31px;
+        font-size: 24px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        line-height: 31px;
+        color: rgba(255, 255, 255, 1);
+        letter-spacing: 20px;
+        opacity: 1;
       }
     }
 
@@ -446,16 +428,17 @@ export default {
           opacity: 1;
           border-radius: 4px;
         }
-        .button-end-title{
-          width:65px;
-          height:17px;
-          font-size:13px;
-          font-family:Microsoft YaHei;
-          font-weight:bold;
-          line-height:17px;
-          color:rgba(255,255,255,1);
-          letter-spacing:10px;
-          opacity:1;
+
+        .button-end-title {
+          width: 65px;
+          height: 17px;
+          font-size: 13px;
+          font-family: Microsoft YaHei;
+          font-weight: bold;
+          line-height: 17px;
+          color: rgba(255, 255, 255, 1);
+          letter-spacing: 10px;
+          opacity: 1;
         }
       }
     }
@@ -478,6 +461,18 @@ export default {
         opacity: 1;
       }
     }
+  }
+
+  .identifybox {
+    // margin-top: 20px;
+    // margin-left: 60px;
+    float: left;
+  }
+
+  .textbtnImg {
+    width: 16px;
+    height: 16px;
+    margin-left: 115px;
   }
 }
 </style>
