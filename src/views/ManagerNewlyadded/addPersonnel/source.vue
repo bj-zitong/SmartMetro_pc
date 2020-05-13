@@ -23,7 +23,6 @@
             <el-date-picker v-model="form.value1" type="date" placeholder="请选择到京时间"></el-date-picker>
           </el-form-item>
         </el-col>
-
         <el-col :span="8">
           <el-form-item label="返京地" prop="returnto">
             <el-input v-model="form.returnto" placeholder="请输入返京地（省、市、县/旗）"></el-input>

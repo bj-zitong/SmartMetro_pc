@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
     <div class="contain-title">
-      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin-top:0px;" />
+      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin-top:0px;float:left;margin-left:7px" />
       <span class="register-head">城市轨道交通智慧工地管理系统</span>
       <!--表单-->
       <div class="container-head">

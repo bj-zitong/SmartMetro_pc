@@ -35,7 +35,7 @@
                         <template v-if="itemChild.children && itemChild.children.length > 0">
                           <el-submenu>
                             <span slot="title" class="title title_secondLevel">{{itemChild.meta.title}}</span>
-                            <el-menu-item v-for="(lastItem,lasrIndex) in itemChild.children" :index="lastItem.path">{{lastItem.meta.title}}</el-menu-item>
+                            <el-menu-item v-for="(lastItem,lasrIndex) in itemChild.children" :index="lastItem.path" :key="lastItem.id">{{lastItem.meta.title}}</el-menu-item>
                           </el-submenu>
                         </template>                
                         <template v-else>
