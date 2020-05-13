@@ -67,6 +67,7 @@
         :visible.sync="dialogFormVisible"
         style="width:45%;left:28%;"
         title="公告"
+        :show-close="false"
       >
         <div class="login_box">
           <el-form
@@ -86,8 +87,9 @@
             </el-form-item>
             <br />
             <div class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="addUser('form')">确 定</el-button>
+              <el-button @click="dialogFormVisible = false" class="F-Grey" round>取 消</el-button>
+              <el-button @click="addUser('form')"  class="F-Blue" style="margin-left:60px;"
+                round>确 定</el-button>
             </div>
           </el-form>
         </div>

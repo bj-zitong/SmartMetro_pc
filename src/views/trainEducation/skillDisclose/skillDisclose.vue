@@ -94,8 +94,8 @@
       </el-main>
     </div>
     <!--新增-->
-    <el-dialog title="技术交底" :visible.sync="dialogFormVisible" width="450px" :center="true" top="0vh">
-      <el-form :model="form">
+    <el-dialog title="技术交底" :visible.sync="dialogFormVisible" width="450px" :center="true" top="0vh" :show-close="false">
+      <el-form :model="form"  label-width="80px">
         <el-form-item label="工程名称">
           <el-input v-model="form.projectName"></el-input>
         </el-form-item>
@@ -123,7 +123,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
-        <el-button type="primary" @click="addSkillClick('form')" style="border-radius:18px">确 定</el-button>
+        <el-button type="primary" @click="addSkillClick('form')" style="border-radius:18px;margin-left:60px;">确 定</el-button>
       </div>
     </el-dialog>
   </div>

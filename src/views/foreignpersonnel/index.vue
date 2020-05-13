@@ -29,7 +29,7 @@
             :header-cell-style="headClass"
             style="width: 100%"
           >
-            <el-table-column type="selection" width="65" prop="id" @selection-change="changeFun"></el-table-column>
+            <el-table-column type="selection" width="65" prop="pOutlanderId" @selection-change="changeFun"></el-table-column>
             <el-table-column prop="name" label="姓名" width="120"></el-table-column>
             <el-table-column prop="idNum" label="身份证号" width="150"></el-table-column>
             <el-table-column prop="phone" label="电话" width="150"></el-table-column>
@@ -74,7 +74,7 @@
         width="450px"
         title="外来人员登记"
         :show-close="false"
-        class="popupDialog"
+        class="popupDialog abow_dialog"
         :center="true"
         :lockScroll="true"
       >
@@ -214,7 +214,7 @@ export default {
         intervieweeReason: "", // 被访来由
         intervieweeDate: "", // 来访时间
         dialogFormVisible: false,
-        id: null
+        pOutlanderId: null
       },
       formRules: {
         userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -251,8 +251,8 @@ export default {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
     getDetail(row) {
-      var id = row.id;
-      this.form.id = id;
+      var id = row.pOutlanderId;
+      this.form.pOutlanderId = id;
       var url =
         "/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
@@ -297,7 +297,7 @@ export default {
       this.$refs[form].validate(valid => {
         if (valid) {
           var form = this.$refs["form"].model;
-          if (form.id == null) {
+          if (form.pOutlanderId == null) {
             var idNumState = this.IdentityCode(form.idNum);
             if (!idNumState) {
               this.$message("身份证号格式不正确！");
@@ -341,13 +341,14 @@ export default {
               busNum: this.form.carNum,
               interviewee: this.form.interviewee,
               visitReason: this.form.intervieweeReason,
-              visitTime: this.form.intervieweeDate
+              visitTime: this.form.intervieweeDate,
+
             });
             var url =
               "/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/outlander/" +
-              form.id;
+              form.pOutlanderId;
             this.http.put(url, params).then(res => {
               if (res.code == 200) {
                 this.dialogFormVisible = false;
@@ -464,7 +465,7 @@ export default {
       });
       var result = [
         {
-          id: 1,
+          pOutlanderId: 1,
           name: "地铁安保部",
           idNum: "210234567898765876",
           phone: 15236985236,
@@ -475,7 +476,7 @@ export default {
           visitTime: 2020 - 4 - 12
         },
         {
-          id: 2,
+          pOutlanderId: 2,
           name: "22222222",
           idNum: "210234567898765789",
           phone: 111,
@@ -492,7 +493,7 @@ export default {
     // 删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.id;
+      var uid = row.pOutlanderId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除", "warning")
@@ -522,8 +523,8 @@ export default {
     //编辑 回显
     handleEdit(row) {
       // 用户id
-      var uid = row.id;
-      this.form.id = uid;
+      var uid = row.pOutlanderId;
+      this.form.pOutlanderId = uid;
       var url =
         "/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
@@ -589,7 +590,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].id;
+        var id = arrays[i].pOutlanderId;
         ids.push(id);
       }
       return ids;

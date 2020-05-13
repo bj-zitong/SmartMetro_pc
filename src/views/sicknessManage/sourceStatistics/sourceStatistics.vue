@@ -476,24 +476,24 @@ export default {
 //  表格操作
     //  编辑
         editRowClick(inedx, row) {
-            this.editLabor.company = row.company;
-            this.editLabor.responsiblePersonName = row.responsiblePersonName;
-            this.editLabor.responsiblePersonPhone = row.responsiblePersonPhone;
-            this.editLabor.serviceCompany = row.serviceCompany;
-            this.editLabor.projectCode = row.projectCode;
-            this.editLabor.projectName = row.projectName;
-            this.editLabor.contractCode = row.contractCode;
-            this.editLabor.startDate = row.startDate;
-            this.editLabor.endDate = row.endDate;
-            this.editLabor.contractPeriodType = row.contractPeriodType;
-            this.editLabor.corpCode = row.corpCode;
+            this.editSource.name = row.name;
+            this.editSource.belongLabor = row.belongLabor;
+            this.editSource.profession = row.profession;
+            this.editSource.nativePlace = row.nativePlace;
+            this.editSource.todayTem = row.todayTem;
+            this.editSource.bjReturn = row.bjReturn;
+            this.editSource.bjRiskdegree = row.bjRiskdegree;
+            this.editSource.address = row.address;
+            this.editSource.barrier = row.barrier;
+            this.editSource.returnDate = row.returnDate;
+            this.editSource.createDate = row.createDate;
         },
         submitEditForm(editFormRef) {
             // 验证
             this.$refs[editFormRef].validate((valid) => {
                 if (valid) {
                     // 添加劳务人员请求
-                    var params = JSON.stringify(this.editLabor);
+                    var params = JSON.stringify(this.editSource);
                     this.http
                         .put("smart/worker/labour/1/company/management", params)
                         .then(res => {
