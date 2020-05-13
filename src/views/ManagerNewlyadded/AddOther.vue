@@ -103,27 +103,43 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件类型">
-              <el-select v-model="form.region" placeholder="证件类型">
-                <el-option label="身份证" value="shanghai"></el-option>
-                <el-option label="护照" value="beijing"></el-option>
+            <el-form-item label="证件类型" prop="documentType">
+              <el-select v-model="form.documentType" placeholder="请选择证件类型">
+                <el-option label="身份证" value="1"></el-option>
+                <el-option label="护照" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件编码">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="证件编码" prop="certificateCode">
+              <el-input v-model="form.certificateCode" placeholder="请输入证件编码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="工人类型">
+            <el-form-item label="工人类型" prop="region">
               <el-select v-model="form.region" placeholder="工人类型">
                 <el-option label="厨师" value="shanghai"></el-option>
                 <el-option label="保安" value="beijing"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
+           <el-col :span="10">
+            <el-form-item label="持证上岗" prop="region">
+              <el-select v-model="form.region" placeholder="工人类型">
+                <el-option label="是" value="是"></el-option>
+                <el-option label="否" value="否"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="8">
+            <el-form-item label="居住证">
+              <el-select v-model="form.region" placeholder="持证上岗">
+                <el-option label="是" value="shanghai"></el-option>
+                <el-option label="否" value="beijing"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <!-- <el-col :span="8">
             <el-form-item label="持证上岗">
               <el-select v-model="form.region" placeholder="持证上岗">
                 <el-option label="是" value="shanghai"></el-option>
@@ -146,7 +162,7 @@
                 <el-option label="否" value="beijing"></el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <div style="float:right">
             <div style="margin-top:50px">
               <el-button type="primary" round style="background:#ccc;border:1px solid #ccc">取消</el-button>
@@ -205,6 +221,15 @@ export default {
         ],  
         cultureLevelType: [
           { required: true, message: "请输入文化程度", trigger: "blur" }
+        ], 
+        documentType: [
+          { required: true, message: "请输入证件类型", trigger: "blur" }
+        ], 
+        certificateCode: [
+          { required: true, message: "请输入证件编码", trigger: "blur" }
+        ], 
+        region:[
+          { required: true, message: "请选择工人类型", trigger: "blur" }
         ], 
       },
       //日历选择器
