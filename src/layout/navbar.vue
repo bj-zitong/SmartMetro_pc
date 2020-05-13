@@ -71,6 +71,9 @@ export default {
       userLogout: "logout"
     }),
     handleClick(tab, event) {
+      if(tab.label == '首页'){
+        this.$router.push({ path: "/Selectpage" })
+      }
       this.$emit('selectNavBar',tab.label);
       this.num = tab.index;
     },

@@ -55,7 +55,21 @@ export const constantRouterMap = [
     //   component: () => import('@/views/error-page/404'),
     //   hidden: true
     // },
-
+    // {
+    //     path: '/',
+    //     hidden: true,
+    //     component: Layout,
+    //     name: '实名认证',
+    //     redirect: '/home',
+    //     children: [
+    //         {
+    //             path: 'home',
+    //             name: 'home',
+    //             component: () => import('@/views/homepage'),
+    //             meta: { title: '人员智慧管理系统', enable: "Y", parent: '实名认证' }
+    //         }
+    //     ]
+    // },
     {
         path: '/',
         hidden: true,
