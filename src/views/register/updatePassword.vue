@@ -1,7 +1,10 @@
 <template>
   <div class="contain">
     <div class="contain-title">
-      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin-top:0px;" />
+      <img
+        src="../../../resource/logo.png"
+        style="width:30px;height:30px;margin-top:0px;float:left;margin-left:10px"
+      />
       <span class="register-head">城市轨道交通智慧工地管理系统</span>
       <!--表单-->
       <div class="container-head">
@@ -38,7 +41,6 @@
               </el-input>
             </el-form-item>
             <el-form-item prop="newpassword">
-              <!-- <el-input type="password" v-model="form.newpassword" placeholder="重置密码"> -->
               <el-input
                 :type="passForm.show.new?'text':'password'"
                 v-model="form.newpassword"
@@ -71,17 +73,15 @@
             </el-form-item>
             <!--验证码-->
             <div>
-              <el-form-item prop="authCode" style="width:100px;float:left">
-                <el-input type="text" v-model="form.authCode" placeholder="验证码"></el-input>
+              <el-form-item prop="authCode" style="width:100px;float:left;margin-right:10px;">
+                <el-input v-model="form.authCode" placeholder="验证码"></el-input>
               </el-form-item>
-              <el-form-item style="width:100px;float:left;margin-left:15px" prop="getCode">
-                <el-input type="text" v-model="form.getCode"></el-input>
-              </el-form-item>
-              <img
-                src="../../../resource/shuaxin.png"
-                style="width:16px;height:16px;"
-                @click="getNewCode()"
-              />
+              <div @click="refreshCode" style="margin-left:20px;">
+                <s-identify :identifyCode="identifyCode"></s-identify>
+              </div>
+              <el-button @click="refreshCode" type="text" class="textbtn">
+                <img src="../../../static/image/shuaxin.png" class="textbtnImg" />
+              </el-button>
             </div>
             <el-button type="primary" class="button-end" @click="updatePassword('form')">
               <span class="button-end-title">确定</span>
@@ -100,9 +100,25 @@
 </template>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+import SIdentify from "../login/securityCode/securityCode";
 export default {
+  components: {
+    SIdentify
+  },
   data() {
+    const validateVerifycode = (rule, value, callback) => {
+      if (value === undefined) {
+        callback(new Error("请输入验证码"));
+      } else if (value !== this.identifyCode) {
+        callback(new Error("验证码不正确!"));
+      } else {
+        callback();
+      }
+    };
     return {
+      text: "",
+      identifyCodes: "1234567890",
+      identifyCode: "",
       code: "",
       form: {
         phone: "",
@@ -128,42 +144,8 @@ export default {
           { required: true, message: "请输入确认密码", trigger: "blur" }
         ],
         authCode: [
-          { required: true, message: "请输入验证码", trigger: "blur" }
-        ],
-        getCode: [{ required: true, message: "请输入验证码", trigger: "blur" }]
-      },
-
-      forgetFormRules: {
-        phone2: [
-          { required: true, message: "请输入手机号", trigger: "blur" },
-          {
-            pattern: /^1[34578]\d{9}$/,
-            message: "手机号格式"
-          }
-        ],
-        account: [{ required: true, message: "请输入账号", trigger: "blur" }],
-        userName2: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        password2: [
-          { required: true, message: "请输入重置密码", trigger: "blur" }
-        ],
-        confirmPassword2: [
-          { required: true, message: "请输入确认密码", trigger: "blur" }
-        ],
-        authCode2: [
-          { required: true, message: "请输入验证码", trigger: "blur" }
-        ],
-        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
-        Code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
-      },
-      forgetForm: {
-        account: "",
-        phone2: "",
-        userName2: "",
-        idNum: "",
-        password2: "",
-        confirmPassword2: "",
-        authCode2: "",
-        Code: ""
+          { required: true, trigger: "blur", validator: validateVerifycode }
+        ]
       },
       passForm: {
         oldPass: "",
@@ -177,115 +159,23 @@ export default {
       }
     };
   },
-  created() {
-    //  this.updateState1();
-    this.createCode();
-  },
+  created() {},
   methods: {
-    getNewCode() {
-      this.createCode();
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
     },
-    // 生成验证码
-    createCode() {
-      var code;
-      // 首先默认code为空字符串
-      code = "";
-      // 设置长度，这里看需求，我这里设置了4
-      var codeLength = 4;
-      // 设置随机字符
-      var random = new Array(
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z"
-      );
-      // 循环codeLength 我设置的4就是循环4次
-      for (var i = 0; i < codeLength; i++) {
-        // 设置随机数范围,这设置为0 ~ 36
-        var index = Math.floor(Math.random() * 36);
-        // 字符串拼接 将每次随机的字符 进行拼接
-        code += random[index];
+    // 生成四位随机验证码
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
       }
-      // 将拼接好的字符串赋值给展示的code
-      this.code = code;
-      // 将生成的验证码赋值给全局变量
-      this.form.getCode = code;
-      this.forgetForm.Code = code;
+      console.log(this.identifyCode);
     },
-    // 忘记密码
-    forgetPassword(forgetForm) {
-      var form = this.forgetForm;
-      //校验
-      if (
-        form.account != undefined &&
-        form.userName2 != undefined &&
-        form.idNum != undefined &&
-        form.phone2 != undefined &&
-        form.password2 != undefined
-      ) {
-        if (form.password2 != form.confirmPassword2) {
-          this.$message("密码不一致，请重新输入！");
-          return;
-        }
-        var inputcode = form.authCode2.toUpperCase();
-        if (inputcode != form.Code) {
-          this.$message("验证码输入不正确，请重新输入！");
-          this.createCode();
-          return;
-        }
-        var idNumState = this.IdentityCode(form.idNum);
-        if (idNumState == false) {
-          this.$message("身份证号格式不正确！");
-          return;
-        }
-        //请求参数
-        var params = JSON.stringify({
-          name: form.userName2,
-          cellPhone: form.phone2,
-          idNmun: form.idNum,
-          account: form.account,
-          password: form.password2
-        });
-        this.http.post("/smart/auth/password/forget", params).then(res => {
-          if (res.code == 200) {
-            this.$message("修改成功！");
-            this.$router.push({ path: "/login" });
-          }
-        });
-        // console.log(params);
-      }
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
     },
     //身份证号校验
     IdentityCode(code) {
@@ -367,35 +257,25 @@ export default {
     },
     // 修改密码
     updatePassword(form) {
-      var form = this.form;
-      //校验
-      if (
-        form.phone != undefined &&
-        form.password != undefined &&
-        form.newpassword != undefined &&
-        form.authCode != undefined
-      ) {
-        var inputcode = form.authCode.toUpperCase();
-        if (inputcode != form.getCode) {
-          this.$message("验证码输入不正确，请重新输入！");
-          this.createCode();
-          return;
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          var form = this.form;
+          //请求参数
+          var params = JSON.stringify({
+            userId: sessionStorage.getItem("userId"),
+            account: form.phone,
+            loginPassword: form.password,
+            changePassword: form.newpassword
+          });
+          this.http.post("/smart/auth/password/change", params).then(res => {
+            if (res.code == 200) {
+              this.$message("修改成功！");
+              this.$router.push({ path: "/login" });
+            }
+          });
+        } else {
         }
-        //请求参数
-        var params = JSON.stringify({
-          userId: sessionStorage.getItem("userId"),
-          account: form.phone,
-          loginPassword: form.password,
-          changePassword: form.newpassword
-        });
-        this.http.post("/smart/auth/password/change", params).then(res => {
-          if (res.code == 200) {
-            this.$message("修改成功！");
-            this.$router.push({ path: "/login" });
-          }
-        });
-        console.log(params);
-      }
+      });
     },
     register() {
       this.$router.push({ path: "/register" });
@@ -439,7 +319,6 @@ export default {
       font-family: Microsoft YaHei;
       font-weight: 400;
       line-height: 14px;
-      // color: rgba(10, 96, 177, 1);
       opacity: 1;
       float: right;
       margin-top: 20px;
@@ -515,7 +394,6 @@ export default {
     margin: -250px 0 0 -340px;
     background-color: rgba(255, 255, 255, 1);
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-    // opacity:0.5;
     border-radius: 4px;
 
     /* 表单div */
@@ -581,6 +459,16 @@ export default {
       color: rgba(161, 161, 161, 1);
       opacity: 1;
     }
+  }
+
+  .identifybox {
+    float: left;
+  }
+
+  .textbtnImg {
+    width: 16px;
+    height: 16px;
+    margin-left: 115px;
   }
 }
 </style>

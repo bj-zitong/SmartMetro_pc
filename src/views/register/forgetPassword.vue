@@ -1,7 +1,10 @@
 <template>
   <div class="contain">
     <div class="contain-title">
-      <img src="../../../resource/logo.png" style="width:30px;height:30px;margin-top:0px;float:left;margin-left:7px" />
+      <img
+        src="../../../resource/logo.png"
+        style="width:30px;height:30px;margin-top:0px;float:left;margin-left:10px"
+      />
       <span class="register-head">城市轨道交通智慧工地管理系统</span>
       <!--表单-->
       <div class="container-head">
@@ -9,50 +12,58 @@
         <router-link :to="{path: '/login' }" style="color:#0058A2">马上登录</router-link>
       </div>
     </div>
-  <div class="login_container">
-    <!--头部-->
-    <div class="container_center">
+    <div class="login_container">
+      <!--头部-->
+      <div class="container_center">
         <el-button type="primary" class="button-head">
           <span class="button-head-title">忘记密码</span>
         </el-button>
-      <div class="login_box">
-        <!--忘记密码 -->
-        <el-form
-          :rules="forgetFormRules"
-          :model="forgetForm"
-          ref="forgetForm"
-          class="form-content"
-          id="btn1"
-        >
-          <!--手机号-->
-          <el-form-item prop="account">
-            <el-input type="text" v-model="forgetForm.account" placeholder="账号/手机号"></el-input>
-          </el-form-item>
-          <el-form-item prop="userName2">
-            <el-input type="text" v-model="forgetForm.userName2" placeholder="姓名"></el-input>
-          </el-form-item>
-          <!--身份证号-->
-          <el-form-item prop="idNum">
-            <el-input type="text" v-model="forgetForm.idNum" placeholder="身份证号"></el-input>
-          </el-form-item>
-          <el-form-item prop="phone2">
-            <el-input type="text" v-model="forgetForm.phone2" placeholder="手机号码"></el-input>
-          </el-form-item>
-          <!--密码-->
-          <el-form-item prop="password2">
-            <el-input  :type="passForm.show.new?'text':'password'"  v-model="forgetForm.password2" placeholder="重置密码">
-              <img
+        <div class="login_box">
+          <!--忘记密码 -->
+          <el-form
+            :rules="forgetFormRules"
+            :model="forgetForm"
+            ref="forgetForm"
+            class="form-content"
+            id="btn1"
+          >
+            <!--手机号-->
+            <el-form-item prop="account">
+              <el-input type="text" v-model="forgetForm.account" placeholder="账号/手机号"></el-input>
+            </el-form-item>
+            <el-form-item prop="userName2">
+              <el-input type="text" v-model="forgetForm.userName2" placeholder="姓名"></el-input>
+            </el-form-item>
+            <!--身份证号-->
+            <el-form-item prop="idNum">
+              <el-input type="text" v-model="forgetForm.idNum" placeholder="身份证号"></el-input>
+            </el-form-item>
+            <el-form-item prop="phone2">
+              <el-input type="text" v-model="forgetForm.phone2" placeholder="手机号码"></el-input>
+            </el-form-item>
+            <!--密码-->
+            <el-form-item prop="password2">
+              <el-input
+                :type="passForm.show.new?'text':'password'"
+                v-model="forgetForm.password2"
+                placeholder="重置密码"
+              >
+                <img
                   :src="passForm.show.new?'/static/image/show.png':'/static/image/hide.png'"
                   slot="suffix"
                   alt
                   style="margin: 10px 0;"
                   @click="passForm.show.new=!passForm.show.new"
                 />
-            </el-input>
-          </el-form-item>
-          <!--确认密码-->
-          <el-form-item prop="confirmPassword2">
-            <el-input  :type="passForm.show.check?'text':'password'" v-model="forgetForm.confirmPassword2" placeholder="确认密码">
+              </el-input>
+            </el-form-item>
+            <!--确认密码-->
+            <el-form-item prop="confirmPassword2">
+              <el-input
+                :type="passForm.show.check?'text':'password'"
+                v-model="forgetForm.confirmPassword2"
+                placeholder="确认密码"
+              >
                 <img
                   :src="passForm.show.check?'/static/image/show.png':'/static/image/hide.png'"
                   slot="suffix"
@@ -60,41 +71,56 @@
                   style="margin: 10px 0;"
                   @click="passForm.show.check=!passForm.show.check"
                 />
-            </el-input>
-          </el-form-item>
-          <!--验证码-->
-          <div>
-            <el-form-item prop="authCode2" style="width:100px;float:left">
-              <el-input type="text" v-model="forgetForm.authCode2" placeholder="验证码"></el-input>
+              </el-input>
             </el-form-item>
-            <el-form-item prop="Code" style="width:100px;float:left;margin-left:15px">
-              <el-input type="text" v-model="forgetForm.Code"></el-input>
-            </el-form-item>
-            <img
-              src="../../../resource/shuaxin.png"
-              style="width:16px;height:16px;margin-left:10px"
-              @click="getNewCode()"
-            />
-          </div>
-          <el-button type="primary" class="button-end" @click="forgetPassword('forgetForm')">
-            <span class="button-end-title">确定</span>
-          </el-button>
-        </el-form>
+            <!--验证码-->
+            <div>
+              <el-form-item prop="authCode2" style="width:100px;float:left;margin-right:20px;">
+                <el-input v-model="forgetForm.authCode2" placeholder="验证码"></el-input>
+              </el-form-item>
+              <div @click="refreshCode" style="margin-left:20px;">
+                <s-identify :identifyCode="identifyCode"></s-identify>
+              </div>
+              <el-button @click="refreshCode" type="text" class="textbtn">
+                <img src="../../../static/image/shuaxin.png" class="textbtnImg" />
+              </el-button>
+            </div>
+            <el-button type="primary" class="button-end" @click="forgetPassword('forgetForm')">
+              <span class="button-end-title">确定</span>
+            </el-button>
+          </el-form>
+        </div>
+      </div>
+      <div class="container_end">
+        <p class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</p>
+        <br />
+        <p class="content-end1">京ICP备17067133号 京公网安备11010602006143号</p>
       </div>
     </div>
-    <div class="container_end">
-      <p class="content-end">Copyright 2017 北京市轨道交通运营管理有限公司 All Rights Reserved</p>
-      <br />
-      <p class="content-end1">京ICP备17067133号 京公网安备11010602006143号</p>
-    </div>
   </div>
-</div>
 </template>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+import SIdentify from "../login/securityCode/securityCode";
 export default {
+  components: {
+    SIdentify
+  },
   data() {
+    const validateVerifycode = (rule, value, callback) => {
+      console.log(value);
+      if (value === undefined) {
+        callback(new Error("请输入验证码"));
+      } else if (value !== this.identifyCode) {
+        callback(new Error("验证码不正确!"));
+      } else {
+        callback();
+      }
+    };
     return {
+      text: "",
+      identifyCodes: "1234567890",
+      identifyCode: "",
       code: "",
       forgetFormRules: {
         phone2: [
@@ -113,10 +139,9 @@ export default {
           { required: true, message: "请输入确认密码", trigger: "blur" }
         ],
         authCode2: [
-          { required: true, message: "请输入验证码", trigger: "blur" }
+          { required: true, trigger: "blur", validator: validateVerifycode }
         ],
-        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
-        Code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }]
       },
       forgetForm: {
         account: "",
@@ -140,114 +165,56 @@ export default {
       }
     };
   },
-  created() {
-    //  this.updateState1();
-    this.createCode();
-  },
+  created() {},
   methods: {
-    getNewCode() {
-      this.createCode();
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
     },
-    // 生成验证码
-    createCode() {
-      var code;
-      // 首先默认code为空字符串
-      code = "";
-      // 设置长度，这里看需求，我这里设置了4
-      var codeLength = 4;
-      // 设置随机字符
-      var random = new Array(
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z"
-      );
-      // 循环codeLength 我设置的4就是循环4次
-      for (var i = 0; i < codeLength; i++) {
-        // 设置随机数范围,这设置为0 ~ 36
-        var index = Math.floor(Math.random() * 36);
-        // 字符串拼接 将每次随机的字符 进行拼接
-        code += random[index];
+    // 生成四位随机验证码
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
       }
-      // 将拼接好的字符串赋值给展示的code
-      this.code = code;
-      // 将生成的验证码赋值给全局变量
-      this.forgetForm.Code = code;
+      console.log(this.identifyCode);
+    },
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
     },
     // 忘记密码
     forgetPassword(forgetForm) {
-      var form = this.forgetForm;
-      //校验
-      if (
-        form.account != undefined &&
-        form.userName2 != undefined &&
-        form.idNum != undefined &&
-        form.phone2 != undefined &&
-        form.password2 != undefined
-      ) {
-        if (form.password2 != form.confirmPassword2) {
-          this.$message("密码不一致，请重新输入！");
-          return;
-        }
-        var inputcode = form.authCode2.toUpperCase();
-        if (inputcode != form.Code) {
-          this.$message("验证码输入不正确，请重新输入！");
-          this.createCode();
-          return;
-        }
-        var idNumState = this.IdentityCode(form.idNum);
-        if (idNumState == false) {
-          this.$message("身份证号格式不正确！");
-          return;
-        }
-        //请求参数
-        var params = JSON.stringify({
-          name: form.userName2,
-          cellPhone: form.phone2,
-          idNum: form.idNum,
-          account: form.account,
-          password: form.password2
-        });
-        this.http.post("/smart/auth/password/forget", params).then(res => {
-          if (res.code == 200) {
-            this.$message("修改成功！");
-            this.$router.push({ path: "/login" });
+      this.$refs["forgetForm"].validate(valid => {
+        if (valid) {
+          var form = this.forgetForm;
+          //校验
+          if (form.password2 != form.confirmPassword2) {
+            this.$message("密码不一致，请重新输入！");
+            return;
           }
-        });
-        // console.log(params);
-      }
+          var idNumState = this.IdentityCode(form.idNum);
+          if (idNumState == false) {
+            this.$message("身份证号格式不正确！");
+            return;
+          }
+          //请求参数
+          var params = JSON.stringify({
+            name: form.userName2,
+            cellPhone: form.phone2,
+            idNum: form.idNum,
+            account: form.account,
+            password: form.password2
+          });
+          this.http.post("/smart/auth/password/forget", params).then(res => {
+            if (res.code == 200) {
+              this.$message("修改成功！");
+              this.$router.push({ path: "/login" });
+            }
+          });
+        } else {
+        }
+      });
     },
     //身份证号校验
     IdentityCode(code) {
@@ -377,8 +344,8 @@ export default {
     }
   }
 
-.login_container {
-   /* 头部head button */
+  .login_container {
+    /* 头部head button */
     .button-head {
       width: 680px;
       height: 60px;
@@ -387,7 +354,6 @@ export default {
       opacity: 1;
       border-radius: 0px 4px 4px 0px;
     }
-
 
     /* 按钮文字 */
     .button-head-title {
@@ -454,16 +420,17 @@ export default {
         opacity: 1;
         border-radius: 4px;
       }
-      .button-end-title{
-        width:30px;
-        height:17px;
-        font-size:13px;
-        font-family:Microsoft YaHei;
-        font-weight:bold;
-        line-height:17px;
-        color:rgba(255,255,255,1);
-        letter-spacing:20px;
-        opacity:1;
+
+      .button-end-title {
+        width: 30px;
+        height: 17px;
+        font-size: 13px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        line-height: 17px;
+        color: rgba(255, 255, 255, 1);
+        letter-spacing: 20px;
+        opacity: 1;
       }
     }
   }
@@ -485,6 +452,16 @@ export default {
       color: rgba(161, 161, 161, 1);
       opacity: 1;
     }
+  }
+
+  .identifybox {
+    float: left;
+  }
+
+  .textbtnImg {
+    width: 16px;
+    height: 16px;
+    margin-left: 115px;
   }
 }
 </style>

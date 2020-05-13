@@ -70,31 +70,16 @@
               </el-input>
             </el-form-item>
             <!--验证码-->
-            <!-- <div>
-              <el-form-item prop="authCode" style="width:100px;float:left">
-                <el-input type="text" v-model="form.authCode" placeholder="验证码"></el-input>
-              </el-form-item>
-               <div class="identifybox">
-              <div @click="refreshCode">
-                <s-identify :identifyCode="identifyCode"></s-identify>
-              </div>
-              <el-button @click="refreshCode" type="text" class="textbtn">
-                <img src="../../../static/image/shuaxin.png" class="textbtnImg" />
-              </el-button>
-            </div>
-            </div>-->
             <div>
               <el-form-item prop="authCode" style="width:100px;float:left;margin-right:20px;">
                 <el-input v-model="form.authCode" placeholder="验证码"></el-input>
               </el-form-item>
-              <!-- <div class="identifybox"> -->
               <div @click="refreshCode" style="margin-left:20px;">
                 <s-identify :identifyCode="identifyCode"></s-identify>
               </div>
               <el-button @click="refreshCode" type="text" class="textbtn">
                 <img src="../../../static/image/shuaxin.png" class="textbtnImg" />
               </el-button>
-              <!-- </div> -->
             </div>
             <el-button type="primary" class="button-end" @click="register('form')">
               <span class="button-end-title">点击注册</span>
@@ -174,9 +159,7 @@ export default {
       }
     };
   },
-  created() {
-
-  },
+  created() {},
   methods: {
     refreshCode() {
       this.identifyCode = "";
@@ -303,9 +286,6 @@ export default {
         }
       }
       return pass;
-    },
-    getNewCode() {
-      this.createCode();
     }
   }
 };
@@ -464,8 +444,6 @@ export default {
   }
 
   .identifybox {
-    // margin-top: 20px;
-    // margin-left: 60px;
     float: left;
   }
 
