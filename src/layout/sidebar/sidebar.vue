@@ -28,7 +28,7 @@
             <el-submenu :index="index+''" :key="index" v-if="item.children.length > 0" ref="submenu">
                 <template v-if="item.meta.enable == 'Y'">
                     <template slot="title">
-                        <img :src="Picture == item.meta.title?item.meta.AfterIcon:item.meta.icon" class="iconImg"/>
+                        <img :src="Picture == item.meta.title?item.meta.AfterIcon:item.meta.icon" class="iconImg" />
                         <span class="title">{{item.meta.title}}</span>
                     </template>
                     <template v-for="(itemChild, itemIndex) in item.children">
@@ -133,6 +133,7 @@ export default {
     },
     //切换侧边栏图片方法
     togglePicture(title){
+      console.log(title)
       this.Picture=title
     }
   }

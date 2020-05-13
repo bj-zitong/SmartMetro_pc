@@ -1,7 +1,8 @@
 <template>
-  <div class="roster">
+  <div class="main-box">
+    <!-- 头部 -->
     <el-container>
-      <el-main class="glry">
+      <el-menu class="main-top-box">
         <el-form :inline="true" :model="form" class="demo-form-inline">
           <el-form-item label="姓名">
             <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
@@ -13,11 +14,12 @@
             <el-button type="primary" @click="searchClick">查询</el-button>
           </el-form-item>
         </el-form>
-      </el-main>
+      </el-menu>
     </el-container>
-    <div class="glry_bottonView">
-      <el-main class="btnView">
-        <div style="margin-bottom: 30px;">
+    <!-- 主体 -->
+    <el-container>
+      <el-menu class="main-con-box">
+        <div class="main-btn-box">
           <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
@@ -71,9 +73,10 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-pagination background layout="prev, pager, next" :total="1000" class="paging"></el-pagination>
-      </el-main>
-    </div>
+        <el-pagination background layout="prev, pager, next" :total="1000" class="pagination-box"></el-pagination>
+      </el-menu>
+    </el-container>
+    <!-- 分页 -->
     <otherStaffsdialog v-if="changOrder" ref="turnOrder" />
   </div>
 </template>
