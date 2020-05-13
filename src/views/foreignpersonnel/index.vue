@@ -74,7 +74,7 @@
         width="450px"
         title="外来人员登记"
         :show-close="false"
-        class="popupDialog"
+        class="popupDialog abow_dialog"
         :center="true"
         :lockScroll="true"
       >

@@ -2,8 +2,8 @@
   <div class="container">
     <div class="container-content">
       <div style="margin-left:30px;height:60px;width:100%;">
-        <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
-        <el-button @click="deleteAll" class="T-H-B-Grey" style="margin-left:30px">删除</el-button>
+        <!-- <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button> -->
+        <el-button @click="deleteAll" class="T-H-B-Grey">删除</el-button>
       </div>
       <div class="table-content">
         <el-table
@@ -13,7 +13,7 @@
           stripe
           :header-cell-style="headClass"
         >
-          <el-table-column type="selection" prop="id" @selection-change="changeFun"></el-table-column>
+          <el-table-column type="selection" prop="teamMasterId" @selection-change="changeFun"></el-table-column>
           <el-table-column prop="projectName" label="工程名称" width="150"></el-table-column>
           <el-table-column prop="teamName" label="班组名称" width="150"></el-table-column>
           <el-table-column prop="teamType" label="班组类型" width="100"></el-table-column>
@@ -50,14 +50,14 @@
       </div>
     </div>
     <!-- 新增 修改-->
-    <el-dialog :visible.sync="dialogFormVisible" width="20%" title="新增班组" :center="true" :show-close="false">
+    <el-dialog :visible.sync="dialogFormVisible" width="20%" title="修改班组" :center="true" :show-close="false" class="popupDialog">
       <el-form
         method="post"
         enctype="multipart/form-data"
         ref="formClass"
         :rules="formRules"
         :model="formClass"
-        action="http://192.168.1.164:8001/auth/user/baseUser" 
+        action="http://192.168.1.164:8001/auth/user/baseUser"
       >
         <el-form-item prop="id">
           <el-input v-model="formClass.id" type="text" hidden></el-input>
@@ -95,7 +95,7 @@
       </el-form>
     </el-dialog>
     <!-- 评价-->
-    <el-dialog title="评价" :visible.sync="dialogVisible" width="20%" :center="true" top="33vh" :show-close="false">
+    <el-dialog title="评价" :visible.sync="dialogVisible" width="20%" :center="true" top="33vh" :show-close="false" class="popupDialog">
       <span slot="footer" class="dialog-footer">
         <el-select
           v-model="evaluated"
@@ -117,7 +117,7 @@
       </span>
     </el-dialog>
     <!--新增讲话-->
-    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true" :show-close="false">
+    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true" :show-close="false" class="popupDialog abow_dialog">
       <div>
         <el-form
           method="post"
@@ -174,6 +174,7 @@
         :visible.sync="innerVisible"
         append-to-body
         :center="true"
+        :show-close="false"
       >
         <el-table
           :data="persons"
@@ -222,7 +223,7 @@ export default {
         phone: "",
         groupLeader: "",
         profession: "",
-        id: null
+        teamMasterId: null
       },
       formRules: {
         projectName: [
@@ -340,7 +341,7 @@ export default {
       });
       var result = [
         {
-          id: 1,
+          teamMasterId: 1,
           projectName: "工程1",
           teamName: "班组一",
           teamType: "工地",
@@ -349,7 +350,7 @@ export default {
           createTime: "2020-4-12"
         },
         {
-          id: 2,
+          teamMasterId: 2,
           projectName: "工程2",
           teamName: "班组二",
           teamType: "工地",
@@ -367,7 +368,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].id;
+        var id = arrays[i].teamMasterId;
         ids.push(id);
         // console.log("获得id"+arrays[i].userId);
       }
@@ -447,7 +448,7 @@ export default {
     // 删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.id;
+      var uid = row.teamMasterId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除", "warning")
@@ -474,19 +475,15 @@ export default {
           });
         });
     },
-    uploadVideo(row) {
-      var uid = row.id;
-      // console.log(uid);
-    },
     //编辑
     handleEdit(row) {
-      var uid = row.id;
+      var uid = row.teamMasterId;
       this.id = uid;
       // console.log(uid);
       //获得详情
       var params = null;
       this.formClass.projectName = "123";
-      this.formClass.id = 1;
+      this.formClass.teamMasterId = 1;
       var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -497,6 +494,13 @@ export default {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
+          var form=this.formClass;
+          form.projectName=result.projectName;
+          form.groupName=result.teamName,
+          form.phone=result.teamLeaderPhone,
+          form.groupLeader=result.teamLeaderName,
+          form.profession=result.teamType,
+          form.teamMasterId=result.teamMasterId
         }
       });
       this.dialogFormVisible = true;
@@ -534,7 +538,7 @@ export default {
               teamType: form.profession,
               teamLeaderName: form.groupLeader,
               teamLeaderPhone: form.phone,
-              id: form.id
+              teamMasterId: form.id
             });
             var url =
               "/smart/worker/labour/" +
@@ -563,7 +567,7 @@ export default {
       }
       var url =
         "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
-      var params = JSON.stringify({ id: id, evaluate: evaluated });
+      var params = JSON.stringify({ teamMasterId: id, evaluate: evaluated });
       this.http.put(url, params).then(res => {
         if (res.code == 200) {
           this.dialogVisible = false;
@@ -573,7 +577,7 @@ export default {
     },
     //添加评价
     addEvalte(row) {
-      var uid = row.id;
+      var uid = row.teamMasterId;
       this.dialogVisible = true;
       //设置全局变量
       this.id = uid;
@@ -598,7 +602,7 @@ export default {
     //讲话
     addSpeech(row) {
       this.outerVisible = true;
-      this.id = row.id;
+      this.id = row.teamMasterId;
     },
     addFormSpeech(formSpeech) {
       this.$refs[formSpeech].validate(valid => {
@@ -611,8 +615,8 @@ export default {
           datas.append("isSafety", form.protective);
           datas.append("jobContent", form.speachContent);
           datas.append("meetingContent", form.classContent);
-          datas.append("workerInfoIds", pids);
-          datas.append("teamId", this.id);
+          datas.append("workerInfo", pids);
+          datas.append("pTeamMasterId", this.id);
           var url =
             "/smart/worker/labour/" +
             sessionStorage.getItem("userId") +

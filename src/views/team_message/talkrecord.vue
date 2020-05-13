@@ -15,7 +15,7 @@
             :header-cell-style="headClass"
             stripe
           >
-            <el-table-column type="selection" width="65" prop="id" @selection-change="changeFun"></el-table-column>
+            <el-table-column type="selection" width="65" prop="pShiftMeetingId" @selection-change="changeFun"></el-table-column>
             <el-table-column prop="uuid" label="编号" width="150"></el-table-column>
             <el-table-column prop="createTime" label="创建日期" width="120"></el-table-column>
             <el-table-column prop="homeworkPart" label="作业部位" width="120"></el-table-column>
@@ -26,18 +26,23 @@
             <el-table-column prop="workerInfo" label="参加活动作业人员名单" width="200"></el-table-column>
             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope">
-                <!-- <input type="file">tt</input> -->
-                <el-upload
-                  :action="uploadUrl"
-                  :on-progress="handleChange(scope.row)"
-                  :file-list="fileList"
-                  accept=".mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb"
-                  multiple
-                  v-model="fileList"
-                  @click="uploadVideo(scope.row)"
-                >
+                <el-form :model="videoForm" ref="videoForm">
+                  <el-form-item label="" prop="getVideo">
+                    <el-upload
+                      action
+                      :on-change="handleChange(scope.row)"
+                      :file-list="fileList"
+                      accept=".mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb"
+                      multiple
+                      v-model="videoForm.getVideo"
+                      @click="uploadVideo(scope.row)"
+                      :auto-upload="false"
+                    >
                   <img src="../../../static/image/shangchuan.png" style="width:26px;height:26px" />
                 </el-upload>
+                  </el-form-item>
+                </el-form>
+
                 <!--
                 <i class="el-icon-upload" style="width:26px;height:26px"></i>-->
                 <!-- <img
@@ -76,7 +81,7 @@
       </el-main>
     </div>
     <!--编辑讲话-->
-    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true" :show-close="false">
+    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true" :show-close="false" class="abow_dialog popupDialog">
       <el-form
         method="post"
         enctype="multipart/form-data"
@@ -85,8 +90,8 @@
         :model="formSpeech"
         action="http://192.168.1.164:8001/auth/user/baseUser"
       >
-        <el-form-item prop="id">
-          <el-input v-model="formSpeech.id" type="text" hidden></el-input>
+        <el-form-item prop="pShiftMeetingId">
+          <el-input v-model="formSpeech.pShiftMeetingId" type="text" hidden></el-input>
         </el-form-item>
         <el-form-item prop="jobsite" label="作业部位:">
           <el-input v-model="formSpeech.jobsite" placeholder="作业部位"></el-input>
@@ -185,7 +190,7 @@ export default {
         speachContent: "",
         classContent: "",
         numbers: null,
-        id: null
+        pShiftMeetingId: null
       },
       formSpeechRules: {
         jobsite: [
@@ -209,7 +214,10 @@ export default {
         { id: "3", name: "tttttt" }
       ],
       selectedPersonIds: [],
-      uploadUrl: ""
+      uploadUrl: "",
+      videoForm:{
+        getVideo :""
+      }
     };
   },
   created: function() {
@@ -219,8 +227,12 @@ export default {
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
-    handleChange(row) {
-      // console.log(row.id);
+    handleChange(row,file, fileList) {
+      // this.$refs.form.clearValidate();
+      this.videoForm.getVideo=fileList;
+      console.log(row.pShiftMeetingId);
+      console.log(file);
+      console.log(fileList);
     },
     handlePreview(row, file) {},
     // 初始页Page、初始每页数据数pagesize和数据data
@@ -262,10 +274,9 @@ export default {
           this.total = total;
         }
       });
-
       var result = [
         {
-          id: 1,
+          pShiftMeetingId: 1,
           uuid: "001",
           createTime: "2020-4-12",
           homeworkPart: "作业部位1",
@@ -278,7 +289,7 @@ export default {
           accessoryPath: "22222222"
         },
         {
-          id: 2,
+          pShiftMeetingId: 2,
           uuid: "002",
           createTime: "2020-4-13",
           homeworkPart: "作业部位2",
@@ -300,7 +311,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].id;
+        var id = arrays[i].pShiftMeetingId;
         ids.push(id);
         // console.log("获得id"+arrays[i].userId);
       }
@@ -314,7 +325,6 @@ export default {
         // 获得id
         ids.push(arrays[i].personId);
       }
-
       this.selectedPersonIds = ids;
       return ids;
       // console.log("选中的pids" + ids);
@@ -352,7 +362,7 @@ export default {
     // 删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.id;
+      var uid = row.pShiftMeetingId;
       var ids = [];
       ids.push(uid);
       var data = JSON.stringify(ids);
@@ -380,7 +390,7 @@ export default {
         });
     },
     uploadVideo(row) {
-      var uid = row.id;
+      var uid = row.pShiftMeetingId;
       this.id = uid;
       this.uploadUrl =
         "/smart/worker/labour/" +
@@ -415,14 +425,14 @@ export default {
     },
     //编辑讲话
     handleEdit(row) {
-      var uid = row.id;
+      var uid = row.pShiftMeetingId;
       //获得详情
       var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
-        "/team/meeting/" +
+        "/team/" +
         uid +
-        "/detail";
+        "/meeting";
       var datas = null;
       this.http.get(url, datas).then(res => {
         if (res.code == 200) {
@@ -433,10 +443,11 @@ export default {
           this.formSpeech.protective = result.isSafety;
           this.formSpeech.speachContent = result.jobContent;
           this.formSpeech.classContent = result.meetingContent;
-          this.formSpeech.checkIds = result.workerInfoIds;
+          this.formSpeech.checkIds = result.workerInfo;
+          this.formSpeech.pShiftMeetingId =result.pShiftMeetingId;
         }
       });
-      this.formSpeech.id = uid;
+       this.formSpeech.pShiftMeetingId =uid;
       this.outerVisible = true;
     },
     //修改讲话
@@ -450,12 +461,12 @@ export default {
           datas.append("isSafety", form.protective);
           datas.append("jobContent", form.speachContent);
           datas.append("meetingContent", form.classContent);
-          datas.append("workerInfoIds", this.checkIds);
-          datas.append("teamId", form.id);
+          datas.append("workerInfoIds", this.selectedPersonIds);
+          datas.append("pShiftMeetingId", form.pShiftMeetingId);
           var url =
             "/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
-            "/team/meeting";
+            "/team/"+form.pShiftMeetingId+"/meeting";
           this.http.put(url, datas).then(res => {
             if (res.code == 200) {
               this.outerVisible = false;

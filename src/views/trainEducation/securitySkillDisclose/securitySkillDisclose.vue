@@ -95,8 +95,8 @@
       </el-main>
     </div>
     <!--新增-->
-    <el-dialog title="安全技术交底" :visible.sync="dialogFormVisible" width="500px" :center="true" top="0vh">
-      <el-form :model="form">
+    <el-dialog title="安全技术交底" :visible.sync="dialogFormVisible" width="500px" :center="true" top="0vh" :show-close="false">
+      <el-form :model="form" label-width="80px">
         <el-form-item label="施工单位">
           <el-input v-model="form.company"></el-input>
         </el-form-item>
@@ -106,10 +106,10 @@
         <el-form-item label="工种">
           <el-input v-model="form.workType"></el-input>
         </el-form-item>
-        <el-form-item label>
+        <el-form-item label="交底内容">
           <el-input type="textarea" :rows="6" placeholder="请输入交底内容" v-model="form.content"></el-input>
         </el-form-item>
-        <el-form-item label>
+        <el-form-item label="针对性交底">
           <el-input type="textarea" :rows="6" placeholder="请输入针对性交底" v-model="form.aimContent"></el-input>
         </el-form-item>
         <div>
@@ -131,7 +131,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
-        <el-button type="primary" @click="addSkillClick('form')" style="border-radius:18px">确 定</el-button>
+        <el-button type="primary" @click="addSkillClick('form')" style="border-radius:18px;margin-left:60px;">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -208,7 +208,7 @@ export default {
   },
   method: {
     addSkillClick: function(form) {
-      
+
     },
     skillList: function() {
       // 列表请求
