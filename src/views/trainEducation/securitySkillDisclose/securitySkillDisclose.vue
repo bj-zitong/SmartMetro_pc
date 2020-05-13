@@ -207,7 +207,9 @@ export default {
     this.tableData = result;
   },
   method: {
-    addSkillClick: function(form) {},
+    addSkillClick: function(form) {
+      
+    },
     skillList: function() {
       // 列表请求
       // 获得搜索的内容
