@@ -95,7 +95,7 @@ export const constantRouterMap = [
                 meta: {
                     icon: '../../static/image/laowu.png',
                     AfterIcon: '../../static/image/Team.png',
-                    title: '劳务分包管理',
+                    title: '劳务公司管理',
                     enable: "Y",
                     parent: '实名认证',
                 },

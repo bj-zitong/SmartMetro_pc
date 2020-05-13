@@ -6,7 +6,7 @@
           <div class="header-left fl">
             <img src="../../assets/images/home/home-logo.png" alt="">
           </div>
-          <div class="header-right fr">智慧地铁管理系统</div>
+          <div class="header-right fr">城市轨道交通智慧工地管理系统</div>
         </div>
         <div class="home-header-right fr">
           <div class="out fl">
@@ -122,7 +122,7 @@
                     <li>外来人员</li>
                   </ul>
                 </div>
-                <el-button type="primary" round icon="el-icon-view" class="el-button-bg">物料智慧管理</el-button>
+                <el-button type="primary" round icon="el-icon-view">物料智慧管理</el-button>
               </div>
             </el-col>
             <el-col :span="6">
@@ -154,7 +154,7 @@
                     <li>外来人员</li>
                   </ul>
                 </div>
-                <el-button type="primary" icon="el-icon-view">质量安全管理</el-button>
+                <el-button type="primary" round icon="el-icon-view">质量安全管理</el-button>
               </div>
             </el-col>
           </el-row>
@@ -175,7 +175,6 @@ export default {
   created() {
     // 初始化时读取localStorage用户信息
     let username = window.localStorage.getItem('username');
-    console.log(username)
   },
   computed: {
     ...mapGetters(["name", "avatar"])
@@ -231,15 +230,19 @@ ul,li {
 .home-header-left{
   height 100%;
   box-sizing border-box;
-  padding-top 20px;
+  padding-top: 10px;
+}
+.header-left img{
+  width: 50px;
+  height: 50px;
 }
 .header-right{
-  width:195px;
+  width:342px;
   height:31px;
+  font-size:24px;
   font-family:Microsoft YaHei;
   font-weight:bold;
-  margin-left 20px;
-  line-height:31px;
+  line-height:50px;
   color:rgba(0,88,162,1);
   opacity:1;
 }
