@@ -19,8 +19,8 @@
                 </el-form-item>
                 <el-form-item label="合同类型：">
                     <el-select v-model="screenForm.contractPeriodType">
-                    <el-option label="固定期限合同" value="0"></el-option>
-                    <el-option label="以完成一定工作为期限的合同" value="1"></el-option>
+                        <el-option label="固定期限合同" value="0"></el-option>
+                        <el-option label="以完成一定工作为期限的合同" value="1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -92,7 +92,7 @@
                         <el-button
                             class="T-R-B-Violet"
                             size="mini"
-                            @click="createdTeam(scope.$index, scope.row)"
+                            @click="createdTeamClick(scope.$index, scope.row)"
                         >创建班组</el-button>
                         </template>
                     </el-table-column>
@@ -102,13 +102,14 @@
     
 <!-- 添加 -->
         <el-dialog
+            width="450px"
+            class="popupDialog abow_dialog"
             :title="titleLabor"
             :visible.sync="dialogVisibleLabor"
             :close-on-click-modal="false"
             :center="true"
             :show-close="false"
-            width="450px"
-            class="popupDialog abow_dialog"
+            :hide-required-asterisk="true"
         >
             <el-form
                 ref="refLabor"
@@ -178,7 +179,56 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
+
+<!-- 创建班组 -->
+    <el-dialog
+        width="450px"
+        title="新增班组"
+        class="popupDialog"
+        :visible.sync="dialogVisibleTeam"
+        :center="true"
+        :show-close="false"
+        :close-on-click-modal="false"
+        :hide-required-asterisk="true"
+    >
+        <el-form
+            method="post"
+            ref="refTeam"
+            label-width="100px"
+            :rules="rulesForm"
+            :model="formTeam"
+            action="" 
+        >
+            <el-form-item prop="pLabourCompanyId">
+                <el-input v-model="formTeam.pLabourCompanyId" type="text" hidden></el-input>
+            </el-form-item>
+            <el-form-item prop="projectName" label="工程名称：">
+                <el-input v-model="formTeam.projectName" type="text" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item prop="teamName" label="班组名称：">
+            <el-input v-model="formTeam.teamName" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item prop="teamType" label="班组类型：">
+                <el-select v-model="formTeam.teamType" >
+                    <el-option v-for="item in teamOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item prop="teamLeaderName" label="班组长：">
+                <el-input v-model="formTeam.teamLeaderName" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item prop="teamLeaderPhone" label="手机号码：">
+                <el-input v-model="formTeam.teamLeaderPhone" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button class="F-Grey" round @click="cloneTeamForm('refTeam')">取 消</el-button>
+                <el-button class="F-Blue" round @click="submitTeamForm('refTeam')">确 定</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+
     </div>
+
+    
 </template>
 
 <script>
@@ -189,291 +239,371 @@ export default {
     name: "excelExport",
     data() {
         return {
-        //  初始化页面
-        page: 1, // 初始页
-        pageSize: 10, // 默认每页数据量
-        total: 0, //总条数
-        tableData: [], // 初始化表格
-        gridData: [], // 查看下属表格初始化
-        dialogVisibleLabor: false, // 添加/编辑弹窗
-        titleLabor:'', // 标题
-        seeBranch: false, // 创建班组弹窗
-        screenForm: { //  筛选
-            company: "",
-            responsiblePersonName: "",
-            contractPeriodType: ""
-        },
-        screenCompany: [
-            { id: 0, name: "第一公司" },
-            { id: 1, name: "第二公司" }
-        ],
-        // 新增/编辑 劳务人员
-        formLabor: {
-            id: null,
-            company: "",
-            responsiblePersonName: "",
-            responsiblePersonPhone: "",
-            serviceCompany: "",
-            projectCode: "",
-            projectName: "",
-            contractCode: "",
-            startDate: "",
-            endDate: "",
-            contractPeriodType: "",
-            corpCode: ""
-        },
-        // 导出
-        tableTitleData: [
-            {
-            label: "公司名称",
-            prop: "company"
+            //  初始化页面
+            page: 1, // 初始页
+            pageSize: 10, // 默认每页数据量
+            total: 0, //总条数
+            tableData: [], // 初始化表格
+            gridData: [], // 查看下属表格初始化
+            dialogVisibleLabor: false, // 添加/编辑弹窗
+            dialogVisibleTeam: false,   // 班组
+            formTeam: { //班组初始化
+                pLabourCompanyId: null,
+                projectName: '',
+                teamName: '',
+                teamType: '',
+                teamLeaderName: '',
+                teamLeaderPhone: ''
             },
-            {
-            label: "负责人",
-            prop: "responsiblePersonName"
+            teamOptions: [
+                { id: 0, name: '班组1' },
+                { id: 0, name: '班组2' }
+            ],
+            titleLabor:'', // 标题
+            seeBranch: false, // 创建班组弹窗
+            screenForm: { //  筛选
+                company: "",
+                responsiblePersonName: "",
+                contractPeriodType: ""
             },
-            {
-            label: "合同类型",
-            prop: "contractPeriodType"
+            screenCompany: [
+                { id: 0, name: "第一公司" },
+                { id: 1, name: "第二公司" }
+            ],
+            // 新增/编辑 劳务人员
+            formLabor: {
+                id: null,
+                company: "",
+                responsiblePersonName: "",
+                responsiblePersonPhone: "",
+                serviceCompany: "",
+                projectCode: "",
+                projectName: "",
+                contractCode: "",
+                startDate: "",
+                endDate: "",
+                contractPeriodType: "",
+                corpCode: ""
+            },
+            // 导出
+            tableTitleData: [
+                {
+                label: "公司名称",
+                prop: "company"
+                },
+                {
+                label: "负责人",
+                prop: "responsiblePersonName"
+                },
+                {
+                label: "合同类型",
+                prop: "contractPeriodType"
+                }
+            ],
+            // 自定义表单验证
+            rulesForm: {
+                company: [
+                    { required: true, message: "请输入公司名称", trigger: "blur" }
+                ],
+                responsiblePersonName: [
+                    { required: true, message: "请输入负责人", trigger: "blur" }
+                ],
+                responsiblePersonPhone: [
+                    { required: true, message: "请输入联系方式", trigger: "blur" }
+                ],
+                serviceCompany: [
+                    { required: true, message: "请输入服务单位", trigger: "blur" }
+                ],
+                projectCode: [
+                    { required: true, message: "请输入项目编号", trigger: "blur" }
+                ],
+                projectName: [
+                    { required: true, message: "请输入项目名称", trigger: "blur" }
+                ],
+                contractCode: [
+                    { required: true, message: "请输入合同编号", trigger: "blur" }
+                ],
+                startDate: [
+                    { required: true, message: "请选择开始日期", trigger: "change" }
+                ],
+                endDate: [
+                    { required: true, message: "请选择结束日期", trigger: "change" }
+                ],
+                contractPeriodType: [
+                    { required: true, message: "请选择合同期限类型", trigger: "change" }
+                ],
+                corpCode: [
+                    { required: true, message: "请输入组织机构代码", trigger: "blur" }
+                ],
+                teamName: [
+                    { required: true, message: "请输入班组名称", trigger: "blur" }
+                ],
+                teamType: [
+                    { required: true, message: "请选择班组类型", trigger: "change" }
+                ],
+                teamLeaderName: [
+                    { required: true, message: "请输入姓名", trigger: "blur" }
+                ],
+                teamLeaderPhone: [
+                    { required: true, message: "请输入手机号", trigger: "blur" }
+                ]
             }
-        ],
-        // 自定义表单验证
-        rulesForm: {
-            company: [
-            { required: true, message: "请输入公司名称", trigger: "blur" }
-            ],
-            responsiblePersonName: [
-            { required: true, message: "请输入负责人", trigger: "blur" }
-            ],
-            responsiblePersonPhone: [
-            { required: true, message: "请输入联系方式", trigger: "blur" }
-            ],
-            serviceCompany: [
-            { required: true, message: "请输入服务单位", trigger: "blur" }
-            ],
-            projectCode: [
-            { required: true, message: "请输入项目编号", trigger: "blur" }
-            ],
-            projectName: [
-            { required: true, message: "请输入项目名称", trigger: "blur" }
-            ],
-            contractCode: [
-            { required: true, message: "请输入合同编号", trigger: "blur" }
-            ],
-            startDate: [
-            { required: true, message: "请选择开始日期", trigger: "change" }
-            ],
-            endDate: [
-            { required: true, message: "请选择结束日期", trigger: "change" }
-            ],
-            contractPeriodType: [
-            { required: true, message: "请选择合同期限类型", trigger: "change" }
-            ],
-            corpCode: [
-            { required: true, message: "请输入组织机构代码", trigger: "blur" }
-            ]
-        }
         };
     },
-  created() {
-    // 页面加载时获取用户信息
-    this.getLocalStorage();
-    this.getTable();
-  },
-  components: {},
-  methods: {
-    // 获取本地存储用户信息
-    getLocalStorage() {
-      this.username = window.sessionStorage.getItem("username");
-      this.userId = window.sessionStorage.getItem("userId");
-      this.admin = window.sessionStorage.getItem("admin");
-      this.token = window.sessionStorage.getItem("token");
+    created() {
+        // 页面加载时获取用户信息
+        this.getLocalStorage();
+        this.getTable();
     },
-    // 每页显示多少条 @size-change
-    handleSizeChange(size) {
-      this.pageSize = size;
-      this.getTable();
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    // 点击跳转第几页 @current-change
-    handleCurrentChange(page) {
-      this.page = page;
-      this.getTable();
-    },
-    // 上一页 @prev-click
-    prev(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
-    // 下一页 @next-click
-    next(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
-    // 表格加载请求
-    getTable() {
-      var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page
-      });
-      //请求
-      var url =
-        "/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/company/management";
-      this.http.post(url, data).then(res => {
-        if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
-          this.tableData = rows;
-          this.total = total;
-        }
-      });
-      var result = [
-        {
-          id: 1,
-          company: "第一公司",
-          responsiblePersonName: "张三",
-          responsiblePersonPhone: "13888779977",
-          serviceCompany: "第一单位",
-          projectCode: "007124241",
-          projectName: "第一项目",
-          contractCode: "HT123456",
-          startDate: "2019-10-01",
-          endDate: "2020-10-07",
-          contractPeriodType: "固定期限合同",
-          corpCode: "354163831",
-          status: "未提交"
+    components: {},
+    methods: {
+        // 获取本地存储用户信息
+        getLocalStorage() {
+            this.username = window.sessionStorage.getItem("username");
+            this.userId = window.sessionStorage.getItem("userId");
+            this.admin = window.sessionStorage.getItem("admin");
+            this.token = window.sessionStorage.getItem("token");
         },
-        {
-          id: 2,
-          company: "第二公司",
-          responsiblePersonName: "李四",
-          responsiblePersonPhone: "13881234123",
-          serviceCompany: "第二单位",
-          projectCode: "558244568",
-          projectName: "第二项目",
-          contractCode: "HT654321",
-          startDate: "2019-10-01",
-          endDate: "2020-10-07",
-          contractPeriodType: "以完成一定工作为期限的合同",
-          corpCode: "68461684",
-          status: "未提交"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
-    },
-    //获得表格前面选中的id值
-    handleSelectionChange() {
-      var ids = new Array();
-      var arrays = this.$refs.multipleTable.selection;
-      for (var i = 0; i < arrays.length; i++) {
-        // 获得id
-        var id = arrays[i].id;
-        ids.push(id);
-        // console.log("获得id"+arrays[i].userId);
-      }
-      return ids;
-      //  this.multipleSelection = val;
-    },
-    // 查询
-    onScreen() {
-      var data = JSON.stringify(this.screenForm);
-      this.http
-        .post("/smart/worker/labour/1/company/management", data)
-        .then(res => {
-          console.log(res);
-        });
-    },
+        // 每页显示多少条 @size-change
+        handleSizeChange(size) {
+            this.pageSize = size;
+            this.getTable();
+        // console.log(this.pageSize)  //每页下拉显示数据
+        },
+        // 点击跳转第几页 @current-change
+        handleCurrentChange(page) {
+            this.page = page;
+            this.getTable();
+        },
+        // 上一页 @prev-click
+        prev(cpage) {
+            this.page = cpage;
+            this.getTable();
+        },
+        // 下一页 @next-click
+        next(cpage) {
+            this.page = cpage;
+            this.getTable();
+        },
+        // 表格加载请求
+        getTable() {
+            var data = JSON.stringify({
+                pageSize: this.pageSize,
+                page: this.page
+            });
+            //请求
+            var url =
+                "/smart/worker/labour/" +
+                sessionStorage.getItem("userId") +
+                "/company/management";
+            this.http.post(url, data).then(res => {
+                if (res.code == 200) {
+                var total = res.total;
+                var rows = res.rows;
+                this.tableData = rows;
+                this.total = total;
+                }
+            });
+            var result = [
+                {
+                id: 1,
+                company: "第一公司",
+                responsiblePersonName: "张三",
+                responsiblePersonPhone: "13888779977",
+                serviceCompany: "第一单位",
+                projectCode: "007124241",
+                projectName: "第一项目",
+                contractCode: "HT123456",
+                startDate: "2019-10-01",
+                endDate: "2020-10-07",
+                contractPeriodType: "固定期限合同",
+                corpCode: "354163831",
+                status: "未提交"
+                },
+                {
+                id: 2,
+                company: "第二公司",
+                responsiblePersonName: "李四",
+                responsiblePersonPhone: "13881234123",
+                serviceCompany: "第二单位",
+                projectCode: "558244568",
+                projectName: "第二项目",
+                contractCode: "HT654321",
+                startDate: "2019-10-01",
+                endDate: "2020-10-07",
+                contractPeriodType: "以完成一定工作为期限的合同",
+                corpCode: "68461684",
+                status: "未提交"
+                }
+            ];
+            this.tableData = result;
+            this.total = result.length;
+        },
+//获得表格前面选中的id值
+        handleSelectionChange() {
+            var ids = new Array();
+            var arrays = this.$refs.multipleTable.selection;
+            for (var i = 0; i < arrays.length; i++) {
+                // 获得id
+                var id = arrays[i].id;
+                ids.push(id);
+                // console.log("获得id"+arrays[i].userId);
+            }
+            return ids;
+            //  this.multipleSelection = val;
+        },
+        // 查询
+        onScreen() {
+        var data = JSON.stringify(this.screenForm);
+        this.http
+            .post("/smart/worker/labour/1/company/management", data)
+            .then(res => {
+            console.log(res);
+            });
+        },
 
 //  添加/编辑 提交
-    submiLabortForm(refLabor) {
-        // 验证
-        this.$refs[refLabor].validate(valid => {
-            if (valid) {
-                let form = this.$refs[refLabor].model;
-                // 判断id是否为空
-                if(form.id == null) {
-                    // this.titleLabor = '新增劳务公司'
-                    let data = JSON.stringify(this.formLabor);
-                    this.http
-                        .post("smart/worker/labour/1/company/management", data)
-                        .then(res => {
-                            if (res.code == 200) {
-                                this.$message({
-                                type: "success",
-                                message: "添加成功!"
-                                });
-                            }
-                        })
-                        .catch(res => {
-                            console.log('error!')
-                            return false
-                        });
-                    this.dialogVisibleLabor = false;
+        submiLabortForm(refLabor) {
+            // 验证
+            this.$refs[refLabor].validate(valid => {
+                if (valid) {
+                    let form = this.$refs[refLabor].model;
+                    // 判断id是否为空
+                    if(form.id == null) {
+                        let data = JSON.stringify(this.formLabor);
+                        this.http
+                            .post("smart/worker/labour/1/company/management", data)
+                            .then(res => {
+                                if (res.code == 200) {
+                                    this.$message({
+                                    type: "success",
+                                    message: "添加成功!"
+                                    });
+                                }
+                            })
+                            .catch(res => {
+                                console.log('error!')
+                                return false
+                            });
+                        this.dialogVisibleLabor = false;
+                    } else {
+                        let data = JSON.stringify(this.formLabor);
+                        this.http
+                            .put("smart/worker/labour/1/company/management", data)
+                            .then(res => {
+                                if (res.code == 200) {
+                                    this.$message({
+                                    type: "success",
+                                    message: "添加成功!"
+                                    });
+                                }
+                            })
+                            .catch(res => {
+                                console.log('error!')
+                                return false
+                            });
+                        this.dialogVisibleLabor = false;
+                    }
+                    
                 } else {
-                    // this.titleLabor = '编辑劳务公司'
-                    let data = JSON.stringify(this.formLabor);
-                    this.http
-                        .put("smart/worker/labour/1/company/management", data)
-                        .then(res => {
-                            if (res.code == 200) {
-                                this.$message({
-                                type: "success",
-                                message: "添加成功!"
-                                });
-                            }
-                        })
-                        .catch(res => {
-                            console.log('error!')
-                            return false
-                        });
-                    this.dialogVisibleLabor = false;
+                    console.log("error submit!!");
+                    return false;
                 }
-                
-            } else {
-                console.log("error submit!!");
-                return false;
-            }
-        });
-    },
+            });
+        },
 
 //  新增/编辑   关闭
-    cloneLaborForm(refLabor) {
-        this.$refs[refLabor].resetFields();
-        this.dialogVisibleLabor = false;
-    },
+        cloneLaborForm(refLabor) {
+            this.$refs[refLabor].resetFields();
+            this.dialogVisibleLabor = false;
+        },
 //  新增劳务公司
-    addClick() {
-        this.titleLabor = '新增劳务公司'
-        this.dialogVisibleLabor = true
-    },
+        addClick() {
+            this.titleLabor = '新增劳务公司'
+            this.dialogVisibleLabor = true
+        },
 //  编辑回显
-    editRowClick(inedx, row) {
-        this.titleLabor = '编辑劳务公司'
-        this.formLabor = row;
-        this.dialogVisibleLabor = true;
-    },
+        editRowClick(inedx, row) {
+            this.titleLabor = '编辑劳务公司'
+            this.formLabor = row;
+            this.dialogVisibleLabor = true;
+        },
 
 //  批量删除
-    deleteBatchClick() {
-        var ids = this.handleSelectionChange();
-        if (ids.length <= 0) {
-            this.$message("请选择删除的数据！");
-            return;
-        }
-        handleCofirm("确定删除该员工信息吗？")
+        deleteBatchClick() {
+            var ids = this.handleSelectionChange();
+            if (ids.length <= 0) {
+                this.$message("请选择删除的数据！");
+                return;
+            }
+            handleCofirm("确定删除该员工信息吗？")
+                .then(res => {
+                    let data = JSON.stringify(ids);
+                    let url =
+                        "/smart/worker/labour/" +
+                        sessionStorage.getItem("userId") +
+                        "/company";
+                    this.http.delete(url, data).then(res => {
+                        if (res.code == 200) {
+                        let total = res.total;
+                        let rows = res.rows;
+                        this.tableData = rows;
+                        this.total = total;
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                        }
+                    });
+                })
+                .catch(err => {
+                    this.$message({
+                        type: "info",
+                        message: "已取消删除"
+                    });
+                });
+        },
+//  导出
+        exportStaffClick() {
+        // 导出表格的表头设置
+        //   let allColumns = this.tableTitleData
+        //   var columnNames = []
+        //   var columnValues = []
+        //   for (var i = 0; i < allColumns.length; i++) {
+        //     columnNames[i] = allColumns[i].label
+        //     columnValues[i] = allColumns[i].prop
+        //   }
+        //   require.ensure([], () => {
+        //     const { export_json_to_excel } = require('vendor/Export2Excel')
+        //     const tHeader = columnNames
+        //     const filterVal = columnValues
+        //     const list = this.tableData
+        //     const data = this.formatJson(filterVal, list)
+        //     export_json_to_excel(tHeader, data, '导出excel列表demo')
+        //   })
+        // },
+        // formatJson(filterVal, jsonData) {
+        //   return jsonData.map(v => filterVal.map(j => v[j]))
+        },
+        //  导入
+        importStaffClick() {},
+        
+//  删除
+        deleteRowClick(index, row) {
+            let ids = [];
+            ids.push(row.id)
+
+            handleCofirm("确定删除该员工信息吗？")
             .then(res => {
-                let data = JSON.stringify(ids);
-                let url =
+                var data = JSON.stringify(ids);
+                var url =
                     "/smart/worker/labour/" +
                     sessionStorage.getItem("userId") +
                     "/company";
                 this.http.delete(url, data).then(res => {
                     if (res.code == 200) {
-                    let total = res.total;
-                    let rows = res.rows;
+                    var total = res.total;
+                    var rows = res.rows;
                     this.tableData = rows;
                     this.total = total;
                     this.$message({
@@ -489,70 +619,50 @@ export default {
                     message: "已取消删除"
                 });
             });
-    },
-    //  导出
-    exportStaffClick() {
-      // 导出表格的表头设置
-      //   let allColumns = this.tableTitleData
-      //   var columnNames = []
-      //   var columnValues = []
-      //   for (var i = 0; i < allColumns.length; i++) {
-      //     columnNames[i] = allColumns[i].label
-      //     columnValues[i] = allColumns[i].prop
-      //   }
-      //   require.ensure([], () => {
-      //     const { export_json_to_excel } = require('vendor/Export2Excel')
-      //     const tHeader = columnNames
-      //     const filterVal = columnValues
-      //     const list = this.tableData
-      //     const data = this.formatJson(filterVal, list)
-      //     export_json_to_excel(tHeader, data, '导出excel列表demo')
-      //   })
-      // },
-      // formatJson(filterVal, jsonData) {
-      //   return jsonData.map(v => filterVal.map(j => v[j]))
-    },
-    //  导入
-    importStaffClick() {},
-    
-//  删除
-    deleteRowClick(index, row) {
-        let ids = [];
-        ids.push(row.id)
-
-        handleCofirm("确定删除该员工信息吗？")
-        .then(res => {
-            var data = JSON.stringify(ids);
-            var url =
-                "/smart/worker/labour/" +
-                sessionStorage.getItem("userId") +
-                "/company";
-            this.http.delete(url, data).then(res => {
-                if (res.code == 200) {
-                var total = res.total;
-                var rows = res.rows;
-                this.tableData = rows;
-                this.total = total;
-                this.$message({
-                    type: "success",
-                    message: "删除成功!"
-                });
+        },
+//  班组提交
+        createdTeamClick(index, row) {
+            this.dialogVisibleTeam = true;
+            console.log(row)
+        },
+        submitTeamForm(refTeam) {
+            // 验证
+            this.$refs[refTeam].validate(valid => {
+                if (valid) {
+                    let form = this.$refs[refTeam].model;
+                    let data = JSON.stringify(this.formTeam);
+                    let url = "/smart/worker/labour/" +
+                            sessionStorage.getItem("userId") +
+                            "/team";
+                    this.http.post('url', data)
+                    .then(res => {
+                        if (res.code == 200) {
+                            this.$message({
+                            type: "success",
+                            message: "添加成功!"
+                            });
+                        }
+                    })
+                    .catch(res => {
+                        console.log('error!')
+                        return false
+                    });
+                    this.dialogVisibleTeam = false;
+                } else {
+                    console.log("error submit!!");
+                    return false;
                 }
             });
-        })
-        .catch(err => {
-            this.$message({
-                type: "info",
-                message: "已取消删除"
-            });
-        });
-    },
-
-//  表头样式
-    headClass() {
-      return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
+        },
+        cloneTeamForm(refTeam) {
+            this.$refs[refTeam].resetFields();
+            this.dialogVisibleTeam = false;
+        },
+    //  表头样式
+        headClass() {
+        return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
+        }
     }
-  }
 };
 </script>
 
