@@ -57,21 +57,22 @@
         ref="formClass"
         :rules="formRules"
         :model="formClass"
+        label-width="80px"
         action="http://192.168.1.164:8001/auth/user/baseUser"
       >
-        <el-form-item prop="id">
-          <el-input v-model="formClass.id" type="text" hidden></el-input>
+        <el-form-item prop="teamMasterId">
+          <el-input v-model="formClass.teamMasterId" type="text" hidden></el-input>
         </el-form-item>
-        <el-form-item prop="projectName">
+        <el-form-item prop="projectName" label="工程名称">
           <el-input v-model="formClass.projectName" type="text" placeholder="工程名称"></el-input>
         </el-form-item>
-        <el-form-item prop="groupName">
+        <el-form-item prop="groupName" label="班组名称">
           <el-input v-model="formClass.groupName" placeholder="班组名称"></el-input>
         </el-form-item>
-        <el-form-item prop="phone">
+        <el-form-item prop="phone" label="手机号">
           <el-input v-model="formClass.phone" placeholder="手机号"></el-input>
         </el-form-item>
-        <el-form-item prop="groupLeader">
+        <el-form-item prop="groupLeader" label="班组长">
           <el-input v-model="formClass.groupLeader" placeholder="班组长"></el-input>
         </el-form-item>
         <el-form-item prop="profession" label="班组类型">
@@ -125,6 +126,7 @@
           ref="formSpeech"
           :rules="formSpeechRules"
           :model="formSpeech"
+          label-width="80px"
           action="http://192.168.1.164:8001/auth/user/baseUser"
         >
           <el-form-item prop="jobsite" label="作业部位:">
@@ -483,7 +485,7 @@ export default {
       //获得详情
       var params = null;
       this.formClass.projectName = "123";
-      this.formClass.teamMasterId = 1;
+      this.formClass.teamMasterId =uid;
       var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -512,7 +514,7 @@ export default {
         if (valid) {
           //新增 id为空
           var form = this.$refs[formClass].model;
-          if (form.id == null) {
+          if (form.teamMasterId == null) {
             var params = JSON.stringify({
               projectName: form.projectName,
               teamName: form.groupName,
@@ -538,7 +540,7 @@ export default {
               teamType: form.profession,
               teamLeaderName: form.groupLeader,
               teamLeaderPhone: form.phone,
-              teamMasterId: form.id
+              teamMasterId: form.teamMasterId
             });
             var url =
               "/smart/worker/labour/" +

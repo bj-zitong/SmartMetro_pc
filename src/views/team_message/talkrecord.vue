@@ -88,6 +88,7 @@
         ref="formSpeech"
         :rules="formSpeechRules"
         :model="formSpeech"
+        label-width="80px"
         action="http://192.168.1.164:8001/auth/user/baseUser"
       >
         <el-form-item prop="pShiftMeetingId">
@@ -461,7 +462,7 @@ export default {
           datas.append("isSafety", form.protective);
           datas.append("jobContent", form.speachContent);
           datas.append("meetingContent", form.classContent);
-          datas.append("workerInfoIds", this.selectedPersonIds);
+          datas.append("workerInfo", this.selectedPersonIds);
           datas.append("pShiftMeetingId", form.pShiftMeetingId);
           var url =
             "/smart/worker/labour/" +
