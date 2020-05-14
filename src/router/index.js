@@ -196,7 +196,7 @@ export const constantRouterMap = [
                 component: () =>
                     import('@/views/foreignpersonnel/index'),
                 meta: {
-                    icon: '../../static/image/wlry.png',
+                    icon: '../../static/image/sidebar_icon/Unchecked_Outlander.png',
                     AfterIcon: '../../static/image/wlry.png',
                     title: '外来人员',
                     enable: "Y",
@@ -278,8 +278,8 @@ export const constantRouterMap = [
                 // alwaysShow: true,
                 meta: {
                     title: '出勤记录',
-                    icon: '../../static/image/accessRecords.png',
-                    AfterIcon: '../../static/image/accessRecords.png',
+                    icon: '../../static/image/sidebar_icon/Unchecked_Access.png',
+                    AfterIcon: '../../static/image/sidebar_icon/Unchecked_Access.png',
                     enable: "Y",
                     parent: '智慧考勤'
                 },

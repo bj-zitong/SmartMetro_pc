@@ -1,7 +1,8 @@
 <template>
-  <div class="roster">
+  <div class="main-box">
+    <!-- 头部 -->
     <el-container>
-      <el-main class="glry">
+      <el-menu class="main-top-box">
         <el-form :inline="true" :model="form" class="demo-form-inline">
           <el-form-item label="姓名">
             <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
@@ -13,7 +14,7 @@
             <el-button type="primary" @click="getOtherStaffs()">查询</el-button>
           </el-form-item>
         </el-form>
-      </el-main>
+      </el-menu>
     </el-container>
     <div class="glry_bottonView">
       <el-main class="btnView">

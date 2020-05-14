@@ -12,32 +12,32 @@
         >
           <el-col :span="8">
             <el-form-item label="姓名" prop="name" class="el-form-item">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="性别" prop="gender">
-              <el-input v-model="form.gender"></el-input>
+              <el-input v-model="form.gender" placeholder="请输入性别"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="年龄" prop="age">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.name" placeholder="请输入年龄"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="民族" prop="nation">
-              <el-input v-model="form.nation"></el-input>
+              <el-input v-model="form.nation" placeholder="请输入民族"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="手机号码" prop="phoneNumber">
-              <el-input v-model="form.phoneNumber"></el-input>
+            <el-form-item label="手机号码" prop="cellPhone">
+              <el-input v-model="form.cellPhone" placeholder="请输入手机号码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="政治面貌" prop="politicalOutlook">
-              <el-input v-model="form.politicalOutlook" placeholder="请输入政治面貌"></el-input>
+            <el-form-item label="政治面貌" prop="politicsType ">
+              <el-input v-model="form.politicsType " placeholder="请输入政治面貌"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -50,16 +50,6 @@
               <el-input v-model="form.urgentLinkManPhone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="12">
-            <el-form-item label="现居住地">
-              <el-input v-model="form.name"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="籍贯">
-              <el-input v-model="form.name"></el-input>
-            </el-form-item>
-          </el-col>-->
           <el-col :span="12">
             <el-form-item label="现居住地" prop="address" class="el-form-item">
               <el-input v-model="form.address" placeholder="请输入现居住地"></el-input>
@@ -103,70 +93,77 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件类型" prop="documentType">
-              <el-select v-model="form.documentType" placeholder="请选择证件类型">
+            <el-form-item label="证件类型" prop="idCardType">
+              <el-select v-model="form.idCardType" placeholder="请选择证件类型">
                 <el-option label="身份证" value="1"></el-option>
                 <el-option label="护照" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件编码" prop="certificateCode">
-              <el-input v-model="form.certificateCode" placeholder="请输入证件编码"></el-input>
+            <el-form-item label="证件编码" prop="idCardCode">
+              <el-input v-model="form.idCardCode" placeholder="请输入证件编码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="工人类型" prop="region">
-              <el-select v-model="form.region" placeholder="工人类型">
+            <el-form-item label="工人类型" prop="workerType">
+              <el-select v-model="form.workerType" placeholder="请选择工人类型">
                 <el-option label="厨师" value="shanghai"></el-option>
                 <el-option label="保安" value="beijing"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
-           <el-col :span="10">
-            <el-form-item label="持证上岗" prop="region">
-              <el-select v-model="form.region" placeholder="工人类型">
+          <el-col :span="8">
+            <el-form-item label="持证上岗" prop="isRelatedCertificates">
+              <el-select v-model="form.isRelatedCertificates" placeholder="请选择持证上岗">
                 <el-option label="是" value="是"></el-option>
                 <el-option label="否" value="否"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="居住证">
-              <el-select v-model="form.region" placeholder="持证上岗">
-                <el-option label="是" value="shanghai"></el-option>
-                <el-option label="否" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <!-- <el-col :span="8">
-            <el-form-item label="持证上岗">
-              <el-select v-model="form.region" placeholder="持证上岗">
-                <el-option label="是" value="shanghai"></el-option>
-                <el-option label="否" value="beijing"></el-option>
+            <el-form-item label="居住证" prop="isResidencePermit">
+              <el-select v-model="form.isResidencePermit" placeholder="请选择居住证">
+                <el-option label="是" value="是"></el-option>
+                <el-option label="否" value="否"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="居住证">
-              <el-select v-model="form.region" placeholder="持证上岗">
-                <el-option label="是" value="shanghai"></el-option>
-                <el-option label="否" value="beijing"></el-option>
-              </el-select>
+            <el-form-item label="居住证办理日期" prop="residencePermitDate">
+              <!-- <el-date-picker v-model="form.residencePermitDate" type="date" placeholder="请选择日期"></el-date-picker> -->
+              <el-date-picker
+                v-model="form.residencePermitDate"
+                type="datetime"
+                placeholder="请选择居住证办理日期"
+                default-time="12:00:00"
+                value-format="yyyy-MM-dd HH:mm:ss"
+              ></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="居住证办理日期">
-              <el-select v-model="form.region" placeholder="居住证办理日期">
-                <el-option label="是" value="shanghai"></el-option>
-                <el-option label="否" value="beijing"></el-option>
-              </el-select>
+            <el-form-item label="一寸照片" prop="photo">
+              <el-upload
+                class="upload-demo"
+                v-model="form.photo"
+                action
+                :on-change="handleChange"
+                :file-list="fileList"
+                :auto-upload="false"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
             </el-form-item>
-          </el-col> -->
+          </el-col>
           <div style="float:right">
             <div style="margin-top:50px">
-              <el-button type="primary" round style="background:#ccc;border:1px solid #ccc">取消</el-button>
-              <el-button type="primary" round>提交</el-button>
+              <el-button
+                type="primary"
+                round
+                style="background:#ccc;border:1px solid #ccc"
+                @click="cancel()"
+              >取消</el-button>
+              <el-button type="primary" round @click="submitForm('form')">提交</el-button>
             </div>
           </div>
         </el-form>
@@ -182,20 +179,32 @@ export default {
       labelPosition: "left",
       form: {
         name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+        gender: "",
+        age: "",
+        nation: "",
+        cellPhone: "",
+        politicsType: "",
+        urgentLinkMan: "",
+        urgentLinkManPhone: "",
+        address: "",
+        birthPlace: "",
+        maritalStatu: "",
+        degree: "",
+        cultureLevelType: "",
+        idCardType: "",
+        idCardCode: "",
+        isResidencePermit: "",
+        isRelatedCertificates: "",
+        residencePermitDate: "",
+        workerType: "",
+        photo: ""
       },
       rules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         gender: [{ required: true, message: "请输入性别", trigger: "blur" }],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         nation: [{ required: true, message: "请输入民族", trigger: "blur" }],
-        phoneNumber: [
+        cellPhone: [
           { required: true, message: "请输入手机号码", trigger: "blur" }
         ],
         politicalOutlook: [
@@ -209,28 +218,36 @@ export default {
         ],
         address: [
           { required: true, message: "请输入现居住地", trigger: "blur" }
-        ], 
+        ],
         birthPlace: [
           { required: true, message: "请输入籍贯", trigger: "blur" }
-        ], 
+        ],
         maritalStatus: [
           { required: true, message: "请输入婚姻状况", trigger: "blur" }
-        ],  
-        degree: [
-          { required: true, message: "请输入学位", trigger: "blur" }
-        ],  
+        ],
+        degree: [{ required: true, message: "请输入学位", trigger: "blur" }],
         cultureLevelType: [
           { required: true, message: "请输入文化程度", trigger: "blur" }
-        ], 
-        documentType: [
+        ],
+        idCardType: [
           { required: true, message: "请输入证件类型", trigger: "blur" }
-        ], 
-        certificateCode: [
+        ],
+        idCardCode: [
           { required: true, message: "请输入证件编码", trigger: "blur" }
-        ], 
-        region:[
+        ],
+        workerType: [
           { required: true, message: "请选择工人类型", trigger: "blur" }
-        ], 
+        ],
+        isRelatedCertificates: [
+          { required: true, message: "请选择持证上岗", trigger: "blur" }
+        ],
+        residencePermitDate: [
+          { required: true, message: "请选择居住证办理日期", trigger: "blur" }
+        ],
+        isResidencePermit: [
+          { required: true, message: "请选择居住证", trigger: "blur" }
+        ],
+        photo: [{ required: true, message: "请上传图片", trigger: "blur" }]
       },
       //日历选择器
       pickerOptions: {
@@ -287,7 +304,56 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    handleChange() {}
+    handleChange() {},
+    cancel() {
+      this.$router.push({ path: "/roster/otherStaffs" });
+    },
+    submitForm(form) {
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          var form = this.$refs["form"].model;
+          if (this.id == 0) {
+            var params = JSON.stringify({
+              name: form.name,
+              gender: form.gender,
+              age: form.age,
+              nation: form.nation,
+              cellPhone: form.cellPhone,
+              politicsType: form.politicsType,
+              urgentLinkMan: form.urgentLinkMan,
+              urgentLinkManPhone: form.urgentLinkManPhone,
+              address: form.address,
+              birthPlace: form.birthPlace,
+              maritalStatu: form.maritalStatu,
+              degree: form.degree,
+              cultureLevelType: form.cultureLevelType,
+              idCardType: form.idCardType,
+              idCardCode: form.idCardCode,
+              isResidencePermit: form.isResidencePermit,
+              isRelatedCertificates: form.isRelatedCertificates,
+              residencePermitDate: form.residencePermitDate,
+              workerType: form.workerType,
+              photo: form.photo
+            });
+            var url =
+              "/smart/worker/roster/" +
+              sessionStorage.getItem("userId") +
+              "/other";
+            this.http.post(url, params).then(res => {
+              if (res.code == 200) {
+                this.$router.push({ path: "/roster/otherStaffs" });
+              }
+            });
+          }
+        } else {
+          return false;
+        }
+      });
+    },
+    handleChange(file, fileList) {
+      this.$refs.form.clearValidate();
+      this.form.photo = fileList;
+    }
   }
 };
 </script>

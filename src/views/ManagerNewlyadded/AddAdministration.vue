@@ -122,7 +122,7 @@
           <el-col :span="8">
             <el-form-item label="居住证办理日期" prop="residencePermitDate">
               <!-- <el-date-picker v-model="form.residencePermitDate" type="date" placeholder="请选择日期"></el-date-picker> -->
-               <el-date-picker
+              <el-date-picker
                 v-model="form.residencePermitDate"
                 type="datetime"
                 placeholder="请选择居住证办理日期"
@@ -147,7 +147,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="8">
+          <el-col :span="8">
             <el-form-item label="一寸照片" prop="photo">
               <el-upload
                 class="upload-demo"
@@ -160,8 +160,8 @@
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
             </el-form-item>
-          </el-col>-->
-          <el-col :span="24">
+          </el-col>
+          <!-- <el-col :span="24">
             <el-form-item label="角色" prop="roleIds">
               <el-checkbox-group v-model="form.roleIds">
                 <el-checkbox label="超级管理员"></el-checkbox>
@@ -177,7 +177,7 @@
                 <el-checkbox label="其他"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-form-item style="float:right">
             <el-button type="primary" round class="cancel-style" @click="cancelClick()">取消</el-button>
             <el-button type="primary" round @click="submitForm('form')">确认</el-button>
@@ -219,7 +219,7 @@ export default {
         residencePermitDate: "",
         workerType: "",
         politicsType: "",
-        roleIds: [],
+        // roleIds: [],
         photo: ""
       },
       getImgCodeResults: "",
@@ -274,10 +274,7 @@ export default {
         politicsType: [
           { required: true, message: "请选择政治面貌", trigger: "blur" }
         ],
-        photo: [{ required: true, message: "请上传照片", trigger: "change" }],
-        roleIds: [
-          { required: true, message: "请选择人员类型", trigger: "blur" }
-        ]
+        photo: [{ required: true, message: "请上传照片", trigger: "change" }]
       },
       //日历选择器
       pickerOptions: {
@@ -350,40 +347,19 @@ export default {
         if (valid) {
           var form = this.$refs["form"].model;
           handleCofirm("确认添加吗？", "warning").then(res => {
-            this.$message({
-              type: "success",
-              message: "添加成功!"
-            });
-            var params = JSON.stringify({
-              name: form.name,
-              gender: form.gender,
-              age: form.age,
-              nation: form.nation,
-              cellPhone: form.cellPhone,
-              department: form.department,
-              buildCorpName: form.buildCorpName,
-              jobType: form.jobType,
-              urgentLinkMan: form.urgentLinkMan,
-              urgentLinkManPhone: form.urgentLinkManPhone,
-              address: form.address,
-              birthPlace: form.birthPlace,
-              degree: form.degree,
-              cultureLevelType: form.cultureLevelType,
-              idCardCode: form.idCardCode,
-              intervieweeDepartmentId: form.profession,
-              residencePermitDate: form.residencePermitDate,
-              workerType: form.workerType,
-              politicsType: form.politicsType,
-              photo: form.photo
-            });
-            this.$router.push({ path: "/roster/manager" });
+            var params = JSON.stringify(this.form);
+
             var url =
               "/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/manager";
             this.http.post(url, params).then(res => {
               if (res.code == 200) {
-                 
+                this.$message({
+                  type: "success",
+                  message: "添加成功!"
+                });
+                this.$router.push({ path: "/roster/manager" });
               }
             });
           });
@@ -401,7 +377,7 @@ export default {
     },
     handleChange(file, fileList) {
       this.$refs.form.clearValidate();
-      this.form.photo=fileList;
+      this.form.photo = fileList;
     }
   }
 };

@@ -1,27 +1,29 @@
 <template>
   <div class="roster">
+    <!-- 头部 -->
     <el-container>
-      <el-main class="glry">
+      <el-menu class="main-top-box">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="姓名">
-            <el-input v-model="formInline.user" placeholder="姓名"></el-input>
+            <el-input v-model="formInline.name" placeholder="姓名"></el-input>
           </el-form-item>
           <el-form-item label="人员类型" class="region">
-            <el-select v-model="formInline.region" placeholder="请选择人员类型">
-              <el-option label="企业自有职工" value="qiye"></el-option>
-              <el-option label="劳务派遣人员" value="laowu"></el-option>
+            <el-select v-model="formInline.workerType" placeholder="请选择人员类型">
+              <el-option label="企业自有职工" value="企业自有职工"></el-option>
+              <el-option label="劳务派遣人员" value="劳务派遣人员"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
           </el-form-item>
         </el-form>
-      </el-main>
+      </el-menu>
     </el-container>
-    <div class="glry_bottonView">
-      <el-main class="btnView">
-        <div style="margin-bottom: 30px;">
-          <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
+    <!-- 主体 -->
+    <el-container>
+      <el-menu class="main-con-box">
+        <div class="main-btn-box">
+          <el-button class="T-H-B-DarkBlue" @click="AddEditClick('add')">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
           <el-upload
@@ -62,7 +64,7 @@
                 <el-button
                   class="T-R-B-Green"
                   size="mini"
-                  @click="editRowClick(scope.$index, scope.row)"
+                  @click="AddEditClick('edit')"
                 >编辑</el-button>
                 <el-button
                   class="T-R-B-Grey"
@@ -78,9 +80,9 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-pagination background layout="prev, pager, next" :total="1000" class="paging"></el-pagination>
-      </el-main>
-    </div>
+        <el-pagination background layout="prev, pager, next" :total="1000" class="pagination-box"></el-pagination>
+      </el-menu>
+    </el-container>
     <managerDialog v-if="changOrder" ref="turnOrder" />
   </div>
 </template>
@@ -95,18 +97,8 @@ export default {
   data() {
     return {
       formInline: {
-        buildCorpName: "",
-        department: "",
-        jobType: "",
-        workerType: "",
         name: "",
-        gender: "",
-        birthPlace: "",
-        idNum: "",
-        age: 0,
-        cellPhone: "",
-        address: "",
-        politicsType: ""
+        workerType: ""
       },
       changOrder: false, //查看详情
       page: 1, // 初始页
@@ -214,6 +206,26 @@ export default {
     addStaffClick() {
       this.$router.push({ path: "/AddAdministration" });
     },
+    //列表请求
+    getDatalist() {
+      var name = this.formInline.name;
+      var workerType = this.formInline.workerType;
+      //   // 获得当前用户的id
+      var params = JSON.stringify({
+        pageSize: this.pageSize,
+        page: this.page,
+        name: name,
+        workerType: workerType
+      });
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/manager/management";
+      this.http.delete(url, params).then(res => {
+        if (res.code == 200) {
+        }
+      })
+    },
     //  导出
     exportStaffClick() {
       handleCofirm("确认导出")
@@ -271,13 +283,16 @@ export default {
           });
         });
     },
-    //  导入
-    importStaffClick() {},
-    //  表格操作
-    //  编辑
-    editRowClick() {
-      this.$router.push({ path: "/AddAdministration" });
+    //  编辑+新增通过传参判断
+    AddEditClick(par){
+        console.log(par)
+        if(par=="add"){
+           this.$router.push({ path: "/AddAdministration" });
+        }
     },
+    // editRowClick() {
+    //   this.$router.push({ path: "/AddAdministration" });
+    // },
     //获得表格前面选中的id值
     changeFun() {
       var ids = new Array();
@@ -362,7 +377,7 @@ export default {
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
-    handleSelectionChange(val) {},
+    handleSelectionChange(val) {}
   }
 };
 </script>

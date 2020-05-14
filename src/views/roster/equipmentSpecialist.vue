@@ -1,7 +1,8 @@
 <template>
-  <div class="roster">
+  <div class="main-box">
+    <!-- 头部 -->
     <el-container>
-      <el-main class="glry">
+      <el-menu class="main-top-box">
         <el-form :inline="true" :model="form" class="demo-form-inline">
           <el-form-item label="姓名">
             <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
@@ -13,11 +14,12 @@
             <el-button type="primary" @click="getEquiments()">查询</el-button>
           </el-form-item>
         </el-form>
-      </el-main>
+      </el-menu>
     </el-container>
-    <div class="glry_bottonView">
-      <el-main class="btnView">
-        <div style="margin-bottom: 30px;">
+    <!-- 主体 -->
+    <el-container>
+      <el-menu class="main-con-box">
+        <div class="main-btn-box">
           <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick()">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
@@ -59,16 +61,8 @@
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
             <el-table-column label="操作" fixed="right" width="240">
               <template slot-scope="scope">
-                <el-button
-                  class="T-R-B-Green"
-                  size="mini"
-                  @click="editRowClick(scope.row)"
-                >编辑</el-button>
-                <el-button
-                  class="T-R-B-Grey"
-                  size="mini"
-                  @click="deleteRowClick(scope.row)"
-                >删除</el-button>
+                <el-button class="T-R-B-Green" size="mini" @click="editRowClick(scope.row)">编辑</el-button>
+                <el-button class="T-R-B-Grey" size="mini" @click="deleteRowClick(scope.row)">删除</el-button>
                 <el-button
                   class="T-R-B-Orange"
                   size="mini"
@@ -79,7 +73,7 @@
           </el-table>
         </div>
         <el-pagination
-          class="paging"
+          class="pagination-box"
           @size-change="handleSizeChange"
           :current-page="page"
           layout="total, prev, pager,next"
@@ -90,9 +84,9 @@
           :total="total"
           background
         ></el-pagination>
-      </el-main>
-    </div>
-    <equipmentdialog v-if="changOrder" ref="turnOrder"/>
+      </el-menu>
+    </el-container>
+    <equipmentdialog v-if="changOrder" ref="turnOrder" />
   </div>
 </template>
 <script>
@@ -112,7 +106,7 @@ export default {
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
       total: 100, //总条数
-      changOrder:false,
+      changOrder: false,
       form: {
         major: "",
         name: ""
@@ -203,11 +197,11 @@ export default {
     addStaffClick() {
       // this.$router.push({ path: "/AddEquipment" });
       this.$router.push({
-          name: 'AddEquipment',
-          params: {
-            id:'0'
-          }
-        })
+        name: "AddEquipment",
+        params: {
+          id: "0"
+        }
+      });
     },
     handleSelectionChange() {
       var ids = new Array();
@@ -269,22 +263,22 @@ export default {
     importStaffClick(file) {
       console.log(file);
     },
-    
+
     //  表格操作
     //  编辑
     editRowClick(row) {
       // console.log(row.id);
       // this.$router.push({ path: "/AddEquipment/$"});
-       this.$router.push({
-          name: 'AddEquipment',
-          params: {
-            id: row.id
-          }
-        })
+      this.$router.push({
+        name: "AddEquipment",
+        params: {
+          id: row.id
+        }
+      });
     },
-    deleteRowClick(row){
-      var uid=row.id;
-       var ids = [];
+    deleteRowClick(row) {
+      var uid = row.id;
+      var ids = [];
       ids.push(uid);
       handleCofirm("确认删除", "warning")
         .then(res => {
@@ -309,7 +303,6 @@ export default {
             message: "已取消删除"
           });
         });
-
     },
     //批量删除
     deleteAllClick() {
@@ -345,13 +338,13 @@ export default {
           });
         });
     },
-     detailsRowClick() {
+    detailsRowClick() {
       let _this = this;
       _this.changOrder = true;
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
       });
-    },
+    }
   }
 };
 </script>
