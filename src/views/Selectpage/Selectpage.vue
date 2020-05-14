@@ -10,12 +10,7 @@
         </div>
         <div class="home-header-right fr">
           <div class="out fl">
-            <div class="fl" style="margin-right:10px;">
-              <img src="../../assets/images/home/home-out.png" alt="">
-            </div>
-            <div class="fl">
-            <el-link :underline="false" class="out-text" @click.native="logout">退出登录</el-link>
-            </div>
+            <el-link :underline="false" class="out-text" @click.native="logout">13号线02标中铁二局</el-link>
           </div>
           <div class="interval fl"></div>
           <div class="name fl">
