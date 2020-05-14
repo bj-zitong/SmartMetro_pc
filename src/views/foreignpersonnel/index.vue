@@ -262,6 +262,17 @@ export default {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
+          var form=this.form;
+          form.name=result.name;
+          form.idNum=result.idNum;
+          form.phone=result.phone;
+          form.company=result.company;
+          form.intervieweeDepartmentId=result.intervieweeDepartmentId;
+          form.interviewee=result.interviewee;
+          form.busNum=result.busNum;
+          form.visitReason=result.visitReason;
+          form.visitTime=result.visitTime;
+          form.pOutlanderId=id;
         }
       });
       this.dialogFormVisibleDetail = true;

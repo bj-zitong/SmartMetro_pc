@@ -23,14 +23,7 @@
           <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick()">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
-          <el-upload
-            style="display:inline-block; margin-left: 10px;"
-            class="upload-demo"
-            action
-            :show-file-list="false"
-          >
-            <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick(this)">导入</el-button>
-          </el-upload>
+          <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
         </div>
         <div class="tableView">
           <el-table
@@ -45,7 +38,7 @@
             <el-table-column
               type="selection"
               width="65"
-              prop="id"
+              prop="pInfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column prop="company" label="公司名称"></el-table-column>
@@ -66,7 +59,7 @@
                 <el-button
                   class="T-R-B-Orange"
                   size="mini"
-                  @click="detailsRowClick(scope.$index, scope.row)"
+                  @click="detailsRowClick(scope.row)"
                 >查看详情</el-button>
               </template>
             </el-table-column>
@@ -87,6 +80,35 @@
       </el-menu>
     </el-container>
     <equipmentdialog v-if="changOrder" ref="turnOrder" />
+     <el-dialog :visible.sync="csvVisible" width="50%">
+      <div>
+        <el-form ref="file" label-width="120px">
+          <el-form-item label="文件导入：" prop="uploadFile">
+            <el-upload
+              class="upload-demo"
+              v-model="file.uploadFile"
+              action
+              :on-change="handleChange"
+              :file-list="fileList"
+              :auto-upload="false"
+              :limit="1"
+              :show-file-list="true"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或
+                <em>点击上传</em>
+              </div>
+              <div class="el-upload__tip" slot="tip">上传csv文件</div>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="csvVisible = false">取消</el-button>
+        <el-button type="primary" @click="importCsv()">导入</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -107,12 +129,32 @@ export default {
       pageSize: 10, //    每页的数据
       total: 100, //总条数
       changOrder: false,
+      csvVisible:false,
       form: {
         major: "",
         name: ""
       },
       tableData: [],
-      ids: []
+      ids: [],
+       form: {
+        name: "",
+        age: null,
+        corporateName: "",
+        gender: "",
+        phoneNumber: "",
+        major: "",
+        documentType: "",
+        politicalOutlook: "",
+        certificateCode: "",
+        nativePlace: "",
+        post: "",
+        contractName: "",
+        professional: ""
+      },
+       file: {
+        uploadFile: ""
+      },
+      fileList: []
     };
   },
   created: function() {
@@ -144,7 +186,7 @@ export default {
       });
       var result = [
         {
-          id: 1,
+          pInfoId: 1,
           name: "地铁安保部",
           idCardCode: "210234567898765876",
           cellPhone: 15236985236,
@@ -158,7 +200,7 @@ export default {
           age: 35
         },
         {
-          id: 2,
+          pInfoId: 2,
           name: "22222222",
           idCardCode: "210234567898765789",
           cellPhone: 111,
@@ -178,7 +220,7 @@ export default {
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
       this.pageSize = size; //每页下拉显示数据
-      // this.handleUserList()
+      // this.getEquiments()
     },
     handleCurrentChange: function(page) {
       this.page = page;
@@ -186,12 +228,12 @@ export default {
     },
     pre(cpage) {
       this.page = cpage;
-      // this.handleUserList()
+      // this.getEquiments()
     },
     //下一页
     next(cpage) {
       this.page = cpage;
-      // this.handleUserList()
+      // this.getEquiments()
     },
     //新增
     addStaffClick() {
@@ -208,15 +250,11 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].id;
+        var id = arrays[i].pInfoId;
         ids.push(id);
       }
       return ids;
     },
-    handleClick(row) {
-      console.log(row);
-    },
-
     exportStaffClick() {
       var name = this.form.name;
       var major = this.form.major;
@@ -260,24 +298,21 @@ export default {
       });
     },
     //  导入
-    importStaffClick(file) {
-      console.log(file);
+    importStaffClick() {
+       this.csvVisible = true;
     },
-
     //  表格操作
     //  编辑
     editRowClick(row) {
-      // console.log(row.id);
-      // this.$router.push({ path: "/AddEquipment/$"});
       this.$router.push({
         name: "AddEquipment",
         params: {
-          id: row.id
+          id: row.pInfoId
         }
       });
     },
     deleteRowClick(row) {
-      var uid = row.id;
+      var uid = row.pInfoId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除", "warning")
@@ -338,12 +373,57 @@ export default {
           });
         });
     },
-    detailsRowClick() {
+    detailsRowClick(row) {
       let _this = this;
+      var id=row.pInfoId;
+      ////smart/worker/roster/{userId}/equipment/{id}
+       var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/equipment/" +
+        id;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          var form = this.form;
+          form.name = result.name;
+          form.age = result.age;
+          form.corporateName = result.company;
+          form.contractName = result.contractName;
+          form.gender = result.gender;
+          form.phoneNumber = result.cellPhone;
+          form.major = result.professional;
+          form.documentType = result.idCardType;
+          form.politicalOutlook = result.politicsType;
+          form.certificateCode = result.idCardCode;
+          form.professional = result.professional;
+          form.post = result.duty;
+        }
+      });
       _this.changOrder = true;
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
       });
+    },
+    //导入
+    importCsv() {
+      console.log(this.file.uploadFile[0].raw);
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/equipment/import";
+      var data = new FormData();
+      data.append("file", this.file.uploadFile[0].raw);
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          this.getOtherStaffs();
+        }
+      });
+    },
+    handleChange(file, fileList) {
+      this.$refs.file.clearValidate();
+      this.file.uploadFile = fileList;
     }
   }
 };

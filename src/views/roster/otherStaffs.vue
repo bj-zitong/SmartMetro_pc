@@ -22,14 +22,7 @@
           <el-button class="T-H-B-DarkBlue" @click="addStaffClick()">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick()">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick()">导出</el-button>
-          <el-upload
-            style="display:inline-block; margin-left: 10px;"
-            class="upload-demo"
-            action
-            :show-file-list="false"
-          >
             <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
-          </el-upload>
         </div>
         <div class="tableView">
           <el-table
@@ -44,7 +37,7 @@
             <el-table-column
               type="selection"
               width="65"
-              prop="id"
+              prop="pInfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
@@ -60,11 +53,7 @@
               <template slot-scope="scope">
                 <el-button class="T-R-B-Green" size="mini" @click="editRowClick(scope.row)">编辑</el-button>
                 <el-button class="T-R-B-Grey" size="mini" @click="deleteRowClick(scope.row)">删除</el-button>
-                <el-button
-                  class="T-R-B-Orange"
-                  size="mini"
-                  @click="detailsRowClick(scope.$index, scope.row)"
-                >查看详情</el-button>
+                <el-button class="T-R-B-Orange" size="mini" @click="detailsRowClick(scope.row)">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -84,36 +73,35 @@
       </el-main>
     </div>
     <otherStaffsdialog v-if="changOrder" ref="turnOrder" />
-    <!-- -->
-    <el-dialog
-
-    :visible.sync="csvVisible"
-    width="50%">
-    <div>
+    <el-dialog :visible.sync="csvVisible" width="50%">
+      <div>
         <el-form ref="file" label-width="120px">
-        <el-form-item label="文件导入：">
+          <el-form-item label="文件导入：" prop="uploadFile">
             <el-upload
-                class="upload-demo"
-                ref="upload"
-                drag
-                accept="."
-                action=""
-                :multiple="false"
-                :limit="1"
-                :auto-upload="false"
-                :on-change="handleChange">
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip">只能上传csv文件</div>
+              class="upload-demo"
+              v-model="file.uploadFile"
+              action
+              :on-change="handleChange"
+              :file-list="fileList"
+              :auto-upload="false"
+              :limit="1"
+              :show-file-list="true"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或
+                <em>点击上传</em>
+              </div>
+              <div class="el-upload__tip" slot="tip">上传csv文件</div>
             </el-upload>
-        </el-form-item>
+          </el-form-item>
         </el-form>
-    </div>
-    <span slot="footer" class="dialog-footer">
-    <el-button @click="csvVisible = false">取消</el-button>
-    <el-button type="primary" @click="importCsv">导入</el-button>
-    </span>
-</el-dialog>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="csvVisible = false">取消</el-button>
+        <el-button type="primary" @click="importCsv()">导入</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -128,7 +116,7 @@ export default {
   },
   data() {
     return {
-      csvVisible:false,
+      csvVisible: false,
       headClass: headClass,
       form: {
         major: "",
@@ -139,7 +127,11 @@ export default {
       total: 100, //总条数
       changOrder: false, //查看详情
       tableData: [],
-      ids: []
+      ids: [],
+      file: {
+        uploadFile: ""
+      },
+      fileList: []
     };
   },
   created() {
@@ -171,7 +163,7 @@ export default {
       });
       var result = [
         {
-          id: 1,
+          pInfoId: 1,
           name: "上海",
           jobNum: "普陀区",
           gender: "男",
@@ -182,7 +174,7 @@ export default {
           birthPlace: "北京"
         },
         {
-          id: 2,
+          pInfoId: 2,
           name: "xxx",
           jobNum: "普陀区",
           gender: "男",
@@ -228,23 +220,22 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].id;
+        var id = arrays[i].pInfoId;
         ids.push(id);
       }
       return ids;
     },
-    handleClick(row) {
-      console.log(row);
-    },
     //  导入
-    importStaffClick() {},
+    importStaffClick() {
+      this.csvVisible = true;
+    },
     //  表格操作
     //  编辑
     editRowClick(row) {
       this.$router.push({
         name: "AddOther",
         params: {
-          id: row.id
+          id: row.pInfoId
         }
       });
     },
@@ -284,7 +275,7 @@ export default {
     },
     //删除
     deleteRowClick(row) {
-      var uid = row.id;
+      var uid = row.pInfoId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除吗？", "warning")
@@ -317,8 +308,8 @@ export default {
           var major = this.form.major;
           let _this = this;
           var data = JSON.stringify({
-            name: uname,
-            workerType: unum,
+            name: name,
+            workerType: major,
             pageSize: _this.pageSize,
             page: _this.page
           });
@@ -352,7 +343,7 @@ export default {
             link.download = excelName; // 自定义文件名
             link.click(); // 下载文件
             URL.revokeObjectURL(objectUrl); // 释放内存
-            // alert("调用导出！");
+            alert("调用导出！");
           });
         })
         .catch(err => {
@@ -362,15 +353,55 @@ export default {
           });
         });
     },
-    detailsRowClick() {
+    detailsRowClick(row) {
       let _this = this;
+      var id = row.pInfoId;
+      ///smart/worker/roster/{userId}/other/{id}
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/other/" +
+        id;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          var form = this.form;
+          form.name = result.name;
+          form.age = result.age;
+          form.gender = result.gender;
+          form.jobNum = result.jobNum;
+          form.cellPhone = result.cellPhone;
+          form.politicsType = result.politicsType;
+          form.workerType = result.workerType;
+          form.birthPlace = result.birthPlace;
+          form.pInfoId = id;
+        }
+      });
       _this.changOrder = true;
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
       });
     },
-    importCsv(){},
-    handleChange(){}
+    //导入
+    importCsv() {
+      console.log(this.file.uploadFile[0].raw);
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/other/import";
+      var data = new FormData();
+      data.append("file", this.file.uploadFile[0].raw);
+      this.http.get(url, data).then(res => {
+        if (res.code == 200) {
+          this.getOtherStaffs();
+        }
+      });
+    },
+    handleChange(file, fileList) {
+      this.$refs.file.clearValidate();
+      this.file.uploadFile = fileList;
+    }
   }
 };
 </script>

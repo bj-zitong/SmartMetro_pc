@@ -10,6 +10,9 @@
           :rules="rules"
           ref="form"
         >
+          <el-form-item prop="pInfoId">
+            <el-input v-model="form.pInfoId" type="text" hidden></el-input>
+          </el-form-item>
           <el-col :span="8">
             <el-form-item label="姓名" prop="name" class="el-form-item">
               <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
@@ -22,7 +25,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="年龄" prop="age">
-              <el-input v-model="form.name" placeholder="请输入年龄"></el-input>
+              <el-input v-model="form.age" placeholder="请输入年龄"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -131,7 +134,6 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="居住证办理日期" prop="residencePermitDate">
-              <!-- <el-date-picker v-model="form.residencePermitDate" type="date" placeholder="请选择日期"></el-date-picker> -->
               <el-date-picker
                 v-model="form.residencePermitDate"
                 type="datetime"
@@ -150,6 +152,7 @@
                 :on-change="handleChange"
                 :file-list="fileList"
                 :auto-upload="false"
+                :limit="1"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
@@ -188,7 +191,7 @@ export default {
         urgentLinkManPhone: "",
         address: "",
         birthPlace: "",
-        maritalStatu: "",
+        maritalStatus: "",
         degree: "",
         cultureLevelType: "",
         idCardType: "",
@@ -197,7 +200,8 @@ export default {
         isRelatedCertificates: "",
         residencePermitDate: "",
         workerType: "",
-        photo: ""
+        photo: "",
+        pInfoId: null
       },
       rules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -280,18 +284,56 @@ export default {
         ]
       },
       //图片上传
-      fileList: [
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
+      fileList: [],
       value1: "",
       value2: ""
     };
   },
+  activated() {
+    var uid = this.$route.params.id;
+    this.id = uid;
+    if (!this.id==0) {
+      this.getDeatli(this.id);
+    }
+  },
   methods: {
+    //获得详情
+    getDeatli(id) {
+      this.form.name = "1111";
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/other/" +
+        this.id;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          var form = this.form;
+          form.name = result.name;
+          form.gender = result.gender;
+          form.age = result.age;
+          form.nation = result.nation;
+          form.cellPhone = result.cellPhone;
+          form.politicsType = result.politicsType;
+          form.urgentLinkMan = result.urgentLinkMan;
+          form.urgentLinkManPhone = result.urgentLinkManPhone;
+          form.address = result.address;
+          form.birthPlace = result.birthPlace;
+          form.maritalStatus = result.maritalStatus;
+          form.degree = result.degree;
+          form.cultureLevelType = result.cultureLevelType;
+          form.idCardType = result.idCardType;
+          form.idCardCode = result.idCardCode;
+          form.isResidencePermit = result.isResidencePermit;
+          form.isRelatedCertificates = result.isRelatedCertificates;
+          form.residencePermitDate = result.residencePermitDate;
+          form.workerType = result.workerType;
+          form.photo = result.photoPath;
+          form.pInfoId = this.id;
+        }
+      });
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
@@ -304,7 +346,6 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    handleChange() {},
     cancel() {
       this.$router.push({ path: "/roster/otherStaffs" });
     },
@@ -313,33 +354,88 @@ export default {
         if (valid) {
           var form = this.$refs["form"].model;
           if (this.id == 0) {
-            var params = JSON.stringify({
-              name: form.name,
-              gender: form.gender,
-              age: form.age,
-              nation: form.nation,
-              cellPhone: form.cellPhone,
-              politicsType: form.politicsType,
-              urgentLinkMan: form.urgentLinkMan,
-              urgentLinkManPhone: form.urgentLinkManPhone,
-              address: form.address,
-              birthPlace: form.birthPlace,
-              maritalStatu: form.maritalStatu,
-              degree: form.degree,
-              cultureLevelType: form.cultureLevelType,
-              idCardType: form.idCardType,
-              idCardCode: form.idCardCode,
-              isResidencePermit: form.isResidencePermit,
-              isRelatedCertificates: form.isRelatedCertificates,
-              residencePermitDate: form.residencePermitDate,
-              workerType: form.workerType,
-              photo: form.photo
-            });
+            var data = new FormData();
+            data.append("name", form.name);
+            data.append("gender", form.gender);
+            data.append("age", form.age);
+            data.append("nation", form.nation);
+            data.append("cellPhone", form.cellPhone);
+            data.append("politicsType", form.politicsType);
+            data.append("urgentLinkMan", form.urgentLinkMan);
+            data.append("urgentLinkManPhone", form.urgentLinkManPhone);
+            data.append("address", form.address);
+            data.append("birthPlace", form.birthPlace);
+            data.append("maritalStatus", form.maritalStatus);
+            data.append("degree", form.degree);
+            data.append("cultureLevelType", form.cultureLevelType);
+            data.append("idCardType", form.idCardType);
+            data.append("idCardCode", form.idCardCode);
+            data.append("isResidencePermit", form.isResidencePermit);
+            data.append("isRelatedCertificates", form.isRelatedCertificates);
+            data.append("residencePermitDate", form.residencePermitDate);
+            data.append("workerType", form.workerType);
+            data.append("photo", form.photo[0].raw);
+            //文件
+            console.log(form.photo[0].raw);
             var url =
               "/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/other";
-            this.http.post(url, params).then(res => {
+            this.http.post(url, data).then(res => {
+              if (res.code == 200) {
+                this.$router.push({ path: "/roster/otherStaffs" });
+              }
+            });
+          } else {
+            // var params = JSON.stringify({
+            //   name: form.name,
+            //   gender: form.gender,
+            //   age: form.age,
+            //   nation: form.nation,
+            //   cellPhone: form.cellPhone,
+            //   politicsType: form.politicsType,
+            //   urgentLinkMan: form.urgentLinkMan,
+            //   urgentLinkManPhone: form.urgentLinkManPhone,
+            //   address: form.address,
+            //   birthPlace: form.birthPlace,
+            //   maritalStatus: form.maritalStatus,
+            //   degree: form.degree,
+            //   cultureLevelType: form.cultureLevelType,
+            //   idCardType: form.idCardType,
+            //   idCardCode: form.idCardCode,
+            //   isResidencePermit: form.isResidencePermit,
+            //   isRelatedCertificates: form.isRelatedCertificates,
+            //   residencePermitDate: form.residencePermitDate,
+            //   workerType: form.workerType,
+            //   photo: form.photo
+            // });
+            var data = new FormData();
+            data.append("name", form.name);
+            data.append("gender", form.gender);
+            data.append("age", form.age);
+            data.append("nation", form.nation);
+            data.append("cellPhone", form.cellPhone);
+            data.append("politicsType", form.politicsType);
+            data.append("urgentLinkMan", form.urgentLinkMan);
+            data.append("urgentLinkManPhone", form.urgentLinkManPhone);
+            data.append("address", form.address);
+            data.append("birthPlace", form.birthPlace);
+            data.append("maritalStatus", form.maritalStatus);
+            data.append("degree", form.degree);
+            data.append("cultureLevelType", form.cultureLevelType);
+            data.append("idCardType", form.idCardType);
+            data.append("idCardCode", form.idCardCode);
+            data.append("isResidencePermit", form.isResidencePermit);
+            data.append("isRelatedCertificates", form.isRelatedCertificates);
+            data.append("residencePermitDate", form.residencePermitDate);
+            data.append("workerType", form.workerType);
+             data.append("photo", form.photo[0].raw);
+            var url =
+              "/smart/worker/roster/" +
+              sessionStorage.getItem("userId") +
+              "/other/" +
+              this.id;
+            this.http.put(url, data).then(res => {
               if (res.code == 200) {
                 this.$router.push({ path: "/roster/otherStaffs" });
               }

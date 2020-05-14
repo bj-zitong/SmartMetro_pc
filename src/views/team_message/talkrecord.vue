@@ -24,6 +24,7 @@
             <el-table-column prop="isSafety" label="安全防护用品配套使用" width="120"></el-table-column>
             <el-table-column prop="meetingContent" label="班前讲话内容" width="100"></el-table-column>
             <el-table-column prop="workerInfo" label="参加活动作业人员名单" width="200"></el-table-column>
+            <!-- accessoryPath 路径-->
             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope">
                 <el-form :model="videoForm" ref="videoForm">
@@ -42,7 +43,6 @@
                 </el-upload>
                   </el-form-item>
                 </el-form>
-
                 <!--
                 <i class="el-icon-upload" style="width:26px;height:26px"></i>-->
                 <!-- <img
