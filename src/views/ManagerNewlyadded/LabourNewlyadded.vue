@@ -141,13 +141,6 @@ export default {
          if(getHistoryRecord!=null){
             this.SourceInformation=false
          }
-        //  console.log(getArr)
-        //  if(Array.from(new Set(getArr[0])).indexOf('personalPersonal')!=-1){
-        //    this.contractInformation=false
-        //  }
-        //  if(Array.from(new Set(getArr[0])).indexOf('contractInformation')!=-1){
-        //    this.payrollRecords=false
-        //  }
   },
   watch:{
       // allArr(newName, oldName) {

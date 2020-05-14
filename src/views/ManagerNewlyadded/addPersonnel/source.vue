@@ -100,7 +100,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="返场时间" prop="value2">
-             <el-date-picker v-model="form.value2" type="datetime" placeholder="请选择返场时间"></el-date-picker>
+            <el-date-picker v-model="form.value2" type="datetime" placeholder="请选择返场时间"></el-date-picker>
             <!-- <el-date-picker v-model="form.value2" type="date" placeholder="返场时间"></el-date-picker> -->
           </el-form-item>
         </el-col>
@@ -133,7 +133,12 @@
           </p>
         </el-col>
         <div style="float:right">
-          <el-button type="primary" round style="margin-top:60px;margin-left:80px" @click="preservationClick">保存</el-button>
+          <el-button
+            type="primary"
+            round
+            style="margin-top:60px;margin-left:80px"
+            @click="preservationClick"
+          >保存</el-button>
           <div style="margin-top:20px">
             <el-button type="primary" round style="background:#ccc;border:1px solid #ccc">取消</el-button>
             <el-button type="primary" round @click="submitForm('form')">提交</el-button>
@@ -150,20 +155,20 @@ export default {
     return {
       labelPosition: "left",
       form: {
-        post:'',
-        returnto:'', 
-        riskLevel:'', 
-        sfyhbjcs:'', 
-        suspectedPerson:'', 
-        Confirmed :'',
-        whetherTo:'', 
-        wayto :'',
-        flightno:'', 
-        isolation:'', 
-        MeetTheConditions:'', 
-        value2:'',  
-        constraints:'',
-        desc:''
+        post: "",
+        returnto: "",
+        riskLevel: "",
+        sfyhbjcs: "",
+        suspectedPerson: "",
+        Confirmed: "",
+        whetherTo: "",
+        wayto: "",
+        flightno: "",
+        isolation: "",
+        MeetTheConditions: "",
+        value2: "",
+        constraints: "",
+        desc: ""
       },
       rules: {
         post: [{ required: true, message: "请选择职务", trigger: "blur" }],
@@ -193,13 +198,32 @@ export default {
           { required: true, message: "请选择是否到京", trigger: "blur" }
         ],
         wayto: [{ required: true, message: "请选择到京方式", trigger: "blur" }],
-        flightno: [{ required: true, message: "请输入列车/航班", trigger: "blur" }],
-        isolation: [{ required: true, message: "请选择隔离情况", trigger: "blur" }],
-        MeetTheConditions: [{ required: true, message: "请选择是否满足返岗条件", trigger: "blur" }],
-        value2: [{ required: true, message: "请选择返场时间", trigger: "blur" }],
-        constraints:[{ required: true, message: "请填写返京制约因素具体原因及采取措施", trigger: "blur" }],
-        desc:[{ required: true, message: "请填写备注（谁跟谁同村，谁跟谁是家庭亲属）", trigger: "blur" }]
-
+        flightno: [
+          { required: true, message: "请输入列车/航班", trigger: "blur" }
+        ],
+        isolation: [
+          { required: true, message: "请选择隔离情况", trigger: "blur" }
+        ],
+        MeetTheConditions: [
+          { required: true, message: "请选择是否满足返岗条件", trigger: "blur" }
+        ],
+        value2: [
+          { required: true, message: "请选择返场时间", trigger: "blur" }
+        ],
+        constraints: [
+          {
+            required: true,
+            message: "请填写返京制约因素具体原因及采取措施",
+            trigger: "blur"
+          }
+        ],
+        desc: [
+          {
+            required: true,
+            message: "请填写备注（谁跟谁同村，谁跟谁是家庭亲属）",
+            trigger: "blur"
+          }
+        ]
       },
       shortcuts: [
         {
@@ -237,7 +261,67 @@ export default {
       console.log(formName);
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+
+          
+          //历史评价记录
+          var History = localStorage.getItem("History");
+          //来源地消息
+          var History = localStorage.getItem("source");
+
+          //个人基本信息
+          var data = localStorage.getItem("data");
+          var dataUrl =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour/basic";
+           this.http.post(dataUrl, data).then(res => {
+            if (res.code == 200) {
+            }
+          });
+          
+           //合同信息
+          var contractInformation = localStorage.getItem("contractInformation");
+          var contractUrl =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour/contract";
+          this.http.post(contractUrl, contractInformation).then(res => {
+            if (res.code == 200) {
+            }
+          });
+
+           //工资记录
+          var payrollRecords1 = localStorage.getItem("payrollRecords1");
+           var payrollUrl =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour/salary";
+          this.http.post(payrollUrl, payrollRecords1).then(res => {
+            if (res.code == 200) {
+            }
+          });
+          
+          //资质证书
+          var certificate = localStorage.getItem("certificate");
+           var certificateUrl =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour/credential";
+          this.http.post(certificateUrl, certificate).then(res => {
+            if (res.code == 200) {
+            }
+          });
+
+          //历史评价记录
+         var History = localStorage.getItem("source");
+         var HistoryUrl=
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour/evaluate";
+          this.http.post(HistoryUrl, History).then(res => {
+            if (res.code == 200) {
+            }
+          });
         } else {
           console.log("error submit!!");
           return false;

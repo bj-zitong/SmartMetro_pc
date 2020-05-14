@@ -61,11 +61,7 @@
 
             <el-table-column fixed="right" label="操作" width="270">
               <template slot-scope="scope">
-                <el-button
-                  class="T-R-B-Green"
-                  size="mini"
-                  @click="AddEditClick('edit')"
-                >编辑</el-button>
+                <el-button class="T-R-B-Green" size="mini" @click="AddEditClick(scope.row,'edit')">编辑</el-button>
                 <el-button
                   class="T-R-B-Grey"
                   size="mini"
@@ -110,6 +106,7 @@ export default {
       },
       tableData: [
         {
+          pInfoId: 0,
           buildCorpName: "北京公司",
           department: "运维部",
           jobType: "司机",
@@ -124,6 +121,7 @@ export default {
           politicsType: "群众"
         },
         {
+           pInfoId: 1,
           buildCorpName: "北京公司",
           department: "运维部",
           jobType: "司机",
@@ -138,6 +136,7 @@ export default {
           politicsType: "群众"
         },
         {
+           pInfoId: 2,
           buildCorpName: "北京公司",
           department: "运维部",
           jobType: "司机",
@@ -152,6 +151,7 @@ export default {
           politicsType: "群众"
         },
         {
+           pInfoId: 3,
           buildCorpName: "北京公司",
           department: "运维部",
           jobType: "司机",
@@ -166,6 +166,7 @@ export default {
           politicsType: "群众"
         },
         {
+           pInfoId: 4,
           buildCorpName: "北京公司",
           department: "运维部",
           jobType: "司机",
@@ -180,6 +181,7 @@ export default {
           politicsType: "群众"
         },
         {
+           pInfoId: 5,
           buildCorpName: "北京公司",
           department: "运维部",
           jobType: "司机",
@@ -224,7 +226,7 @@ export default {
       this.http.delete(url, params).then(res => {
         if (res.code == 200) {
         }
-      })
+      });
     },
     //  导出
     exportStaffClick() {
@@ -283,12 +285,26 @@ export default {
           });
         });
     },
+    //导入
+    importStaffClick() {},
     //  编辑+新增通过传参判断
-    AddEditClick(par){
-        console.log(par)
-        if(par=="add"){
-           this.$router.push({ path: "/AddAdministration" });
-        }
+    AddEditClick(row,par) {
+      console.log(row.pInfoId,par)
+      if (par != undefined) {
+        this.$router.push({
+          name: "AddAdministration",
+          params: {
+            id: "0"
+          }
+        });
+      } else {
+        this.$router.push({
+          name: "AddAdministration",
+          params: {
+            id:row.pInfoId
+          }
+        });
+      }
     },
     // editRowClick() {
     //   this.$router.push({ path: "/AddAdministration" });

@@ -312,6 +312,16 @@ export default {
       value2: ""
     };
   },
+   activated() {
+      var uid = this.$route.params.id;
+      this.id = uid;
+      if (this.id !=undefined ) {
+        
+      }else{
+       
+      }
+      console.log("id====", this.id);
+    },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
@@ -342,6 +352,7 @@ export default {
           });
         });
     },
+   
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

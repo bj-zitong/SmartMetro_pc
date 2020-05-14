@@ -335,7 +335,7 @@ export default {
         PoliticalOutlook: [
           { required: true, message: "请选择政治面貌", trigger: "blur" }
         ],
-        // UploadImg: [{ required: true, message: "请上传照片", trigger: "blur" }],
+        UploadImg: [{ required: true, message: "请上传照片", trigger: "" }],
         type: [{ required: true, message: "请选择人员类型", trigger: "blur" }],
         region: [
           { required: true, message: "请选择人员类型", trigger: "blur" }
@@ -435,7 +435,10 @@ export default {
     },
     //保存
     preservationClick() {},
-    handleChange() {},
+    handleChange(file, fileList) {
+      this.$refs.form.clearValidate();
+      this.form.photo = fileList;
+    },
     handleButton() {}
   }
 };
