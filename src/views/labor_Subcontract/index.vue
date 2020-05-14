@@ -97,6 +97,18 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <el-pagination
+                    background
+                    class="pagination-box"
+                    layout="total, prev, pager,next"
+                    :current-page="page"
+                    :page-size="pageSize"
+                    :total="total"
+                    @prev-click="prev"
+                    @next-click="next"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                ></el-pagination>
             </el-menu>
         </el-container>
     
@@ -181,54 +193,51 @@
         </el-dialog>
 
 <!-- 创建班组 -->
-    <el-dialog
-        width="450px"
-        title="新增班组"
-        class="popupDialog"
-        :visible.sync="dialogVisibleTeam"
-        :center="true"
-        :show-close="false"
-        :close-on-click-modal="false"
-        :hide-required-asterisk="true"
-    >
-        <el-form
-            method="post"
-            ref="refTeam"
-            label-width="100px"
-            :rules="rulesForm"
-            :model="formTeam"
-            action="" 
+        <el-dialog
+            width="450px"
+            title="新增班组"
+            class="popupDialog"
+            :visible.sync="dialogVisibleTeam"
+            :center="true"
+            :show-close="false"
+            :close-on-click-modal="false"
+            :hide-required-asterisk="true"
         >
-            <el-form-item prop="pLabourCompanyId">
-                <el-input v-model="formTeam.pLabourCompanyId" type="text" hidden></el-input>
-            </el-form-item>
-            <el-form-item prop="projectName" label="工程名称：">
-                <el-input v-model="formTeam.projectName" type="text" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item prop="teamName" label="班组名称：">
-            <el-input v-model="formTeam.teamName" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item prop="teamType" label="班组类型：">
-                <el-select v-model="formTeam.teamType" >
-                    <el-option v-for="item in teamOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item prop="teamLeaderName" label="班组长：">
-                <el-input v-model="formTeam.teamLeaderName" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item prop="teamLeaderPhone" label="手机号码：">
-                <el-input v-model="formTeam.teamLeaderPhone" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button class="F-Grey" round @click="cloneTeamForm('refTeam')">取 消</el-button>
-                <el-button class="F-Blue" round @click="submitTeamForm('refTeam')">确 定</el-button>
-            </el-form-item>
-        </el-form>
-    </el-dialog>
-
+            <el-form
+                method="post"
+                ref="refTeam"
+                label-width="100px"
+                :rules="rulesForm"
+                :model="formTeam"
+                action="" 
+            >
+                <el-form-item prop="pLabourCompanyId">
+                    <el-input v-model="formTeam.pLabourCompanyId" type="text" hidden></el-input>
+                </el-form-item>
+                <el-form-item prop="projectName" label="工程名称：">
+                    <el-input v-model="formTeam.projectName" type="text" placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item prop="teamName" label="班组名称：">
+                <el-input v-model="formTeam.teamName" placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item prop="teamType" label="班组类型：">
+                    <el-select v-model="formTeam.teamType" >
+                        <el-option v-for="item in teamOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item prop="teamLeaderName" label="班组长：">
+                    <el-input v-model="formTeam.teamLeaderName" placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item prop="teamLeaderPhone" label="手机号码：">
+                    <el-input v-model="formTeam.teamLeaderPhone" placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button class="F-Grey" round @click="cloneTeamForm('refTeam')">取 消</el-button>
+                    <el-button class="F-Blue" round @click="submitTeamForm('refTeam')">确 定</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
-
-    
 </template>
 
 <script>
@@ -351,19 +360,11 @@ export default {
         };
     },
     created() {
-        // 页面加载时获取用户信息
-        this.getLocalStorage();
+        // 页面加载时获取信息
         this.getTable();
     },
     components: {},
     methods: {
-        // 获取本地存储用户信息
-        getLocalStorage() {
-            this.username = window.sessionStorage.getItem("username");
-            this.userId = window.sessionStorage.getItem("userId");
-            this.admin = window.sessionStorage.getItem("admin");
-            this.token = window.sessionStorage.getItem("token");
-        },
         // 每页显示多少条 @size-change
         handleSizeChange(size) {
             this.pageSize = size;
@@ -443,6 +444,7 @@ export default {
         handleSelectionChange() {
             var ids = new Array();
             var arrays = this.$refs.multipleTable.selection;
+            console.log(arrays)
             for (var i = 0; i < arrays.length; i++) {
                 // 获得id
                 var id = arrays[i].id;
@@ -454,11 +456,11 @@ export default {
         },
         // 查询
         onScreen() {
-        var data = JSON.stringify(this.screenForm);
-        this.http
-            .post("/smart/worker/labour/1/company/management", data)
-            .then(res => {
-            console.log(res);
+            let data = JSON.stringify(this.screenForm);
+            this.http
+                .post("/smart/worker/labour/1/company/management", data)
+                .then(res => {
+                console.log(res);
             });
         },
 
@@ -623,10 +625,10 @@ export default {
 //  班组提交
         createdTeamClick(index, row) {
             this.dialogVisibleTeam = true;
-            console.log(row)
         },
         submitTeamForm(refTeam) {
             // 验证
+            console.log(this.id)
             this.$refs[refTeam].validate(valid => {
                 if (valid) {
                     let form = this.$refs[refTeam].model;

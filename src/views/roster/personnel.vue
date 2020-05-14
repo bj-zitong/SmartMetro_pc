@@ -4,20 +4,31 @@
     <el-container>
       <el-menu class="main-top-box">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
+          <!-- 劳务公司 -->
+          <el-form-item label="劳务公司：">
+            <el-select v-model="formInline.company">
+              <el-option
+                v-for="item in screenCompany"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
           <!-- 姓名 -->
-          <el-form-item label="姓名">
-            <el-input v-model="formInline.user" placeholder="请输入姓名"></el-input>
+          <el-form-item label="姓名：">
+            <el-input v-model="formInline.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
 
           <!-- 工号 -->
-          <el-form-item label="工号" class="region">
-            <el-input v-model="formInline.user" placeholder="请输入工号"></el-input>
+          <el-form-item label="工号：" class="region">
+            <el-input v-model="formInline.jobNum" placeholder="请输入工号"></el-input>
           </el-form-item>
 
           <!-- 工种 -->
-          <el-form-item label="工种" class="region">
+          <el-form-item label="工种：" class="region">
             <el-select
-              v-model="formInline.region"
+              v-model="formInline.workerType"
               placeholder="请选择工种"
               filterable
               clearable
@@ -31,7 +42,6 @@
               ></el-option>
             </el-select>
           </el-form-item>
-
           <!-- 查询按钮 -->
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -45,7 +55,7 @@
         <div class="main-btn-box">
           <!-- <el-main class="btnView"> -->
           <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
-          <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
+          <el-button class="T-H-B-Grey" @click="deleteAll">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
           <el-upload
             style="display:inline-block; margin-left: 10px;"
@@ -55,7 +65,7 @@
           >
             <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick">导入</el-button>
           </el-upload>
-          <el-button type="success" class="T-H-B-DarkGreen">培训通过</el-button>
+          <el-button type="success" class="T-H-B-DarkGreen" @click="PassTraining">培训通过</el-button>
         </div>
 
         <div>
@@ -69,18 +79,18 @@
             @selection-change="changeFun"
           >
             <el-table-column fixed type="selection" prop="id" @selection-change="changeFun"></el-table-column>
-            <el-table-column prop="date" label="劳务公司" width="150"></el-table-column>
+            <el-table-column prop="labourCompany" label="劳务公司" width="150"></el-table-column>
+            <el-table-column prop="teamMaster" label="班组" width="100"></el-table-column>
+            <el-table-column prop="workerType" label="工种" width="100"></el-table-column>
             <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-            <el-table-column prop="province" label="性别" width="120"></el-table-column>
-            <el-table-column prop="city" label="工号" width="120"></el-table-column>
-            <el-table-column prop="address" label="籍贯" width="300"></el-table-column>
-            <el-table-column prop="zip" label="年龄" width="120"></el-table-column>
-            <el-table-column label="班组" width="100"></el-table-column>
-            <el-table-column label="工种" width="100"></el-table-column>
-            <el-table-column label="手机号码" width="100"></el-table-column>
-            <el-table-column label="政治面貌" width="100"></el-table-column>
-            <el-table-column label="进场日期" width="100"></el-table-column>
-            <el-table-column label="退场日期" width="100"></el-table-column>
+            <el-table-column prop="gender" label="性别" width="120"></el-table-column>
+            <el-table-column prop="status" label="工号" width="120"></el-table-column>
+            <el-table-column prop="birthPlace" label="籍贯" width="300"></el-table-column>
+            <el-table-column prop="age" label="年龄" width="120"></el-table-column>
+            <el-table-column prop="cellPhone" label="手机号码" width="100"></el-table-column>
+            <el-table-column prop="politicsType" label="政治面貌" width="100"></el-table-column>
+            <el-table-column prop="createTime" label="进场日期" width="100"></el-table-column>
+            <el-table-column prop="exitTime" label="退场日期" width="100"></el-table-column>
             <!-- <el-table-column fixed="right" label="状态" width="100"></el-table-column> -->
             <el-table-column fixed="right" label="操作" :width="tableWidth">
               <template slot-scope="scope">
@@ -93,7 +103,7 @@
                   <el-button
                     class="T-R-B-Grey"
                     size="mini"
-                    @click="deleteRowClick(scope.$index, scope.row)"
+                    @click="handleDelete(scope.row)"
                   >{{operation.conversionDelete}}</el-button>
                   <el-button
                     @click="evaluateClick(scope.row)"
@@ -110,7 +120,7 @@
                 </div>
                 <div v-if="rowIndex==scope.$index">
                   <el-button
-                    @click="handleClick(scope.row)"
+                    @click="PassTrainingClick(scope.row)"
                     type="success"
                     size="mini"
                     class="T-R-B-BlackishGreen btn"
@@ -122,10 +132,10 @@
                     class="F-black btn"
                   >拉黑</el-button>
                   <el-button
-                    @click="handleClick(scope.row)"
+                    @click="exitClick(scope.row)"
                     type="success"
                     size="mini"
-                    class="F-black btn"
+                    style="background:#BB2D28"
                   >退场</el-button>
                   <el-button
                     class="T-R-B-Orange"
@@ -151,13 +161,7 @@
 
     <!-- 拉黑原因弹出框 -->
     <el-dialog title="拉黑原因" :visible.sync="centerDialogVisible" width="30%" center>
-      <el-form
-        ref="from"
-        :rules="rules"
-        :model="from"
-        label-width="80px"
-        class="demo-ruleForm"
-      >
+      <el-form ref="from" :rules="rules" :model="from" label-width="80px" class="demo-ruleForm">
         <el-form-item prop="Reason" label="原因描述">
           <el-input type="textarea" v-model="from.Reason"></el-input>
         </el-form-item>
@@ -170,7 +174,7 @@
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
             :on-change="handleChange"
-             multiple
+            multiple
             :limit="3"
             :on-exceed="handleExceed"
             :file-list="fileList"
@@ -180,24 +184,32 @@
           </el-upload>
         </el-form-item>
       </el-form>
-       <span slot="footer" class="dialog-footer">
-          <el-button class="F-Grey" round @click="centerDialogVisible = false">取消</el-button>
-          <el-button class="F-Blue" round @click="addSubmitForm('from')">确定</el-button>
-       </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="F-Grey" round @click="centerDialogVisible = false">取消</el-button>
+        <el-button class="F-Blue" round @click="addSubmitForm('from')">确定</el-button>
+      </span>
     </el-dialog>
 
     <!-- 评价弹出框 -->
-    <el-dialog title="评价记录" :visible.sync="evaluatDialogVisible" width="30%" center>
+    <el-dialog
+      title="评价记录"
+      :show-close="false"
+      :visible.sync="evaluatDialogVisible"
+      width="30%"
+      center
+    >
       <div>
         <div>
-          <el-form label-width="80px">
-            <el-input type="textarea" v-model="block"></el-input>
+          <el-form :rules="Rules" :model="formEevaluate" ref="formEevaluate" label-width="80px">
+            <el-form-item prop="evaluate" label="评价记录">
+              <el-input type="textarea" v-model="formEevaluate.evaluate" placeholder="请输入评价记录"></el-input>
+            </el-form-item>
           </el-form>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="evaluatDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="evaluatDialogVisible = false">确 定</el-button>
+        <el-button class="F-Grey" round @click="cloneTeamForm()">取 消</el-button>
+        <el-button class="F-Blue" round @click="submitTeamForm('formEevaluate')">确 定</el-button>
       </span>
     </el-dialog>
     <personneldialog v-if="changOrder" ref="turnOrder" />
@@ -216,27 +228,43 @@ export default {
   data() {
     return {
       formInline: {
-        user: "",
-        region: ""
+        company: "",
+        name: "",
+        jobNum: "",
+        workerType: ""
       },
       from: {
         Reason: "",
-        photo:''
+        photo: ""
+      },
+      //
+      formEevaluate: {
+        evaluate: ""
       },
       operation: {
         conversionCompile: "编辑",
         conversionDelete: "删除",
         evaluateVonversion: "评价"
       },
+      screenCompany: [
+        { id: 0, name: "第一公司" },
+        { id: 1, name: "第二公司" }
+      ],
       headClass: headClass,
       centerDialogVisible: false,
       evaluatDialogVisible: false,
+      page: 1, // 初始页
+      pageSize: 10, // 默认每页数据量
+      total: 0, //总条数
       options: options,
       btnShow: false,
       tableWidth: "300",
-      block: "", //拉黑原因描述,
+      evaluate: "", //拉黑原因描述,
       rowIndex: null, //选中当前行下标
       changOrder: false, //查看详情
+      Rules: {
+        evaluate: [{ required: true, message: "请输入评价", trigger: "blur" }]
+      },
       fileList: [
         {
           name: "food.jpeg",
@@ -246,36 +274,59 @@ export default {
       ],
       tableData: [
         {
-          id: "1",
-          date: "2016-05-025",
-          name: "王小虎1",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 20066333
+          pInfoId: "1",
+          jobNum: "2016-05-025",
+          labourCompany: "北京分公司",
+          teamMaster: "2",
+          workerType: "土方",
+          name: "王小虎",
+          gender: "男",
+          birthPlace: "上海",
+          politicsType: "群众",
+          age: "10",
+          cellPhone: "15965478965",
+          status: "23356644656556685",
+          createTime: "2020-4-15",
+          exitTime: "2020-1-14"
         },
         {
-          id: "2",
-          date: "2016-05-025",
-          name: "王小虎1",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
+          pInfoId: "1",
+          jobNum: "2016-05-025",
+          labourCompany: "北京分公司",
+          teamMaster: "2",
+          workerType: "土方",
+          name: "王小虎",
+          gender: "男",
+          birthPlace: "上海",
+          politicsType: "群众",
+          age: "10",
+          cellPhone: "15965478965",
+          status: "23356644656556685",
+          createTime: "2020-4-15",
+          exitTime: "2020-1-14"
         },
         {
-          id: "3",
-          date: "2016-05-025",
-          name: "王小虎1",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
+          pInfoId: "1",
+          jobNum: "2016-05-025",
+          labourCompany: "北京分公司",
+          teamMaster: "2",
+          workerType: "土方",
+          name: "王小虎",
+          gender: "男",
+          birthPlace: "上海",
+          politicsType: "群众",
+          age: "10",
+          cellPhone: "15965478965",
+          status: "23356644656556685",
+          createTime: "2020-4-15",
+          exitTime: "2020-1-14"
         }
       ],
       rules: {
-        Reason: [{ required: true, message: "请输入公司名称", trigger: "blur" }],
-        photo: [{ required: true, message: "请输入图片", trigger: "change" }],
+        Reason: [
+          { required: true, message: "请输入公司名称", trigger: "blur" }
+        ],
+        photo: [{ required: true, message: "请输入图片", trigger: "change" }]
       }
     };
   },
@@ -289,6 +340,30 @@ export default {
     },
     addStaffClick() {
       this.$router.push({ path: "/LabourNewlyadded" });
+    },
+    //表格渲染
+    getDataFun() {
+      let _this = this;
+      var data = JSON.stringify({
+        company: _this.formInline.company,
+        name: _this.formInline.name,
+        jobNum: _this.formInline.jobNum,
+        workerType: _this.formInline.workerType,
+        pageSize: _this.pageSize,
+        page: _this.page
+      });
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/management";
+      this.http.delete(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
     },
     //删除
     deleteRowClick() {
@@ -306,19 +381,166 @@ export default {
           });
         });
     },
+    //获得表格前面选中的id值
+    changeFun() {
+      var ids = new Array();
+      var arrays = this.$refs.multipleTable.selection;
+      for (var i = 0; i < arrays.length; i++) {
+        // 获得id
+        var id = arrays[i].pOutlanderId;
+        ids.push(id);
+      }
+      return ids;
+    },
     //批量删除
-    deleteAllClick() {
-      handleCofirm("确认删除", "warning")
+    deleteAll() {
+      var ids = this.changeFun();
+      if (ids.length <= 0) {
+        this.$message("请选择删除的数据！");
+        return;
+      }
+      handleCofirm("确认删除")
         .then(res => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
           });
         })
         .catch(err => {
           this.$message({
             type: "info",
             message: "已取消删除"
+          });
+        });
+    },
+    //表格每条培训通过
+    PassTrainingClick(row) {
+      handleCofirm("请确认是否培训通过", "warning")
+        .then(res => {
+          var data = row.pInfoId;
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "labour/evaluate/" +
+            data +
+            "/approve/" +
+            2;
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "通过成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消通过"
+          });
+        });
+    },
+    //单个删除
+    handleDelete(row) {
+      // 删除用户id
+      var uid = row.pInfoId;
+      var ids = [];
+      ids.push(uid);
+      handleCofirm("确认删除", "warning")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    //培训通过
+    PassTraining() {
+      var ids = this.changeFun();
+      if (ids.length <= 0) {
+        this.$message("请选择培训通过的数据！");
+        return;
+      }
+      handleCofirm("请确认是否培训通过", "warning")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "labour/evaluate/" +
+            data +
+            "/approve/" +
+            2;
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "通过成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消通过"
+          });
+        });
+    },
+    //退场
+    exitClick(row) {
+      handleCofirm("请确认是否退场", "warning")
+        .then(res => {
+          var data = row.pInfoId;
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "labour/evaluate/" +
+            data +
+            "/approve/" +
+            1;
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "通过成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消通过"
           });
         });
     },
@@ -333,11 +555,54 @@ export default {
       this.rowIndex = index;
       // this.btnShow =
     },
-
-    //导出
-    importStaffClick() {},
     //导入
-    exportStaffClick() {},
+    importStaffClick() {},
+    //导出
+    exportStaffClick() {
+      handleCofirm("确认导出", "warning").then(res => {
+        let _this = this;
+        var data = JSON.stringify({
+          company: _this.formInline.company,
+          name: _this.formInline.name,
+          jobNum: _this.formInline.jobNum,
+          workerType: _this.formInline.workerType,
+          pageSize: _this.pageSize,
+          page: _this.page
+        });
+        var url =
+          "/smart/worker/roster/" +
+          sessionStorage.getItem("userId") +
+          "/labour/export";
+        this.http.post(url, data).then(res => {
+          // // 创建Blob对象，设置文件类型
+          // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
+          // let objectUrl = URL.createObjectURL(blob) // 创建URL
+          // location.href = objectUrl;
+          // URL.revokeObjectURL(objectUrl); // 释放内存
+          // 创建Blob对象，设置文件类型
+          // 自定义文件下载名称  Subway-User-20191223114607
+          var d = new Date();
+          var month = d.getMonth() + 1;
+          var excelName =
+            "Subway-User-" +
+            d.getFullYear() +
+            month +
+            d.getDate() +
+            d.getHours() +
+            d.getMinutes() +
+            d.getSeconds();
+          let blob = new Blob([res.data], {
+            type: "application/vnd.ms-excel"
+          });
+          let objectUrl = URL.createObjectURL(blob); // 创建URL
+          link.href = objectUrl;
+          link.download = excelName; // 自定义文件名
+          link.click(); // 下载文件
+          URL.revokeObjectURL(objectUrl); // 释放内存
+          // alert("调用导出！");
+        });
+      });
+    },
     handleSelectionChange(val) {},
     //拉黑
     blockClick() {
@@ -349,6 +614,36 @@ export default {
     //评价
     evaluateClick() {
       this.evaluatDialogVisible = true;
+    },
+    //取消评价
+    cloneTeamForm() {
+      this.evaluatDialogVisible = false;
+    },
+    //确认评价
+    submitTeamForm(Rules) {
+      this.$refs[Rules].validate(valid => {
+        if (valid) {
+          var _this = this;
+          var data = JSON.stringify({
+            pInfoId: 0,
+            evaluate: _this.evaluate
+          });
+          this.evaluatDialogVisible = false;
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour/evaluate";
+          this.http.get(url, data).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "提交成功!"
+              });
+            }
+          });
+        } else {
+        }
+      });
     },
     //文件上传
     handleRemove(file, fileList) {
@@ -376,6 +671,10 @@ export default {
         _this.$refs.turnOrder.init();
       });
     },
+    //编辑
+    editRowClick() {
+      this.$router.push({ path: "/LabourNewlyadded" });
+    },
     handleExceed(files, fileList) {
       this.$message.warning(
         `当前限制选择 3 个文件，本次选择了 ${
@@ -387,9 +686,14 @@ export default {
       // return this.$confirm(`确定移除 ${file.name}？`);
     },
     addSubmitForm(from) {
+      console.log(from)
       // 验证
       this.$refs[from].validate(valid => {
         if (valid) {
+//           this.param = new FormData();
+//  this.param.append("file", 文件对象); 
+//  this.param.append("aaa", 参数); 
+//  this.param.append("bbb", 参数); 
           // alert("99999")
           // // 添加劳务人员请求
           // var params = JSON.stringify(this.addLabor);
@@ -418,9 +722,9 @@ export default {
         }
       });
     },
-     handleChange(file, fileList) {
+    handleChange(file, fileList) {
       this.$refs.from.clearValidate();
-      this.from.photo=fileList;
+      this.from.photo = fileList;
     }
   }
 };
