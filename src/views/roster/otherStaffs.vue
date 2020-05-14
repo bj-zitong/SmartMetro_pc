@@ -85,7 +85,7 @@
     <otherStaffsdialog v-if="changOrder" ref="turnOrder" />
     <!-- -->
     <el-dialog
-    :title="csvTitle"
+
     :visible.sync="csvVisible"
     width="50%">
     <div>
@@ -367,7 +367,9 @@ export default {
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
       });
-    }
+    },
+    importCsv(){},
+    handleChange(){}
   }
 };
 </script>
