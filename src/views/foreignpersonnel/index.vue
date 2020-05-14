@@ -153,7 +153,7 @@
       </el-dialog>
     </div>
     <!-- 详情-->
-    <el-dialog
+    <!-- <el-dialog
       :visible.sync="dialogFormVisibleDetail"
       width="300px"
       title="外来人员详情"
@@ -172,7 +172,68 @@
       <div class="dialog-footer" style="text-align:center;margin-top:20px;">
         <el-button @click="dialogFormVisibleDetail = false" class="F-Grey" round>取 消</el-button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
+     <el-dialog
+    title
+    :visible.sync="dialogFormVisibleDetail"
+    :close-on-click-modal="false"
+    :show-close="false"
+    width="30%"
+  >
+    <div class="AddEquipment_form">
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="grid-content bg-purple">
+            姓名:
+            <span>9996666</span>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="grid-content bg-purple">身份证号:
+             <span>9996666</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="grid-content bg-purple">
+            来访单位:
+            <span>9996666666666</span>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="grid-content bg-purple">被访部门:
+            <span>9996666666666</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="grid-content bg-purple">
+            被访人姓名:
+            <span>9996666666666</span>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="grid-content bg-purple">来访事由:
+              <span>9996666666666</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="grid-content bg-purple">
+            来访时间:
+            <span>9996666666666</span>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <template slot="footer" class="dialog-footer">
+      <el-button type="default" @click="dialogFormVisibleDetail = false" round class="T-R-B-Grey">取消</el-button>
+      <!-- <el-button type="primary" @click="handleSubmit">提交</el-button> -->
+    </template>
+  </el-dialog>
   </div>
 </template>
 <script>
@@ -645,6 +706,44 @@ export default {
 </script>
 <style scoped lang="stylus">
 .container {
+  .el-row {
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.el-col {
+  border-radius: 4px;
+}
+
+.bg-purple-dark {
+  // background: #99a9bf;
+}
+
+.bg-purple {
+  // background: #d3dce6;
+}
+
+.bg-purple-light {
+  // background: #e5e9f2;
+}
+
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+  font-size: 14px;
+
+  span {
+    color: rgba(0, 88, 162, 1);
+  }
+}
+
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
   .el-header, .el-footer {
     background-color: #B3C0D1;
     color: #333;
