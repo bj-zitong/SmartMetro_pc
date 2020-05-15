@@ -70,7 +70,7 @@
             <!-- accessoryPath 路径-->
             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope">
-                <el-form :model="videoForm" ref="videoForm">
+                <!-- <el-form :model="videoForm" ref="videoForm">
                   <el-form-item label prop="getVideo">
                     <el-upload
                       action
@@ -88,14 +88,14 @@
                       />
                     </el-upload>
                   </el-form-item>
-                </el-form>
+                </el-form> -->
                 <!--
                 <i class="el-icon-upload" style="width:26px;height:26px"></i>-->
-                <!-- <img
+                <img
                   src="../../../static/image/shangchuan.png"
                   style="width:26px;height:26px"
                   @click="uploadVideo(scope.row)"
-                />-->
+                />
               </template>
             </el-table-column>
             <el-table-column label="操作" width="200" fixed="right">
@@ -216,6 +216,37 @@
         </div>
       </el-dialog>
     </el-dialog>
+    <!--- 视频上传-->
+      <el-dialog :visible.sync="csvVisible" width="50%">
+      <div>
+        <el-form ref="file" label-width="120px">
+          <el-form-item label="视频上传：" prop="videoForm">
+            <el-upload
+              class="upload-demo"
+              v-model="videoForm.getVideo"
+              action
+              accept=".mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb"
+              :on-change="handleChange"
+              :file-list="fileList"
+              :auto-upload="false"
+              :limit="1"
+              :show-file-list="true"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或
+                <em>点击上传</em>
+              </div>
+              <div class="el-upload__tip" slot="tip">上传视频</div>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="csvVisible = false">取消</el-button>
+        <el-button type="primary" @click="impotVideo()">导入</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -237,6 +268,7 @@ export default {
       ids: null, //选中的id
       outerVisible: false, //新增讲话
       innerVisible: false, //二层
+      csvVisible:false,
       fileList: [], //上传
       formSpeech: {
         //班前讲话
@@ -281,7 +313,7 @@ export default {
         { id: 1, name: "劳务公司一" },
         { id: 2, name: "劳务公司二" },
         { id: 3, name: "劳务公司三" }
-      ]
+      ],
     };
   },
   created: function() {
@@ -291,12 +323,26 @@ export default {
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
-    handleChange(row, file, fileList) {
-      // this.$refs.form.clearValidate();
+    handleChange(file, fileList) {
+      this.$refs.file.clearValidate();
       this.videoForm.getVideo = fileList;
-      console.log(row.pShiftMeetingId);
-      console.log(file);
-      console.log(fileList);
+    },
+    impotVideo(){
+       console.log(this.videoForm.getVideo[0].raw);
+        var url=
+        "/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/team/" +
+        this.id +
+        "/meeting/upload";
+      var data = new FormData();
+      data.append("file", this.videoForm.getVideo[0].raw);
+      this.http.get(url, data).then(res => {
+        if (res.code == 200) {
+          this.getOtherStaffs();
+        }
+      });
+      this.videoForm.getVideo=false;
     },
     handlePreview(row, file) {},
     // 初始页Page、初始每页数据数pagesize和数据data
@@ -457,12 +503,13 @@ export default {
     uploadVideo(row) {
       var uid = row.pShiftMeetingId;
       this.id = uid;
-      this.uploadUrl =
-        "/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/team/" +
-        uid +
-        "/meeting/upload";
+      // this.uploadUrl =
+      //   "/smart/worker/labour/" +
+      //   sessionStorage.getItem("userId") +
+      //   "/team/" +
+      //   uid +
+      //   "/meeting/upload";
+      this.csvVisible=true;
     },
     //选择下拉安全用品
     selectProtective(vid) {
