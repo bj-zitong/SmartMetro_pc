@@ -14,7 +14,7 @@
           </el-form-item>
           <el-form-item label="标段/工地：" prop="section">
             <el-input v-model="screenForm.section" placeholder="请输入"></el-input>
-                <i
+            <i
               class="el-icon-search"
               style="position: absolute;top:8px;right: 8px;"
               @click="getTable()"
@@ -22,7 +22,7 @@
           </el-form-item>
           <!-- <el-form-item>
             <el-button type="primary" @click="onScreen">查询</el-button>
-          </el-form-item> -->
+          </el-form-item>-->
         </el-form>
       </el-menu>
     </el-container>
@@ -87,10 +87,10 @@
       </el-menu>
     </el-container>
 
-    <!-- 添加 -->
+    <!-- 添加 编辑 -->
     <el-dialog
       width="450px"
-      class="popupDialog abow_dialog"
+      class="popupDialog"
       :title="titleLabor"
       :visible.sync="dialogVisibleLabor"
       :close-on-click-modal="false"
@@ -105,81 +105,37 @@
         label-width="80px"
         class="demo-ruleForm"
       >
+        <el-form-item prop="orgSiteId">
+          <el-input v-model="formLabor.orgSiteId" type="text" hidden></el-input>
+        </el-form-item>
         <el-form-item prop="projectCenter" label="项目中心">
-          <el-input v-model="formLabor.projectCenter"></el-input>
+          <el-select v-model="formLabor.projectCenter" placeholder="请选择" @change="selectProfession">
+            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item prop="line" label="线路">
-          <el-input v-model="formLabor.line"></el-input>
+          <el-select v-model="formLabor.line" placeholder="请选择" @change="selectProfession2">
+            <el-option v-for="item in options2" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item prop="responsiblePersonPhone" label="标段/工地">
-          <el-input v-model="formLabor.responsiblePersonPhone"></el-input>
+        <el-form-item prop="siteName" label="标段/工地">
+          <el-input v-model="formLabor.siteName"></el-input>
         </el-form-item>
-        <el-form-item prop="serviceCompany" label="承建单位">
-          <el-input v-model="formLabor.serviceCompany"></el-input>
+        <el-form-item prop="buildCorpName" label="承建单位">
+          <el-input v-model="formLabor.buildCorpName"></el-input>
         </el-form-item>
-        <el-form-item prop="projectCode" label="项目负责人姓名">
-          <el-input v-model="formLabor.projectCode"></el-input>
+        <el-form-item prop="responsiblePersonName" label="项目负责人姓名">
+          <el-input v-model="formLabor.responsiblePersonName"></el-input>
         </el-form-item>
-        <el-form-item prop="projectName" label="联系电话">
-          <el-input v-model="formLabor.projectName"></el-input>
+        <el-form-item prop="cellPhone" label="联系电话">
+          <el-input v-model="formLabor.cellPhone"></el-input>
         </el-form-item>
-        <el-form-item prop="contractCode" label="所在位置">
-          <el-input v-model="formLabor.contractCode"></el-input>
+        <el-form-item prop="location" label="所在位置">
+          <el-input v-model="formLabor.location"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button class="F-Grey" round @click="cloneLaborForm('refLabor')">取消</el-button>
           <el-button class="F-Blue" round @click="submiLabortForm('refLabor')">确定</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-
-    <!-- 创建班组 -->
-    <el-dialog
-      width="450px"
-      title="新增班组"
-      class="popupDialog"
-      :visible.sync="dialogVisibleTeam"
-      :center="true"
-      :show-close="false"
-      :close-on-click-modal="false"
-      :hide-required-asterisk="true"
-    >
-      <el-form
-        method="post"
-        ref="refTeam"
-        label-width="100px"
-        :rules="rulesForm"
-        :model="formTeam"
-        action
-      >
-        <el-form-item prop="pLabourCompanyId">
-          <el-input v-model="formTeam.pLabourCompanyId" type="text" hidden></el-input>
-        </el-form-item>
-        <el-form-item prop="projectName" label="工程名称：">
-          <el-input v-model="formTeam.projectName" type="text" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item prop="teamName" label="班组名称：">
-          <el-input v-model="formTeam.teamName" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item prop="teamType" label="班组类型：">
-          <el-select v-model="formTeam.teamType">
-            <el-option
-              v-for="item in teamOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item prop="teamLeaderName" label="班组长：">
-          <el-input v-model="formTeam.teamLeaderName" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item prop="teamLeaderPhone" label="手机号码：">
-          <el-input v-model="formTeam.teamLeaderPhone" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="F-Grey" round @click="cloneTeamForm('refTeam')">取 消</el-button>
-          <el-button class="F-Blue" round @click="submitTeamForm('refTeam')">确 定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -200,92 +156,57 @@ export default {
       tableData: [], // 初始化表格
       gridData: [], // 查看下属表格初始化
       dialogVisibleLabor: false, // 添加/编辑弹窗
-      dialogVisibleTeam: false, // 班组
-      formTeam: {
-        //班组初始化
-        pLabourCompanyId: null,
-        projectName: "",
-        teamName: "",
-        teamType: "",
-        teamLeaderName: "",
-        teamLeaderPhone: ""
-      },
-      teamOptions: [
-        { id: 0, name: "班组1" },
-        { id: 0, name: "班组2" }
-      ],
       titleLabor: "", // 标题
-      seeBranch: false, // 创建班组弹窗
       screenForm: {
         //  筛选
         projectName: "",
         section: "" //标段
       },
-      screenCompany: [
-        { id: 0, name: "第一公司" },
-        { id: 1, name: "第二公司" }
+      options: [
+        { id: 0, name: "请选择" },
+        { id: 1, name: "中心一" },
+        { id: 2, name: "中心二" },
+        { id: 3, name: "中心三" }
+      ],
+      options2: [
+        { id: 0, name: "请选择" },
+        { id: 1, name: "线路一" },
+        { id: 2, name: "线路二" },
+        { id: 3, name: "线路三" }
       ],
       // 新增/编辑
       formLabor: {
         orgSiteId: null,
-        company: "",
+        projectCenter: "",
+        line: "",
+        siteName: "",
+        buildCorpName: "",
         responsiblePersonName: "",
-        responsiblePersonPhone: "",
-        serviceCompany: "",
-        projectCode: "",
-        projectName: "",
-        contractCode: "",
-        startDate: "",
-        endDate: "",
-        contractPeriodType: "",
-        corpCode: ""
+        cellPhone: "",
+        location: ""
       },
       // 自定义表单验证
       rulesForm: {
-        company: [
-          { required: true, message: "请输入公司名称", trigger: "blur" }
+        projectCenter: [
+          { required: true, message: "请选择", trigger: "change" }
+        ],
+        line: [{ required: true, message: "请选择", trigger: "change" }],
+        siteName: [{ required: true, message: "请输入标段", trigger: "blur" }],
+        buildCorpName: [
+          { required: true, message: "请输入承建单位", trigger: "blur" }
         ],
         responsiblePersonName: [
-          { required: true, message: "请输入负责人", trigger: "blur" }
+          { required: true, message: "请输入负责人姓名", trigger: "blur" }
         ],
-        responsiblePersonPhone: [
-          { required: true, message: "请输入联系方式", trigger: "blur" }
+        cellPhone: [
+          { required: true, message: "请输入联系电话", trigger: "blur" },
+          {
+            pattern: /^1[34578]\d{9}$/,
+            message: "手机号格式不正确"
+          }
         ],
-        serviceCompany: [
-          { required: true, message: "请输入服务单位", trigger: "blur" }
-        ],
-        projectCode: [
-          { required: true, message: "请输入项目编号", trigger: "blur" }
-        ],
-        projectName: [
-          { required: true, message: "请输入项目名称", trigger: "blur" }
-        ],
-        contractCode: [
-          { required: true, message: "请输入合同编号", trigger: "blur" }
-        ],
-        startDate: [
-          { required: true, message: "请选择开始日期", trigger: "change" }
-        ],
-        endDate: [
-          { required: true, message: "请选择结束日期", trigger: "change" }
-        ],
-        contractPeriodType: [
-          { required: true, message: "请选择合同期限类型", trigger: "change" }
-        ],
-        corpCode: [
-          { required: true, message: "请输入组织机构代码", trigger: "blur" }
-        ],
-        teamName: [
-          { required: true, message: "请输入班组名称", trigger: "blur" }
-        ],
-        teamType: [
-          { required: true, message: "请选择班组类型", trigger: "change" }
-        ],
-        teamLeaderName: [
-          { required: true, message: "请输入姓名", trigger: "blur" }
-        ],
-        teamLeaderPhone: [
-          { required: true, message: "请输入手机号", trigger: "blur" }
+        location: [
+          { required: true, message: "请输入所在位置", trigger: "blur" }
         ]
       }
     };
@@ -296,6 +217,22 @@ export default {
   },
   components: {},
   methods: {
+    // 下拉框 中心
+    selectProfession(vid) {
+      let obj = {};
+      obj = this.options.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.formLabor.projectCenter = obj.id;
+    },
+    //line
+    selectProfession2(vid) {
+      let obj = {};
+      obj = this.options.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.formLabor.line = obj.id;
+    },
     // 每页显示多少条 @size-change
     handleSizeChange(size) {
       this.pageSize = size;
@@ -322,15 +259,13 @@ export default {
       var data = JSON.stringify({
         pageSize: this.pageSize,
         page: this.page,
-        projectCenter:this.screenForm.projectName,
-        siteName:this.screenForm.section
+        projectCenter: this.screenForm.projectName,
+        siteName: this.screenForm.section
       });
       //请求
       ///smart/auth/{userId}/org/management
       var url =
-        "/smart/auth/" +
-        sessionStorage.getItem("userId") +
-        "/org/management";
+        "/smart/auth/" + sessionStorage.getItem("userId") + "/org/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.total;
@@ -383,27 +318,18 @@ export default {
       return ids;
       //  this.multipleSelection = val;
     },
-    // 查询
-    onScreen() {
-      let data = JSON.stringify(this.screenForm);
-      this.http
-        .post("/smart/worker/labour/1/company/management", data)
-        .then(res => {
-          console.log(res);
-        });
-    },
-
     //  添加/编辑 提交
     submiLabortForm(refLabor) {
       // 验证
       this.$refs[refLabor].validate(valid => {
         if (valid) {
           let form = this.$refs[refLabor].model;
-          // 判断id是否为空
-          if (form.id == null) {
+          // 判断id是否为空 /smart/auth/{userId}/org
+          var url = "/smart/auth/" + sessionStorage.getItem("userId") + "/org";
+          if (form.orgSiteId == null) {
             let data = JSON.stringify(this.formLabor);
             this.http
-              .post("smart/worker/labour/1/company/management", data)
+              .post(url, data)
               .then(res => {
                 if (res.code == 200) {
                   this.$message({
@@ -419,13 +345,27 @@ export default {
             this.dialogVisibleLabor = false;
           } else {
             let data = JSON.stringify(this.formLabor);
+            var url =
+              "/smart/auth/" +
+              sessionStorage.getItem("userId") +
+              "/org/" +
+              this.formLabor.orgSiteId;
+            var data = JSON.stringify({
+              projectCenter: this.formLabor.projectCenter,
+              line:this.formLabor.line,
+              siteName:this.formLabor.siteName,
+              buildCorpName:this.formLabor.buildCorpName,
+              responsiblePersonName:this.formLabor.responsiblePersonName,
+              cellPhone:this.formLabor.cellPhone,
+              location:this.formLabor.location
+            });
             this.http
-              .put("smart/worker/labour/1/company/management", data)
+              .put(url, data)
               .then(res => {
                 if (res.code == 200) {
                   this.$message({
                     type: "success",
-                    message: "添加成功!"
+                    message: "修改成功!"
                   });
                 }
               })
@@ -441,24 +381,22 @@ export default {
         }
       });
     },
-
     //  新增/编辑   关闭
     cloneLaborForm(refLabor) {
       this.$refs[refLabor].resetFields();
       this.dialogVisibleLabor = false;
     },
-    //  新增劳务公司
+    //  新增
     addClick() {
       this.titleLabor = "添加";
       this.dialogVisibleLabor = true;
     },
     //  编辑回显
     editRowClick(inedx, row) {
-      this.titleLabor = "编辑劳务公司";
+      this.titleLabor = "编辑";
       this.formLabor = row;
       this.dialogVisibleLabor = true;
     },
-
     //  批量删除
     deleteBatchClick() {
       var ids = this.handleSelectionChange();
@@ -466,13 +404,11 @@ export default {
         this.$message("请选择删除的数据！");
         return;
       }
-      handleCofirm("确定删除该员工信息吗？")
+      handleCofirm("确定删除该信息吗？")
         .then(res => {
           let data = JSON.stringify(ids);
-          let url =
-            "/smart/worker/labour/" +
-            sessionStorage.getItem("userId") +
-            "/company";
+          ///smart/auth/{userId}/org
+          let url = "/smart/auth/" + sessionStorage.getItem("userId") + "/org";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               let total = res.total;
@@ -496,15 +432,11 @@ export default {
     //  删除
     deleteRowClick(index, row) {
       let ids = [];
-      ids.push(row.id);
-
-      handleCofirm("确定删除该员工信息吗？")
+      ids.push(row.orgSiteId);
+      handleCofirm("确定删除该信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
-          var url =
-            "/smart/worker/labour/" +
-            sessionStorage.getItem("userId") +
-            "/company";
+          var url = "/smart/auth/" + sessionStorage.getItem("userId") + "/org";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
@@ -524,46 +456,6 @@ export default {
             message: "已取消删除"
           });
         });
-    },
-    //  班组提交
-    createdTeamClick(index, row) {
-      this.dialogVisibleTeam = true;
-    },
-    submitTeamForm(refTeam) {
-      // 验证
-      console.log(this.id);
-      this.$refs[refTeam].validate(valid => {
-        if (valid) {
-          let form = this.$refs[refTeam].model;
-          let data = JSON.stringify(this.formTeam);
-          let url =
-            "/smart/worker/labour/" +
-            sessionStorage.getItem("userId") +
-            "/team";
-          this.http
-            .post("url", data)
-            .then(res => {
-              if (res.code == 200) {
-                this.$message({
-                  type: "success",
-                  message: "添加成功!"
-                });
-              }
-            })
-            .catch(res => {
-              console.log("error!");
-              return false;
-            });
-          this.dialogVisibleTeam = false;
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    cloneTeamForm(refTeam) {
-      this.$refs[refTeam].resetFields();
-      this.dialogVisibleTeam = false;
     },
     //  表头样式
     headClass() {

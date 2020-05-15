@@ -18,7 +18,12 @@
         </div>
       </el-menu>
     </div>
-    <el-tabs v-model="editableTabsValue" type="border-card" class="hed_tab" @tab-click="handleClick">
+    <el-tabs
+      v-model="editableTabsValue"
+      type="border-card"
+      class="hed_tab"
+      @tab-click="handleClick"
+    >
       <el-tab-pane v-for="(item,index) in list" :key="index" :label="item.title">
         <span slot="label">
           <img :src="num==index?item.afterChangeimg:item.beforeChangeimg" alt class="icon_list" />
@@ -39,9 +44,26 @@ export default {
   name: "top-navbar",
   data() {
     return {
-       editableTabsValue: '1',
-       num: 1,
-       list:list,
+      systemList: [
+        {
+          title: "用户管理",
+          beforeChangeimg: "/static/image/kfg.png",
+          afterChangeimg: "/static/image/selected_kfg.png"
+        },
+        {
+          title: "角色管理",
+          beforeChangeimg: "/static/image/kfg.png",
+          afterChangeimg: "/static/image/selected_kfg.png"
+        },
+        {
+          title: "工地管理",
+          beforeChangeimg: "/static/image/kfg.png",
+          afterChangeimg: "/static/image/selected_kfg.png"
+        }
+      ],
+      editableTabsValue: "",
+      num: 1,
+      list: ""
     };
   },
   name: "",
@@ -53,32 +75,37 @@ export default {
     ...mapGetters(["name", "avatar"])
   },
   watch: {
-      deep: true,
-      "$route"(newVal, oldVal) {     
-          this.tabsValue = newVal.meta.parent
-          // this.editBarImg(newVal.meta.parent);
-      },
-      tabsValue(newVal,oldVal){
-          this.$emit('selectNavBar',newVal);
-      }
+    deep: true,
+    $route(newVal, oldVal) {
+      this.tabsValue = newVal.meta.parent;
+      // this.editBarImg(newVal.meta.parent);
+    },
+    tabsValue(newVal, oldVal) {
+      this.$emit("selectNavBar", newVal);
+    }
   },
-  mounted(){
-    this.$emit('selectNavBar',"实名认证");
-     
+  mounted() {
+    this.list = this.$route.query.code == 1 ? this.systemList : list;
+    this.editableTabsValue = this.$route.query.code == 1 ? "0" : "1";
+    if (this.$route.query.code == 1) {
+      this.$emit("selectNavBar", "系统管理");
+    } else {
+      this.$emit("selectNavBar", "实名认证");
+    }
   },
   methods: {
     ...mapActions({
       userLogout: "logout"
     }),
     handleClick(tab, event) {
-      if(tab.label == '首页'){
-        this.$router.push({ path: "/homeShow" })
+      if (tab.label == "首页") {
+        this.$router.push({ path: "/homeShow" });
       }
-      this.$emit('selectNavBar',tab.label);
+      this.$emit("selectNavBar", tab.label);
       this.num = tab.index;
     },
     logout() {
-     this.$router.push({ path: "/login" })
+      this.$router.push({ path: "/login" });
     }
   }
 };
@@ -261,9 +288,9 @@ export default {
   color: #fff;
   width: 10%;
   text-align: center;
-  height:50px;
+  height: 50px;
   line-height: 50px;
-  font-size :20px  
+  font-size: 20px;
 }
 
 .hed_tab>.el-tabs__header .el-tabs__nav {
@@ -272,11 +299,13 @@ export default {
 
 .hed_tab>.el-tabs__header .el-tabs__item:first-child {
   margin-left: 10px;
-  width :8%
+  width: 8%;
 }
+
 .hed_tab>.el-tabs__header .el-tabs__item:last-child {
-  width :11%
+  width: 11%;
 }
+
 .hed_tab>.el-tabs__nav-wrap.is-scrollable {
   padding: 0 0;
 }
