@@ -1,5 +1,43 @@
 <template>
   <div>
+    <!-- <div class="container-head">
+      <div style="margin-top:33px; position: absolute;">
+        <el-form ref="form" :model="form" label-width="90px">
+          <el-form-item label="班组名称:">
+            <el-input v-model="form.className" style="height:35px;width:500px;"></el-input>
+            <i
+              class="el-icon-search"
+              style="position: absolute;top:8px;right: 8px;"
+              @click="searchClass()"
+            ></i>
+          </el-form-item>
+           <el-form-item>
+            <el-button type="primary" @click="getTalks()" style="margin-left:30px;">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>-->
+    <div style="padding:30px;">
+      <el-container>
+        <el-menu class="main-top-box pl30">
+          <el-form :inline="true" ref="form" :model="form">
+            <el-form-item prop="laborCompany" label="劳务公司">
+              <el-select v-model="form.laborCompany" placeholder="请选择" @change="selectCompanys">
+                <el-option
+                  v-for="item in companys"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="getTalks()" style="margin-left:30px;">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </el-menu>
+      </el-container>
+    </div>
     <div class="main-content">
       <el-main class="button-head">
         <el-button
@@ -15,7 +53,12 @@
             :header-cell-style="headClass"
             stripe
           >
-            <el-table-column type="selection" width="65" prop="pShiftMeetingId" @selection-change="changeFun"></el-table-column>
+            <el-table-column
+              type="selection"
+              width="65"
+              prop="pShiftMeetingId"
+              @selection-change="changeFun"
+            ></el-table-column>
             <el-table-column prop="uuid" label="编号" width="150"></el-table-column>
             <el-table-column prop="createTime" label="创建日期" width="120"></el-table-column>
             <el-table-column prop="homeworkPart" label="作业部位" width="120"></el-table-column>
@@ -28,7 +71,7 @@
             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope">
                 <el-form :model="videoForm" ref="videoForm">
-                  <el-form-item label="" prop="getVideo">
+                  <el-form-item label prop="getVideo">
                     <el-upload
                       action
                       :on-change="handleChange(scope.row)"
@@ -39,8 +82,11 @@
                       @click="uploadVideo(scope.row)"
                       :auto-upload="false"
                     >
-                  <img src="../../../static/image/shangchuan.png" style="width:26px;height:26px" />
-                </el-upload>
+                      <img
+                        src="../../../static/image/shangchuan.png"
+                        style="width:26px;height:26px"
+                      />
+                    </el-upload>
                   </el-form-item>
                 </el-form>
                 <!--
@@ -81,7 +127,16 @@
       </el-main>
     </div>
     <!--编辑讲话-->
-    <el-dialog top="30px" title="班前讲话记录" :visible.sync="outerVisible" width="25%"  style="height:100%"  :center="true" :show-close="false" class="popupDialog">
+    <el-dialog
+      top="30px"
+      title="班前讲话记录"
+      :visible.sync="outerVisible"
+      width="25%"
+      style="height:100%"
+      :center="true"
+      :show-close="false"
+      class="popupDialog"
+    >
       <el-form
         method="post"
         enctype="multipart/form-data"
@@ -216,9 +271,17 @@ export default {
       ],
       selectedPersonIds: [],
       uploadUrl: "",
-      videoForm:{
-        getVideo :""
-      }
+      videoForm: {
+        getVideo: ""
+      },
+      form: {
+        laborCompany: ""
+      },
+      companys: [
+        { id: 1, name: "劳务公司一" },
+        { id: 2, name: "劳务公司二" },
+        { id: 3, name: "劳务公司三" }
+      ]
     };
   },
   created: function() {
@@ -228,9 +291,9 @@ export default {
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
-    handleChange(row,file, fileList) {
+    handleChange(row, file, fileList) {
       // this.$refs.form.clearValidate();
-      this.videoForm.getVideo=fileList;
+      this.videoForm.getVideo = fileList;
       console.log(row.pShiftMeetingId);
       console.log(file);
       console.log(fileList);
@@ -261,7 +324,8 @@ export default {
     getTalks() {
       var data = JSON.stringify({
         pageSize: this.pageSize,
-        page: this.page
+        page: this.page,
+        company:this.form.laborCompany
       });
       var url =
         "/smart/worker/labour/" +
@@ -445,10 +509,10 @@ export default {
           this.formSpeech.speachContent = result.jobContent;
           this.formSpeech.classContent = result.meetingContent;
           this.formSpeech.checkIds = result.workerInfo;
-          this.formSpeech.pShiftMeetingId =result.pShiftMeetingId;
+          this.formSpeech.pShiftMeetingId = result.pShiftMeetingId;
         }
       });
-       this.formSpeech.pShiftMeetingId =uid;
+      this.formSpeech.pShiftMeetingId = uid;
       this.outerVisible = true;
     },
     //修改讲话
@@ -467,7 +531,9 @@ export default {
           var url =
             "/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
-            "/team/"+form.pShiftMeetingId+"/meeting";
+            "/team/" +
+            form.pShiftMeetingId +
+            "/meeting";
           this.http.put(url, datas).then(res => {
             if (res.code == 200) {
               this.outerVisible = false;
@@ -477,11 +543,30 @@ export default {
           return false;
         }
       });
+    },
+    //选择劳务公司
+    selectCompanys(vid) {
+      let obj = {};
+      obj = this.companys.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.form.laborCompany = obj.id;
+      console.log("劳务公司" + this.form.laborCompany);
     }
   }
 };
 </script>
 <style scoped lang="stylus">
+.container-head {
+  // width: 100%;
+  height: 100px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
+  opacity: 1;
+  border-radius: 10px;
+  margin: 0px 30px 0 30px;
+}
+
 .el-header, .el-footer {
   background-color: #B3C0D1;
   color: #333;
@@ -527,7 +612,7 @@ export default {
 }
 
 .main-content {
-  margin-top: 10px;
+  margin-top: -60px;
   margin-left: 30px;
   margin-right: 30px;
 
