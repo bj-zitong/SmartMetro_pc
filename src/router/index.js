@@ -55,6 +55,12 @@ export const constantRouterMap = [
         name: 'homeShow',
         component: () => import('@/views/homeShow')
     },
+     //大屏
+     {
+        path: '/Statisticsscreen',
+        name: 'Statisticsscreen',
+        component: () => import('@/views/Statisticsscreen/Statisticsscreen')
+    },
     //404页面
     // {
     //   path: '/404',
