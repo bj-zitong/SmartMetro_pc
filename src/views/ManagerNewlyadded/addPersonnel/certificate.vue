@@ -80,7 +80,7 @@
                 :prop="`productGroup.${index}.value1`"
                 :rules="rules.value1"
               >
-              <el-date-picker v-model="item.value1" type="datetime" placeholder="请选择日期"></el-date-picker>
+                <el-date-picker v-model="item.value1" type="datetime" placeholder="请选择日期"></el-date-picker>
                 <!-- <el-date-picker v-model="item.value1" type="date" placeholder="请选择日期"></el-date-picker> -->
               </el-form-item>
             </el-col>
@@ -90,7 +90,7 @@
                 :prop="`productGroup.${index}.value2`"
                 :rules="rules.value2"
               >
-              <el-date-picker v-model="item.value2" type="datetime" placeholder="请选择有效时间"></el-date-picker>
+                <el-date-picker v-model="item.value2" type="datetime" placeholder="请选择有效时间"></el-date-picker>
                 <!-- <el-date-picker v-model="item.value2" type="date" placeholder="请选择有效时间"></el-date-picker> -->
               </el-form-item>
             </el-col>
@@ -107,21 +107,24 @@
               </el-form-item>
             </el-col>
             <el-col>
-              <el-form-item label="附件上传" prop="upload">
-                <!-- <el-upload
+              <el-form-item
+                label="附件上传"
+                :prop="`productGroup.${index}.upload`"
+                :rules="rules.upload"
+              >
+                <el-upload
                   class="upload-demo"
+                  v-model="item.upload"
                   action="https://jsonplaceholder.typicode.com/posts/"
                   :on-preview="handlePreview"
                   :on-remove="handleRemove"
+                  :on-change="handleChange"
+                  multiple
+                  :limit="1"
                   :file-list="fileList"
-                  :on-change="getFile" 
-                  :on-success="getsuccessFile"
-                  list-type="picture"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
-                  
-                </el-upload> -->
-                
+                </el-upload>
               </el-form-item>
               <!-- <input type="file" v-model="item.ProfessionalCode" name="photoFile" /> -->
               <!-- <input type="text" v-model="item.count" readonly="readonly"/> -->
@@ -169,7 +172,8 @@ export default {
             certificateLevel: "",
             value1: "",
             value2: "",
-            status: ""
+            status: "",
+            upload: ""
           }
         ]
       },
@@ -204,7 +208,9 @@ export default {
         status: [
           { required: true, message: "请选择资格状态", trigger: "blur" }
         ],
-        upload: [{ required: false, message: "请选择附件上传", trigger: "blur" }]
+        upload: [
+          { required: true, message: "请选择附件上传", trigger: "change" }
+        ]
       },
       //日历选择器
       pickerOptions: {
@@ -302,17 +308,25 @@ export default {
         this.form.productGroup.splice(index, 1);
       }
     },
-    getFile(file, fileList){
-      console.log(file.file)
-      console.log(file, fileList)
+    getFile(file, fileList) {
+      console.log(file.file);
+      console.log(file, fileList);
     },
-    getsuccessFile(response, file, fileList){
-     console.log(response, file, fileList)
+    getsuccessFile(response, file, fileList) {
+      console.log(response, file, fileList);
     },
-    uploadFile(){
-      
+    uploadFile() {},
+    handleChange(file, fileList) {
+      this.$refs.form.clearValidate();
+      console.log(fileList)
+      this.form.productGroup[0].upload = fileList;
+      this.form.productGroup.forEach((item, index, array) => {
+        console.log(item)
+       item.upload=fileList
+        // item[index]=fileList
+        //执行代码
+      });
     },
-    handleChange() {},
     handleButton() {}
   }
 };

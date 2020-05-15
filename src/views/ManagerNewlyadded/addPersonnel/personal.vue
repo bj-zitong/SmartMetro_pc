@@ -198,12 +198,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="一寸照片" prop="UploadImg">
-              <el-upload class="upload-demo" action :on-change="handleChange" :file-list="fileList">
+            <el-form-item label="一寸照片" prop="photo">
+              <el-upload class="upload-demo" :limit="1" v-model="form.photo" :auto-upload="false" action :on-change="handleChange" :file-list="fileList">
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
             </el-form-item>
           </el-col>
+
+          
           <!-- <el-col :span="24">
             <el-form-item label="角色" prop="type">
               <el-checkbox-group v-model="form.type">
@@ -269,7 +271,7 @@ export default {
         documentType: "",
         Personneltype: "",
         PoliticalOutlook: "",
-        UploadImg: "",
+        photo: "",
         type: "",
         region: "",
         accountType: "",
@@ -335,7 +337,7 @@ export default {
         PoliticalOutlook: [
           { required: true, message: "请选择政治面貌", trigger: "blur" }
         ],
-        UploadImg: [{ required: true, message: "请上传照片", trigger: "" }],
+        photo: [{ required: true, message: "请上传照片", trigger: "change" }],
         type: [{ required: true, message: "请选择人员类型", trigger: "blur" }],
         region: [
           { required: true, message: "请选择人员类型", trigger: "blur" }
@@ -394,6 +396,11 @@ export default {
   mounted() {
     if (localStorage.getItem("data") != null) {
       this.form = JSON.parse(localStorage.getItem("data"));
+      let name = JSON.parse(localStorage.getItem("data")).photo[0].name
+      // console.log(aa)
+      this.fileList.push({name})
+      console.log(this.fileList)
+    // console.log(this.form.photo)
     }
   },
   methods: {
@@ -410,10 +417,13 @@ export default {
       console.log(file);
     },
     submitForm(formName) {
+      console.log(JSON.parse(localStorage.getItem("data")))
       this.$refs[formName].validate(valid => {
         if (valid) {
           handleCofirm("确认保存吗", "warning")
             .then(res => {
+              console.log(this.form.photo[0].name)
+              console.log(this.fileList)
               localStorage.setItem("data", JSON.stringify(this.form));
               this.$emit("field", this.field);
               this.$message({
@@ -433,6 +443,9 @@ export default {
         }
       });
     },
+    //  beforeRemove(file, fileList) {
+    //     return this.$confirm(`确定移除 ${ file.name }？`);
+    //   },
     //保存
     preservationClick() {},
     handleChange(file, fileList) {

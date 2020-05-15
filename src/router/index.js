@@ -49,27 +49,19 @@ export const constantRouterMap = [
         name: 'Selectpage',
         component: () => import('@/views/Selectpage/Selectpage')
     },
+    //首页echarts
+    {
+        path: '/homeShow',
+        name: 'homeShow',
+        component: () => import('@/views/homeShow')
+    },
     //404页面
     // {
     //   path: '/404',
     //   component: () => import('@/views/error-page/404'),
     //   hidden: true
     // },
-    // {
-    //     path: '/',
-    //     hidden: true,
-    //     component: Layout,
-    //     name: '实名认证',
-    //     redirect: '/home',
-    //     children: [
-    //         {
-    //             path: 'home',
-    //             name: 'home',
-    //             component: () => import('@/views/homepage'),
-    //             meta: { title: '人员智慧管理系统', enable: "Y", parent: '实名认证' }
-    //         }
-    //     ]
-    // },
+   
     {
         path: '/',
         hidden: true,

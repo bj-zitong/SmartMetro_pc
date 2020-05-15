@@ -57,14 +57,7 @@
           <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAll">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
-          <el-upload
-            style="display:inline-block; margin-left: 10px;"
-            class="upload-demo"
-            action
-            :show-file-list="false"
-          >
-            <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick">导入</el-button>
-          </el-upload>
+          <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
           <el-button type="success" class="T-H-B-DarkGreen" @click="PassTraining">培训通过</el-button>
         </div>
 
@@ -76,9 +69,14 @@
             :header-cell-style="headClass"
             tooltip-effect="dark"
             style="width: 100%;"
-            @selection-change="changeFun"
+            @selection-change="handleSelectionChange"
           >
-            <el-table-column fixed type="selection" prop="id" @selection-change="changeFun"></el-table-column>
+            <el-table-column
+              fixed
+              type="selection"
+              prop="pInfoId"
+              @selection-change="handleSelectionChange"
+            ></el-table-column>
             <el-table-column prop="labourCompany" label="劳务公司" width="150"></el-table-column>
             <el-table-column prop="teamMaster" label="班组" width="100"></el-table-column>
             <el-table-column prop="workerType" label="工种" width="100"></el-table-column>
@@ -160,7 +158,7 @@
     </el-container>
 
     <!-- 拉黑原因弹出框 -->
-    <el-dialog title="拉黑原因" :visible.sync="centerDialogVisible" width="30%" center>
+    <el-dialog title="拉黑原因" :visible.sync="centerDialogVisible" width="30%" :show-close="false" center>
       <el-form ref="from" :rules="rules" :model="from" label-width="80px" class="demo-ruleForm">
         <el-form-item prop="Reason" label="原因描述">
           <el-input type="textarea" v-model="from.Reason"></el-input>
@@ -168,17 +166,12 @@
         <el-form-item prop="photo" label="证明材料">
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
             v-model="from.photo"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
+            action
             :on-change="handleChange"
-            multiple
-            :limit="3"
-            :on-exceed="handleExceed"
             :file-list="fileList"
             :auto-upload="false"
+            :limit="1"
           >
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
@@ -213,6 +206,35 @@
       </span>
     </el-dialog>
     <personneldialog v-if="changOrder" ref="turnOrder" />
+    <el-dialog :visible.sync="csvVisible" width="50%">
+      <div>
+        <el-form ref="file" label-width="120px">
+          <el-form-item label="文件导入：" prop="uploadFile">
+            <el-upload
+              class="upload-demo"
+              v-model="file.uploadFile"
+              action
+              :on-change="handleChange"
+              :file-list="fileList"
+              :auto-upload="false"
+              :limit="1"
+              :show-file-list="true"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或
+                <em>点击上传</em>
+              </div>
+              <div class="el-upload__tip" slot="tip">上传csv文件</div>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="csvVisible = false">取消</el-button>
+        <el-button type="primary" @click="importCsv()">导入</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -262,16 +284,11 @@ export default {
       evaluate: "", //拉黑原因描述,
       rowIndex: null, //选中当前行下标
       changOrder: false, //查看详情
+      pInfoId: "", //点击拉黑获取当前行ID
       Rules: {
         evaluate: [{ required: true, message: "请输入评价", trigger: "blur" }]
       },
-      fileList: [
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
+      fileList: [],
       tableData: [
         {
           pInfoId: "1",
@@ -290,7 +307,7 @@ export default {
           exitTime: "2020-1-14"
         },
         {
-          pInfoId: "1",
+          pInfoId: "2",
           jobNum: "2016-05-025",
           labourCompany: "北京分公司",
           teamMaster: "2",
@@ -306,7 +323,7 @@ export default {
           exitTime: "2020-1-14"
         },
         {
-          pInfoId: "1",
+          pInfoId: "3",
           jobNum: "2016-05-025",
           labourCompany: "北京分公司",
           teamMaster: "2",
@@ -326,8 +343,13 @@ export default {
         Reason: [
           { required: true, message: "请输入公司名称", trigger: "blur" }
         ],
-        photo: [{ required: true, message: "请输入图片", trigger: "change" }]
-      }
+        photo: [{ required: true, message: "请上传证明材料", trigger: "change" }]
+      },
+      file: {
+        uploadFile: ""
+      },
+      fileList: [],
+      csvVisible: false
     };
   },
   mounted() {},
@@ -367,7 +389,7 @@ export default {
     },
     //删除
     deleteRowClick() {
-      handleCofirm("确认删除", "warning")
+      handleCofirm("确认删除吗", "warning")
         .then(res => {
           this.$message({
             type: "success",
@@ -382,24 +404,27 @@ export default {
         });
     },
     //获得表格前面选中的id值
-    changeFun() {
+    handleSelectionChange() {
       var ids = new Array();
+      console.log(this.$refs.multipleTable);
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pOutlanderId;
+        var id = arrays[i].pInfoId;
         ids.push(id);
       }
+      console.log(ids);
       return ids;
     },
     //批量删除
     deleteAll() {
-      var ids = this.changeFun();
+      var ids = this.handleSelectionChange();
+      console.log(ids);
       if (ids.length <= 0) {
         this.$message("请选择删除的数据！");
         return;
       }
-      handleCofirm("确认删除")
+      handleCofirm("确认删除吗")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
@@ -485,7 +510,7 @@ export default {
     },
     //培训通过
     PassTraining() {
-      var ids = this.changeFun();
+      var ids = this.handleSelectionChange();
       if (ids.length <= 0) {
         this.$message("请选择培训通过的数据！");
         return;
@@ -545,7 +570,6 @@ export default {
         });
     },
     acrosstheClick(index, scope) {
-      console.log("mouseover");
       this.tableWidth = "400";
       this.rowIndex = index;
     },
@@ -556,10 +580,31 @@ export default {
       // this.btnShow =
     },
     //导入
-    importStaffClick() {},
+    importCsv() {
+      console.log(this.file.uploadFile[0].raw);
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/other/import";
+      var data = new FormData();
+      data.append("file", this.file.uploadFile[0].raw);
+      this.http.get(url, data).then(res => {
+        if (res.code == 200) {
+          this.getOtherStaffs();
+        }
+      });
+    },
+    handleChange(file, fileList) {
+      this.$refs.file.clearValidate();
+      this.file.uploadFile = fileList;
+    },
+     //  导入
+    importStaffClick() {
+      this.csvVisible = true;
+    },
     //导出
     exportStaffClick() {
-      handleCofirm("确认导出", "warning").then(res => {
+      handleCofirm("确认导出吗", "warning").then(res => {
         let _this = this;
         var data = JSON.stringify({
           company: _this.formInline.company,
@@ -603,9 +648,9 @@ export default {
         });
       });
     },
-    handleSelectionChange(val) {},
     //拉黑
-    blockClick() {
+    blockClick(row) {
+      this.pInfoId = row.pInfoId;
       this.centerDialogVisible = true;
     },
     handleButton() {
@@ -652,17 +697,6 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    //获取删除所有勾选项
-    changeFun() {
-      var ids = new Array();
-      var arrays = this.$refs.multipleTable.selection;
-      for (var i = 0; i < arrays.length; i++) {
-        // 获得id
-        var id = arrays[i].id;
-        ids.push(id);
-      }
-      return ids;
-    },
     //查看详情
     handleClick() {
       let _this = this;
@@ -685,18 +719,31 @@ export default {
     beforeRemove(file, fileList) {
       // return this.$confirm(`确定移除 ${file.name}？`);
     },
+    //点击确认拉黑
     addSubmitForm(from) {
-      console.log(from)
+      console.log(from);
       // 验证
       this.$refs[from].validate(valid => {
         if (valid) {
-//           this.param = new FormData();
-//  this.param.append("file", 文件对象); 
-//  this.param.append("aaa", 参数); 
-//  this.param.append("bbb", 参数); 
-          // alert("99999")
+          var form = this.$refs["from"].model;
+          console.log(form);
+          var data = new FormData();
+          data.append("name", form.Reason);
+          data.append("file", form.photo[0].raw);
+          console.log(data);
+          var url =
+            "/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour/evaluate/" +
+            this.pInfoId +
+            "/approve/" +
+            4;
+          this.http.post(url, data).then(res => {
+            if (res.code == 200) {
+              // this.$router.push({ path: "/roster/otherStaffs" });
+            }
+          });
           // // 添加劳务人员请求
-          // var params = JSON.stringify(this.addLabor);
           // this.http
           //   .post("smart/worker/labour/1/company/management", params)
           //   .then(res => {
@@ -721,10 +768,6 @@ export default {
           return false;
         }
       });
-    },
-    handleChange(file, fileList) {
-      this.$refs.from.clearValidate();
-      this.from.photo = fileList;
     }
   }
 };

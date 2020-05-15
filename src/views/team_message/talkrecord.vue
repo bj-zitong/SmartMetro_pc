@@ -81,7 +81,7 @@
       </el-main>
     </div>
     <!--编辑讲话-->
-    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true" :show-close="false" class="abow_dialog popupDialog">
+    <el-dialog top="30px" title="班前讲话记录" :visible.sync="outerVisible" width="25%"  style="height:100%"  :center="true" :show-close="false" class="popupDialog">
       <el-form
         method="post"
         enctype="multipart/form-data"
@@ -546,3 +546,5 @@ export default {
   }
 }
 </style>
+
+
