@@ -15,6 +15,9 @@
         </el-form>
       </el-main>
     </el-container>
+     <router-link :to="{path: '/userManager' }" style="color:#0058A2">用户管理</router-link>
+      <router-link :to="{path: '/roleManager' }" style="color:#0058A2">角色管理</router-link>
+       <router-link :to="{path: '/constructionsiteManager' }" style="color:#0058A2">工地管理</router-link>
     <div class="table-main">
       <el-main class="table-head">
         <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
