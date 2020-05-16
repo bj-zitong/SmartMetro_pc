@@ -26,14 +26,7 @@
           <el-button class="T-H-B-DarkBlue" @click="AddEditClick('add')">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
-          <el-upload
-            style="display:inline-block; margin-left: 10px;"
-            class="upload-demo"
-            action
-            :show-file-list="false"
-          >
-            <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick">导入</el-button>
-          </el-upload>
+            <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
         </div>
         <div class="tableView">
           <el-table
@@ -43,9 +36,9 @@
             :header-cell-style="headClass"
             tooltip-effect="dark"
             style="width: 97%;"
-            @selection-change="changeFun"
+            @selection-change="handleSelectionChange"
           >
-            <el-table-column type="selection" prop="id" @selection-change="changeFun"></el-table-column>
+            <el-table-column type="selection" prop="pInfoId" @selection-change="handleSelectionChange"></el-table-column>
             <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
             <el-table-column prop="department" label="部门"></el-table-column>
             <el-table-column prop="jobType" label="岗位/职责"></el-table-column>
@@ -58,7 +51,6 @@
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
             <el-table-column prop="address" label="住址"></el-table-column>
             <el-table-column prop="politicsType" label="政治面貌"></el-table-column>
-
             <el-table-column fixed="right" label="操作" width="270">
               <template slot-scope="scope">
                 <el-button class="T-R-B-Green" size="mini" @click="AddEditClick(scope.row,'edit')">编辑</el-button>
@@ -80,6 +72,35 @@
       </el-menu>
     </el-container>
     <managerDialog v-if="changOrder" ref="turnOrder" />
+    <el-dialog :visible.sync="csvVisible" width="50%">
+      <div>
+        <el-form ref="file" label-width="120px">
+          <el-form-item label="文件导入：" prop="uploadFile">
+            <el-upload
+              class="upload-demo"
+              v-model="file.uploadFile"
+              action
+              :on-change="handleChange"
+              :file-list="fileList"
+              :auto-upload="false"
+              :limit="1"
+              :show-file-list="true"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或
+                <em>点击上传</em>
+              </div>
+              <div class="el-upload__tip" slot="tip">上传csv文件</div>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="csvVisible = false">取消</el-button>
+        <el-button type="primary" @click="importCsv()">导入</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -92,6 +113,7 @@ export default {
   },
   data() {
     return {
+      csvVisible: false,
       formInline: {
         name: "",
         workerType: ""
@@ -104,6 +126,10 @@ export default {
         searchUname: null, // 搜索
         searchNum: null
       },
+       file: {
+         uploadFile: ""
+      },
+      fileList: [],
       tableData: [
         {
           pInfoId: 0,
@@ -285,8 +311,25 @@ export default {
           });
         });
     },
-    //导入
-    importStaffClick() {},
+    //  导入
+    importStaffClick() {
+      this.csvVisible = true;
+    },
+    //  导入
+    importCsv() {
+      // console.log(this.file.uploadFile[0].raw);
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/other/import";
+      var data = new FormData();
+      data.append("file", this.file.uploadFile[0].raw);
+      this.http.get(url, data).then(res => {
+        if (res.code == 200) {
+          // this.getOtherStaffs();
+        }
+      });
+    },
     //  编辑+新增通过传参判断
     AddEditClick(row,par) {
       console.log(row.pInfoId,par)
@@ -310,24 +353,24 @@ export default {
     //   this.$router.push({ path: "/AddAdministration" });
     // },
     //获得表格前面选中的id值
-    changeFun() {
+    handleSelectionChange() {
       var ids = new Array();
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].id;
+        var id = arrays[i].pInfoId;
         ids.push(id);
       }
       return ids;
     },
     // 批量删除
     deleteAllClick() {
-      var ids = this.changeFun();
+      var ids = this.handleSelectionChange();
       if (ids.length <= 0) {
         this.$message("请选择删除的数据！");
         return;
       }
-      handleCofirm("确认删除")
+      handleCofirm("确认删除吗")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
@@ -382,6 +425,10 @@ export default {
           });
         });
     },
+     handleChange(file, fileList) {
+      this.$refs.file.clearValidate();
+      this.file.uploadFile = fileList;
+    },
     detailsRowClick() {
       let _this = this;
       _this.changOrder = true;
@@ -393,7 +440,6 @@ export default {
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
-    handleSelectionChange(val) {}
   }
 };
 </script>
