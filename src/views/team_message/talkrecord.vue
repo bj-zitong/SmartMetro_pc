@@ -1,5 +1,43 @@
 <template>
   <div>
+    <!-- <div class="container-head">
+      <div style="margin-top:33px; position: absolute;">
+        <el-form ref="form" :model="form" label-width="90px">
+          <el-form-item label="班组名称:">
+            <el-input v-model="form.className" style="height:35px;width:500px;"></el-input>
+            <i
+              class="el-icon-search"
+              style="position: absolute;top:8px;right: 8px;"
+              @click="searchClass()"
+            ></i>
+          </el-form-item>
+           <el-form-item>
+            <el-button type="primary" @click="getTalks()" style="margin-left:30px;">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>-->
+    <div style="padding:30px;">
+      <el-container>
+        <el-menu class="main-top-box pl30">
+          <el-form :inline="true" ref="form" :model="form">
+            <el-form-item prop="laborCompany" label="劳务公司">
+              <el-select v-model="form.laborCompany" placeholder="请选择" @change="selectCompanys">
+                <el-option
+                  v-for="item in companys"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="getTalks()" style="margin-left:30px;">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </el-menu>
+      </el-container>
+    </div>
     <div class="main-content">
       <el-main class="button-head">
         <el-button
@@ -15,7 +53,12 @@
             :header-cell-style="headClass"
             stripe
           >
-            <el-table-column type="selection" width="65" prop="pShiftMeetingId" @selection-change="changeFun"></el-table-column>
+            <el-table-column
+              type="selection"
+              width="65"
+              prop="pShiftMeetingId"
+              @selection-change="changeFun"
+            ></el-table-column>
             <el-table-column prop="uuid" label="编号" width="150"></el-table-column>
             <el-table-column prop="createTime" label="创建日期" width="120"></el-table-column>
             <el-table-column prop="homeworkPart" label="作业部位" width="120"></el-table-column>
@@ -27,8 +70,8 @@
             <!-- accessoryPath 路径-->
             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope">
-                <el-form :model="videoForm" ref="videoForm">
-                  <el-form-item label="" prop="getVideo">
+                <!-- <el-form :model="videoForm" ref="videoForm">
+                  <el-form-item label prop="getVideo">
                     <el-upload
                       action
                       :on-change="handleChange(scope.row)"
@@ -39,17 +82,20 @@
                       @click="uploadVideo(scope.row)"
                       :auto-upload="false"
                     >
-                  <img src="../../../static/image/shangchuan.png" style="width:26px;height:26px" />
-                </el-upload>
+                      <img
+                        src="../../../static/image/shangchuan.png"
+                        style="width:26px;height:26px"
+                      />
+                    </el-upload>
                   </el-form-item>
-                </el-form>
+                </el-form> -->
                 <!--
                 <i class="el-icon-upload" style="width:26px;height:26px"></i>-->
-                <!-- <img
+                <img
                   src="../../../static/image/shangchuan.png"
                   style="width:26px;height:26px"
                   @click="uploadVideo(scope.row)"
-                />-->
+                />
               </template>
             </el-table-column>
             <el-table-column label="操作" width="200" fixed="right">
@@ -81,7 +127,16 @@
       </el-main>
     </div>
     <!--编辑讲话-->
-    <el-dialog top="30px" title="班前讲话记录" :visible.sync="outerVisible" width="25%"  style="height:100%"  :center="true" :show-close="false" class="popupDialog">
+    <el-dialog
+      top="30px"
+      title="班前讲话记录"
+      :visible.sync="outerVisible"
+      width="25%"
+      style="height:100%"
+      :center="true"
+      :show-close="false"
+      class="popupDialog"
+    >
       <el-form
         method="post"
         enctype="multipart/form-data"
@@ -161,6 +216,37 @@
         </div>
       </el-dialog>
     </el-dialog>
+    <!--- 视频上传-->
+      <el-dialog :visible.sync="csvVisible" width="50%">
+      <div>
+        <el-form ref="file" label-width="120px">
+          <el-form-item label="视频上传：" prop="videoForm">
+            <el-upload
+              class="upload-demo"
+              v-model="videoForm.getVideo"
+              action
+              accept=".mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb"
+              :on-change="handleChange"
+              :file-list="fileList"
+              :auto-upload="false"
+              :limit="1"
+              :show-file-list="true"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或
+                <em>点击上传</em>
+              </div>
+              <div class="el-upload__tip" slot="tip">上传视频</div>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="csvVisible = false">取消</el-button>
+        <el-button type="primary" @click="impotVideo()">导入</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -182,6 +268,7 @@ export default {
       ids: null, //选中的id
       outerVisible: false, //新增讲话
       innerVisible: false, //二层
+      csvVisible:false,
       fileList: [], //上传
       formSpeech: {
         //班前讲话
@@ -216,9 +303,17 @@ export default {
       ],
       selectedPersonIds: [],
       uploadUrl: "",
-      videoForm:{
-        getVideo :""
-      }
+      videoForm: {
+        getVideo: ""
+      },
+      form: {
+        laborCompany: ""
+      },
+      companys: [
+        { id: 1, name: "劳务公司一" },
+        { id: 2, name: "劳务公司二" },
+        { id: 3, name: "劳务公司三" }
+      ],
     };
   },
   created: function() {
@@ -228,12 +323,26 @@ export default {
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
-    handleChange(row,file, fileList) {
-      // this.$refs.form.clearValidate();
-      this.videoForm.getVideo=fileList;
-      console.log(row.pShiftMeetingId);
-      console.log(file);
-      console.log(fileList);
+    handleChange(file, fileList) {
+      this.$refs.file.clearValidate();
+      this.videoForm.getVideo = fileList;
+    },
+    impotVideo(){
+       console.log(this.videoForm.getVideo[0].raw);
+        var url=
+        "/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/team/" +
+        this.id +
+        "/meeting/upload";
+      var data = new FormData();
+      data.append("file", this.videoForm.getVideo[0].raw);
+      this.http.get(url, data).then(res => {
+        if (res.code == 200) {
+          this.getOtherStaffs();
+        }
+      });
+      this.videoForm.getVideo=false;
     },
     handlePreview(row, file) {},
     // 初始页Page、初始每页数据数pagesize和数据data
@@ -261,7 +370,8 @@ export default {
     getTalks() {
       var data = JSON.stringify({
         pageSize: this.pageSize,
-        page: this.page
+        page: this.page,
+        company:this.form.laborCompany
       });
       var url =
         "/smart/worker/labour/" +
@@ -393,12 +503,13 @@ export default {
     uploadVideo(row) {
       var uid = row.pShiftMeetingId;
       this.id = uid;
-      this.uploadUrl =
-        "/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/team/" +
-        uid +
-        "/meeting/upload";
+      // this.uploadUrl =
+      //   "/smart/worker/labour/" +
+      //   sessionStorage.getItem("userId") +
+      //   "/team/" +
+      //   uid +
+      //   "/meeting/upload";
+      this.csvVisible=true;
     },
     //选择下拉安全用品
     selectProtective(vid) {
@@ -445,10 +556,10 @@ export default {
           this.formSpeech.speachContent = result.jobContent;
           this.formSpeech.classContent = result.meetingContent;
           this.formSpeech.checkIds = result.workerInfo;
-          this.formSpeech.pShiftMeetingId =result.pShiftMeetingId;
+          this.formSpeech.pShiftMeetingId = result.pShiftMeetingId;
         }
       });
-       this.formSpeech.pShiftMeetingId =uid;
+      this.formSpeech.pShiftMeetingId = uid;
       this.outerVisible = true;
     },
     //修改讲话
@@ -467,7 +578,9 @@ export default {
           var url =
             "/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
-            "/team/"+form.pShiftMeetingId+"/meeting";
+            "/team/" +
+            form.pShiftMeetingId +
+            "/meeting";
           this.http.put(url, datas).then(res => {
             if (res.code == 200) {
               this.outerVisible = false;
@@ -477,11 +590,30 @@ export default {
           return false;
         }
       });
+    },
+    //选择劳务公司
+    selectCompanys(vid) {
+      let obj = {};
+      obj = this.companys.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.form.laborCompany = obj.id;
+      console.log("劳务公司" + this.form.laborCompany);
     }
   }
 };
 </script>
 <style scoped lang="stylus">
+.container-head {
+  // width: 100%;
+  height: 100px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
+  opacity: 1;
+  border-radius: 10px;
+  margin: 0px 30px 0 30px;
+}
+
 .el-header, .el-footer {
   background-color: #B3C0D1;
   color: #333;
@@ -527,7 +659,7 @@ export default {
 }
 
 .main-content {
-  margin-top: 10px;
+  margin-top: -60px;
   margin-left: 30px;
   margin-right: 30px;
 

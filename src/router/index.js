@@ -55,13 +55,19 @@ export const constantRouterMap = [
         name: 'homeShow',
         component: () => import('@/views/homeShow')
     },
+     //大屏
+     {
+        path: '/Statisticsscreen',
+        name: 'Statisticsscreen',
+        component: () => import('@/views/Statisticsscreen/Statisticsscreen')
+    },
     //404页面
     // {
     //   path: '/404',
     //   component: () => import('@/views/error-page/404'),
     //   hidden: true
     // },
-   
+
     {
         path: '/',
         hidden: true,
@@ -775,6 +781,59 @@ export const constantRouterMap = [
         ]
     },
 
+    {
+      path: '/systemManager',
+      name: '系统管理',
+      component: Layout,
+      meta: {
+          icon: '',
+          title: '系统管理',
+          enable: "Y",
+          parent: '系统管理'
+      },
+      redirect: '/userManager',
+      children: [
+          {
+              path: '/userManager',
+              // name: 'skillDisclose',
+              component: () => import('@/views/systemManager/userManager/userManager'),
+              meta: {
+                  title: '用户管理',
+                  icon: '../../static/image/technology.png',
+                  AfterIcon: '../../static/image/technology.png',
+                  enable: "Y",
+                  parent: '系统管理'
+              },
+              children: []
+          },
+          {
+              path: '/roleManager',
+              name: 'roleManager',
+              component: () => import('@/views/systemManager/roleManager/roleManager'),
+              meta: {
+                  title: '角色管理',
+                  icon: '../../static/image/security.png',
+                  AfterIcon: '../../static/image/security.png',
+                  enable: "Y",
+                  parent: '系统管理'
+              },
+              children: []
+          },
+          {
+              path: '/constructionsiteManager',
+              name: 'constructionsiteManager',
+              component: () => import('@/views/systemManager/constructionsiteManager/constructionsiteManager'),
+              meta: {
+                  title: '工地管理',
+                  icon: '../../static/image/Video.png',
+                  AfterIcon: '../../static/image/Video.png',
+                  enable: "Y",
+                  parent: '系统管理'
+              },
+              children: []
+          }
+      ]
+  }
 ]
 export default new Router({
     // mode: 'history',  require service support

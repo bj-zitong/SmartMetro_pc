@@ -1,5 +1,27 @@
 <template>
   <div class="container">
+    <div style="padding:30px;">
+       <el-container>
+      <el-menu class="main-top-box pl30">
+        <el-form :inline="true" ref="form" :model="form">
+          <el-form-item prop="laborCompany" label="劳务公司">
+            <el-select v-model="form.laborCompany" placeholder="请选择" @change="selectCompanys">
+              <el-option
+                v-for="item in companys"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="getTalks()" style="margin-left:30px;">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </el-menu>
+    </el-container>
+    </div>
+
     <div class="container-content">
       <div style="margin-left:30px;height:60px;width:100%;">
         <!-- <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button> -->
@@ -50,7 +72,14 @@
       </div>
     </div>
     <!-- 新增 修改-->
-    <el-dialog :visible.sync="dialogFormVisible" width="20%" title="修改班组" :center="true" :show-close="false" class="popupDialog">
+    <el-dialog
+      :visible.sync="dialogFormVisible"
+      width="20%"
+      title="修改班组"
+      :center="true"
+      :show-close="false"
+      class="popupDialog"
+    >
       <el-form
         method="post"
         enctype="multipart/form-data"
@@ -96,7 +125,15 @@
       </el-form>
     </el-dialog>
     <!-- 评价-->
-    <el-dialog title="评价" :visible.sync="dialogVisible" width="20%" :center="true" top="33vh" :show-close="false" class="popupDialog">
+    <el-dialog
+      title="评价"
+      :visible.sync="dialogVisible"
+      width="20%"
+      :center="true"
+      top="33vh"
+      :show-close="false"
+      class="popupDialog"
+    >
       <span slot="footer" class="dialog-footer">
         <el-select
           v-model="evaluated"
@@ -118,7 +155,14 @@
       </span>
     </el-dialog>
     <!--新增讲话-->
-    <el-dialog title="班前讲话记录" :visible.sync="outerVisible" width="25%" :center="true" :show-close="false" class="popupDialog abow_dialog">
+    <el-dialog
+      title="班前讲话记录"
+      :visible.sync="outerVisible"
+      width="25%"
+      :center="true"
+      :show-close="false"
+      class="popupDialog abow_dialog"
+    >
       <div>
         <el-form
           method="post"
@@ -213,7 +257,7 @@ export default {
       total: 0, //总条数
       ids: null, //选中的id
       form: {
-        teamName: "" //搜索内容
+        laborCompany: "" //搜索内容
       },
       dialogFormVisible: false, //新增
       dialogVisible: false, //评价
@@ -259,6 +303,11 @@ export default {
         { id: 1, name: "优" },
         { id: 2, name: "良" },
         { id: 3, name: "差" }
+      ],
+      companys: [
+        { id: 1, name: "劳务公司一" },
+        { id: 2, name: "劳务公司二" },
+        { id: 3, name: "劳务公司三" }
       ],
       evaluated: null, //选中的评价等级
       formSpeech: {
@@ -326,7 +375,8 @@ export default {
     getTalks() {
       var data = JSON.stringify({
         pageSize: this.pageSize,
-        page: this.page
+        page: this.page,
+        company:this.form.laborCompany
       });
       //请求
       var url =
@@ -439,6 +489,15 @@ export default {
       });
       this.formSpeech.protective = obj.id;
     },
+    //选择劳务公司
+    selectCompanys(vid){
+      let obj = {};
+      obj = this.companys.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.form.laborCompany = obj.id;
+      console.log('劳务公司'+this.form.laborCompany);
+    },
     selectEvaluate(vid) {
       let obj = {};
       obj = this.evaluatLevel.find(item => {
@@ -485,7 +544,7 @@ export default {
       //获得详情
       var params = null;
       this.formClass.projectName = "123";
-      this.formClass.teamMasterId =uid;
+      this.formClass.teamMasterId = uid;
       var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -496,13 +555,13 @@ export default {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
-          var form=this.formClass;
-          form.projectName=result.projectName;
-          form.groupName=result.teamName,
-          form.phone=result.teamLeaderPhone,
-          form.groupLeader=result.teamLeaderName,
-          form.profession=result.teamType,
-          form.teamMasterId=result.teamMasterId
+          var form = this.formClass;
+          form.projectName = result.projectName;
+          (form.groupName = result.teamName),
+            (form.phone = result.teamLeaderPhone),
+            (form.groupLeader = result.teamLeaderName),
+            (form.profession = result.teamType),
+            (form.teamMasterId = result.teamMasterId);
         }
       });
       this.dialogFormVisible = true;
@@ -641,6 +700,16 @@ export default {
 </script>
 <style scoped lang="stylus">
 .container {
+  .container-head {
+    // width: 100%;
+    height: 100px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
+    opacity: 1;
+    border-radius: 10px;
+    margin: 30px 30px 0 30px;
+  }
+
   background-color: rgba(246, 247, 248, 1);
   opacity: 1;
   background: rgba(246, 247, 248, 1);
@@ -652,7 +721,7 @@ export default {
     opacity: 1;
     border-radius: 10px;
     padding: 30px;
-    margin: 30px 30px 0 30px;
+    margin: -30px 30px 0 30px;
   }
 
   .table-content {

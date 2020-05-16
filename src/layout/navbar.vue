@@ -6,11 +6,13 @@
           <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
           <div index="1" class="title-name">城市轨道交通智慧工地管理系统—人员智慧管理</div>
         </div>
+        <el-button type="success" @click='qhdq'>切换大屏</el-button>
         <div class="avatar-container">
           <div class="exit_login">
             <img src="/static/image/exit_login.png" alt class="ri_icon" />
             <el-link :underline="false" style="exit_login_text" @click.native="logout">退出登录</el-link>
           </div>
+          
           <div class="Head_portrait">
             <img src="/static/image/Head_portrait.png" alt class="ri_icon_name" />
             <el-link :underline="false" style="border-right:none">名称</el-link>
@@ -79,6 +81,9 @@ export default {
     },
     logout() {
      this.$router.push({ path: "/login" })
+    },
+    qhdq(){
+        this.$router.push({ path: "/Statisticsscreen" })
     }
   }
 };
