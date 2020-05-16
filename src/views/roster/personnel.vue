@@ -158,7 +158,7 @@
     </el-container>
 
     <!-- 拉黑原因弹出框 -->
-    <el-dialog title="拉黑原因" :visible.sync="centerDialogVisible" width="30%" :show-close="false" center>
+    <el-dialog title="拉黑原因" :visible.sync="centerDialogVisible" width="30%" center>
       <el-form ref="from" :rules="rules" :model="from" label-width="80px" class="demo-ruleForm">
         <el-form-item prop="Reason" label="原因描述">
           <el-input type="textarea" v-model="from.Reason"></el-input>
