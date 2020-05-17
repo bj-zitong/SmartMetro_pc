@@ -11,6 +11,8 @@ import 'animate.css'
 import App from './App'
 import router from './router'
 import store from './store'
+// import './utils/flexible'
+// import 'lib-flexible'
 // 自定义的全局组件
 import Notification from '@/components/notification'
 // 国际化
