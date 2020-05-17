@@ -36,7 +36,7 @@
                     <li>实名认证</li>
                     <li>智慧考勤</li>
                     <li>培训教育</li>
-                    
+
                   </ul>
                   <ul class="af">
                     <li>诚信管理</li>
@@ -58,7 +58,7 @@
                   <ul class="af">
                     <li>实名认证</li>
                     <li>班组管理</li>
-                    <li>花名册</li>  
+                    <li>花名册</li>
                   </ul>
                   <ul class="af">
                     <li>外来人员</li>
@@ -90,7 +90,7 @@
                   <ul class="af">
                     <li>实名认证</li>
                     <li>班组管理</li>
-                    <li>花名册</li>  
+                    <li>花名册</li>
                   </ul>
                   <ul class="af">
                     <li>外来人员</li>
@@ -111,7 +111,7 @@
                   <ul class="af">
                     <li>实名认证</li>
                     <li>班组管理</li>
-                    <li>花名册</li>  
+                    <li>花名册</li>
                   </ul>
                   <ul class="af">
                     <li>外来人员</li>
@@ -127,7 +127,7 @@
                   <ul class="af">
                     <li>实名认证</li>
                     <li>班组管理</li>
-                    <li>花名册</li>  
+                    <li>花名册</li>
                   </ul>
                   <ul class="af">
                     <li>外来人员</li>
@@ -143,13 +143,26 @@
                   <ul class="af">
                     <li>实名认证</li>
                     <li>班组管理</li>
-                    <li>花名册</li>  
+                    <li>花名册</li>
                   </ul>
                   <ul class="af">
                     <li>外来人员</li>
                   </ul>
                 </div>
-                <el-button type="primary" round icon="el-icon-view">质量安全管理</el-button>
+                <el-button type="primary" round icon="el-icon-view">系统管理</el-button>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="home-list home-quality" @click="systemManager()">
+                <img src="../../assets/images/home/home-quality.png" alt="">
+                <div class="home-list-text">
+                  <ul class="af">
+                    <li>用户管理</li>
+                    <li>角色管理</li>
+                    <li>工地管理</li>
+                  </ul>
+                </div>
+                <el-button type="primary" round icon="el-icon-view">系统管理</el-button>
               </div>
             </el-col>
           </el-row>
@@ -182,7 +195,7 @@ export default {
       this.$router.push({ path: "/home" })
     },
     logout() {
-     
+
       // this.userLogout()
       //   .then(() => {
       //     location.reload(); // 为了重新实例化vue-router对象 避免bug// 为了重新实例化vue-router对象 避免bug
@@ -191,6 +204,16 @@ export default {
       //     console.log(err);
       //   });
       this.$router.push({ path: "/login" })
+    },
+    systemManager(){
+      //  this.$router.push({ path: "/home/1"})
+      this.$router.push({
+        name: "home",
+　　　　　// 只是把query改了，其他都没变
+        query: {
+         code:'1'
+        }
+      })
     }
   },
   watch: {},
@@ -323,7 +346,7 @@ ul,li {
 }
 .home-quality{
   background-image : url('../../assets/images/home/home-quality-bg.png');
-} 
+}
 .home-list-text{
   font-size:16px;
   font-family:Microsoft YaHei;
@@ -331,7 +354,7 @@ ul,li {
   color:rgba(255,255,255,1);
   padding : 30px 0 0 30px;
 }
-// 
+//
 .home-list-text li{
   float : left;
   margin : 2px 6px;

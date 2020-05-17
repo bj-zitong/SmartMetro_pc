@@ -9,12 +9,12 @@
       :collapse="isCollapse">
       <sidebar-item v-for="router of sideBarData.children" :key="router.path" :item="router" :base-path="router.path"></sidebar-item>
     </el-menu> -->
-     <el-menu 
+     <el-menu
         :default-active="$route.path"
-        unique-opened 
-        router 
-        @open="handleOpen" 
-        @close="handleClose" 
+        unique-opened
+        router
+        @open="handleOpen"
+        @close="handleClose"
         :collapse="isCollapse">
         <!-- {{$route.meta.active}} -->
         <template v-for="(item,index) in sideBarData.children" v-if="item.meta.enable == 'Y'">
@@ -37,7 +37,7 @@
                             <span slot="title" class="title title_secondLevel">{{itemChild.meta.title}}</span>
                             <el-menu-item v-for="(lastItem,lasrIndex) in itemChild.children" :index="lastItem.path" :key="lastItem.id">{{lastItem.meta.title}}</el-menu-item>
                           </el-submenu>
-                        </template>                
+                        </template>
                         <template v-else>
                           <el-menu-item :index="itemChild.path" :key="itemChild.name" v-if="itemChild.meta.enable == 'Y'" :class="$route.meta.active == itemChild.name ? 'is-active' : ''">
                               <!-- <img :src="item.meta.icon" class="iconImg"/> -->
@@ -49,14 +49,14 @@
             </el-submenu>
         </template>
     </el-menu>
-    <!-- <el-menu 
+    <!-- <el-menu
         :default-active="$route.path"
-        unique-opened 
-        router 
-        @open="handleOpen" 
-        @close="handleClose" 
+        unique-opened
+        router
+        @open="handleOpen"
+        @close="handleClose"
         :collapse="isCollapse">
-       
+
         <template v-for="(item,index) in sideBarData.children" v-if="item.meta.enable == 'Y'">
             <template v-if="item.children.length == 0">
                 <el-menu-item :index="item.path" :key="item.meta.title" v-if="item.meta.enable == 'Y'">
@@ -70,14 +70,14 @@
                         <i :class="item.meta.icon" v-if="item.meta.icon"></i>
                         <span>{{item.meta.title}}</span>
                     </template>
-                   
+
                     <template v-for="(itemChild, itemIndex) in item.children">
                         <el-submenu :index="index+''" :key="itemChild.name" :class="$route.meta.active == itemChild.name ? 'is-active' : ''">
                             <template >
                                 <i :class="itemChild.meta.icon" v-if="itemChild.meta.icon"></i>
                                 <span slot="title">{{itemChild.meta.title}}</span>
                             </template>
-                           
+
                             <el-menu-item v-for="itemChild_Child in itemChild.children" :index="itemChild_Child.path" :key="itemChild_Child.path">
                                  <i :class="itemChild_Child.icon"></i>
                                  <span slot="title">{{itemChild_Child.meta.title}}</span>
@@ -112,12 +112,12 @@ export default {
   },
   watch: {
     sideBarData(newV,oldV) {
-        if(newV.name=="工友须知" || newV.name=="开复工管理"){
+        if(newV.name=="工友须知" || newV.name=="开复工管理"|| newV.name=="工地管理"|| newV.name=="角色管理"|| newV.name=="用户管理"){
            this.hideSidebar='display:none'
         }else{
            this.hideSidebar='display:block'
         }
-        
+
     }
 },
   mounted() {

@@ -781,59 +781,145 @@ export const constantRouterMap = [
         ]
     },
 
+
+  //工地管理
     {
-      path: '/systemManager',
-      name: '系统管理',
+      path: '/constructionsiteManager',
+      name: '工地管理',
       component: Layout,
       meta: {
           icon: '',
-          title: '系统管理',
+          title: '工地管理',
           enable: "Y",
-          parent: '系统管理'
+          parent: '工地管理'
       },
-      redirect: '/userManager',
+      redirect: '/constructionsiteManager',
       children: [
-          {
-              path: '/userManager',
-              // name: 'skillDisclose',
-              component: () => import('@/views/systemManager/userManager/userManager'),
-              meta: {
-                  title: '用户管理',
-                  icon: '../../static/image/technology.png',
-                  AfterIcon: '../../static/image/technology.png',
-                  enable: "Y",
-                  parent: '系统管理'
-              },
-              children: []
+        {
+          path: '/constructionsiteManager',
+          name: 'constructionsiteManager',
+          component: () => import('@/views/systemManager/constructionsiteManager/constructionsiteManager'),
+          meta: {
+              title: '工地管理',
+              enable: "Y",
+              parent: '工地管理'
           },
-          {
-              path: '/roleManager',
-              name: 'roleManager',
-              component: () => import('@/views/systemManager/roleManager/roleManager'),
-              meta: {
-                  title: '角色管理',
-                  icon: '../../static/image/security.png',
-                  AfterIcon: '../../static/image/security.png',
-                  enable: "Y",
-                  parent: '系统管理'
-              },
-              children: []
-          },
-          {
-              path: '/constructionsiteManager',
-              name: 'constructionsiteManager',
-              component: () => import('@/views/systemManager/constructionsiteManager/constructionsiteManager'),
-              meta: {
-                  title: '工地管理',
-                  icon: '../../static/image/Video.png',
-                  AfterIcon: '../../static/image/Video.png',
-                  enable: "Y",
-                  parent: '系统管理'
-              },
-              children: []
-          }
+          children: []
+      },
       ]
-  }
+  },
+
+   //角色管理
+   {
+    path: '/roleManager',
+    name: '角色管理',
+    component: Layout,
+    meta: {
+        icon: '',
+        title: '角色管理',
+        enable: "Y",
+        parent: '角色管理'
+    },
+    redirect: '/roleManager',
+    children: [
+      {
+        path: '/roleManager',
+        name: 'roleManager',
+        component: () => import('@/views/systemManager/roleManager/roleManager'),
+        meta: {
+            title: '角色管理',
+            enable: "Y",
+            parent: '角色管理'
+        },
+        children: []
+    },
+    ]
+},
+
+//用户管理
+{
+  path: '/userManager',
+  name: '用户管理',
+  component: Layout,
+  meta: {
+      icon: '',
+      title: '用户管理',
+      enable: "Y",
+      parent: '用户管理'
+  },
+  redirect: '/userManager',
+  children: [
+    {
+      path: '/userManager',
+      name: 'userManager',
+      component: () => import('@/views/systemManager/userManager/userManager'),
+      meta: {
+          title: '用户管理',
+          enable: "Y",
+          parent: '用户管理'
+      },
+      children: []
+  },
+  ]
+},
+
+
+
+
+
+  //   {
+  //     path: '/systemManager',
+  //     name: '系统管理',
+  //     component: Layout,
+  //     meta: {
+  //         icon: '',
+  //         title: '系统管理',
+  //         enable: "Y",
+  //         parent: '系统管理'
+  //     },
+  //     redirect: '/userManager',
+  //     children: [
+  //         {
+  //             path: '/userManager',
+  //             // name: 'skillDisclose',
+  //             component: () => import('@/views/systemManager/userManager/userManager'),
+  //             meta: {
+  //                 title: '用户管理',
+  //                 icon: '../../static/image/technology.png',
+  //                 AfterIcon: '../../static/image/technology.png',
+  //                 enable: "Y",
+  //                 parent: '系统管理'
+  //             },
+  //             children: []
+  //         },
+  //         {
+  //             path: '/roleManager',
+  //             name: 'roleManager',
+  //             component: () => import('@/views/systemManager/roleManager/roleManager'),
+  //             meta: {
+  //                 title: '角色管理',
+  //                 icon: '../../static/image/security.png',
+  //                 AfterIcon: '../../static/image/security.png',
+  //                 enable: "Y",
+  //                 parent: '系统管理'
+  //             },
+  //             children: []
+  //         },
+  //         {
+  //             path: '/constructionsiteManager',
+  //             name: 'constructionsiteManager',
+  //             component: () => import('@/views/systemManager/constructionsiteManager/constructionsiteManager'),
+  //             meta: {
+  //                 title: '工地管理',
+  //                 icon: '../../static/image/Video.png',
+  //                 AfterIcon: '../../static/image/Video.png',
+  //                 enable: "Y",
+  //                 parent: '系统管理'
+  //             },
+  //             children: []
+  //         }
+  //     ]
+  // }
 ]
 export default new Router({
     // mode: 'history',  require service support
