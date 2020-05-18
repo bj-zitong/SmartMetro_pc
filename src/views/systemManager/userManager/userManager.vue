@@ -58,7 +58,7 @@
                 @click="deleteRowClick(scope.$index, scope.row)"
               >删除</el-button>
               <el-button
-                class="T-R-B-Grey"
+               class="T-R-B-Orange"
                 size="mini"
                 @click="getUserdetail(scope.$index, scope.row)"
               >详情</el-button>
@@ -121,7 +121,7 @@
         </el-form-item>
         <el-form-item label="角色" prop="roles">
           <el-checkbox-group v-model="formTeam.roles" @change="handleCheckedRoleChange">
-            <el-checkbox v-for="item in options" :label="item.name" :key="item.id">{{item.name}}</el-checkbox>
+            <el-checkbox v-for="item in options" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item>
@@ -142,12 +142,12 @@
       <el-row :gutter="20">
         <el-col :span="10">
           <div class="grid-content bg-purple">
-            姓名:
+            用户名:
             <span>9996666</span>
           </div>
         </el-col>
         <el-col :span="10">
-          <div class="grid-content bg-purple">身份证号:
+          <div class="grid-content bg-purple">手机号:
              <span>9996666</span>
           </div>
         </el-col>
@@ -155,12 +155,12 @@
       <el-row :gutter="20">
         <el-col :span="10">
           <div class="grid-content bg-purple">
-            来访单位:
+            角色:
             <span>9996666666666</span>
           </div>
         </el-col>
         <el-col :span="10">
-          <div class="grid-content bg-purple">被访部门:
+          <div class="grid-content bg-purple">用户状态:
             <span>9996666666666</span>
           </div>
         </el-col>
@@ -168,21 +168,18 @@
       <el-row :gutter="20">
         <el-col :span="10">
           <div class="grid-content bg-purple">
-            被访人姓名:
+            创建时间:
             <span>9996666666666</span>
           </div>
         </el-col>
         <el-col :span="10">
-          <div class="grid-content bg-purple">来访事由:
+          <div class="grid-content bg-purple">密码:
               <span>9996666666666</span>
           </div>
         </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            来访时间:
-            <span>9996666666666</span>
+            <el-col :span="10">
+          <div class="grid-content bg-purple">账号:
+              <span>9996666666666</span>
           </div>
         </el-col>
       </el-row>
@@ -218,7 +215,7 @@ export default {
         account: "",
         password: "",
         confimPassword:"",
-        roles: "",
+        roles:[],
         orgSite: ""
       },
       options: [
@@ -366,11 +363,11 @@ export default {
     },
     //选中的角色
     handleCheckedRoleChange() {
-      let obj = new Array();
-      obj = this.options.find(item => {
-        return item.id == vid; // 筛选出匹配数据
-      });
-      console.log(obj);
+      // let obj = new Array();
+      // obj = this.options.find(item => {
+      //   return item.id == vid; // 筛选出匹配数据
+      // });
+      // console.log(obj);
       // this.formTeam.roles = obj.id;
       console.log(this.formTeam.roles);
     },
