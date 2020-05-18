@@ -47,17 +47,17 @@ export default {
         {
           title: "用户管理",
           beforeChangeimg: "/static/image/yonghumanager.png",
-          afterChangeimg: "/static/image/selected_smrz.png"
+          afterChangeimg: "/static/image/usercheck.png"
         },
         {
           title: "角色管理",
           beforeChangeimg: "/static/image/rolemanager.png",
-          afterChangeimg: "/static/image/selected_zhkq.png"
+          afterChangeimg: "/static/image/rolecheck.png"
         },
         {
           title: "工地管理",
-          beforeChangeimg: "/static/image/workermanager.png",
-          afterChangeimg: "/static/image/selected_pxjy.png"
+          beforeChangeimg: "/static/image/worker.png",
+          afterChangeimg: "/static/image/workermanager.png"
         }
       ],
       editableTabsValue: "",
