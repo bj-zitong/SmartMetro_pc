@@ -6,9 +6,6 @@
           <el-form-item label="姓名">
             <el-input v-model="formInline.searchUname" placeholder="请输入姓名"></el-input>
           </el-form-item>
-          <el-form-item label="时间" class="region">
-            <el-date-picker v-model="value1" type="date" placeholder="请选择时间"></el-date-picker>
-          </el-form-item>
           <el-form-item label="工号" class="region">
             <el-input v-model="formInline.searchUname" placeholder="请输入工号"></el-input>
           </el-form-item>

@@ -1,25 +1,6 @@
 <template>
   <div class="top-navbar">
-    <div style="width:100%;margin:0 auto;height:70px">
-      <el-menu mode="horizontal" style="margin-left:0px">
-        <div>
-          <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
-          <div index="1" class="title-name">城市轨道交通智慧工地管理系统—人员智慧管理</div>
-        </div>
-        <el-button type="success" @click="qhdq">切换大屏</el-button>
-        <div class="avatar-container">
-          <div class="exit_login">
-            <img src="/static/image/exit_login.png" alt class="ri_icon" />
-            <el-link :underline="false" style="exit_login_text" @click.native="logout">退出登录</el-link>
-          </div>
-
-          <div class="Head_portrait">
-            <img src="/static/image/Head_portrait.png" alt class="ri_icon_name" />
-            <el-link :underline="false" style="border-right:none">名称</el-link>
-          </div>
-        </div>
-      </el-menu>
-    </div>
+    <headUser/>
     <el-tabs
       v-model="editableTabsValue"
       type="border-card"
@@ -40,6 +21,7 @@ import { mapGetters, mapActions } from "vuex";
 import Screenfull from "@/components/screenfull";
 import ChangeTheme from "@/components/theme";
 import main from "../main";
+import headUser from '@/components/Head';
 //头部切换
 import list from "./sidebar/headerTab";
 export default {
@@ -86,7 +68,8 @@ export default {
   name: "",
   components: {
     Screenfull,
-    ChangeTheme
+    ChangeTheme,
+    headUser
   },
   computed: {
     ...mapGetters(["name", "avatar"])
@@ -105,7 +88,6 @@ export default {
     this.list = this.$route.query.code == 1 ? this.systemList : list;
     this.editableTabsValue = this.$route.query.code == 1 ? "0" : "1";
     if (this.$route.query.code == 1) {
-
       this.$emit("selectNavBar", "用户管理");
       this.$router.push({ path: "/userManager" });
       this.num=0
@@ -118,9 +100,6 @@ export default {
       userLogout: "logout"
     }),
     handleClick(tab, event) {
-      if (tab.label == "首页") {
-        this.$router.push({ path: "/homeShow" });
-      }
       this.$emit("selectNavBar", tab.label);
       this.num = tab.index;
     },
@@ -141,12 +120,10 @@ export default {
   height: 140px;
   background: rgba(0, 88, 162, 1);
   opacity: 1;
-
   .WisdomSite_title {
     width: 500px;
     height: 36px;
     float: left;
-
     h6 {
       font-size: 24px;
       color: #fff;
@@ -157,40 +134,33 @@ export default {
       font-weight: normal;
     }
   }
-
   .WisdomSite_title_login {
     width: 50px;
     height: 50px;
     float: left;
     margin: 10px 0 0 43px;
   }
-
   .el-menu {
     border-bottom: none !important;
     background: rgba(0, 88, 162, 1);
-
     .lang-select {
       position: absolute;
       top: 18px;
       right: 150px;
     }
-
     .lang-select /deep/ .el-dropdown {
       font-size: 20px;
       color: #fff;
     }
-
     .avatar-container {
       position: absolute;
-      top: 20px;
-      right: -80px;
-      width: 300px;
+      top: 23px;
+      right: 80px;
+      width: 200px;
       outline: none;
-
       .avatar-wrapper {
         cursor: pointer;
       }
-
       .ri_icon {
         width: 16px;
         height: 16px;
@@ -198,42 +168,43 @@ export default {
         margin-top: 1px;
         margin-right: 3px;
       }
-
       .ri_icon_name {
-        width: 16px;
-        height: 16px;
-        margin: 1px 10px 0 20px;
+        width: 30px;
+        height: 30px;
+        margin: -2px 10px 0 20px;
         float: left;
       }
-
       .exit_login {
         float: left;
       }
-
       .Head_portrait {
-        float: left;
+        // float: left;
+        span {
+          float: left;
+          height: 21px;
+          font-size: 16px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          line-height: 25px;
+          color: rgba(255, 255, 255, 1);
+          opacity: 1;
+        }
       }
     }
-
     .el-link.el-link--default {
       color: #fff;
-      border-right: 2px solid #fff;
-      padding-right: 22px;
     }
-
     .username-wrapper {
       display: inline-block;
       height: 30px;
-      line-height: 30px;
+      line-height: 20px;
       color: #fff;
     }
   }
 }
-
 .top-navbar /deep/ .el-menu-item {
   font-size: 20px;
 }
-
 .top-navbar /deep/ .theme-container {
   position: absolute;
   top: 15px;
@@ -242,7 +213,6 @@ export default {
   font-size: 24px;
   cursor: pointer;
 }
-
 .title-name {
   padding: 20px 0 0 13px;
   float: left;
@@ -250,13 +220,11 @@ export default {
   font-weight: bold;
   color: rgba(255, 255, 255, 1);
 }
-
 .top-navbar .screenfull {
   position: absolute;
   top: 20px;
   right: 190px;
 }
-
 .el-tabs--border-card {
   background-color: #F5F7FA;
   border-bottom: 1px solid #E4E7ED;
@@ -265,18 +233,15 @@ export default {
   border-radius: 30px;
   line-height: 50px;
 }
-
 .hed_tab>.el-tabs__header {
   border-radius: 30px !important;
 }
-
 .hed_tab /deep/ .is-active {
   border-radius: 30px !important;
   background: #FFFFFF;
   color: rgba(0, 88, 162, 1);
   font-weight: 400;
 }
-
 .hed_tab /deep/ .el-tabs__nav-scroll {
   background: #0058a2 url('../../static/image/bj_login.png');
   color: #fff;
@@ -286,7 +251,6 @@ export default {
   font-weight: 400;
   height: 50px;
 }
-
 .hed_tab {
   border: none;
   width: 95.5%;
@@ -294,18 +258,15 @@ export default {
   position: relative;
   top: 10px;
 }
-
 .icon_list {
   width: 23px;
   height: 23px;
   margin: 13px 10px 0 0;
   float: left;
 }
-
 .el-tabs--border-card>.el-tabs__content {
   padding: 0;
 }
-
 .hed_tab>.el-tabs__header .el-tabs__item {
   padding: 0 20px;
   color: #fff;
@@ -316,19 +277,29 @@ export default {
   font-size: 20px;
 }
 
+.exit_login_text {
+  height: 24px;
+  font-size: 18px;
+  padding-right: 10px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+.borderline{
+  border:1px solid #fff;
+}
 .hed_tab>.el-tabs__header .el-tabs__nav {
   width: 100%;
 }
-
 .hed_tab>.el-tabs__header .el-tabs__item:first-child {
   margin-left: 10px;
   width: 8%;
 }
-
 .hed_tab>.el-tabs__header .el-tabs__item:last-child {
   width: 11%;
 }
-
 .hed_tab>.el-tabs__nav-wrap.is-scrollable {
   padding: 0 0;
 }

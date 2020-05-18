@@ -2,7 +2,7 @@
   <div class="app-wrapper">
     <navbar @selectNavBar="selectNavBar"></navbar>
     <sidebar :sideBarData="sideBarData"></sidebar>
-    <div :class="hideMainContainer=='工友须知'||hideMainContainer=='开复工管理'||hideMainContainer=='工地管理'||hideMainContainer=='角色管理'||hideMainContainer=='用户管理'?'main-container1':'main-container'"
+    <div :class="hideMainContainer=='首页'||hideMainContainer=='工友须知'||hideMainContainer=='开复工管理'||hideMainContainer=='工地管理'||hideMainContainer=='角色管理'||hideMainContainer=='用户管理'?'main-container1':'main-container'"
     >
       <tabs-view></tabs-view>
       <app-main></app-main>
@@ -59,12 +59,10 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(246, 247, 248, 1);
-
   .main-container {
     padding-left: 260px;
     padding-top: 140px;
   }
-
   .main-container1 {
     padding-left: 0;
     padding-top: 140px;

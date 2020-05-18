@@ -40,7 +40,7 @@
           >
             <el-table-column type="selection" prop="pInfoId" @selection-change="handleSelectionChange"></el-table-column>
             <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
-            <el-table-column prop="department" label="部门"></el-table-column>
+            <!-- <el-table-column prop="department" label="部门"></el-table-column> -->
             <el-table-column prop="jobType" label="岗位/职责"></el-table-column>
             <el-table-column prop="workerType" label="人员类型"></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
@@ -134,7 +134,6 @@ export default {
         {
           pInfoId: 0,
           buildCorpName: "北京公司",
-          department: "运维部",
           jobType: "司机",
           workerType: "司机",
           name: "王小虎",
@@ -149,7 +148,6 @@ export default {
         {
            pInfoId: 1,
           buildCorpName: "北京公司",
-          department: "运维部",
           jobType: "司机",
           workerType: "司机",
           name: "王小虎",
@@ -164,7 +162,6 @@ export default {
         {
            pInfoId: 2,
           buildCorpName: "北京公司",
-          department: "运维部",
           jobType: "司机",
           workerType: "司机",
           name: "王小虎",
@@ -179,7 +176,6 @@ export default {
         {
            pInfoId: 3,
           buildCorpName: "北京公司",
-          department: "运维部",
           jobType: "司机",
           workerType: "司机",
           name: "王小虎",
@@ -194,7 +190,6 @@ export default {
         {
            pInfoId: 4,
           buildCorpName: "北京公司",
-          department: "运维部",
           jobType: "司机",
           workerType: "司机",
           name: "王小虎",
@@ -209,7 +204,6 @@ export default {
         {
            pInfoId: 5,
           buildCorpName: "北京公司",
-          department: "运维部",
           jobType: "司机",
           workerType: "司机",
           name: "王小虎",

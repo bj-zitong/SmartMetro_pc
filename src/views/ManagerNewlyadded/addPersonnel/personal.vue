@@ -58,11 +58,11 @@
               <el-input v-model="form.Company" placeholder="请输入承建单位"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <el-form-item label="部门" prop="department" class="el-form-item">
               <el-input v-model="form.department" placeholder="请输入部门"></el-input>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :span="8">
             <el-form-item label="紧急联系人" prop="emergencycontact" class="el-form-item">
               <el-input v-model="form.emergencycontact" placeholder="请输入紧急联系人"></el-input>
@@ -291,9 +291,9 @@ export default {
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         nation: [{ required: true, message: "请输入民族", trigger: "blur" }],
         telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
-        department: [
-          { required: true, message: "请输入部门", trigger: "blur" }
-        ],
+        // department: [
+        //   { required: true, message: "请输入部门", trigger: "blur" }
+        // ],
         Company: [
           { required: true, message: "请输入承建单位", trigger: "blur" }
         ],

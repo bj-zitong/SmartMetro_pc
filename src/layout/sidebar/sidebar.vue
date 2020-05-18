@@ -56,7 +56,6 @@
         @open="handleOpen"
         @close="handleClose"
         :collapse="isCollapse">
-
         <template v-for="(item,index) in sideBarData.children" v-if="item.meta.enable == 'Y'">
             <template v-if="item.children.length == 0">
                 <el-menu-item :index="item.path" :key="item.meta.title" v-if="item.meta.enable == 'Y'">
@@ -70,14 +69,12 @@
                         <i :class="item.meta.icon" v-if="item.meta.icon"></i>
                         <span>{{item.meta.title}}</span>
                     </template>
-
                     <template v-for="(itemChild, itemIndex) in item.children">
                         <el-submenu :index="index+''" :key="itemChild.name" :class="$route.meta.active == itemChild.name ? 'is-active' : ''">
                             <template >
                                 <i :class="itemChild.meta.icon" v-if="itemChild.meta.icon"></i>
                                 <span slot="title">{{itemChild.meta.title}}</span>
                             </template>
-
                             <el-menu-item v-for="itemChild_Child in itemChild.children" :index="itemChild_Child.path" :key="itemChild_Child.path">
                                  <i :class="itemChild_Child.icon"></i>
                                  <span slot="title">{{itemChild_Child.meta.title}}</span>
@@ -93,7 +90,6 @@
 <script>
 import { mapGetters } from "vuex";
 import SidebarItem from "./sidebar-item";
-
 export default {
   name: "SideBar",
   props: ["sideBarData"],
@@ -113,12 +109,11 @@ export default {
   watch: {
     sideBarData(newV,oldV) {
       console.log(newV)
-        if(newV.name=="工友须知" || newV.name=="开复工管理"|| newV.name=="工地管理"|| newV.name=="角色管理"|| newV.name=="用户管理"){
+        if(newV.name=="首页" || newV.name=="工友须知" || newV.name=="开复工管理"|| newV.name=="工地管理"|| newV.name=="角色管理"|| newV.name=="用户管理"){
            this.hideSidebar='display:none'
         }else{
            this.hideSidebar='display:block'
         }
-
     }
 },
   mounted() {
@@ -148,7 +143,6 @@ export default {
   height: 100%;
   min-height: 500px;
 }
-
 .el-menu {
   height: 100%;
 }
