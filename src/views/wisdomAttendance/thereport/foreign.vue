@@ -73,9 +73,10 @@ export default {
       ],
       idx: 0,
       charts: "",
-      opinion: [],
+      opinioSn: [],
+      switchState: ["1", "2", "3", "4"],
       opinionData: [
-        { value: 335, name: "直接访问" },
+        { value: 335, name: "工长" },
         { value: 310, name: "邮件营销" },
         { value: 234, name: "联盟广告" },
         { value: 135, name: "视频广告" },
@@ -101,8 +102,8 @@ export default {
           {
             name: "访问来源",
             type: "pie",
-            radius: ["30%", "50%"],
-            center: ["50%", "45%"],
+            radius: ["50%", "70%"],
+            center: ["50%", "50%"],
             avoidLabelOverlap: false,
             // label: {
             //   show: true,
@@ -119,11 +120,23 @@ export default {
               show: true
             },
             data: [
-              { value: 335, name: "直接访问" },
-              { value: 310, name: "邮件营销" },
-              { value: 234, name: "联盟广告" },
-              { value: 135, name: "视频广告" },
-              { value: 1548, name: "搜索引擎" }
+              { value: 335, name: "工长", itemStyle: { color: "#4FC5EA" } },
+              {
+                value: 335,
+                name: "电梯安装工",
+                itemStyle: { color: "#605AD8" }
+              },
+              { value: 310, name: "土方", itemStyle: { color: "#F9CD33" } },
+              { value: 234, name: "机修长", itemStyle: { color: "#8F55E7" } },
+              { value: 135, name: "水电工", itemStyle: { color: "#5ED8A9" } },
+              {
+                value: 254,
+                name: "消防安装工",
+                itemStyle: { color: "#6C6FBF" }
+              },
+              { value: 35, name: "结构工", itemStyle: { color: "#F86846" } },
+              { value: 145, name: "筑路工", itemStyle: { color: "#78C446" } },
+              { value: 256, name: "电工", itemStyle: { color: "#FFB11A" } }
             ]
           }
         ]
@@ -227,8 +240,20 @@ export default {
       });
     },
     isActive(index) {
-      console.log(index);
       this.idx = index;
+      let _this = this;
+      var data = JSON.stringify({
+        name: "",
+        jobNum: "",
+        pageSize: "",
+        page: ""
+      });
+      var url =
+        " /smart/worker/reports/" +
+        sessionStorage.getItem("userId") +
+        "/chart/" +
+        this.switchState[index];
+      this.http.post(url, data).then(res => {});
     }
   },
   //调用
@@ -243,11 +268,11 @@ export default {
 <style scoped lang="stylus">
 .foreign {
   width: 100%;
-  margin : 0 25px
+  margin: 0 25px;
 }
 
 .left_echarts {
-  width:60%;
+  width: 60%;
   height: 422px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
@@ -259,7 +284,7 @@ export default {
 
 .right_echarts {
   width: 35%;
-  height:422px;
+  height: 422px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
   opacity: 1;
@@ -283,7 +308,7 @@ export default {
 .boxbtn {
   width: 138px;
   margin-right: 77px;
-  margin-top :65px;
+  margin-top: 65px;
   // margin-top: 30px;
   // text-align: center;
   // margin-left: 80px;

@@ -17,9 +17,7 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="poiExcel" class="exportStyle">
-          <span class="poiExcel-title">导出</span>
-        </el-button>
+        <el-button @click="exportExcelClick" class="T-H-B-Cyan">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -27,7 +25,7 @@
             @selection-change="changeFun"
             stripe
             :header-cell-style="headClass"
-            style="width: 987"
+            style="width:98%"
           >
             <el-table-column
               type="selection"
@@ -58,10 +56,10 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
+            :page-sizes="[10, 50, 100]"
             :page-size="100"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400"
+            :total="4"
           ></el-pagination>
         </div>
       </el-main>
@@ -70,6 +68,7 @@
 </template>
 <script>
 import { headClass } from "@/utils";
+import { handleCofirm } from "@/utils/confirm";
 export default {
   data() {
     return {
@@ -181,6 +180,50 @@ export default {
       ];
       this.tableData = result;
       this.total = result.length;
+    },
+        //导出
+    exportExcelClick() {
+      handleCofirm("确认导出吗", "warning").then(res => {
+        let _this = this;
+        var data = JSON.stringify({
+          name: _this.formInline.name,
+          jobNum: _this.formInline.jobNum,
+          pageSize: _this.page.pageSize,
+          page: _this.page.page
+        });
+        var url =
+          "/smart/worker/reports/" +
+          sessionStorage.getItem("userId") +
+          "/management/4";
+        this.http.post(url, data).then(res => {
+          // // 创建Blob对象，设置文件类型
+          // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
+          // let objectUrl = URL.createObjectURL(blob) // 创建URL
+          // location.href = objectUrl;
+          // URL.revokeObjectURL(objectUrl); // 释放内存
+          // 创建Blob对象，设置文件类型
+          // 自定义文件下载名称  Subway-User-20191223114607
+          var d = new Date();
+          var month = d.getMonth() + 1;
+          var excelName =
+            "Subway-User-" +
+            d.getFullYear() +
+            month +
+            d.getDate() +
+            d.getHours() +
+            d.getMinutes() +
+            d.getSeconds();
+          let blob = new Blob([res.data], {
+            type: "application/vnd.ms-excel"
+          });
+          let objectUrl = URL.createObjectURL(blob); // 创建URL
+          link.href = objectUrl;
+          link.download = excelName; // 自定义文件名
+          link.click(); // 下载文件
+          URL.revokeObjectURL(objectUrl); // 释放内存
+          // alert("调用导出！");
+        });
+      });
     },
      searchClick() {this.getDatafun()},
     handleSizeChange(val) {},

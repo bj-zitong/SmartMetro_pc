@@ -7,10 +7,10 @@
       />
       <span class="register-head">城市轨道交通智慧工地管理系统</span>
       <!--表单-->
-      <div class="container-head">
+      <!-- <div class="container-head">
         <span>已有账号，</span>
         <router-link :to="{path: '/login' }" style="color:#0058A2">马上登录</router-link>
-      </div>
+      </div> -->
     </div>
     <div class="login_container">
       <!--头部-->

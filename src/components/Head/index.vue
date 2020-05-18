@@ -26,6 +26,9 @@
               <el-dropdown-item @click.native="logout">
                 <span style="display:block;">{{$t('navbar.logOut')}}</span>
               </el-dropdown-item>
+              <router-link class="inlineBlock" to="/updatePassword">
+                <el-dropdown-item>{{$t('navbar.changePassword')}}</el-dropdown-item>
+              </router-link>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -38,28 +41,23 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "",
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     ...mapGetters(["name", "avatar"])
   },
-  mounted() {
-    
-  },
+  mounted() {},
   methods: {
-     logout() {
+    logout() {
       this.$router.push({ path: "/login" });
     },
     ...mapActions({
       userLogout: "logout"
-    }),
+    })
   }
 };
 </script>
 <style lang="stylus">
-
-
 .top-navbar /deep/ .el-menu-item {
   font-size: 20px;
 }
@@ -136,9 +134,10 @@ export default {
   padding: 0;
 }
 
-.borderline{
-  border:1px solid #fff;
+.borderline {
+  border: 1px solid #fff;
 }
+
 .hed_tab>.el-tabs__header .el-tabs__nav {
   width: 100%;
 }

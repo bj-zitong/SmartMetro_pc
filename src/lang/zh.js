@@ -16,7 +16,8 @@ export default {
     avatar: '修改头像',
     github: '项目仓库',
     logOut: '退出登录',
-    switchlargeScreen:'切换大屏'
+    switchlargeScreen:'切换大屏',
+    changePassword:'修改密码'
   },
   introduction: {
     item1: '有时也需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 $event 把它传入方法'

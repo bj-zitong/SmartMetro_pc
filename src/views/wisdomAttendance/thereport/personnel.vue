@@ -56,10 +56,10 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
+            :page-sizes="[10, 50, 100]"
             :page-size="100"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400"
+            :total="4"
           ></el-pagination>
         </div>
       </el-main>
