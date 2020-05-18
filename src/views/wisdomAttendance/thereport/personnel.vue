@@ -4,20 +4,20 @@
       <el-main class="main-content">
         <el-form :inline="true" :model="formInline" class="search-head">
           <el-form-item label="姓名">
-            <el-input v-model="formInline.searchUname" placeholder="请输入姓名"></el-input>
+            <el-input v-model="formInline.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item label="工号" class="region">
-            <el-input v-model="formInline.searchUname" placeholder="请输入工号"></el-input>
+            <el-input v-model="formInline.jobNum" placeholder="请输入工号"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleUserList">搜索</el-button>
+            <el-button type="primary" @click="searchClick">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-main>
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="poiExcel" class="T-H-B-Cyan">导出</el-button>
+        <el-button @click="exportExcelClick" class="T-H-B-Cyan">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -25,7 +25,7 @@
             @selection-change="changeFun"
             stripe
             :header-cell-style="headClass"
-            style="width: 97%"
+            style="width: 98%"
           >
             <el-table-column
               type="selection"
@@ -33,14 +33,14 @@
               prop="userId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="userName" label="姓名"></el-table-column>
-            <el-table-column prop="idNum" label="工号"></el-table-column>
-            <el-table-column prop="phone" label="所在班组"></el-table-column>
-            <el-table-column prop="company" label="工种"></el-table-column>
-            <el-table-column prop="profession" label="出勤天数/工时（年）"></el-table-column>
-            <el-table-column prop="direction" label="出勤天数/工时（季度）"></el-table-column>
-            <el-table-column prop="direction" label="出勤天数/工时（月）"></el-table-column>
-            <el-table-column prop="direction" label="出勤天数/工时（周）"></el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
+            <el-table-column prop="jobNum" label="工号"></el-table-column>
+            <el-table-column prop="company" label="所在班组"></el-table-column>
+            <el-table-column prop="workerType" label="工种"></el-table-column>
+            <el-table-column prop="attendanceHoursByYear" label="出勤天数/工时（年）"></el-table-column>
+            <el-table-column prop="attendanceHoursByQuarter" label="出勤天数/工时（季度）"></el-table-column>
+            <el-table-column prop="attendanceHoursByMonth" label="出勤天数/工时（月）"></el-table-column>
+            <el-table-column prop="attendanceHoursByWeek" label="出勤天数/工时（周）"></el-table-column>
           </el-table>
         </div>
         <!-- 分页 total  //这是显示总共有多少数据，
@@ -50,38 +50,20 @@
                      layout="total, sizes, prev, pager, next, jumper"
 
         -->
-        <el-pagination
-          class="page-end"
-          @size-change="handleSizeChange"
-          :current-page="page"
-          layout="total, prev, pager,next"
-          :page-size="pageSize"
-          @prev-click="pre"
-          @next-click="next"
-          @current-change="handleCurrentChange"
-          hide-on-single-page
-          :total="total"
-          background
-        ></el-pagination>
+        <div class="block">
+          <el-pagination
+            class="pagination-box"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[100, 200, 300, 400]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="400"
+          ></el-pagination>
+        </div>
       </el-main>
     </div>
-    <!--新增-->
-    <el-dialog :visible.sync="dialogFormVisible" width="20%" style="padding: 0px 0px;">
-      <div class="addUser-content">
-     
-         <p>出入记录</p>
-         <div style="border-bottom:1px solid #000">
-           <h6>作业区域：</h6>
-           <h6>考勤设备：</h6>
-           <h6>打卡时间：2019/12/12 10：30：23      出 </h6>
-         </div>
-         <div>
-           <h6>作业区域：</h6>
-           <h6>考勤设备：</h6>
-           <h6>打卡时间：2019/12/12 10：30：23      出 </h6>
-         </div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -91,255 +73,47 @@ import { headClass } from "@/utils";
 export default {
   data() {
     return {
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [
-          {
-            text: "今天",
-            onClick(picker) {
-              picker.$emit("pick", new Date());
-            }
-          },
-          {
-            text: "昨天",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            }
-          },
-          {
-            text: "一周前",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            }
-          }
-        ]
-      },
-      value1: "",
-      value2: "",
-      token: null, // token
-      dialogFormVisible: false,
+      //当前页
+      currentPage1: 5,
+      currentPage2: 5,
+      currentPage3: 5,
+      currentPage4: 4,
       // 动态数据
       tableData: [],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
       total: 100, //总条数
-      ids: null, //选中的id
-      searchUname: null, // 搜索
-      searchNum: null,
       headClass: headClass,
       formInline: {
-        searchUname: null, // 搜索
-        searchNum: null
+        jobNum: "", // 搜索
+        name: ""
       },
-      form: {
-        userName: "",
-        idNum: "",
-        phone: null,
-        company: null, // 单位
-        carNum: "", // 车牌号
-        profession: "", // 被访部门
-        interviewee: "", // 被访姓名
-        intervieweeReason: "", // 被访来由
-        intervieweeDate: "", // 来访时间
-        dialogFormVisible: false
-      },
-      formRules: {
-        userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        phone: [
-          { required: true, message: "请输入手机号", trigger: "blur" },
-          {
-            pattern: /^1[34578]\d{9}$/,
-            message: "目前只支持中国大陆的手机号码"
-          }
-        ],
-        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
-        company: [{ required: true, message: "请输入单位", trigger: "blur" }],
-        carNum: [{ required: true, message: "请输入车牌号", trigger: "blur" }],
-        profession: [
-          { required: true, message: "请选择被访部门", trigger: "blur" }
-        ],
-        interviewee: [
-          { required: true, message: "请输入被访人姓名", trigger: "blur" }
-        ],
-        intervieweeReason: [
-          { required: true, message: "请输入被访事由", trigger: "blur" }
-        ],
-        intervieweeDate: [
-          { required: true, message: "请选择被访时间", trigger: "blur" }
-        ]
+      page: {
+        page: 1, // 初始页
+        pageSize: 10, // 默认每页数据量
+        total: 0 //总条数
       }
     };
   },
   created: function() {
-    this.handleUserList();
+    this.getDatafun()
   },
   methods: {
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size;
-      // this.handleUserList()
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      this.handleUserList();
-      console.log(this.page); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      console.log("cpage" + cpage);
-      // this.handleUserList()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      console.log("下一页" + cpage);
-      // this.handleUserList()
-    },
-    // 下拉框获得值
-    selectProfession(vid) {
-      let obj = {};
-      obj = this.options.find(item => {
-        return item.id == vid; // 筛选出匹配数据
-      });
-      this.form.profession = obj.id;
-    },
-    //取消
-    concel() {
-      this.dialogFormVisible = false;
-    },
-    addUser(form) {
-      var params = JSON.stringify({
-        userName: this.form.userName,
-        phone: this.form.phone,
-        idNum: this.form.idNum,
-        company: this.form.company,
-        profession: this.form.profession,
-        carNum: this.form.carNum,
-        interviewee: this.form.interviewee,
-        intervieweeReason: this.form.intervieweeReason,
-        intervieweeDate: this.form.intervieweeDate
-      });
-      console.log(params);
-      this.dialogFormVisible = false;
-    },
-    // 列表请求
-    handleUserList() {
-      // 获得搜索的内容
-      var uname = this.searchNum;
-      var unum = this.searchUname;
-      console.log("uname" + uname);
-      console.log("unum" + unum);
-      //   // 获得当前用户的id
-      // var  uid = sessionStorage.getItem('uid')
-      var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
-        userName: uname,
-        idNum: unum
-      });
-      var url = "";
-      var result = [
-        {
-          userId: 1,
-          userName: "地铁安保部",
-          idNum: "210234567898765876",
-          phone: 15236985236,
-          company: "安保部一",
-          profession: "部门一",
-          interviewee: "123",
-          intervieweeReason: "123",
-          intervieweeDate: "2020-4-12",
-          direction: "22222222",
-          attendanceEquipment: "22222222",
-          createTime: 2020 - 4 - 12
-        },
-        {
-          userId: 2,
-          userName: "22222222",
-          idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
-        }
-      ];
-      this.tableData = result;
-    },
-    // 删除
-    handleDelete(row) {
-      // 删除用户id
-      var uid = row.userId;
-      var url = "";
-      this.$http({
-        // 头部信息及编码格式设置
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: sessionStorage.getItem("token")
-        },
-        method: "DELETE", // 请求的方式
-        url: url, // 请求地址
-        // 传参
-        data: uid
-      })
-        .then(function(response) {
-          var res = response.data;
-          // 请求失败
-          if (res.code != "200") {
-          }
-          // 请求成功
-          if (res.code == "200") {
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
+    //导出
+    exportExcelClick() {
+      handleCofirm("确认导出吗", "warning").then(res => {
+        let _this = this;
+        var data = JSON.stringify({
+          name: _this.formInline.name,
+          jobNum: _this.formInline.jobNum,
+          pageSize: _this.page.pageSize,
+          page: _this.page.page
         });
-    },
-    //编辑
-    handleEdit(row) {
-      // 用户id
-      var uid = row.userId;
-    },
-    // poi导出
-    poiExcel() {
-      // //获得token
-      // var token = sessionStorage.getItem("token");
-      var uname = this.userName;
-      var unum = this.company;
-      let _this = this;
-      var data = JSON.stringify({
-        userName: uname,
-        company: unum,
-        pageSize: _this.pageSize,
-        page: _this.page
-      });
-      var url = "";
-      _this
-        .$http({
-          // 头部信息编码格式
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token
-          },
-          method: "POST",
-          url: url,
-          data: {
-            userParams: data
-          },
-          responseType: "arraybuffer"
-        })
-        .then(function(res) {
+        var url =
+          "/smart/worker/reports/" +
+          sessionStorage.getItem("userId") +
+          "/management/1";
+        this.http.post(url, data).then(res => {
           // // 创建Blob对象，设置文件类型
           // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
           // let objectUrl = URL.createObjectURL(blob) // 创建URL
@@ -357,18 +131,115 @@ export default {
             d.getHours() +
             d.getMinutes() +
             d.getSeconds();
-          let blob = new Blob([res.data], { type: "application/vnd.ms-excel" });
+          let blob = new Blob([res.data], {
+            type: "application/vnd.ms-excel"
+          });
           let objectUrl = URL.createObjectURL(blob); // 创建URL
           link.href = objectUrl;
           link.download = excelName; // 自定义文件名
           link.click(); // 下载文件
           URL.revokeObjectURL(objectUrl); // 释放内存
           // alert("调用导出！");
-        })
-        .catch(function(error) {
-          console.log(error);
         });
+      });
     },
+    //请求列表
+    getDatafun() {
+      var _this =this
+      var data = JSON.stringify({
+        name: _this.formInline.name,
+        jobNum: _this.formInline.jobNum,
+        pageSize: _this.page.pageSize,
+        page: _this.page.page
+      });
+      var url =
+        "/smart/worker/reports/" +
+        sessionStorage.getItem("userId") +
+        "/management/2";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
+      var result = [
+        {
+           pReportsId:0,
+          pInfoId:0,
+          name: "张三",
+          jobNum: "12346956",
+          company: "劳务一组",
+          workerType: "矿工", // 单位
+          attendanceHoursByYear: "10",
+          attendanceHoursByQuarter: "10",
+          attendanceHoursByMonth: "10",
+          attendanceHoursByWeek: "10"
+        },
+        {
+          pReportsId:1,
+          pInfoId:1,
+          name: "张三",
+          jobNum: "12346956",
+          company: "劳务一组",
+          workerType: "矿工", // 单位
+          attendanceHoursByYear: "10",
+          attendanceHoursByQuarter: "10",
+          attendanceHoursByMonth: "10",
+          attendanceHoursByWeek: "10"
+        },
+        {
+           pReportsId:2,
+          pInfoId:2,
+          name: "张三",
+          jobNum: "12346956",
+          company: "劳务一组",
+          workerType: "矿工", // 单位
+          attendanceHoursByYear: "10",
+          attendanceHoursByQuarter: "10",
+          attendanceHoursByMonth: "10",
+          attendanceHoursByWeek: "10"
+        },
+        {
+           pReportsId:3,
+          pInfoId:3,
+          name: "张三",
+          jobNum: "12346956",
+          company: "劳务一组",
+          workerType: "矿工", // 单位
+          attendanceHoursByYear: "10",
+          attendanceHoursByQuarter: "10",
+          attendanceHoursByMonth: "10",
+          attendanceHoursByWeek: "10"
+        }
+      ];
+      this.tableData = result;
+      this.total = result.length;
+    },
+    searchClick() {this.getDatafun()},
+    handleSizeChange(val) {},
+    handleCurrentChange(val) {},
+    addUser(form) {
+      var params = JSON.stringify({
+        userName: this.form.userName,
+        phone: this.form.phone,
+        idNum: this.form.idNum,
+        company: this.form.company,
+        profession: this.form.profession,
+        carNum: this.form.carNum,
+        interviewee: this.form.interviewee,
+        intervieweeReason: this.form.intervieweeReason,
+        intervieweeDate: this.form.intervieweeDate
+      });
+      console.log(params);
+    },
+    //编辑
+    handleEdit(row) {
+      // 用户id
+      var uid = row.userId;
+    },
+
     //获得表格前面选中的id值
     changeFun() {
       var ids = new Array();
@@ -388,9 +259,6 @@ export default {
       var ids = this.changeFun();
       console.log(ids);
       var url = "";
-    },
-    personnelDetailClick(){
-      this.dialogFormVisible=true
     }
   }
 };
@@ -529,15 +397,15 @@ export default {
     margin-top: 30px;
   }
 }
-.addUser-content{
-  height :300px;
-  p{
-    text-align :center;
-    width :100%;
-    border-bottom:1px solid #000;
-     padding-bottom:20px
-    // padding-top:20px
+
+.addUser-content {
+  height: 300px;
+
+  p {
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
   }
 }
-
 </style>

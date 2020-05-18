@@ -56,7 +56,7 @@
           <!-- <el-main class="btnView"> -->
           <el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAll">删除</el-button>
-          <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
+          <el-button class="T-H-B-Cyan" @click="exportExcelClick">导出</el-button>
           <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
           <el-button type="success" class="T-H-B-DarkGreen" @click="PassTraining">培训通过</el-button>
         </div>
@@ -603,7 +603,7 @@ export default {
       this.csvVisible = true;
     },
     //导出
-    exportStaffClick() {
+    exportExcelClick() {
       handleCofirm("确认导出吗", "warning").then(res => {
         let _this = this;
         var data = JSON.stringify({
