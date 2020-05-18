@@ -10,7 +10,13 @@
         <h6>13号线02标中铁二局</h6>
       </div>
       <div class="Hea_right"></div>
+      <div class="switch" @click="switchClick">
+        <!-- switch -->
+        <img src="../../../static/image/Statisticsscreen/switch.png" />
+        <h6>切换</h6>
+      </div>
     </el-header>
+
     <el-main class="Main">
       <div class="dp_left">
         <!-- 工友须知 -->
@@ -170,7 +176,11 @@
         <div class="Information_header">
           <span>信息列表展示</span>
         </div>
-        <el-table :data="gridData" :header-cell-style="headClass" :row-class-name="tableRowClassName">
+        <el-table
+          :data="gridData"
+          :header-cell-style="headClass"
+          :row-class-name="tableRowClassName"
+        >
           <el-table-column style="margin-top:20px" property="date" label="编号" width="150"></el-table-column>
           <el-table-column property="name" label="公司名称" width="200"></el-table-column>
           <el-table-column property="address" label="服务单位"></el-table-column>
@@ -243,7 +253,7 @@ export default {
           date: "2016-05-02",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄",
-          state:'1'
+          state: "1"
         },
         {
           date: "2016-05-04",
@@ -254,13 +264,13 @@ export default {
           date: "2016-05-01",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄",
-          state:'1'
+          state: "1"
         },
         {
           date: "2016-05-03",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄",
-          state:'1'
+          state: "1"
         }
       ]
     };
@@ -280,15 +290,15 @@ export default {
     headClass() {
       return "text-align: center; height: 34px; background:#203E99;color: #fff;";
     },
-      tableRowClassName({row, rowIndex}) {
-        console.log(row, rowIndex)
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
-        }
-        return '';
-      },
+    tableRowClassName({ row, rowIndex }) {
+      console.log(row, rowIndex);
+      if (rowIndex === 1) {
+        return "warning-row";
+      } else if (rowIndex === 3) {
+        return "success-row";
+      }
+      return "";
+    },
     //工种分析
     drawPie() {
       let charts = echarts.init(document.getElementById("main"));
@@ -349,6 +359,10 @@ export default {
           }
         ]
       });
+    },
+    //切换管理系统事件
+    switchClick() {
+      this.$router.push({ path: "/homeShow" });
     },
     //工种分析
     jobevaluation() {
@@ -654,7 +668,7 @@ export default {
 
     .Hea_center {
       height: 88px;
-      background: url('/static/img/he_cneter_bj.c240eaa.png') no-repeat;
+      background: url('../../../static/image/Statisticsscreen/he_cneter_bj.png') no-repeat;
       background-size: 100% 100%;
       float: left;
       position: absolute;
@@ -1365,6 +1379,7 @@ export default {
     height: 584px;
     border: 8px solid rgba(36, 57, 120, 1);
     background: rgba(0, 11, 40, 1);
+
     .Information_header {
       width: 1284px;
       height: 60px;
@@ -1388,6 +1403,30 @@ export default {
   margin-top: 40px;
 }
 
+.switch {
+  width: 40px;
+  height: 20px;
+  position: absolute;
+  right: 10px;
+  top: 60px;
+cursor:pointer;
+  img {
+    width: 11px;
+    height: 11px;
+    float: left;
+    margin-top: 2px;
+  }
+  h6 {
+    height: 14px;
+    font-size: 10px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    line-height: 14px;
+    color: rgba(255, 255, 255, 1);
+    opacity: 1;
+    float: right;
+  }
+}
 .dialogBox /deep/ .el-dialog__body {
   padding: 0 0;
 }
@@ -1395,22 +1434,26 @@ export default {
 .dialogBox /deep/ .el-dialog__header {
   padding: 0 0;
 }
-.el-table__body-wrapper{
-  margin-top:20px
+
+.el-table__body-wrapper {
+  margin-top: 20px;
 }
+
 .anim {
   transition: all 0.5s;
   margin-top: -30px;
 }
-.el-table .warning-row {
-    background: red;
-  }
 
-  .el-table .success-row {
-    background: red;
-  }
-  .el-table--striped .el-table__body tr.el-table__row--striped.el-table__row--striped.el-table__row--striped td {
-     background-color: red!important; /*替换为你需要的颜色，觉得优先级不够就加!important*/
+.el-table .warning-row {
+  background: red;
+}
+
+.el-table .success-row {
+  background: red;
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped.el-table__row--striped.el-table__row--striped td {
+  background-color: red !important; /* 替换为你需要的颜色，觉得优先级不够就加!important */
 }
 
 .el-header {

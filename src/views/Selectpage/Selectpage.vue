@@ -103,7 +103,7 @@
         </div>
         <div class="home-mian-b af">
           <el-row>
-            <el-col :span="6" :offset="3" style="width: 420px;">
+            <el-col :span="6" :offset="3" style="width: 420px;margin-left:-50px;">
               <div class="home-list home-list-lg home-materiel-sm">
                 <img src="../../assets/images/home/home-materiel-sm.png" alt="">
                 <img src="../../assets/images/home/home-materiel-lg.png" alt="" class="materiel-lg">
@@ -152,7 +152,7 @@
                 <el-button type="primary" round icon="el-icon-view">系统管理</el-button>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="4">
               <div class="home-list home-quality" @click="systemManager()">
                 <img src="../../assets/images/home/home-quality.png" alt="">
                 <div class="home-list-text">
