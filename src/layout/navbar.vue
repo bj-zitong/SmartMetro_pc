@@ -6,7 +6,7 @@
           <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
           <div index="1" class="title-name">城市轨道交通智慧工地管理系统—人员智慧管理</div>
         </div>
-        <el-button type="success" @click='qhdq'>切换大屏</el-button>
+        <el-button type="success" @click="qhdq">切换大屏</el-button>
         <div class="avatar-container">
           <div class="exit_login">
             <img src="/static/image/exit_login.png" alt class="ri_icon" />
@@ -47,20 +47,35 @@ export default {
   data() {
     return {
       systemList: [
+        // {
+        //   title: "用户管理",
+        //   beforeChangeimg: "/static/image/kfg.png",
+        //   afterChangeimg: "/static/image/selected_kfg.png"
+        // },
+        // {
+        //   title: "角色管理",
+        //   beforeChangeimg: "/static/image/kfg.png",
+        //   afterChangeimg: "/static/image/selected_kfg.png"
+        // },
+        // {
+        //   title: "工地管理",
+        //   beforeChangeimg: "/static/image/kfg.png",
+        //   afterChangeimg: "/static/image/selected_kfg.png"
+        // }
         {
           title: "用户管理",
-          beforeChangeimg: "/static/image/kfg.png",
-          afterChangeimg: "/static/image/selected_kfg.png"
+          beforeChangeimg: "/static/image/yonghumanager.png",
+          afterChangeimg: "/static/image/selected_smrz.png"
         },
         {
           title: "角色管理",
-          beforeChangeimg: "/static/image/kfg.png",
-          afterChangeimg: "/static/image/selected_kfg.png"
+          beforeChangeimg: "/static/image/rolemanager.png",
+          afterChangeimg: "/static/image/selected_zhkq.png"
         },
         {
           title: "工地管理",
-          beforeChangeimg: "/static/image/kfg.png",
-          afterChangeimg: "/static/image/selected_kfg.png"
+          beforeChangeimg: "/static/image/workermanager.png",
+          afterChangeimg: "/static/image/selected_pxjy.png"
         }
       ],
       editableTabsValue: "",
@@ -90,7 +105,9 @@ export default {
     this.list = this.$route.query.code == 1 ? this.systemList : list;
     this.editableTabsValue = this.$route.query.code == 1 ? "0" : "1";
     if (this.$route.query.code == 1) {
-      this.$emit("selectNavBar", "系统管理");
+      this.$emit("selectNavBar", "用户管理");
+      this.$router.push({ path: "/userManager" });
+      this.num=0
     } else {
       this.$emit("selectNavBar", "实名认证");
     }
@@ -109,8 +126,8 @@ export default {
     logout() {
       this.$router.push({ path: "/login" });
     },
-     qhdq(){
-        this.$router.push({ path: "/Statisticsscreen" })
+    qhdq() {
+      this.$router.push({ path: "/Statisticsscreen" });
     }
   }
 };
