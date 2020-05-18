@@ -93,7 +93,8 @@
       <div style="text-align: center; padding-top:20px;">
         <el-pagination
           background
-          layout="total, prev, pager,next"
+          :page-sizes="[10, 50,100]"
+          layout="total, sizes,prev, pager,next,jumper"
           :page-size="pageSize"
           :current-page="page"
           :total="total"

@@ -62,8 +62,9 @@
           background
           @size-change="handleSizeChange"
           :current-page="page"
-          layout="total, prev, pager,next"
+           layout="total, sizes,prev, pager,next,jumper"
           :page-size="pageSize"
+          :page-sizes="[10, 50,100]"
           @prev-click="pre"
           @next-click="next"
           @current-change="handleCurrentChange"
@@ -253,7 +254,7 @@ export default {
       tableData: [],
       persons: [],
       page: 1, // 初始页
-      pageSize: 10, //    每页的数据
+      pageSize: 8, //    每页的数据
       total: 0, //总条数
       ids: null, //选中的id
       form: {

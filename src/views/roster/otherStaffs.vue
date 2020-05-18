@@ -62,13 +62,14 @@
           class="paging"
           @size-change="handleSizeChange"
           :current-page="page"
-          layout="total, prev, pager,next"
+          layout="total, sizes,prev, pager,next,jumper"
           :page-size="pageSize"
           @prev-click="pre"
           @next-click="next"
           @current-change="handleCurrentChange"
           :total="total"
           background
+          :page-sizes="[10, 50,100]"
         ></el-pagination>
       </el-main>
     </div>
@@ -123,7 +124,7 @@ export default {
         name: ""
       },
       page: 1, // 初始页
-      pageSize: 10, //    每页的数据
+      pageSize: 8, //    每页的数据
       total: 100, //总条数
       changOrder: false, //查看详情
       tableData: [],
@@ -293,7 +294,7 @@ export default {
               });
             }
           });
-          
+
         })
         .catch(err => {
           this.$message({

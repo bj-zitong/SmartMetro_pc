@@ -15,9 +15,6 @@
         </el-form>
       </el-main>
     </el-container>
-     <router-link :to="{path: '/userManager' }" style="color:#0058A2">用户管理</router-link>
-      <router-link :to="{path: '/roleManager' }" style="color:#0058A2">角色管理</router-link>
-       <router-link :to="{path: '/constructionsiteManager' }" style="color:#0058A2">工地管理</router-link>
     <div class="table-main">
       <el-main class="table-head">
         <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
@@ -59,12 +56,13 @@
         <el-pagination
           class="page-end"
           @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
           :current-page="page"
-          layout="total, prev, pager,next"
+          :page-sizes="[10, 50,100]"
           :page-size="pageSize"
+          layout="total, sizes,prev, pager,next,jumper"
           @prev-click="pre"
           @next-click="next"
-          @current-change="handleCurrentChange"
           :total="total"
           background
         ></el-pagination>
@@ -156,26 +154,6 @@
       </el-dialog>
     </div>
     <!-- 详情-->
-    <!-- <el-dialog
-      :visible.sync="dialogFormVisibleDetail"
-      width="300px"
-      title="外来人员详情"
-      :show-close="false"
-      class="popupDialog"
-      :center="true"
-    >
-      <p>姓名 ： xxxxx</p>
-      <p>身份证号 ： xxxxx</p>
-      <p>电话 ： xxxxx</p>
-      <p>来访单位 ： xxxxx</p>
-      <p>被访部门 ： xxxxx</p>
-      <p>被访人姓名 ： xxxxx</p>
-      <p>来访事由 ： xxxxx</p>
-      <p>来访时间 ： xxxxx</p>
-      <div class="dialog-footer" style="text-align:center;margin-top:20px;">
-        <el-button @click="dialogFormVisibleDetail = false" class="F-Grey" round>取 消</el-button>
-      </div>
-    </el-dialog> -->
      <el-dialog
     title
     :visible.sync="dialogFormVisibleDetail"
@@ -234,7 +212,6 @@
     </div>
     <template slot="footer" class="dialog-footer">
       <el-button type="default" @click="dialogFormVisibleDetail = false" round class="T-R-B-Grey">取消</el-button>
-      <!-- <el-button type="primary" @click="handleSubmit">提交</el-button> -->
     </template>
   </el-dialog>
   </div>
@@ -344,20 +321,21 @@ export default {
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
       this.pageSize = size; //每页下拉显示数据
-      // this.handleUserList()
+      this.handleUserList()
     },
     handleCurrentChange: function(page) {
+      console.log('页面'+page);
       this.page = page;
       this.handleUserList(); //几页
     },
     pre(cpage) {
       this.page = cpage;
-      // this.handleUserList()
+      this.handleUserList()
     },
     //下一页
     next(cpage) {
       this.page = cpage;
-      // this.handleUserList()
+      this.handleUserList()
     },
     // 下拉框获得值
     selectProfession(vid) {

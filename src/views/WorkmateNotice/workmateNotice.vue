@@ -52,7 +52,8 @@
           background
           @size-change="handleSizeChange"
           :current-page="page"
-          layout="total, prev, pager,next"
+            :page-sizes="[10, 50,100]"
+          layout="total, sizes,prev, pager,next,jumper"
           :page-size="pageSize"
           @prev-click="pre"
           @next-click="next"
