@@ -2,8 +2,7 @@
   <div class="app-wrapper">
     <navbar @selectNavBar="selectNavBar"></navbar>
     <sidebar :sideBarData="sideBarData"></sidebar>
-    <div
-      :class="hideMainContainer=='工友须知'||hideMainContainer=='开复工管理'||hideMainContainer=='工地管理'||hideMainContainer=='角色管理'||hideMainContainer=='系统管理'||hideMainContainer=='用户管理'?'main-container1':'main-container'"
+    <div :class="hideMainContainer=='工友须知'||hideMainContainer=='开复工管理'||hideMainContainer=='工地管理'||hideMainContainer=='角色管理'||hideMainContainer=='用户管理'?'main-container1':'main-container'"
     >
       <tabs-view></tabs-view>
       <app-main></app-main>
@@ -26,34 +25,7 @@ export default {
   data() {
     return {
       sideBarData: "",
-      hideMainContainer: "",
-      name: "",
-      obj:{
-        path: "/userManager",
-        name: "用户管理",
-        component: Layout,
-        meta: {
-          icon: "",
-          title: "用户管理",
-          enable: "Y",
-          parent: "用户管理"
-        },
-        redirect: "/userManager",
-        children: [
-          {
-            path: "/userManager",
-            name: "userManager",
-            component: () =>
-              import("@/views/systemManager/userManager/userManager"),
-            meta: {
-              title: "用户管理",
-              enable: "Y",
-              parent: "用户管理"
-            },
-            children: []
-          }
-        ]
-      }
+      hideMainContainer: ""
     };
   },
   computed: {
@@ -62,19 +34,21 @@ export default {
   methods: {
     selectNavBar(param) {
       console.log(param);
-      if (param == "系统管理") {
-        this.hideMainContainer = "系统管理";
-        this.sideBarData = this.obj;
-      }
-      this.sideBarData = [];
-      this.routers.map(x => {
-        if (x.name == param) {
-          this.hideMainContainer = x.name;
-          this.sideBarData = x;
-          this.$router.push({ name: x.name });
-          return;
-        }
-      });
+      // if (param == "用户管理") {
+      //   this.hideMainContainer = "用户管理";
+      //   this.sideBarData = this.obj;
+      //   this.$router.push({ name: param });
+      // } else {
+        this.sideBarData = [];
+        this.routers.map(x => {
+          if (x.name == param) {
+            this.hideMainContainer = x.name;
+            this.sideBarData = x;
+            this.$router.push({ name: x.name });
+            return;
+          }
+        });
+      // }
     }
   }
 };

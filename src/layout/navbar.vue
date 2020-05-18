@@ -105,6 +105,7 @@ export default {
     this.list = this.$route.query.code == 1 ? this.systemList : list;
     this.editableTabsValue = this.$route.query.code == 1 ? "0" : "1";
     if (this.$route.query.code == 1) {
+
       this.$emit("selectNavBar", "用户管理");
       this.$router.push({ path: "/userManager" });
       this.num=0
