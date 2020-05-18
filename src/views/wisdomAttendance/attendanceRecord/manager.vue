@@ -3,24 +3,27 @@
     <el-container>
       <el-main class="main-content">
         <el-form :inline="true" :model="formInline" class="search-head">
-          <el-form-item label="姓名">
+          <el-form-item label="姓名" prop="searchUname">
             <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item label="时间" class="region">
-            <el-date-picker v-model="value1" type="date" placeholder="时间"></el-date-picker>
+          <el-form-item label="时间" class="region" prop="searchNum">
+            <el-date-picker
+              v-model="formInline.searchNum"
+              type="date"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="时间"
+            ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleUserList">搜索</el-button>
+            <el-button type="primary" @click="handleUserList()" style="margin-left:30px;">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-main>
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button @click="deleteAll" class="T-H-B-Grey">删除</el-button>
-        <el-button @click="poiExcel" class="T-H-B-Cyan">
-          导出
-        </el-button>
+        <el-button @click="deleteAll()" class="T-H-B-Grey">删除</el-button>
+        <el-button @click="poiExcel()" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -33,31 +36,30 @@
             <el-table-column
               type="selection"
               width="65"
-              prop="userId"
+              prop="pAttendanceId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="userName" label="姓名"></el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="idNum" label="身份证号"></el-table-column>
             <el-table-column prop="gender" label="性别"></el-table-column>
-            <el-table-column prop="Jobnumber" label="工号"></el-table-column>
-            <el-table-column prop="company" label="岗位/职责"></el-table-column>
+            <el-table-column prop="jobNum" label="工号"></el-table-column>
+            <el-table-column prop="jobType" label="岗位/职责"></el-table-column>
             <el-table-column prop="date" label="日期"></el-table-column>
-            <el-table-column prop="firstDate" label="首次打卡"></el-table-column>
-            <el-table-column prop="lastDate" label="末次打卡"></el-table-column>
-            <el-table-column prop="attendanceDuration" label="出勤时长"></el-table-column>
+            <el-table-column prop="firstTime" label="首次打卡"></el-table-column>
+            <el-table-column prop="endTime" label="末次打卡"></el-table-column>
+            <el-table-column prop="attendanceTime" label="出勤时长"></el-table-column>
           </el-table>
         </div>
-      
         <el-pagination
           class="page-end"
           @size-change="handleSizeChange"
           :current-page="page"
-          layout="total, prev, pager,next"
+           :page-sizes="[10, 50,100]"
+           layout="total, sizes,prev, pager,next,jumper"
           :page-size="pageSize"
           @prev-click="pre"
           @next-click="next"
           @current-change="handleCurrentChange"
-          hide-on-single-page
           :total="total"
           background
         ></el-pagination>
@@ -71,73 +73,21 @@ import { headClass } from "@/utils";
 export default {
   data() {
     return {
-      headClass:headClass,
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [
-          {
-            text: "今天",
-            onClick(picker) {
-              picker.$emit("pick", new Date());
-            }
-          },
-          {
-            text: "昨天",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            }
-          },
-          {
-            text: "一周前",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            }
-          }
-        ]
-      },
-      value1: "",
-      value2: "",
+      headClass: headClass,
       token: null, // token
-      dialogFormVisible: false,
       // 动态数据
       tableData: [],
       page: 1, // 初始页
-      pageSize: 10, //    每页的数据
+      pageSize: 8, //    每页的数据
       total: 100, //总条数
       ids: null, //选中的id
-      searchUname: null, // 搜索
-      searchNum: null,
-      options: [
-        // 来访部门
-        { id: "", name: "请选择来访部门" },
-        { id: 1, name: "部门一" },
-        { id: 2, name: "部门二" },
-        { id: 3, name: "部门三" }
-      ],
       formInline: {
         searchUname: null, // 搜索
         searchNum: null
-      },
-      form: {
-        userName: "",
-        idNum: "",
-        phone: null,
-        company: null, // 单位
-        carNum: "", // 车牌号
-        profession: "", // 被访部门
-        interviewee: "", // 被访姓名
-        intervieweeReason: "", // 被访来由
-        intervieweeDate: "", // 来访时间
-        dialogFormVisible: false
       }
     };
   },
+
   created: function() {
     this.handleUserList();
   },
@@ -151,284 +101,117 @@ export default {
     handleCurrentChange: function(page) {
       this.page = page;
       this.handleUserList();
-      console.log(this.page); //点击第几页
+      // console.log(this.page); //点击第几页
     },
     pre(cpage) {
       this.page = cpage;
-      console.log("cpage" + cpage);
+      // console.log("cpage" + cpage);
       // this.handleUserList()
     },
     //下一页
     next(cpage) {
       this.page = cpage;
-      console.log("下一页" + cpage);
+      // console.log("下一页" + cpage);
       // this.handleUserList()
-    },
-    // 下拉框获得值
-    selectProfession(vid) {
-      let obj = {};
-      obj = this.options.find(item => {
-        return item.id == vid; // 筛选出匹配数据
-      });
-      this.form.profession = obj.id;
-    },
-    //取消
-    concel() {
-      this.dialogFormVisible = false;
-    },
-    addUser(form) {
-      var params = JSON.stringify({
-        userName: this.form.userName,
-        phone: this.form.phone,
-        idNum: this.form.idNum,
-        company: this.form.company,
-        profession: this.form.profession,
-        carNum: this.form.carNum,
-        interviewee: this.form.interviewee,
-        intervieweeReason: this.form.intervieweeReason,
-        intervieweeDate: this.form.intervieweeDate
-      });
-      console.log(params);
-      // 获得值
-      // let _this = this
-      // _this.$http({
-      //       // 头部信息及编码格式设置
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //     'Authorization': sessionStorage.getItem('token')
-      //   },
-      //   method: 'POST', // 请求的方式
-      //   url: '/api/auth/user/baseUser', // 请求地址
-      //       // 传参
-      //   data: datas
-      // })
-      //       .then(function (response) {
-      //         var res = response.data
-      //         // 请求失败
-      //         if(res.code != '200') {
-      //           alert(res.code)
-      //         }
-      //         // 请求成功
-      //         if(res.code == '200') {
-      //           alert(res.code)
-      //         }
-      //       })
-      //       .catch(function(error) {
-      //         console.log(error)
-      //       })
-      // $.ajax({
-      //   url: 'http://192.168.1.164:8001/auth/user/baseUser',
-      //     headers: {
-      //           Authorization: 'eaaad1cb1ace4186bda0e26655e1a793032fadf85f5532ca6a61fa85523885a2'
-      //       },
-      //   data: datas,
-      //   //  beforeSend: function(request) {
-      //   //     request.setRequestHeader("Authorization:",token);
-      //   // },
-      //   type: "POST",
-      //   async: true,
-      //   dateType: "json",
-      //   cache: false,
-      //   processData: false, // 不处理发送的数据，因为data值是Formdata对象，不需要对数据做处理
-      //   contentType: false, // 不设置Content-type请求头
-      //   success: function(data) {
-      //     var code = data.code;
-      //     if (code == "200") {
-      //       alert("添加成功");
-      //       _this.$router.push("/index");
-      //     }
-      //   },
-      //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-      //     console.log(textStatus+errorThrown);
-      //   }
-      // });
-      this.dialogFormVisible = false;
     },
     // 列表请求
     handleUserList() {
       // 获得搜索的内容
-      var uname = this.searchNum;
-      var unum = this.searchUname;
-      console.log("uname" + uname);
-      console.log("unum" + unum);
+      var uname = this.formInline.searchUname;
+      var unum = this.formInline.searchNum;
       //   // 获得当前用户的id
       // var  uid = sessionStorage.getItem('uid')
       var data = JSON.stringify({
         pageSize: this.pageSize,
         page: this.page,
-        userName: uname,
-        idNum: unum
+        name: uname,
+        date: unum
       });
-      var url = "";
+      var url =
+        "/smart/worker/attendance/" +
+        sessionStorage.getItem("userId") +
+        "/manager/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
       var result = [
         {
-          userId: 1,
-          userName: "地铁安保部",
+          pAttendanceId: 1,
+          name: "地铁安保部",
           idNum: "210234567898765876",
-          phone: '男',
-          company: "安保部一",
-          profession: "部门一",
-          interviewee: "123",
-          intervieweeReason: "123",
-          intervieweeDate: "2020-4-12",
-          direction: "22222222",
-          attendanceEquipment: "22222222",
-          createTime: 2020 - 4 - 12
+          gender: "男",
+          jobNum: "安保部一",
+          jobType: "部门一",
+          date: "2020-4-12",
+          firstTime: "2020-4-12",
+          endTime: "2020-4-12",
+          attendanceTime: "2020 - 4 - 12"
         },
         {
-          userId: 2,
-          userName: "22222222",
+          pAttendanceId: 2,
+          name: "22222222",
           idNum: "210234567898765789",
-          phone: 111,
-          company: "44444",
-          profession: "44444",
-          interviewee: "1111",
-          intervieweeReason: "44444",
-          intervieweeDate: "444",
-          direction: "444",
-          attendanceEquipment: 44444,
-          createTime: 1
+          gender: "男",
+          jobNum: "44444",
+          jobType: "44444",
+          date: "2020-4-12",
+          firstTime: "2020-4-12",
+          endTime: "2020-4-12",
+          attendanceTime: "2020 - 4 - 12"
         }
       ];
       this.tableData = result;
-      //  this.$http({
-      //       // 头部信息及编码格式设置
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //         Authorization: sessionStorage.getItem('token')
-      //       },
-      //       method: 'POST', // 请求的方式
-      //       url: url, // 请求地址
-      //       // 传参
-      //       data: data
-      //     })
-      //     .then(function(response) {
-      //       var res = response.data
-      //       // 请求成功
-      //       if (res.code == '200') {
-      //         this.total = res.data.total
-      //         // 获得列表数据
-      //         this.tableData = res.data.rows
-      //       }
-      //     })
-      //     .catch(function(error) {
-      //       console.log(error)
-      //     })
-      // $.ajax({
-      //   url:'http://192.168.1.100:8001/auth/user/'+uid,
-      //   headers: {
-      //       Authorization: sessionStorage.getItem('token')
-      //   },
-      //   type: "POST",
-      //   data: data,
-      //   async: true,
-      //   dateType:'json',
-      //    success: function (response) {
-      //     var res=response.data;
-      //     //请求成功
-      //     if(res.code=="200"){
-      //       // alert('成功');
-      //        _this.total=res.data.total;
-      //        //获得列表数据
-      //        _this.tableData=res.data.rows;
-      //         }
-      //   },
-      //  error: function(XMLHttpRequest, textStatus, errorThrown){
-      //         console.log(textStatus);
-      //     }
-      // })
-    },
-    // 删除
-    handleDelete(row) {
-      // 删除用户id
-      var uid = row.userId;
-      var url = "";
-      this.$http({
-        // 头部信息及编码格式设置
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: sessionStorage.getItem("token")
-        },
-        method: "DELETE", // 请求的方式
-        url: url, // 请求地址
-        // 传参
-        data: uid
-      })
-        .then(function(response) {
-          var res = response.data;
-          // 请求失败
-          if (res.code != "200") {
-          }
-          // 请求成功
-          if (res.code == "200") {
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    //编辑
-    handleEdit(row) {
-      // 用户id
-      var uid = row.userId;
+      this.total = result.length;
     },
     // poi导出
     poiExcel() {
       // //获得token
       // var token = sessionStorage.getItem("token");
-      var uname = this.userName;
-      var unum = this.company;
-      let _this = this;
+      var uname = this.formInline.searchUname;
+      var unum = this.formInline.searchNum;
       var data = JSON.stringify({
-        userName: uname,
-        company: unum,
-        pageSize: _this.pageSize,
-        page: _this.page
+        pageSize: this.pageSize,
+        page: this.page,
+        name: uname,
+        date: unum
       });
-      var url = "";
-      _this
-        .$http({
-          // 头部信息编码格式
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token
-          },
-          method: "POST",
-          url: url,
-          data: {
-            userParams: data
-          },
-          responseType: "arraybuffer"
-        })
-        .then(function(res) {
-          // // 创建Blob对象，设置文件类型
-          // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
-          // let objectUrl = URL.createObjectURL(blob) // 创建URL
-          // location.href = objectUrl;
-          // URL.revokeObjectURL(objectUrl); // 释放内存
-          // 创建Blob对象，设置文件类型
-          // 自定义文件下载名称  Subway-User-20191223114607
-          var d = new Date();
-          var month = d.getMonth() + 1;
-          var excelName =
-            "Subway-User-" +
-            d.getFullYear() +
-            month +
-            d.getDate() +
-            d.getHours() +
-            d.getMinutes() +
-            d.getSeconds();
-          let blob = new Blob([res.data], { type: "application/vnd.ms-excel" });
-          let objectUrl = URL.createObjectURL(blob); // 创建URL
-          link.href = objectUrl;
-          link.download = excelName; // 自定义文件名
-          link.click(); // 下载文件
-          URL.revokeObjectURL(objectUrl); // 释放内存
-          // alert("调用导出！");
-        })
-        .catch(function(error) {
-          console.log(error);
+      var url =
+        "/smart/worker/attendance/" +
+        sessionStorage.getItem("userId") +
+        "/manager/management/export";
+      this.http.post(url, data).then(res => {
+        // // 创建Blob对象，设置文件类型
+        // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
+        // let objectUrl = URL.createObjectURL(blob) // 创建URL
+        // location.href = objectUrl;
+        // URL.revokeObjectURL(objectUrl); // 释放内存
+        // 创建Blob对象，设置文件类型
+        // 自定义文件下载名称  Subway-User-20191223114607
+        var d = new Date();
+        var month = d.getMonth() + 1;
+        var excelName =
+          "Subway-User-" +
+          d.getFullYear() +
+          month +
+          d.getDate() +
+          d.getHours() +
+          d.getMinutes() +
+          d.getSeconds();
+        let blob = new Blob([res.data], {
+          type: "application/vnd.ms-excel"
         });
+        let objectUrl = URL.createObjectURL(blob); // 创建URL
+        link.href = objectUrl;
+        link.download = excelName; // 自定义文件名
+        link.click(); // 下载文件
+        URL.revokeObjectURL(objectUrl); // 释放内存
+        // alert("调用导出！");
+      });
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -436,24 +219,37 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].userId;
+        var id = arrays[i].pAttendanceId;
         ids.push(id);
         // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      // console.log("选中的ids"+ids);
-      //  this.multipleSelection = val;
     },
     // 批量删除
     deleteAll() {
       var ids = this.changeFun();
-      console.log(ids);
-      var url = "";
-      handleCofirm("确认删除", "warning")
+      if (ids.length <= 0) {
+        this.$message("请选择删除的数据！");
+        return;
+      }
+      handleCofirm("确认删除")
         .then(res => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/attendance/" +
+            sessionStorage.getItem("userId") +
+            "/manager";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
           });
         })
         .catch(err => {

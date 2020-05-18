@@ -1,22 +1,5 @@
 <template>
   <div>
-    <!-- <div class="container-head">
-      <div style="margin-top:33px; position: absolute;">
-        <el-form ref="form" :model="form" label-width="90px">
-          <el-form-item label="班组名称:">
-            <el-input v-model="form.className" style="height:35px;width:500px;"></el-input>
-            <i
-              class="el-icon-search"
-              style="position: absolute;top:8px;right: 8px;"
-              @click="searchClass()"
-            ></i>
-          </el-form-item>
-           <el-form-item>
-            <el-button type="primary" @click="getTalks()" style="margin-left:30px;">查询</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-    </div>-->
     <div style="padding:30px;">
       <el-container>
         <el-menu class="main-top-box pl30">
@@ -117,8 +100,9 @@
           background
           @size-change="handleSizeChange"
           :current-page="page"
-          layout="total, prev, pager,next"
+          layout="total, sizes,prev, pager,next,jumper"
           :page-size="pageSize"
+          :page-sizes="[10, 50,100]"
           @prev-click="pre"
           @next-click="next"
           @current-change="handleCurrentChange"
@@ -263,7 +247,7 @@ export default {
       tableData: [],
       persons: [],
       page: 1, // 初始页
-      pageSize: 10, //    每页的数据
+      pageSize: 8, //    每页的数据
       total: 0, //总条数
       ids: null, //选中的id
       outerVisible: false, //新增讲话

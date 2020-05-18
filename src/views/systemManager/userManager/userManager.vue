@@ -68,7 +68,8 @@
         <el-pagination
           background
           class="pagination-box"
-          layout="total, prev, pager,next"
+          :page-sizes="[10, 50,100]"
+          layout="total, sizes,prev, pager,next,jumper"
           :current-page="page"
           :page-size="pageSize"
           :total="total"
