@@ -49,12 +49,6 @@ export const constantRouterMap = [
         name: 'Selectpage',
         component: () => import('@/views/Selectpage/Selectpage')
     },
-    //首页echarts
-    {
-        path: '/homeShow',
-        name: 'homeShow',
-        component: () => import('@/views/homeShow')
-    },
      //大屏
      {
         path: '/Statisticsscreen',
@@ -83,7 +77,30 @@ export const constantRouterMap = [
             }
         ]
     },
-
+    // 首页
+    {
+        path: '/homeShow',
+        component: Layout,
+        alwaysShow: true,
+        name: "首页",
+        meta: {
+            icon: 'question',
+            title: '首页',
+            enable: "Y",
+            parent: '首页'
+        },
+        redirect: '/homeShow',
+        children: [
+            {
+                path: '/homeShow',
+                alwaysShow: true,
+                name: 'homeShow',
+                component: () => import('@/views/homeShow/homeShow'),
+                meta: { icon: 'droplet', title: '首页', enable: "Y", parent: '首页' },
+                children: []
+            }
+        ]
+    },
     {
         path: '/labor_Subcontract1',
         name: '实名认证',
