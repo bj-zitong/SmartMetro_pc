@@ -103,7 +103,7 @@
         </div>
         <div class="home-mian-b af">
           <el-row>
-            <el-col  style="width: 420px;margin-left:-50px;">
+            <el-col :span="6" :offset="3" style="width: 420px;">
               <div class="home-list home-list-lg home-materiel-sm">
                 <img src="../../assets/images/home/home-materiel-sm.png" alt="">
                 <img src="../../assets/images/home/home-materiel-lg.png" alt="" class="materiel-lg">
@@ -152,7 +152,7 @@
                 <el-button type="primary" round icon="el-icon-view">系统管理</el-button>
               </div>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="6">
               <div class="home-list home-quality" @click="systemManager()">
                 <img src="../../assets/images/home/home-quality.png" alt="">
                 <div class="home-list-text">
@@ -309,10 +309,10 @@ ul,li {
   position relative;
 }
 .home-mian-box{
-  width:1280px;
+  width 1280px;
   height 520px;
   position absolute;
-  top 50%; 
+  top 50%;
   left 50%;
   margin-left -640px;
   margin-top :-260px;

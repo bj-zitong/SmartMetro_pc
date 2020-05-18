@@ -510,6 +510,9 @@ export default {
     },
     methods: {
         // 现场人员
+        getHeight() {
+            
+        },
         handleAttendanceClick(tab, event) {
             console.log(tab, event);
         },
