@@ -6,23 +6,23 @@
         <el-form :inline="true" ref="screenForm" :model="screenForm">
           <el-form-item label="项目中心：" prop="projectName">
             <el-input v-model="screenForm.projectName" placeholder="请输入"></el-input>
-            <i
+            <!-- <i
               class="el-icon-search"
               style="position: absolute;top:8px;right: 8px;"
               @click="getTable()"
-            ></i>
+            ></i> -->
           </el-form-item>
           <el-form-item label="标段/工地：" prop="section">
             <el-input v-model="screenForm.section" placeholder="请输入"></el-input>
-            <i
+            <!-- <i
               class="el-icon-search"
               style="position: absolute;top:8px;right: 8px;"
               @click="getTable()"
-            ></i>
+            ></i> -->
           </el-form-item>
-          <!-- <el-form-item>
-            <el-button type="primary" @click="onScreen">查询</el-button>
-          </el-form-item>-->
+          <el-form-item>
+            <el-button type="primary" @click="getTable()">查询</el-button>
+          </el-form-item>
         </el-form>
       </el-menu>
     </el-container>

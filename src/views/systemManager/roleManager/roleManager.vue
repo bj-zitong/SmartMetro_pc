@@ -6,15 +6,15 @@
         <el-form :inline="true" ref="screenForm" :model="screenForm">
           <el-form-item label="角色名：" prop="userName">
             <el-input v-model="screenForm.userName" placeholder="请输入"></el-input>
-            <i
+            <!-- <i
               class="el-icon-search"
               style="position: absolute;top:8px;right: 8px;"
               @click="getTable()"
-            ></i>
+            ></i> -->
           </el-form-item>
-          <!-- <el-form-item>
-            <el-button type="primary" @click="onScreen">查询</el-button>
-          </el-form-item>-->
+          <el-form-item>
+            <el-button type="primary" @click="getTable()">查询</el-button>
+          </el-form-item>
         </el-form>
       </el-menu>
     </el-container>
