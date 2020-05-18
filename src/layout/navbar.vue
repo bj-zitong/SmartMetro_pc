@@ -108,6 +108,9 @@ export default {
     },
     logout() {
       this.$router.push({ path: "/login" });
+    },
+     qhdq(){
+        this.$router.push({ path: "/Statisticsscreen" })
     }
   }
 };
