@@ -40,7 +40,7 @@
               type="selection"
               width="65"
               prop="pShiftMeetingId"
-              @selection-change="changeFun"
+              @selection-change="changeFun"  
             ></el-table-column>
             <el-table-column prop="uuid" label="编号" width="150"></el-table-column>
             <el-table-column prop="createTime" label="创建日期" width="120"></el-table-column>
@@ -71,7 +71,7 @@
                       />
                     </el-upload>
                   </el-form-item>
-                </el-form> -->
+                </el-form>-->
                 <!--
                 <i class="el-icon-upload" style="width:26px;height:26px"></i>-->
                 <img
@@ -201,7 +201,7 @@
       </el-dialog>
     </el-dialog>
     <!--- 视频上传-->
-      <el-dialog :visible.sync="csvVisible" width="50%">
+    <el-dialog :visible.sync="csvVisible" width="50%">
       <div>
         <el-form ref="file" label-width="120px">
           <el-form-item label="视频上传：" prop="videoForm">
@@ -252,7 +252,7 @@ export default {
       ids: null, //选中的id
       outerVisible: false, //新增讲话
       innerVisible: false, //二层
-      csvVisible:false,
+      csvVisible: false,
       fileList: [], //上传
       formSpeech: {
         //班前讲话
@@ -297,7 +297,7 @@ export default {
         { id: 1, name: "劳务公司一" },
         { id: 2, name: "劳务公司二" },
         { id: 3, name: "劳务公司三" }
-      ],
+      ]
     };
   },
   created: function() {
@@ -311,9 +311,9 @@ export default {
       this.$refs.file.clearValidate();
       this.videoForm.getVideo = fileList;
     },
-    impotVideo(){
-       console.log(this.videoForm.getVideo[0].raw);
-        var url=
+    impotVideo() {
+      console.log(this.videoForm.getVideo[0].raw);
+      var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/team/" +
@@ -326,7 +326,7 @@ export default {
           this.getOtherStaffs();
         }
       });
-      this.videoForm.getVideo=false;
+      this.videoForm.getVideo = false;
     },
     handlePreview(row, file) {},
     // 初始页Page、初始每页数据数pagesize和数据data
@@ -355,7 +355,7 @@ export default {
       var data = JSON.stringify({
         pageSize: this.pageSize,
         page: this.page,
-        company:this.form.laborCompany
+        company: this.form.laborCompany
       });
       var url =
         "/smart/worker/labour/" +
@@ -493,7 +493,7 @@ export default {
       //   "/team/" +
       //   uid +
       //   "/meeting/upload";
-      this.csvVisible=true;
+      this.csvVisible = true;
     },
     //选择下拉安全用品
     selectProtective(vid) {
