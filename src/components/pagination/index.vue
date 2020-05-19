@@ -24,7 +24,7 @@ export default {
     },
     page: {
       type: Number,
-      default: 0
+      default: 1
     },
     limit: {
       type: Number,
@@ -56,10 +56,10 @@ export default {
   computed: {
     currentPage: {
       get() {
-        return this.page + 1
+        return this.page
       },
       set(val) {
-        this.$emit('update:page', val - 1)
+        this.$emit('update:page', val)
       }
     },
     pageSize: {
@@ -74,10 +74,10 @@ export default {
   //向调用它的父级传参
   methods: {
     handleSizeChange(val) {
-      this.$emit('pagination', { page: this.currentPage - 1, limit: val })  
+      this.$emit('pagination', { page: this.currentPage, limit: val })  
     },
     handleCurrentChange(val) {
-      this.$emit('pagination', { page: val - 1, limit: this.pageSize })
+      this.$emit('pagination', { page: val, limit: this.pageSize })
     }
   }
 }

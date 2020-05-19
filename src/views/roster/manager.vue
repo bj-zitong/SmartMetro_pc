@@ -121,7 +121,7 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import managerDialog from "./dialog/managerdialog";
-import Pagination from "../../components/pagination";
+import Pagination from "@/components/pagination";
 export default {
   name: "echarts",
   components: {
@@ -138,7 +138,7 @@ export default {
       changOrder: false, //查看详情
       total: 50,
       listQuery: {
-        currentPage: 0, //与后台定义好的分页参数
+        currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
       file: {
@@ -257,8 +257,8 @@ export default {
       var workerType = this.formInline.workerType;
       //   // 获得当前用户的id
       var params = JSON.stringify({
-        pageSize: this.listQuery.currentPage,
-        page: this.listQuery.pageSize,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         name: name,
         workerType: workerType
       });
