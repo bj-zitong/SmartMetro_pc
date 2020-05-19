@@ -26,7 +26,7 @@
           <el-button class="T-H-B-DarkBlue" @click="AddEditClick('add')">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
-            <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
+          <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
         </div>
         <div class="tableView">
           <el-table
@@ -38,7 +38,11 @@
             style="width: 97%;"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column type="selection" prop="pInfoId" @selection-change="handleSelectionChange"></el-table-column>
+            <el-table-column
+              type="selection"
+              prop="pInfoId"
+              @selection-change="handleSelectionChange"
+            ></el-table-column>
             <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
             <!-- <el-table-column prop="department" label="部门"></el-table-column> -->
             <el-table-column prop="jobType" label="岗位/职责"></el-table-column>
@@ -53,7 +57,11 @@
             <el-table-column prop="politicsType" label="政治面貌"></el-table-column>
             <el-table-column fixed="right" label="操作" width="270">
               <template slot-scope="scope">
-                <el-button class="T-R-B-Green" size="mini" @click="AddEditClick(scope.row,'edit')">编辑</el-button>
+                <el-button
+                  class="T-R-B-Green"
+                  size="mini"
+                  @click="AddEditClick(scope.row,'edit')"
+                >编辑</el-button>
                 <el-button
                   class="T-R-B-Grey"
                   size="mini"
@@ -68,7 +76,14 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-pagination background layout="prev, pager, next" :total="1000" class="pagination-box"></el-pagination>
+        <pagination
+        class="pagination-box"
+          v-if="total>0"
+          :total="total"
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getDatalist"
+        />
       </el-menu>
     </el-container>
     <managerDialog v-if="changOrder" ref="turnOrder" />
@@ -106,10 +121,12 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import managerDialog from "./dialog/managerdialog";
+import Pagination from "../../components/pagination";
 export default {
   name: "echarts",
   components: {
-    managerDialog
+    managerDialog,
+    Pagination
   },
   data() {
     return {
@@ -119,15 +136,13 @@ export default {
         workerType: ""
       },
       changOrder: false, //查看详情
-      page: 1, // 初始页
-      pageSize: 10, //    每页的数据
-      total: 100, //总条数
-      formInline: {
-        searchUname: null, // 搜索
-        searchNum: null
-      },
-       file: {
-         uploadFile: ""
+      total: 50,
+			listQuery: {
+				currentPage: 0,     //与后台定义好的分页参数
+				pageSize: 10
+			},
+      file: {
+        uploadFile: ""
       },
       fileList: [],
       tableData: [
@@ -146,7 +161,7 @@ export default {
           politicsType: "群众"
         },
         {
-           pInfoId: 1,
+          pInfoId: 1,
           buildCorpName: "北京公司",
           jobType: "司机",
           workerType: "司机",
@@ -160,7 +175,7 @@ export default {
           politicsType: "群众"
         },
         {
-           pInfoId: 2,
+          pInfoId: 2,
           buildCorpName: "北京公司",
           jobType: "司机",
           workerType: "司机",
@@ -174,7 +189,7 @@ export default {
           politicsType: "群众"
         },
         {
-           pInfoId: 3,
+          pInfoId: 3,
           buildCorpName: "北京公司",
           jobType: "司机",
           workerType: "司机",
@@ -188,7 +203,7 @@ export default {
           politicsType: "群众"
         },
         {
-           pInfoId: 4,
+          pInfoId: 4,
           buildCorpName: "北京公司",
           jobType: "司机",
           workerType: "司机",
@@ -202,7 +217,7 @@ export default {
           politicsType: "群众"
         },
         {
-           pInfoId: 5,
+          pInfoId: 5,
           buildCorpName: "北京公司",
           jobType: "司机",
           workerType: "司机",
@@ -218,7 +233,16 @@ export default {
       ]
     };
   },
+  mounted() {
+    // alert("98888")
+    // this.pageTotal = {
+    //   total: 10,
+    //   page:2,
+    //   pageNum: 8
+    // };
+  },
   methods: {
+     
     onSubmit() {
       console.log("submit!");
     },
@@ -325,8 +349,8 @@ export default {
       });
     },
     //  编辑+新增通过传参判断
-    AddEditClick(row,par) {
-      console.log(row.pInfoId,par)
+    AddEditClick(row, par) {
+      console.log(row.pInfoId, par);
       if (par != undefined) {
         this.$router.push({
           name: "AddAdministration",
@@ -338,7 +362,7 @@ export default {
         this.$router.push({
           name: "AddAdministration",
           params: {
-            id:row.pInfoId
+            id: row.pInfoId
           }
         });
       }
@@ -419,7 +443,7 @@ export default {
           });
         });
     },
-     handleChange(file, fileList) {
+    handleChange(file, fileList) {
       this.$refs.file.clearValidate();
       this.file.uploadFile = fileList;
     },
@@ -433,7 +457,7 @@ export default {
     seeSubRowClick() {},
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
-    },
+    }
   }
 };
 </script>
