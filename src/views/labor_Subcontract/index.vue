@@ -254,7 +254,6 @@ export default {
     data() {
         return {
             //  初始化页面
-            headClass:{},
             page: 1, // 初始页
             pageSize: 10, // 默认每页数据量
             total: 0, //总条数
