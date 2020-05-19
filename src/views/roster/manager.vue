@@ -82,7 +82,7 @@
           :total="total"
           :page.sync="listQuery.currentPage"
           :limit.sync="listQuery.pageSize"
-          @pagination="getList"
+          @pagination="getDatalist"
         />
       </el-menu>
     </el-container>
@@ -240,14 +240,9 @@ export default {
     //   page:2,
     //   pageNum: 8
     // };
-    this.getList()
   },
   methods: {
-     getList() {
-        var _this = this
-        _this.total=50
-	     //重新渲染数据
-    },
+     
     onSubmit() {
       console.log("submit!");
     },

@@ -73,11 +73,9 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-        console.log("下一步")
       this.$emit('pagination', { page: this.currentPage - 1, limit: val })     //因为后台接口currentPage是从0开始的
     },
     handleCurrentChange(val) {
-        console.log("上一步")
       this.$emit('pagination', { page: val - 1, limit: this.pageSize })
     }
   }
