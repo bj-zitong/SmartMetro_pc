@@ -40,7 +40,7 @@
               type="selection"
               width="65"
               prop="pShiftMeetingId"
-              @selection-change="changeFun"  
+              @selection-change="changeFun"
             ></el-table-column>
             <el-table-column prop="uuid" label="编号" width="150"></el-table-column>
             <el-table-column prop="createTime" label="创建日期" width="120"></el-table-column>
@@ -159,7 +159,7 @@
           <el-button type="primary" @click="selectPerson()">点击选择</el-button>
         </el-form-item>
         <div class="dialog-footer" style="text-align:center;">
-          <el-button @click="outerVisible = false" class="F-Grey" round>取 消</el-button>
+          <el-button @click="cancelForm('formSpeech')" class="F-Grey" round>取 消</el-button>
           <el-button
             type="primary"
             @click="editFormSpeech('formSpeech')"
@@ -521,7 +521,9 @@ export default {
     },
     //编辑讲话
     handleEdit(row) {
+      console.log(row);
       var uid = row.pShiftMeetingId;
+       this.formSpeech=row;
       //获得详情
       var url =
         "/smart/worker/labour/" +
@@ -567,6 +569,7 @@ export default {
             "/meeting";
           this.http.put(url, datas).then(res => {
             if (res.code == 200) {
+              this.$refs[formSpeech].resetFields();
               this.outerVisible = false;
             }
           });
@@ -574,6 +577,10 @@ export default {
           return false;
         }
       });
+    },
+    cancelForm(formSpeech){
+        this.outerVisible=false;
+        this.$refs[formSpeech].resetFields();
     },
     //选择劳务公司
     selectCompanys(vid) {

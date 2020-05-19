@@ -140,7 +140,7 @@
               ></el-date-picker>
             </el-form-item>
             <div class="dialog-footer" style="text-align:center;">
-              <el-button @click="dialogFormVisible = false" class="F-Grey" round>取 消</el-button>
+              <el-button @click="cancel('form')" class="F-Grey" round>取 消</el-button>
               <el-button
                 type="primary"
                 @click="addUser('form')"
@@ -407,12 +407,17 @@ export default {
                 this.dialogFormVisible = false;
               }
             });
+             this.$refs[form].resetFields();
             this.dialogFormVisible = false;
           }
         } else {
           return false;
         }
       });
+    },
+    cancel(form){
+      this.dialogFormVisible = false;
+      this.$refs[form].resetFields();
     },
     //身份证号校验
     IdentityCode(code) {

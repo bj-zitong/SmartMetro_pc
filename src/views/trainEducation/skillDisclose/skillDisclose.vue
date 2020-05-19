@@ -36,8 +36,18 @@
     <div class="table-main">
       <el-main class="table-button">
         <el-button @click="dialogFormVisible = true" type="success" class="T-H-B-DarkBlue">新增</el-button>
-        <el-button @click="deleteAllClick()" type="danger" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
-        <el-button @click="download()" type="primary" class="T-H-B-Cyan" style="margin-left:30px;">下载</el-button>
+        <el-button
+          @click="deleteAllClick()"
+          type="danger"
+          class="T-H-B-Grey"
+          style="margin-left:30px;"
+        >删除</el-button>
+        <el-button
+          @click="download()"
+          type="primary"
+          class="T-H-B-Cyan"
+          style="margin-left:30px;"
+        >下载</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -64,11 +74,36 @@
             <el-table-column prop="accessory" label="盖章附件" width="100" fixed="right"></el-table-column>
             <el-table-column label="操作" style="width:500px" fixed="right">
               <template slot-scope="scope">
-                <el-button size="mini" class="T-R-B-Green" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-                <el-button size="mini" class="T-R-B-Violet" @click="download(scope.row)" type="primary">下载</el-button>
-                <el-button size="mini" class="T-R-B-Grey" @click="handleDelete(scope.row)" type="info">删除</el-button>
-                <el-button size="mini" class="T-R-B-Orange" @click="getDetail(scope.row)" type="success">查看详情</el-button>
-                <el-button size="mini" class="T-R-B-Cyan" @click="upload(scope.row)" type="primary">上传</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Green"
+                  @click="handleEdit(scope.row)"
+                  type="success"
+                >编辑</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Violet"
+                  @click="download(scope.row)"
+                  type="primary"
+                >下载</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Grey"
+                  @click="handleDelete(scope.row)"
+                  type="info"
+                >删除</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Orange"
+                  @click="getDetail(scope.row)"
+                  type="success"
+                >查看详情</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Cyan"
+                  @click="upload(scope.row)"
+                  type="primary"
+                >上传</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -82,50 +117,62 @@
           class="page-end"
           @size-change="handleSizeChange()"
           :current-page="page"
-            :page-sizes="[10, 50,100]"
+          :page-sizes="[10, 50,100]"
           layout="total, sizes,prev, pager,next,jumper"
           :page-size="pageSize"
           @prev-click="pre()"
           @next-click="next()"
           @current-change="handleCurrentChange()"
-          hide-on-single-page
           :total="total"
           background
         ></el-pagination>
       </el-main>
     </div>
     <!--新增-->
-    <el-dialog title="技术交底" :visible.sync="dialogFormVisible" width="450px" :center="true" top="0vh" :show-close="false">
-      <el-form :model="form"  label-width="80px">
-        <el-form-item label="工程名称">
+    <el-dialog
+      title="技术交底"
+      :visible.sync="dialogFormVisible"
+      width="450px"
+      :center="true"
+      top="0vh"
+      :show-close="false"
+    >
+      <el-form :model="form" label-width="80px" ref="form" :rules="formRules"  enctype="multipart/form-data">
+        <el-form-item label="工程名称" prop="projectName">
           <el-input v-model="form.projectName"></el-input>
         </el-form-item>
-        <el-form-item label="交底时间">
+        <el-form-item label="交底时间" prop="skillDate">
           <el-date-picker v-model="form.skillDate" type="date" placeholder="选择交底时间"></el-date-picker>
         </el-form-item>
-        <el-form-item label="单位名称">
+        <el-form-item label="单位名称" prop="companyName">
           <el-input v-model="form.companyName"></el-input>
         </el-form-item>
-        <el-form-item label="分项工程名称">
+        <el-form-item label="分项工程名称" prop="breachProject">
           <el-input v-model="form.breachProject"></el-input>
         </el-form-item>
-        <el-form-item label="交底提要">
+        <el-form-item label="交底提要" prop="tellAbstract">
           <el-input v-model="form.tellAbstract"></el-input>
         </el-form-item>
-        <el-form-item label>
+        <el-form-item label="交底内容" prop="content">
           <el-input type="textarea" :rows="6" placeholder="请输入交底内容" v-model="form.content"></el-input>
         </el-form-item>
-        <el-form-item label="交底人">
-          <el-input v-model="form.tellPerson"></el-input>
+        <el-form-item label="交底人" prop="content">
+          <el-input v-model="form.content"></el-input>
         </el-form-item>
-        <el-form-item label="接收人">
+        <el-form-item label="接收人" prop="reciveTell">
           <el-input v-model="form.reciveTell"></el-input>
         </el-form-item>
+         <div class="dialog-footer" style="text-align:center;">
+          <el-button @click="cancelForm('form')" class="F-Grey" round>取 消</el-button>
+          <el-button
+            type="primary"
+            @click="addSkillClick('form')"
+            class="F-Blue"
+            round
+            style="margin-left:60px"
+          >确 定</el-button>
+        </div>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
-        <el-button type="primary" @click="addSkillClick('form')" style="border-radius:18px;margin-left:60px;">确 定</el-button>
-      </div>
     </el-dialog>
   </div>
 </template>
@@ -164,11 +211,85 @@ export default {
         content: "",
         tellPerson: "",
         reciveTell: ""
+      },
+      formRules: {
+        projectName: [
+          { required: true, message: "请输入工程名称", trigger: "blur" }
+        ],
+        skillDate: [
+          { required: true, message: "请选择交底时间", trigger: "blur" }
+        ],
+        companyName: [{ required: true, message: "请输入单位名称", trigger: "blur" }],
+        breachProject: [
+          { required: true, message: "请输入分项工程名称", trigger: "blur" }
+        ],
+        tellAbstract: [
+          { required: true, message: "请输入交底提要", trigger: "blur" }
+        ],
+        content: [
+          { required: true, message: "请输入交底内容", trigger: "blur" }
+        ],
+        tellPerson: [
+          { required: true, message: "请输入交底人", trigger: "blur" }
+        ],
+        reciveTell: [
+          { required: true, message: "请输入接收人", trigger: "blur" }
+        ]
       }
     };
   },
-  created: function() {
-    var result = [
+  created() {
+    this.skillList();
+  },
+  methods: {
+    addSkillClick(form) {
+      this.$refs[form].validate(valid => {
+        //校验
+          alert(valid);
+        if (valid) {
+          //新增 id为空
+          var form = this.$refs['form'].model;
+          var params = JSON.stringify({
+            projectName: form.projectName,
+            teamName: form.groupName,
+            teamType: form.profession,
+            teamLeaderName: form.groupLeader,
+            teamLeaderPhone: form.phone,
+            teamMasterId: form.teamMasterId
+          });
+          var url =
+            "/smart/worker/labour/" +
+            sessionStorage.getItem("userId") +
+            "/team";
+          this.http.put(url, params).then(res => {
+            if (res.code == 200) {
+              this.dialogFormVisible = false;
+              this.$refs[form].resetFields();
+            }
+          });
+        } else {
+          console.log("error");
+          return false;
+        }
+      });
+    },
+    skillList() {
+      // 列表请求
+      // 获得搜索的内容
+      var company = this.formInline.company;
+      var profession = this.formInline.profession;
+      var time = this.formInline.time;
+      //   // 获得当前用户的id
+      // var  uid = sessionStorage.getItem('uid')
+      var data = JSON.stringify({
+        pageSize: this.pageSize,
+        page: this.page,
+        company: company,
+        profession: profession,
+        time: time
+      });
+      var url = "";
+       var result = [
       {
         userId: 1,
         projectName: "地铁安保部",
@@ -194,51 +315,13 @@ export default {
         accessory: 1
       }
     ];
-    this.tableData = result;
-  },
-  method: {
-    addSkillClick: function(form) {},
-    skillList: function() {
-      // 列表请求
-      // 获得搜索的内容
-      var company = this.formInline.company;
-      var profession = this.formInline.profession;
-      var time = this.formInline.time;
-      //   // 获得当前用户的id
-      // var  uid = sessionStorage.getItem('uid')
-      var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
-        company: company,
-        profession: profession,
-        time: time
-      });
-      var url = "";
-      var result = [
-        {
-          userId: 1,
-          projectName: "地铁安保部",
-          company: "安保部一",
-          breachProject: "部门一",
-          tellAbstract: "123",
-          tellPerson: "123",
-          reciveTell: "22222222",
-          checkState: "22222222",
-          accessory: 2
-        },
-        {
-          userId: 2,
-          projectName: "22222222",
-          company: "44444",
-          breachProject: "44444",
-          tellAbstract: "1111",
-          tellPerson: "44444",
-          reciveTell: "444",
-          checkState: 44444,
-          accessory: 1
-        }
-      ];
       this.tableData = result;
+      this.total=result.length;
+    },
+    //cancelForm
+    cancelForm(form) {
+      this.$refs[form].resetFields();
+      this.dialogFormVisible = false;
     },
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
@@ -363,13 +446,14 @@ export default {
     text-align: center;
   }
 }
-  .cancel-style{
-    border-radius:18px;
-    width:80px;
-    height:35px;
-    background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
-    opacity:1;
-  }
+
+.cancel-style {
+  border-radius: 18px;
+  width: 80px;
+  height: 35px;
+  background: linear-gradient(180deg, rgba(225, 225, 225, 1) 0%, rgba(190, 190, 190, 1) 100%);
+  opacity: 1;
+}
 </style>
 <style lang="stylus">
 .el-dialog__header {

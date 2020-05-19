@@ -1,25 +1,25 @@
 <template>
   <div class="container">
     <div style="padding:30px;">
-       <el-container>
-      <el-menu class="main-top-box pl30">
-        <el-form :inline="true" ref="form" :model="form">
-          <el-form-item prop="laborCompany" label="劳务公司">
-            <el-select v-model="form.laborCompany" placeholder="请选择" @change="selectCompanys">
-              <el-option
-                v-for="item in companys"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="getTalks()" style="margin-left:30px;">查询</el-button>
-          </el-form-item>
-        </el-form>
-      </el-menu>
-    </el-container>
+      <el-container>
+        <el-menu class="main-top-box pl30">
+          <el-form :inline="true" ref="form" :model="form">
+            <el-form-item prop="laborCompany" label="劳务公司">
+              <el-select v-model="form.laborCompany" placeholder="请选择" @change="selectCompanys">
+                <el-option
+                  v-for="item in companys"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="getTalks()" style="margin-left:30px;">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </el-menu>
+      </el-container>
     </div>
 
     <div class="container-content">
@@ -62,7 +62,7 @@
           background
           @size-change="handleSizeChange"
           :current-page="page"
-           layout="total, sizes,prev, pager,next,jumper"
+          layout="total, sizes,prev, pager,next,jumper"
           :page-size="pageSize"
           :page-sizes="[10, 50,100]"
           @prev-click="pre"
@@ -115,7 +115,7 @@
           </el-select>
         </el-form-item>
         <div class="dialog-footer">
-          <el-button @click="dialogFormVisible = false" round class="F-Grey">取 消</el-button>
+          <el-button @click="cloneLaborForm('formClass')" round class="F-Grey">取 消</el-button>
           <el-button
             class="F-Blue"
             @click="addClass('formClass')"
@@ -150,7 +150,7 @@
           ></el-option>
         </el-select>
         <div class="dialog-footer">
-          <el-button @click="dialogVisible = false" class="F-Grey" round>取 消</el-button>
+          <el-button @click="cancelEvate()" class="F-Grey" round>取 消</el-button>
           <el-button @click="evaluate()" class="F-Blue" style="margin-left:60px" round>确 定</el-button>
         </div>
       </span>
@@ -205,7 +205,7 @@
             <el-button type="primary" @click="selectPerson()">点击选择</el-button>
           </el-form-item>
           <div class="dialog-footer">
-            <el-button @click="outerVisible = false" class="F-Grey" round>取 消</el-button>
+            <el-button @click="cancelSpeachForm('formSpeech')" class="F-Grey" round>取 消</el-button>
             <el-button
               class="F-Blue"
               @click="addFormSpeech('formSpeech')"
@@ -377,7 +377,7 @@ export default {
       var data = JSON.stringify({
         pageSize: this.pageSize,
         page: this.page,
-        company:this.form.laborCompany
+        company: this.form.laborCompany
       });
       //请求
       var url =
@@ -491,13 +491,13 @@ export default {
       this.formSpeech.protective = obj.id;
     },
     //选择劳务公司
-    selectCompanys(vid){
+    selectCompanys(vid) {
       let obj = {};
       obj = this.companys.find(item => {
         return item.id == vid; // 筛选出匹配数据
       });
       this.form.laborCompany = obj.id;
-      console.log('劳务公司'+this.form.laborCompany);
+      console.log("劳务公司" + this.form.laborCompany);
     },
     selectEvaluate(vid) {
       let obj = {};
@@ -541,6 +541,7 @@ export default {
     handleEdit(row) {
       var uid = row.teamMasterId;
       this.id = uid;
+      this.formClass = row;
       // console.log(uid);
       //获得详情
       var params = null;
@@ -574,49 +575,33 @@ export default {
         if (valid) {
           //新增 id为空
           var form = this.$refs[formClass].model;
-          if (form.teamMasterId == null) {
-            var params = JSON.stringify({
-              projectName: form.projectName,
-              teamName: form.groupName,
-              teamType: form.profession,
-              teamLeaderName: form.groupLeader,
-              teamLeaderPhone: form.phone
-            });
-            var url =
-              "/smart/worker/labour/" +
-              sessionStorage.getItem("userId") +
-              "/team";
-            this.http.post(url, params).then(res => {
-              if (res.code == 200) {
-                this.dialogFormVisible = false;
-              }
-            });
-          }
-          //修改
-          else {
-            var params = JSON.stringify({
-              projectName: form.projectName,
-              teamName: form.groupName,
-              teamType: form.profession,
-              teamLeaderName: form.groupLeader,
-              teamLeaderPhone: form.phone,
-              teamMasterId: form.teamMasterId
-            });
-            var url =
-              "/smart/worker/labour/" +
-              sessionStorage.getItem("userId") +
-              "/team";
-            this.http.put(url, params).then(res => {
-              if (res.code == 200) {
-                this.dialogFormVisible = false;
-              }
-            });
-          }
+          var params = JSON.stringify({
+            projectName: form.projectName,
+            teamName: form.groupName,
+            teamType: form.profession,
+            teamLeaderName: form.groupLeader,
+            teamLeaderPhone: form.phone,
+            teamMasterId: form.teamMasterId
+          });
+          var url =
+            "/smart/worker/labour/" +
+            sessionStorage.getItem("userId") +
+            "/team";
+          this.http.put(url, params).then(res => {
+            if (res.code == 200) {
+              this.dialogFormVisible = false;
+              this.$refs[formClass].resetFields();
+            }
+          });
         } else {
           console.log("error");
           return false;
         }
       });
+    },
+    cloneLaborForm(formClass) {
+      this.$refs[formClass].resetFields();
+      this.dialogFormVisible = false;
     },
     //评价
     evaluate() {
@@ -633,9 +618,15 @@ export default {
       this.http.put(url, params).then(res => {
         if (res.code == 200) {
           this.dialogVisible = false;
+          this.evaluated = null;
           this.getTalks();
         }
       });
+    },
+    //取消
+    cancelEvate() {
+      this.dialogVisible = false;
+      this.evaluated = null;
     },
     //添加评价
     addEvalte(row) {
@@ -686,6 +677,7 @@ export default {
           this.http.post(url, datas).then(res => {
             if (res.code == 200) {
               this.outerVisible = false;
+              this.$refs[formSpeech].resetFields();
             }
           });
         } else {
@@ -693,9 +685,11 @@ export default {
         }
       });
     },
-    cencal() {
-      this.dialogFormVisible = false;
-    }
+    //cancelSpeachForm
+    cancelSpeachForm(formSpeech) {
+      this.outerVisible = false;
+      this.$refs[formSpeech].resetFields();
+    },
   }
 };
 </script>
