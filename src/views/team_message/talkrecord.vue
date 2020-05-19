@@ -309,7 +309,7 @@ export default {
     },
     handleChange(file, fileList) {
       this.$refs.file.clearValidate();
-      this.videoForm.getVideo = fileList;
+      this.file.uploadFile = fileList;
     },
     impotVideo() {
       console.log(this.videoForm.getVideo[0].raw);

@@ -14,7 +14,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button type="primary" @click="queryClick">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -243,7 +243,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+      this.getDatalist()
     },
     handleClick(row) {
       console.log(row);
@@ -266,7 +266,7 @@ export default {
         "/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/manager/management";
-      this.http.delete(url, params).then(res => {
+      this.http.post(url, params).then(res => {
         if (res.code == 200) {
         }
       });

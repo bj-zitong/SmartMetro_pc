@@ -458,7 +458,7 @@ export const constantRouterMap = [
                 component: () => import('@/views/trainEducation/resultStatistics/index'),
                 meta: {
                     title: '成绩统计',
-                    icon: '../../static/image/Achievement.png',
+                    icon: '../../static/image/beforeAchievement.png',
                     AfterIcon: '../../static/image/Achievement.png',
                     enable: "Y",
                     parent: '培训教育'
