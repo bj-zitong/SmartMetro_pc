@@ -4,13 +4,13 @@
   <div class="container">
     <el-container>
       <el-main class="main-head">
-        <el-form :inline="true" :model="formInline" class="search-head">
-          <el-form-item label="交底单位:">
-            <el-select v-model="formInline.company" placeholder="请选择交底单位" @change="selectCompany()">
+        <el-form :inline="true" :model="formInline" class="search-head" ref="formInline">
+          <el-form-item label="施工单位:">
+            <el-select v-model="formInline.company" placeholder="请选择施工单位" @change="selectCompany()">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="工种：" style="margin-left:60px">
+          <el-form-item label="工种：" style="margin-left:60px" prop="profession">
             <el-select
               v-model="formInline.profession"
               placeholder="请选择工种"
@@ -24,11 +24,12 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="时间" style="margin-left:60px">
-            <el-date-picker v-model="formInline.time" type="date" placeholder="选择时间"></el-date-picker>
+          <el-form-item label="时间" style="margin-left:60px" prop="time">
+            <el-date-picker v-model="formInline.time" type="date"
+            placeholder="选择时间"   value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="selectSkillList()" style="margin-left:30px;">查询</el-button>
+            <el-button type="primary" @click="skillList()" style="margin-left:30px;">查询</el-button>
           </el-form-item>
         </el-form>
       </el-main>
@@ -37,7 +38,8 @@
       <el-main class="table-button">
         <el-button @click="dialogFormVisible = true" type="success" class="T-H-B-DarkBlue">新增</el-button>
         <el-button @click="deleteAllClick()" type="danger" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
-        <el-button @click="download()" type="primary" class="T-H-B-Cyan" style="margin-left:30px;">下载</el-button>
+        <el-button @click="submitAll()" type="primary" class="T-H-B-Cyan" style="margin-left:30px;">提交</el-button>
+        <el-button @click="poiExcel()" type="primary" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -50,25 +52,25 @@
             <el-table-column
               type="selection"
               width="65"
-              prop="userId"
+              prop="technicalId"
               @selection-change="changeFun()"
             ></el-table-column>
-            <el-table-column prop="company" label="施工单位" width="100"></el-table-column>
-            <el-table-column prop="tellAbstract" label="交底部位" width="100"></el-table-column>
+            <el-table-column prop="constructionOrg" label="施工单位" width="100"></el-table-column>
+            <el-table-column prop="disclosurePart" label="交底部位" width="100"></el-table-column>
             <el-table-column prop="workType" label="工种" width="120"></el-table-column>
-            <el-table-column prop="tellPerson" label="交底人" width="100"></el-table-column>
-            <el-table-column prop="duty" label="职务" width="100"></el-table-column>
-            <el-table-column prop="reciveTell" label="接收人" width="150"></el-table-column>
-            <el-table-column prop="reciveDuty" label="接收人职务" width="100"></el-table-column>
-            <el-table-column prop="checkState" label="审核状态" width="100" fixed="right"></el-table-column>
-            <el-table-column prop="accessory" label="附件" width="100" fixed="right"></el-table-column>
+            <el-table-column prop="disclosurePerson" label="交底人" width="100"></el-table-column>
+            <el-table-column prop="disclosurePersonDuty" label="职务" width="100"></el-table-column>
+            <el-table-column prop="receiver" label="接收人" width="150"></el-table-column>
+            <el-table-column prop="receiverDuty" label="接收人职务" width="100"></el-table-column>
+            <el-table-column prop="status" label="审核状态" width="100"></el-table-column>
             <el-table-column label="操作" style="width:500px" fixed="right">
               <template slot-scope="scope">
                 <el-button size="mini" class="T-R-B-Green" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-                <el-button size="mini" class="T-R-B-Violet" @click="download(scope.row)" type="primary">下载</el-button>
                 <el-button size="mini" class="T-R-B-Grey" @click="handleDelete(scope.row)" type="info">删除</el-button>
                 <el-button size="mini" class="T-R-B-Orange" @click="getDetail(scope.row)" type="success">查看详情</el-button>
-                <el-button size="mini" class="T-R-B-Cyan" @click="upload(scope.row)" type="primary">上传</el-button>
+                <el-button size="mini" class="T-R-B-Violet" @click="submit(scope.row)" type="primary">提交</el-button>
+                <el-button size="mini" class="T-R-B-Cyan" @click="pass(scope.row)" type="primary">通过</el-button>
+                <el-button size="mini" class="T-R-B-Cyan" @click="reject(scope.row)" type="primary">驳回</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -79,7 +81,7 @@
                      :page-sizes="[5, 10, 20, 40]" 下拉选择
                      layout="total, sizes, prev, pager, next, jumper"
         -->
-        <el-pagination
+        <!-- <el-pagination
           class="page-end"
           @size-change="handleSizeChange()"
           :current-page="page"
@@ -89,62 +91,157 @@
           @prev-click="pre()"
           @next-click="next()"
           @current-change="handleCurrentChange()"
-          hide-on-single-page
           :total="total"
           background
-        ></el-pagination>
+        ></el-pagination> -->
+        <pagination
+          class="pagination-box"
+          v-if="total>0"
+          :total="total"
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="skillList"
+        />
       </el-main>
     </div>
     <!--新增-->
     <el-dialog title="安全技术交底" :visible.sync="dialogFormVisible" width="500px" :center="true" top="0vh" :show-close="false">
-      <el-form :model="form" label-width="80px">
-        <el-form-item label="施工单位">
-          <el-input v-model="form.company"></el-input>
+      <el-form :model="form" label-width="80px" ref="form" :rules="formRules">
+        <el-form-item label="施工单位" prop="constructionOrg">
+          <el-input v-model="form.constructionOrg" placeholder="施工单位"></el-input>
         </el-form-item>
-        <el-form-item label="交底部位">
-          <el-input v-model="form.tellAbstract"></el-input>
+        <el-form-item label="交底部位" prop="disclosurePart">
+          <el-input v-model="form.disclosurePart" placeholder="交底部位"></el-input>
         </el-form-item>
-        <el-form-item label="工种">
-          <el-input v-model="form.workType"></el-input>
+        <el-form-item label="工种" prop="workType">
+          <el-input v-model="form.workType" placeholder="工种"></el-input>
         </el-form-item>
-        <el-form-item label="交底内容">
-          <el-input type="textarea" :rows="6" placeholder="请输入交底内容" v-model="form.content"></el-input>
+         <el-form-item label="交底日期" prop="disclosureDate">
+            <el-date-picker v-model="form.disclosureDate" type="date"
+            placeholder="选择时间"   value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+          </el-form-item>
+        <el-form-item label="交底内容" prop="disclosureContent">
+          <el-input type="textarea" :rows="6" placeholder="请输入交底内容" v-model="form.disclosureContent"></el-input>
         </el-form-item>
-        <el-form-item label="针对性交底">
-          <el-input type="textarea" :rows="6" placeholder="请输入针对性交底" v-model="form.aimContent"></el-input>
+        <el-form-item label="针对性交底" prop="aimDisclosureContent">
+          <el-input type="textarea" :rows="6" placeholder="请输入针对性交底" v-model="form.aimDisclosureContent"></el-input>
         </el-form-item>
         <div>
-          <el-form-item label="交底人" style="width:200px;float:left">
-            <el-input v-model="form.tellPerson"></el-input>
+          <el-form-item label="交底人" style="width:200px;float:left" prop="disclosurePerson">
+            <el-input v-model="form.disclosurePerson" placeholder="交底人"></el-input>
           </el-form-item>
-          <el-form-item label="职务" style="width:200px;float:right">
-            <el-input v-model="form.tellPerson"></el-input>
+          <el-form-item label="职务" style="width:200px;float:right" prop="disclosurePersonDuty">
+            <el-input v-model="form.disclosurePersonDuty" placeholder="职务"></el-input>
           </el-form-item>
         </div>
         <div>
-          <el-form-item label="接收人" style="width:200px;float:left">
-            <el-input v-model="form.reciveTell"></el-input>
+          <el-form-item label="接收人" style="width:200px;float:left" prop="receiver">
+            <el-input v-model="form.receiver" placeholder="接收人"></el-input>
           </el-form-item>
-          <el-form-item label="职务" style="width:200px;float:right">
-            <el-input v-model="form.tellPerson"></el-input>
+          <el-form-item label="职务" style="width:200px;float:right" prop="receiverDuty">
+            <el-input v-model="form.receiverDuty" placeholder="职务"></el-input>
           </el-form-item>
+        </div>
+       <div class="dialog-footer" style="text-align:center;">
+          <el-button @click="cancelForm('form')" class="F-Grey" round>取 消</el-button>
+          <el-button
+            type="primary"
+            @click="addSkillClick('form')"
+            class="F-Blue"
+            round
+            style="margin-left:60px"
+          >确 定</el-button>
         </div>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" class="cancel-style">取 消</el-button>
-        <el-button type="primary" @click="addSkillClick('form')" style="border-radius:18px;margin-left:60px;">确 定</el-button>
-      </div>
     </el-dialog>
+     <!-- 详情-->
+     <el-dialog
+    title
+    :visible.sync="dialogFormVisibleDetail"
+    :close-on-click-modal="false"
+    :show-close="false"
+    width="30%"
+  >
+    <div class="AddEquipment_form">
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="grid-content bg-purple">
+            施工单位:
+            <span>{{showdata.constructionOrg}}</span>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="grid-content bg-purple">交底部位:
+             <span>{{showdata.disclosurePart}}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="grid-content bg-purple">
+            工种:
+            <span>{{showdata.workType}}</span>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="grid-content bg-purple">交底人:
+            <span>{{showdata.disclosurePerson}}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="grid-content bg-purple">
+            职务:
+            <span>{{showdata.disclosurePersonDuty}}</span>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="grid-content bg-purple">接收人:
+              <span>{{showdata.receiver}}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="grid-content bg-purple">
+            接收人职务:
+            <span>{{showdata.receiverDuty}}</span>
+          </div>
+        </el-col>
+          <el-col :span="8">
+          <div class="grid-content bg-purple">
+            审核状态:
+            <span>{{showdata.status}}</span>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <template slot="footer" class="dialog-footer">
+      <el-button type="default" @click="dialogFormVisibleDetail = false" round class="T-R-B-Grey">取消</el-button>
+    </template>
+  </el-dialog>
   </div>
 </template>
 <script>
+import { handleCofirm } from "@/utils/confirm";
+import Pagination from "../../../components/pagination";
 export default {
+    components: {
+    Pagination
+  },
   data() {
     return {
+       listQuery: {
+        currentPage: 0, //与后台定义好的分页参数
+        pageSize: 10
+      },
       token: null, // token
       dialogFormVisible: false,
+      dialogFormVisibleDetail:false,
       // 动态数据
       tableData: [],
+      showdata:[],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
       total: 100, //总条数
@@ -164,94 +261,168 @@ export default {
         time: null
       },
       form: {
-        company: "",
-        tellAbstract: null,
+        constructionOrg: "",
+        disclosurePart: null,
         workType: "",
-        content: "",
-        aimContent: "",
-        tellAbstract: "",
-        tellPerson: "",
-        reciveTell: ""
+        disclosureDate:"",
+        disclosureContent: "",
+        aimDisclosureContent: "",
+        disclosurePerson: "",
+        disclosurePersonDuty:"",
+        receiver: "",
+        receiverDuty: "",
+        technicalId:null
+      },
+      formRules: {
+        constructionOrg: [
+          { required: true, message: "请输入施工单位", trigger: "blur" }
+        ],
+        disclosurePart: [
+          { required: true, message: "请输入交底部位", trigger: "blur" }
+        ],
+        workType: [{ required: true, message: "请输入工种", trigger: "blur" }],
+        disclosureDate:[{ required: true, message: "请选择交底日期", trigger: "change" }],
+        disclosureContent: [
+          { required: true, message: "请输入交底内容", trigger: "blur" }
+        ],
+        aimDisclosureContent: [
+          { required: true, message: "请输入针对性交底", trigger: "blur" }
+        ],
+        disclosurePerson: [
+          { required: true, message: "请输入交底人", trigger: "blur" }
+        ],
+        disclosurePersonDuty:[
+           { required: true, message: "请输入交底人职务", trigger: "blur" }
+        ],
+        receiver: [
+          { required: true, message: "请输入接收人", trigger: "blur" }
+        ],
+        receiverDuty: [
+          { required: true, message: "请输入接收人职务", trigger: "blur" }
+        ]
       }
     };
   },
-  created: function() {
-    var result = [
-      {
-        company: "安保部一",
-        userId: 1,
-        tellAbstract: "123",
-        workType: "瓦工",
-        tellPerson: "123",
-        duty: "1111",
-        reciveDuty: "55555",
-        reciveTell: "22222222",
-        checkState: "22222222",
-        accessory: 2,
-        accessory: "444444"
-      },
-      {
-        userId: 2,
-        company: "22222222",
-        workType: "泥工",
-        tellPerson: "44444",
-        duty: "5555",
-        reciveDuty: "444444",
-        breachProject: "44444",
-        tellAbstract: "1111",
-        reciveTell: "444",
-        checkState: 44444,
-        accessory: 1,
-        accessory: "444444"
-      }
-    ];
-    this.tableData = result;
+  created() {
+    this.skillList();
   },
-  method: {
-    addSkillClick: function(form) {
-
+  methods: {
+    cancelForm(form){
+      this.$refs[form].resetFields();
+      this.dialogFormVisible = false;
     },
-    skillList: function() {
-      // 列表请求
-      // 获得搜索的内容
-      var company = this.formInline.company;
+    addSkillClick(form) {
+       this.$refs[form].validate(valid => {
+        //校验
+        if (valid) {
+          var form = this.$refs["form"].model;
+          if (form.technicalId == null) {
+            //新增 id为空
+            var params = JSON.stringify({
+              constructionOrg: form.constructionOrg,
+              disclosurePart:form.disclosurePart,
+              workType:form.workType,
+              disclosureDate: form.disclosureDate,
+              disclosureContent:form.disclosureContent,
+              aimDisclosureContent:form.aimDisclosureContent,
+              disclosurePerson: form.disclosurePerson,
+              disclosurePersonDuty:form.disclosurePersonDuty,
+              receiver: form.receiver,
+              receiverDuty: form.receiverDuty
+            });
+            var url =
+              "/smart/worker/train/" +
+              sessionStorage.getItem("userId") +
+              "/technical/2";
+            this.http.post(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+                this.$refs[form].resetFields();
+              }
+            });
+          } else {
+            //新增 id为空
+            var params = JSON.stringify({
+              constructionOrg: form.constructionOrg,
+              disclosurePart:form.disclosurePart,
+              workType:form.workType,
+              disclosureDate: form.disclosureDate,
+              disclosureContent:form.disclosureContent,
+              aimDisclosureContent:form.aimDisclosureContent,
+              disclosurePerson: form.disclosurePerson,
+              disclosurePersonDuty:form.disclosurePersonDuty,
+              receiver: form.receiver,
+              receiverDuty: form.receiverDuty,
+              technicalId: form.technicalId
+            });
+            var url =
+              "/smart/worker/train/" +
+              sessionStorage.getItem("userId") +
+              "/technical/2";
+            this.http.put(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+                this.$refs[form].resetFields();
+              }
+            });
+          }
+        } else {
+          console.log("error");
+          return false;
+        }
+      });
+    },
+    skillList() {
+     var company = this.formInline.company;
       var profession = this.formInline.profession;
       var time = this.formInline.time;
       //   // 获得当前用户的id
       // var  uid = sessionStorage.getItem('uid')
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
-        company: company,
-        profession: profession,
-        time: time
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage+1,
+        constructionOrg: company,
+        workType: profession,
+        disclosureDate: time
       });
-      var url = "";
+      var url =
+        "/smart/worker/train/" +
+        sessionStorage.getItem("userId") +
+        "/technical/management/2";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
       var result = [
         {
-          userId: 1,
-          projectName: "地铁安保部",
-          company: "安保部一",
-          breachProject: "部门一",
-          tellAbstract: "123",
-          tellPerson: "123",
-          reciveTell: "22222222",
-          checkState: "22222222",
-          accessory: 2
+          technicalId: 1,
+          constructionOrg: "安保部一",
+          disclosurePart:"22222",
+          workType:"xxxxx",
+          disclosurePersonDuty:'2222',
+          disclosurePerson: "123",
+          receiver: "22222222",
+          receiverDuty:'7777',
+          status: "22222222",
         },
         {
-          userId: 2,
-          projectName: "22222222",
-          company: "44444",
-          breachProject: "44444",
-          tellAbstract: "1111",
-          tellPerson: "44444",
-          reciveTell: "444",
-          checkState: 44444,
-          accessory: 1
+          technicalId: 2,
+          disclosurePart:"5555",
+          constructionOrg: "44444",
+          disclosurePerson: "44444",
+          disclosurePersonDuty:'2222',
+          receiver: "444",
+          status: 44444,
+          workType:'ccccc',
+          receiverDuty:'7777',
         }
       ];
       this.tableData = result;
+      this.total = result.length;
     },
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
@@ -274,7 +445,7 @@ export default {
     // 下拉框获得值
     selectCompany(vid) {
       let obj = {};
-      obj = this.companys.find(item => {
+      obj = this.options.find(item => {
         return item.id == vid; // 筛选出匹配数据
       });
       this.formInline.company = obj.id;
@@ -286,30 +457,283 @@ export default {
       });
       this.formInline.profession = obj.id;
     },
-    //列表
-    selectSkillList() {},
     //删除
-    deleteAllClick() {},
-    handleDelete(row) {},
+    deleteAllClick() {
+      var ids = this.changeFun();
+      if (ids.length <= 0) {
+        this.$message("请选择删除的数据！");
+        return;
+      }
+      handleCofirm("确认删除")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/2";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    handleDelete(row) {
+       handleCofirm("确认删除")
+        .then(res => {
+          var ids=[];
+          ids.push(row.technicalId);
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/2";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     //编辑
-    handleEdit(row) {},
-    //上传
-    upload(row) {},
+    handleEdit(row) {
+      var uid = row.technicalId;
+      this.form.technicalId = uid;
+      var url =
+        "/smart/worker/train/" +
+        sessionStorage.getItem("userId") +
+        "/technical/2/"+uid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+        }
+      });
+      // this.form = row;
+      this.dialogFormVisible = true;
+    },
     //详情
-    getDetail(row) {},
-    //下载
-    download() {},
+    getDetail(row) {
+       this.dialogFormVisibleDetail=true;
+      this.showdata=row;
+    },
     //获得表格前面选中的id值
     changeFun() {
       var ids = new Array();
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].userId;
+        var id = arrays[i].technicalId;
         ids.push(id);
       }
       return ids;
-    }
+    },
+    submitAll(){
+       var ids = this.changeFun();
+      if (ids.length <= 0) {
+        this.$message("请选择提交的数据！");
+        return;
+      }
+      //未提交0 提交1 通过2 驳回3
+      handleCofirm("确认提交")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          ///smart/worker/train/{userId}/technical/common/{type}/{status}
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/common/2/1";
+          this.http.get(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "提交成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消提交"
+          });
+        });
+
+    },
+     submit(row){
+      var id =row.technicalId;
+      var ids=[];
+       ids.push(id);
+      //未提交0 提交1 通过2 驳回3
+      handleCofirm("确认提交")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          ///smart/worker/train/{userId}/technical/common/{type}/{status}
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/common/2/1";
+          this.http.get(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "提交成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消提交"
+          });
+        });
+    },
+     pass(row){
+      var id =row.technicalId;
+      var ids=[];
+       ids.push(id);
+      //未提交0 提交1 通过2 驳回3
+      handleCofirm("确认通过")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/common/2/2";
+          this.http.get(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "已通过!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+    reject(row){
+      var id =row.technicalId;
+      var ids=[];
+       ids.push(id);
+      //未提交0 提交1 通过2 驳回3
+      handleCofirm("确认驳回")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/common/2/3";
+          this.http.get(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "已驳回!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+    //导出
+    poiExcel() {
+       // //获得token
+      // var token = sessionStorage.getItem("token");
+      var company = this.formInline.company;
+      var profession = this.formInline.profession;
+      var time = this.formInline.time;
+      var data = JSON.stringify({
+        pageSize: this.pageSize,
+        page: this.page,
+        constructionOrg: company,
+        workType: profession,
+        disclosureDate: time
+      });
+      var url =
+        "/smart/worker/train/" +
+        sessionStorage.getItem("userId") +
+        "/technical/export/2";
+      this.http.post(url, data).then(res => {
+        // // 创建Blob对象，设置文件类型
+        // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
+        // let objectUrl = URL.createObjectURL(blob) // 创建URL
+        // location.href = objectUrl;
+        // URL.revokeObjectURL(objectUrl); // 释放内存
+        // 创建Blob对象，设置文件类型
+        // 自定义文件下载名称  Subway-User-20191223114607
+        var d = new Date();
+        var month = d.getMonth() + 1;
+        var excelName =
+          "Subway-User-" +
+          d.getFullYear() +
+          month +
+          d.getDate() +
+          d.getHours() +
+          d.getMinutes() +
+          d.getSeconds();
+        let blob = new Blob([res.data], {
+          type: "application/vnd.ms-excel"
+        });
+        let objectUrl = URL.createObjectURL(blob); // 创建URL
+        link.href = objectUrl;
+        link.download = excelName; // 自定义文件名
+        link.click(); // 下载文件
+        URL.revokeObjectURL(objectUrl); // 释放内存
+        // alert("调用导出！");
+      });
+    },
   }
 };
 </script>

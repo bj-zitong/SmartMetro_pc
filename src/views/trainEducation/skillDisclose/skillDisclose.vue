@@ -5,16 +5,16 @@
     <el-container>
       <el-main class="main-head">
         <el-form :inline="true" :model="formInline" class="search-head">
-          <el-form-item label="交底单位:">
-            <el-select v-model="formInline.company" placeholder="请选择交底单位" @change="selectCompany()">
+          <el-form-item label="施工单位:" prop="company">
+            <el-select v-model="formInline.company" placeholder="请选择交底单位" @change="selectCompany">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="工种：" style="margin-left:60px">
+          <el-form-item label="工种：" style="margin-left:60px" prop="profession">
             <el-select
               v-model="formInline.profession"
               placeholder="请选择工种"
-              @change="selectProfession()"
+              @change="selectProfession"
             >
               <el-option
                 v-for="item in professions"
@@ -24,11 +24,16 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="时间" style="margin-left:60px">
-            <el-date-picker v-model="formInline.time" type="date" placeholder="选择时间"></el-date-picker>
+          <el-form-item label="时间" style="margin-left:60px" prop="time">
+            <el-date-picker
+              v-model="formInline.time"
+              type="date"
+              placeholder="选择时间"
+              value-format="yyyy-MM-dd HH:mm:ss"
+            ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="selectSkillList()" style="margin-left:30px;">查询</el-button>
+            <el-button type="primary" @click="skillList()" style="margin-left:30px;">查询</el-button>
           </el-form-item>
         </el-form>
       </el-main>
@@ -42,12 +47,8 @@
           class="T-H-B-Grey"
           style="margin-left:30px;"
         >删除</el-button>
-        <el-button
-          @click="download()"
-          type="primary"
-          class="T-H-B-Cyan"
-          style="margin-left:30px;"
-        >下载</el-button>
+        <el-button @click="poiExcel()" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
+        <el-button @click="submitAll()" class="T-H-B-Cyan" style="margin-left:30px;">提交</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -60,19 +61,18 @@
             <el-table-column
               type="selection"
               width="65"
-              prop="userId"
+              prop="technicalId"
               @selection-change="changeFun()"
             ></el-table-column>
-            <el-table-column prop="projectName" label="工程名称" width="120"></el-table-column>
-            <el-table-column prop="tellDate" label="交底时间" width="100"></el-table-column>
-            <el-table-column prop="company" label="施工单位" width="100"></el-table-column>
-            <el-table-column prop="breachProject" label="分项工程名称" width="150"></el-table-column>
-            <el-table-column prop="tellAbstract" label="交底提要" width="100"></el-table-column>
-            <el-table-column prop="tellPerson" label="交底人" width="100"></el-table-column>
-            <el-table-column prop="reciveTell" label="接受交底人" width="120"></el-table-column>
-            <el-table-column prop="checkState" label="审核状态" width="100"></el-table-column>
-            <el-table-column prop="accessory" label="盖章附件" width="100" fixed="right"></el-table-column>
-            <el-table-column label="操作" style="width:500px" fixed="right">
+            <el-table-column prop="prjName" label="工程名称" width="80"></el-table-column>
+            <el-table-column prop="disclosureDate" label="交底时间" width="100"></el-table-column>
+            <el-table-column prop="constructionOrg" label="施工单位" width="100"></el-table-column>
+            <el-table-column prop="branchPrjName" label="分项工程名称" width="120"></el-table-column>
+            <el-table-column prop="disclosureAbstract" label="交底提要" width="120"></el-table-column>
+            <el-table-column prop="disclosurePerson" label="交底人" width="80"></el-table-column>
+            <el-table-column prop="receiver" label="接受交底人" width="120"></el-table-column>
+            <el-table-column prop="status" label="审核状态" width="100"></el-table-column>
+            <el-table-column label="操作" width="600" fixed="right">
               <template slot-scope="scope">
                 <el-button
                   size="mini"
@@ -80,12 +80,6 @@
                   @click="handleEdit(scope.row)"
                   type="success"
                 >编辑</el-button>
-                <el-button
-                  size="mini"
-                  class="T-R-B-Violet"
-                  @click="download(scope.row)"
-                  type="primary"
-                >下载</el-button>
                 <el-button
                   size="mini"
                   class="T-R-B-Grey"
@@ -101,9 +95,21 @@
                 <el-button
                   size="mini"
                   class="T-R-B-Cyan"
-                  @click="upload(scope.row)"
+                  @click="submit(scope.row)"
                   type="primary"
-                >上传</el-button>
+                >提交</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Cyan"
+                  @click="pass(scope.row)"
+                  type="primary"
+                >通过</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Cyan"
+                  @click="reject(scope.row)"
+                  type="primary"
+                >驳回</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -137,32 +143,41 @@
       top="0vh"
       :show-close="false"
     >
-      <el-form :model="form" label-width="80px" ref="form" :rules="formRules"  enctype="multipart/form-data">
-        <el-form-item label="工程名称" prop="projectName">
-          <el-input v-model="form.projectName"></el-input>
+      <el-form
+        :model="form"
+        label-width="80px"
+        ref="form"
+        :rules="formRules"
+        enctype="multipart/form-data"
+      >
+        <el-form-item prop="technicalId">
+          <el-input v-model="form.technicalId" type="text" hidden></el-input>
         </el-form-item>
-        <el-form-item label="交底时间" prop="skillDate">
-          <el-date-picker v-model="form.skillDate" type="date" placeholder="选择交底时间"></el-date-picker>
+        <el-form-item label="工程名称" prop="prjName">
+          <el-input v-model="form.prjName" placeholder="工程名称"></el-input>
         </el-form-item>
-        <el-form-item label="单位名称" prop="companyName">
-          <el-input v-model="form.companyName"></el-input>
+        <el-form-item label="交底时间" prop="disclosureDate">
+          <el-date-picker v-model="form.disclosureDate" type="date" placeholder="选择交底时间"  value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
         </el-form-item>
-        <el-form-item label="分项工程名称" prop="breachProject">
-          <el-input v-model="form.breachProject"></el-input>
+        <el-form-item label="单位名称" prop="constructionOrg">
+          <el-input v-model="form.constructionOrg" placeholder="单位名称"></el-input>
         </el-form-item>
-        <el-form-item label="交底提要" prop="tellAbstract">
-          <el-input v-model="form.tellAbstract"></el-input>
+        <el-form-item label="分项工程名称" prop="branchPrjName">
+          <el-input v-model="form.branchPrjName" placeholder="分项工程名称"></el-input>
         </el-form-item>
-        <el-form-item label="交底内容" prop="content">
-          <el-input type="textarea" :rows="6" placeholder="请输入交底内容" v-model="form.content"></el-input>
+        <el-form-item label="交底提要" prop="disclosureAbstract">
+          <el-input v-model="form.disclosureAbstract" placeholder="交底提要"></el-input>
         </el-form-item>
-        <el-form-item label="交底人" prop="content">
-          <el-input v-model="form.content"></el-input>
+        <el-form-item label="交底内容" prop="disclosureContent">
+          <el-input :rows="6" placeholder="请输入交底内容" v-model="form.disclosureContent"></el-input>
         </el-form-item>
-        <el-form-item label="接收人" prop="reciveTell">
-          <el-input v-model="form.reciveTell"></el-input>
+        <el-form-item label="交底人" prop="disclosurePerson">
+          <el-input v-model="form.disclosurePerson" placeholder="交底人"></el-input>
         </el-form-item>
-         <div class="dialog-footer" style="text-align:center;">
+        <el-form-item label="接收人" prop="receiver">
+          <el-input v-model="form.receiver" placeholder="接收人"></el-input>
+        </el-form-item>
+        <div class="dialog-footer" style="text-align:center;">
           <el-button @click="cancelForm('form')" class="F-Grey" round>取 消</el-button>
           <el-button
             type="primary"
@@ -174,14 +189,83 @@
         </div>
       </el-form>
     </el-dialog>
+      <!-- 详情-->
+     <el-dialog
+    title
+    :visible.sync="dialogFormVisibleDetail"
+    :close-on-click-modal="false"
+    :show-close="false"
+    width="30%"
+  >
+    <div class="AddEquipment_form">
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="grid-content bg-purple">
+            工程名称:
+            <span>{{showdata.prjName}}</span>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="grid-content bg-purple">交底时间:
+             <span>{{showdata.disclosureDate}}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="grid-content bg-purple">
+            施工单位:
+            <span>{{showdata.constructionOrg}}</span>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="grid-content bg-purple">分项工程名称:
+            <span>{{showdata.branchPrjName}}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <div class="grid-content bg-purple">
+            交底提要:
+            <span>{{showdata.disclosureAbstract}}</span>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="grid-content bg-purple">交底人:
+              <span>{{showdata.disclosurePerson}}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="grid-content bg-purple">
+            接受交底人:
+            <span>{{showdata.receiver}}</span>
+          </div>
+        </el-col>
+          <el-col :span="8">
+          <div class="grid-content bg-purple">
+            状态:
+            <span>{{showdata.status}}</span>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <template slot="footer" class="dialog-footer">
+      <el-button type="default" @click="dialogFormVisibleDetail = false" round class="T-R-B-Grey">取消</el-button>
+    </template>
+  </el-dialog>
   </div>
 </template>
 <script>
+import { handleCofirm } from "@/utils/confirm";
 export default {
   data() {
     return {
       token: null, // token
       dialogFormVisible: false,
+      dialogFormVisibleDetail:false,
       // 动态数据
       tableData: [],
       page: 1, // 初始页
@@ -203,39 +287,41 @@ export default {
         time: null
       },
       form: {
-        projectName: "",
-        skillDate: null,
-        companyName: "",
-        breachProject: "",
-        tellAbstract: "",
-        content: "",
-        tellPerson: "",
-        reciveTell: ""
+        technicalId: null,
+        prjName: "",
+        disclosureDate: null,
+        constructionOrg: "",
+        branchPrjName: "",
+        disclosureAbstract: "",
+        disclosureContent: "",
+        disclosurePerson: "",
+        receiver: ""
       },
       formRules: {
-        projectName: [
+        prjName: [
           { required: true, message: "请输入工程名称", trigger: "blur" }
         ],
-        skillDate: [
-          { required: true, message: "请选择交底时间", trigger: "blur" }
+        disclosureDate: [
+          { required: true, message: "请选择交底时间", trigger: "change" }
         ],
-        companyName: [{ required: true, message: "请输入单位名称", trigger: "blur" }],
-        breachProject: [
+        constructionOrg: [
+          { required: true, message: "请输入单位名称", trigger: "blur" }
+        ],
+        branchPrjName: [
           { required: true, message: "请输入分项工程名称", trigger: "blur" }
         ],
-        tellAbstract: [
+        disclosureAbstract: [
           { required: true, message: "请输入交底提要", trigger: "blur" }
         ],
-        content: [
+        disclosureContent: [
           { required: true, message: "请输入交底内容", trigger: "blur" }
         ],
-        tellPerson: [
+        disclosurePerson: [
           { required: true, message: "请输入交底人", trigger: "blur" }
         ],
-        reciveTell: [
-          { required: true, message: "请输入接收人", trigger: "blur" }
-        ]
-      }
+        receiver: [{ required: true, message: "请输入接收人", trigger: "blur" }]
+      },
+      showdata:[]
     };
   },
   created() {
@@ -245,28 +331,54 @@ export default {
     addSkillClick(form) {
       this.$refs[form].validate(valid => {
         //校验
-          alert(valid);
         if (valid) {
-          //新增 id为空
-          var form = this.$refs['form'].model;
-          var params = JSON.stringify({
-            projectName: form.projectName,
-            teamName: form.groupName,
-            teamType: form.profession,
-            teamLeaderName: form.groupLeader,
-            teamLeaderPhone: form.phone,
-            teamMasterId: form.teamMasterId
-          });
-          var url =
-            "/smart/worker/labour/" +
-            sessionStorage.getItem("userId") +
-            "/team";
-          this.http.put(url, params).then(res => {
-            if (res.code == 200) {
-              this.dialogFormVisible = false;
-              this.$refs[form].resetFields();
-            }
-          });
+          var form = this.$refs["form"].model;
+          if (form.technicalId == null) {
+            //新增 id为空
+            var params = JSON.stringify({
+              constructionOrg: form.constructionOrg,
+              disclosurePerson: form.disclosurePerson,
+              receiver: form.receiver,
+              disclosureContent: form.disclosureContent,
+              disclosureDate: form.disclosureDate,
+              prjName: form.prjName,
+              branchPrjName: form.branchPrjName,
+              disclosureAbstract: form.disclosureAbstract
+            });
+            var url =
+              "/smart/worker/train/" +
+              sessionStorage.getItem("userId") +
+              "/technical/1";
+            this.http.post(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+                this.$refs[form].resetFields();
+              }
+            });
+          } else {
+            //新增 id为空
+            var params = JSON.stringify({
+              constructionOrg: form.constructionOrg,
+              disclosurePerson: form.disclosurePerson,
+              receiver: form.receiver,
+              disclosureContent: form.disclosureContent,
+              disclosureDate: form.disclosureDate,
+              prjName: form.prjName,
+              branchPrjName: form.branchPrjName,
+              disclosureAbstract: form.disclosureAbstract,
+              technicalId: form.technicalId
+            });
+            var url =
+              "/smart/worker/train/" +
+              sessionStorage.getItem("userId") +
+              "/technical/1";
+            this.http.put(url, params).then(res => {
+              if (res.code == 200) {
+                this.dialogFormVisible = false;
+                this.$refs[form].resetFields();
+              }
+            });
+          }
         } else {
           console.log("error");
           return false;
@@ -274,8 +386,6 @@ export default {
       });
     },
     skillList() {
-      // 列表请求
-      // 获得搜索的内容
       var company = this.formInline.company;
       var profession = this.formInline.profession;
       var time = this.formInline.time;
@@ -284,67 +394,255 @@ export default {
       var data = JSON.stringify({
         pageSize: this.pageSize,
         page: this.page,
-        company: company,
-        profession: profession,
-        time: time
+        constructionOrg: company,
+        workType: profession,
+        disclosureDate: time
       });
-      var url = "";
-       var result = [
-      {
-        userId: 1,
-        projectName: "地铁安保部",
-        tellDate: 2020,
-        company: "安保部一",
-        breachProject: "部门一",
-        tellAbstract: "123",
-        tellPerson: "123",
-        reciveTell: "22222222",
-        checkState: "22222222",
-        accessory: 2
-      },
-      {
-        userId: 2,
-        projectName: "22222222",
-        tellDate: 2020,
-        company: "44444",
-        breachProject: "44444",
-        tellAbstract: "1111",
-        tellPerson: "44444",
-        reciveTell: "444",
-        checkState: 44444,
-        accessory: 1
-      }
-    ];
+      var url =
+        "/smart/worker/train/" +
+        sessionStorage.getItem("userId") +
+        "/technical/management/1";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
+      var result = [
+        {
+          technicalId: 1,
+          prjName: "地铁安保部",
+          disclosureDate: 2020,
+          constructionOrg: "安保部一",
+          branchPrjName: "部门一",
+          disclosureAbstract: "123",
+          disclosurePerson: "123",
+          receiver: "22222222",
+          status: "22222222"
+        },
+        {
+          technicalId: 2,
+          prjName: "22222222",
+          disclosureDate: 2020,
+          constructionOrg: "44444",
+          branchPrjName: "44444",
+          disclosureAbstract: "1111",
+          disclosurePerson: "44444",
+          receiver: "444",
+          status: 44444
+        }
+      ];
       this.tableData = result;
-      this.total=result.length;
+      this.total = result.length;
     },
     //cancelForm
     cancelForm(form) {
       this.$refs[form].resetFields();
       this.dialogFormVisible = false;
     },
+    submitAll(){
+      var ids = this.changeFun();
+      if (ids.length <= 0) {
+        this.$message("请选择提交的数据！");
+        return;
+      }
+      //未提交0 提交1 通过2 驳回3
+      handleCofirm("确认提交")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          ///smart/worker/train/{userId}/technical/common/{type}/{status}
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/common/1/1";
+          this.http.get(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "提交成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消提交"
+          });
+        });
+    },
+    submit(row){
+      var id =row.technicalId;
+      var ids=[];
+       ids.push(id);
+      //未提交0 提交1 通过2 驳回3
+      handleCofirm("确认提交")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          ///smart/worker/train/{userId}/technical/common/{type}/{status}
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/common/1/1";
+          this.http.get(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "提交成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消提交"
+          });
+        });
+    },
+    pass(row){
+      var id =row.technicalId;
+      var ids=[];
+       ids.push(id);
+      //未提交0 提交1 通过2 驳回3
+      handleCofirm("确认通过")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/common/1/2";
+          this.http.get(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "已通过!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+    reject(row){
+      var id =row.technicalId;
+      var ids=[];
+       ids.push(id);
+      //未提交0 提交1 通过2 驳回3
+      handleCofirm("确认驳回")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/common/1/3";
+          this.http.get(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "已驳回!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+    //导出
+    poiExcel() {
+       // //获得token
+      // var token = sessionStorage.getItem("token");
+      var company = this.formInline.company;
+      var profession = this.formInline.profession;
+      var time = this.formInline.time;
+      var data = JSON.stringify({
+        pageSize: this.pageSize,
+        page: this.page,
+        constructionOrg: company,
+        workType: profession,
+        disclosureDate: time
+      });
+      var url =
+        "/smart/worker/train/" +
+        sessionStorage.getItem("userId") +
+        "/technical/export/1";
+      this.http.post(url, data).then(res => {
+        // // 创建Blob对象，设置文件类型
+        // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
+        // let objectUrl = URL.createObjectURL(blob) // 创建URL
+        // location.href = objectUrl;
+        // URL.revokeObjectURL(objectUrl); // 释放内存
+        // 创建Blob对象，设置文件类型
+        // 自定义文件下载名称  Subway-User-20191223114607
+        var d = new Date();
+        var month = d.getMonth() + 1;
+        var excelName =
+          "Subway-User-" +
+          d.getFullYear() +
+          month +
+          d.getDate() +
+          d.getHours() +
+          d.getMinutes() +
+          d.getSeconds();
+        let blob = new Blob([res.data], {
+          type: "application/vnd.ms-excel"
+        });
+        let objectUrl = URL.createObjectURL(blob); // 创建URL
+        link.href = objectUrl;
+        link.download = excelName; // 自定义文件名
+        link.click(); // 下载文件
+        URL.revokeObjectURL(objectUrl); // 释放内存
+        // alert("调用导出！");
+      });
+    },
     // 初始页Page、初始每页数据数pagesize和数据data
     handleSizeChange: function(size) {
       this.pageSize = size;
-      // this.handleUserList()//每页下拉显示数据
+      // this.skillList()//每页下拉显示数据
     },
     handleCurrentChange: function(page) {
       this.page = page; //点击第几页
-      this.handleUserList();
+      this.skillList();
     },
     pre(cpage) {
       this.page = cpage;
-      // this.handleUserList()
+      // this.skillList()
     },
     //下一页
     next(cpage) {
       this.page = cpage;
-      // this.handleUserList()
+      // this.skillList()
     },
     // 下拉框获得值
     selectCompany(vid) {
       let obj = {};
-      obj = this.companys.find(item => {
+      obj = this.options.find(item => {
         return item.id == vid; // 筛选出匹配数据
       });
       this.formInline.company = obj.id;
@@ -356,26 +654,99 @@ export default {
       });
       this.formInline.profession = obj.id;
     },
-    //列表
-    selectSkillList() {},
     //删除
-    deleteAllClick() {},
-    handleDelete(row) {},
+    deleteAllClick() {
+       var ids = this.changeFun();
+      if (ids.length <= 0) {
+        this.$message("请选择删除的数据！");
+        return;
+      }
+      handleCofirm("确认删除")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/1";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    handleDelete(row) {
+       handleCofirm("确认删除")
+        .then(res => {
+          var ids=[];
+          ids.push(row.technicalId);
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/technical/1";
+          this.http.delete(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     //编辑
-    handleEdit(row) {},
-    //上传
-    upload(row) {},
+    handleEdit(row) {
+      var uid = row.technicalId;
+      this.form.technicalId = uid;
+      var url =
+        "/smart/worker/train/" +
+        sessionStorage.getItem("userId") +
+        "/technical/1/"+uid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+        }
+      });
+      // this.form = row;
+      this.dialogFormVisible = true;
+    },
     //详情
-    getDetail(row) {},
-    //下载
-    download() {},
+    getDetail(row) {
+      this.dialogFormVisibleDetail=true;
+      this.showdata=row;
+    },
     //获得表格前面选中的id值
     changeFun() {
       var ids = new Array();
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].userId;
+        var id = arrays[i].technicalId;
         ids.push(id);
       }
       return ids;
