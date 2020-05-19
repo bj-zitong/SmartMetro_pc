@@ -2,7 +2,7 @@
   <div class="contain">
     <div class="contain-title">
       <img
-        src="../../../resource/logo.png"
+        src="../../../static/image/logo.png"
         style="width:30px;height:30px;margin-top:0px;float:left;margin-left:10px"
       />
       <span class="register-head">城市轨道交通智慧工地管理系统</span>
