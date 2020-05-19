@@ -71,9 +71,10 @@ export default {
       }
     }
   },
+  //向调用它的父级传参
   methods: {
     handleSizeChange(val) {
-      this.$emit('pagination', { page: this.currentPage - 1, limit: val })     //因为后台接口currentPage是从0开始的
+      this.$emit('pagination', { page: this.currentPage - 1, limit: val })  
     },
     handleCurrentChange(val) {
       this.$emit('pagination', { page: val - 1, limit: this.pageSize })

@@ -77,7 +77,7 @@
           </el-table>
         </div>
         <pagination
-        class="pagination-box"
+          class="pagination-box"
           v-if="total>0"
           :total="total"
           :page.sync="listQuery.currentPage"
@@ -137,10 +137,10 @@ export default {
       },
       changOrder: false, //查看详情
       total: 50,
-			listQuery: {
-				currentPage: 0,     //与后台定义好的分页参数
-				pageSize: 10
-			},
+      listQuery: {
+        currentPage: 0, //与后台定义好的分页参数
+        pageSize: 10
+      },
       file: {
         uploadFile: ""
       },
@@ -242,7 +242,6 @@ export default {
     // };
   },
   methods: {
-     
     onSubmit() {
       console.log("submit!");
     },
@@ -258,8 +257,8 @@ export default {
       var workerType = this.formInline.workerType;
       //   // 获得当前用户的id
       var params = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.currentPage,
+        page: this.listQuery.pageSize,
         name: name,
         workerType: workerType
       });
