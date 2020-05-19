@@ -18,8 +18,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-// import Screenfull from "@/components/screenfull";
-// import ChangeTheme from "@/components/theme";
 import main from "../main";
 import headUser from '@/components/Head';
 //头部切换
