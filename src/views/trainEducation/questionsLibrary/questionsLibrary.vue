@@ -1,105 +1,208 @@
 <template>
 <!-- 试题库 -->
-<div class="main-box">
-    <div class="min-box">
-        <div style="margin-bottom: 30px;">
-            <el-upload
-                style="display:inline-block; margin-right: 10px;"
-                class="upload-demo"
-                action=""
-                :show-file-list="false"
-            >
-                <el-button class="T-H-B-SkyBlue" type="primary" @click="uploadQuestionsClick">上传</el-button>
-            </el-upload>
-            <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
-            <el-button class="T-H-B-DarkGreen" @click="downBatchClick">下载</el-button>
-        </div>
-        <el-table
-        ref="multipleTable"
-        :data="tableData"
-        stripe
-        :header-cell-style="headClass"
-        tooltip-effect="dark"
-        style="width: 100%;"
-        @selection-change="handleSelectionChange"
-        >
-            <el-table-column type="selection"></el-table-column>
-            <el-table-column label="公司名称">
-            <template slot-scope="scope">{{ scope.row.content }}</template>
-            </el-table-column>
-            <el-table-column label="操作">
-                <template slot-scope="scope">
-                    <el-button
-                    class="T-R-B-BlackishGreen"
-                    size="mini"
-                    @click="downRowClick(scope.$index, scope.row)"
-                    >下载</el-button>
-                    <el-button
-                    class="T-R-B-Grey"
-                    size="mini"
-                    @click="deleteRowClick(scope.$index, scope.row)"
-                    >删除</el-button>
-                    <el-button
-                    class="T-R-B-DarkViolet"
-                    size="mini"
-                    @click="grantRowClick(scope.$index, scope.row)"
-                    >下发</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <div style="text-align: center; padding-top:20px;">
-            <el-pagination background layout="prev, pager, next"></el-pagination>
-        </div>
+    <div class="main-box">
+        <el-container>
+            <el-menu class="main-con-box">
+                <div class="main-btn-box">
+                    <el-upload
+                        class="upload"
+                        :action="uploadUrl()"
+                        :headers="headers()"
+                        :show-file-list="false"
+                        :before-upload="beforeUpload"
+                        :on-success="uploadSuccess"
+                        :on-error="uploadError"
+                    >
+                        <el-button class="T-H-B-SkyBlue">上传</el-button>
+                    </el-upload>
+                    <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
+                    <el-button class="T-H-B-DarkGreen" @click="downBatchClick">下载</el-button>
+                </div>
+                <!-- 表格& -->
+                <el-table
+                ref="multipleTable"
+                :data="tableData"
+                stripe
+                :header-cell-style="headClass"
+                tooltip-effect="dark"
+                style="width: 100%;"
+                @selection-change="handleSelectionChange"
+                >
+                    <el-table-column type="selection" prop="id"></el-table-column>
+                    <el-table-column prop="paperTitle" label="试卷标题"></el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                            class="T-R-B-BlackishGreen"
+                            size="mini"
+                            @click="downRowClick(scope.$index, scope.row)"
+                            >下载</el-button>
+                            <el-button
+                            class="T-R-B-Grey"
+                            size="mini"
+                            @click="deleteRowClick(scope.$index, scope.row)"
+                            >删除</el-button>
+                            <el-button
+                            class="T-R-B-DarkViolet"
+                            size="mini"
+                            @click="grantRowClick(scope.$index, scope.row)"
+                            >下发</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                    background
+                    class="pagination-box"
+                    layout="total, prev, pager,next"
+                    :current-page="page"
+                    :page-size="pageSize"
+                    :total="total"
+                    @prev-click="prev"
+                    @next-click="next"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                ></el-pagination>
+            </el-menu>
+        </el-container>
     </div>
-</div>
 </template>
 
 <script>
+
+import { handleCofirm } from "@/utils/confirm";
+
 export default {
-  data() {
-    return {
-		tableData: [
-        {
-			content: "钢筋工岗前测试试题二卷",
+    data() {
+        return {
+            //  初始化页面
+            page: 1, // 初始页
+            pageSize: 10, // 默认每页数据量
+            total: 0, //总条数
+            tableData: [], // 初始化表格
         }
-		],
-		multipleSelection: [],
-		screenForm: {
-			grouping: "",
-			person: "",
-			type: ""
-		}
-    };
-	},
-    components: {
-        
+    },
+    created(){
+        this.getTable();
     },
 	methods: {
-		handleSelectionChange(val) {
-			this.multipleSelection = val;
-		},
-        onScreen() {},
-        //  上传
-        uploadQuestionsClick() {
-            
+		// 每页显示多少条 @size-change
+        handleSizeChange(size) {
+            this.pageSize = size;
+            this.getTable();
+        // console.log(this.pageSize)  //每页下拉显示数据
+        },
+        // 点击跳转第几页 @current-change
+        handleCurrentChange(page) {
+            this.page = page;
+            this.getTable();
+        },
+        // 上一页 @prev-click
+        prev(cpage) {
+            this.page = cpage;
+            this.getTable();
+        },
+        // 下一页 @next-click
+        next(cpage) {
+            this.page = cpage;
+            this.getTable();
+        },
+        // 表格加载请求
+        getTable() {
+            var data = JSON.stringify({
+                pageSize: this.pageSize,
+                page: this.page
+            });
+            //请求
+            var url =
+                "/smart/worker/labour/" +
+                sessionStorage.getItem("userId") +
+                "/company/management";
+            this.http.post(url, data).then(res => {
+                if (res.code == 200) {
+                var total = res.total;
+                var rows = res.rows;
+                this.tableData = rows;
+                this.total = total;
+                }
+            });
+            var result = [
+                {
+                    id: 1,
+                    paperTitle: "钢筋工岗前测试试题二卷"
+                }
+            ];
+            this.tableData = result;
+            this.total = result.length;
+        },
+        //获得表格前面选中的id值
+        handleSelectionChange() {
+            var ids = new Array();
+            var arrays = this.$refs.multipleTable.selection;
+            console.log(arrays)
+            for (var i = 0; i < arrays.length; i++) {
+                // 获得id
+                var id = arrays[i].id;
+                ids.push(id);
+            }
+            return ids;
+        },
+        // 上传action地址
+        uploadUrl() {
+            return "/smart/worker/train/1/item/upload"
+        },
+        // 上传请求头
+        headers(){
+            return {
+                Authorization: sessionStorage.getItem('token')
+            }
+        },
+        // 上传之前触发 点击提交时
+        beforeUpload(file) {
+            // 这里做一些判断，现在上传类型未定
+        },
+        // 上传成功触发
+        uploadSuccess(response, file, fileList) {
+            this.$message({
+                type: "success",
+                message: "上传成功"
+            })
+            this.getTable();
+        },
+        // 上传失败触发
+        uploadError(err, file, fileList) {
+            this.$message({
+                type: "error",
+                message: "上传失败"
+            })
         },
         //  批量删除
         deleteBatchClick() {
-            this.$confirm("确定删除该员工信息吗？", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                confirmButtonClass: 'detDel',
-                cancelButtonClass: 'cancelClone',
-                center: true,
-                roundButton: true
-            })
+            var ids = this.handleSelectionChange();
+            if (ids.length <= 0) {
+                this.$message("请选择删除的数据！");
+                return;
+            }
+            handleCofirm("确定删除吗？")
             .then(res => {
-                this.$message({
-                    type: "success",
-                    message: "删除成功!"
+                let data = JSON.stringify(ids);
+                let url =
+                    "/smart/worker/train/" +
+                    sessionStorage.getItem("userId") +
+                    "/item";
+                this.http.delete(url, data).then(res => {
+                    if (res.code == 200) {
+                        let total = res.total;
+                        let rows = res.rows;
+                        this.tableData = rows;
+                        this.total = total;
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                    }
                 });
             })
-            .catch(() => {
+            .catch(err => {
                 this.$message({
                     type: "info",
                     message: "已取消删除"
@@ -108,33 +211,68 @@ export default {
         },
         //  批量下载
         downBatchClick (){
-
-        },
-        //  数据表格-表头样式
-        headClass() {
-            return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
+            let ids = this.handleSelectionChange();
+            if (ids.length <= 0) {
+                this.$message("请选择下载的数据！");
+                return;
+            }
+            let params = null;
+            let url =
+                "/smart/worker/train/" +
+                sessionStorage.getItem("userId") +
+                "/common/"+ ids +"/download";
+            this.http.get(url, params).then(res => {
+                if (res.code == 200) {
+                    this.$message({
+                        type: "success",
+                        message: "下载成功!"
+                    });
+                }
+            })
         },
         //  下载
-        downRowClick () {
-
+        downRowClick (index, row) {
+            let ids = row.id;
+            let params = null;
+            let url =
+                "/smart/worker/train/" +
+                sessionStorage.getItem("userId") +
+                "/common/"+ ids +"/download";
+            this.http.get(url, params).then(res => {
+                if (res.code == 200) {
+                    this.$message({
+                        type: "success",
+                        message: "下载成功!"
+                    });
+                }
+            })
         },
         //  删除
-        deleteRowClick () {
-            this.$confirm("确定删除该员工信息吗？", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                confirmButtonClass: 'detDel',
-                cancelButtonClass: 'cancelClone',
-                center: true,
-                roundButton: true
-            })
+        deleteRowClick(index, row) {
+            let ids = [];
+            ids.push(row.id)
+
+            handleCofirm("确定删除该员工信息吗？")
             .then(res => {
-                this.$message({
-                    type: "success",
-                    message: "删除成功!"
+                let data = JSON.stringify(ids);
+                let url =
+                    "/smart/worker/train/" +
+                    sessionStorage.getItem("userId") +
+                    "/item";
+                this.http.delete(url, data).then(res => {
+                    if (res.code == 200) {
+                    let total = res.total;
+                    let rows = res.rows;
+                    this.tableData = rows;
+                    this.total = total;
+                    this.$message({
+                        type: "success",
+                        message: "删除成功!"
+                    });
+                    }
                 });
             })
-            .catch(() => {
+            .catch(err => {
                 this.$message({
                     type: "info",
                     message: "已取消删除"
@@ -143,44 +281,12 @@ export default {
         },
         //  下发
         grantRowClick () {
-
+            alert('等一下')
+        },
+        //  数据表格-表头样式
+        headClass() {
+            return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
         }
     }
 };
 </script>
-
-<style lang="stylus" scoped>
-.min-box {
-    width: 100%;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
-    opacity: 1;
-    border-radius: 10px;
-    padding: 38px 30px;
-}
-</style>
-
-<style lang="stylus">
-.el-message-box{
-	width:350px;
-	height:200px;
-	background:rgba(255,255,255,1);
-	opacity:1;
-	border-radius:10px;
-}
-.el-message-box__content{
-	margin-bottom : 25px;
-}
-.el-table__row td{
-    text-align: center;
-}
-.detDel{
-	background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
-}
-.el-message-box__btns button:nth-child(2) {
-	margin-left: 56px;
-}
-.cancelClone{
-	background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
-}
-</style>
