@@ -1,243 +1,248 @@
 <template>
-    <div class="main-box">
-<!-- 筛选 -->
-        <el-container>
-            <el-menu class="main-top-box pl30">
-                <el-form :inline="true" ref="screenForm" :model="screenForm">
-                <el-form-item label="劳务公司：">
-                    <el-select v-model="screenForm.company">
-                    <el-option
-                        v-for="item in screenCompany"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id"
-                    ></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="负责人：">
-                    <el-input v-model="screenForm.responsiblePersonName" placeholder="请输入"></el-input>
-                </el-form-item>
-                <el-form-item label="合同类型：">
-                    <el-select v-model="screenForm.contractPeriodType">
-                        <el-option label="固定期限合同" value="0"></el-option>
-                        <el-option label="以完成一定工作为期限的合同" value="1"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onScreen">查询</el-button>
-                </el-form-item>
-                </el-form>
-            </el-menu>
-        </el-container>
+  <div class="main-box">
+    <!-- 筛选 -->
+    <el-container>
+      <el-menu class="main-top-box pl30">
+        <el-form :inline="true" ref="screenForm" :model="screenForm">
+          <el-form-item label="劳务公司：">
+            <el-select v-model="screenForm.company">
+              <el-option
+                v-for="item in screenCompany"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="负责人：">
+            <el-input v-model="screenForm.responsiblePersonName" placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item label="合同类型：">
+            <el-select v-model="screenForm.contractPeriodType">
+              <el-option label="固定期限合同" value="0"></el-option>
+              <el-option label="以完成一定工作为期限的合同" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onScreen">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </el-menu>
+    </el-container>
 
-<!-- 主体 -->
-        <el-container>
-            <el-menu class="main-con-box">
-                <div class="main-btn-box">
-                    <el-button class="T-H-B-DarkBlue" @click="addClick">新增</el-button>
-                    <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
-                    <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
-                    <el-upload
-                        style="display:inline-block; margin-left: 10px;"
-                        class="upload-demo"
-                        action
-                        :show-file-list="false"
-                    >
-                        <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick(this)">导入</el-button>
-                    </el-upload>
-                </div>
-                <el-table
-                    ref="multipleTable"
-                    :data="tableData"
-                    stripe
-                    :header-cell-style="headClass"
-                    tooltip-effect="dark"
-                    style="width: 100%;"
-                    @selection-change="handleSelectionChange"
-                >
-                    <el-table-column
-                        type="selection"
-                        fixed
-                        prop="id"
-                        @selection-change="handleSelectionChange"
-                    ></el-table-column>
-                    <el-table-column prop="company" label="公司名称" min-width="100"></el-table-column>
-                    <el-table-column prop="responsiblePersonName" label="负责人" min-width="90"></el-table-column>
-                    <el-table-column prop="responsiblePersonPhone" label="联系方式" min-width="110"></el-table-column>
-                    <el-table-column prop="serviceCompany" label="服务单位" min-width="80"></el-table-column>
-                    <el-table-column prop="projectCode" label="项目编号" min-width="100"></el-table-column>
-                    <el-table-column prop="projectName" label="项目名称" min-width="100"></el-table-column>
-                    <el-table-column prop="contractCode" label="合同编号" min-width="120"></el-table-column>
-                    <el-table-column label="有效时间" min-width="200">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.startDate}}</span> 至
-                            <span>{{scope.row.endDate}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="contractPeriodType" label="合同期限类型" min-width="210"></el-table-column>
-                    <el-table-column prop="corpCode" label="组织机构代码" min-width="120"></el-table-column>
-                    <el-table-column prop="status" label="状态"></el-table-column>
-                    <el-table-column label="操作" width="240" fixed="right">
-                        <template slot-scope="scope">
-                        <el-button
-                            class="T-R-B-Green"
-                            size="mini"
-                            @click="editRowClick(scope.$index, scope.row)"
-                        >编辑</el-button>
-                        <el-button
-                            class="T-R-B-Grey"
-                            size="mini"
-                            @click="deleteRowClick(scope.$index, scope.row)"
-                        >删除</el-button>
-                        <el-button
-                            class="T-R-B-Violet"
-                            size="mini"
-                            @click="createdTeamClick(scope.$index, scope.row)"
-                        >创建班组</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <el-pagination
-                    background
-                    class="pagination-box"
-                    layout="total, prev, pager,next"
-                    :current-page="page"
-                    :page-size="pageSize"
-                    :total="total"
-                    @prev-click="prev"
-                    @next-click="next"
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                ></el-pagination>
-            </el-menu>
-        </el-container>
-    
-<!-- 添加 -->
-        <el-dialog
-            width="450px"
-            class="popupDialog abow_dialog"
-            :title="titleLabor"
-            :visible.sync="dialogVisibleLabor"
-            :close-on-click-modal="false"
-            :center="true"
-            :show-close="false"
-            :hide-required-asterisk="true"
+    <!-- 主体 -->
+    <el-container>
+      <el-menu class="main-con-box">
+        <div class="main-btn-box">
+          <el-button class="T-H-B-DarkBlue" @click="addClick">新增</el-button>
+          <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
+          <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
+          <el-upload
+            style="display:inline-block; margin-left: 10px;"
+            class="upload-demo"
+            action
+            :show-file-list="false"
+          >
+            <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick(this)">导入</el-button>
+          </el-upload>
+        </div>
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          stripe
+          :header-cell-style="headClass"
+          tooltip-effect="dark"
+          style="width: 100%;"
+          @selection-change="handleSelectionChange"
         >
-            <el-form
-                ref="refLabor"
-                :rules="rulesForm"
-                :model="formLabor"
-                label-width="80px"
-                class="demo-ruleForm"
-            >
-                <el-form-item prop="company" label="公司名称">
-                <el-input v-model="formLabor.company"></el-input>
-                </el-form-item>
-                <el-form-item prop="responsiblePersonName" label="负责人">
-                <el-input v-model="formLabor.responsiblePersonName"></el-input>
-                </el-form-item>
-                <el-form-item prop="responsiblePersonPhone" label="联系方式">
-                <el-input v-model="formLabor.responsiblePersonPhone"></el-input>
-                </el-form-item>
-                <el-form-item prop="serviceCompany" label="服务单位">
-                <el-input v-model="formLabor.serviceCompany"></el-input>
-                </el-form-item>
-                <el-form-item prop="projectCode" label="项目编号">
-                <el-input v-model="formLabor.projectCode"></el-input>
-                </el-form-item>
-                <el-form-item prop="projectName" label="项目名称">
-                <el-input v-model="formLabor.projectName"></el-input>
-                </el-form-item>
-                <el-form-item prop="contractCode" label="合同编号">
-                <el-input v-model="formLabor.contractCode"></el-input>
-                </el-form-item>
-                <el-form-item label="有效时间" required>
-                <el-col :span="11">
-                    <el-form-item prop="startDate">
-                    <el-date-picker
-                        type="date"
-                        :editable="false"
-                        placeholder="开始日期"
-                        v-model="formLabor.startDate"
-                        style="width: 100%;"
-                    ></el-date-picker>
-                    </el-form-item>
-                </el-col>
-                <el-col class="line" :span="2">至</el-col>
-                <el-col :span="11">
-                    <el-form-item prop="endDate">
-                    <el-date-picker
-                        type="date"
-                        :editable="false"
-                        placeholder="结束日期"
-                        v-model="formLabor.endDate"
-                        style="width: 100%;"
-                    ></el-date-picker>
-                    </el-form-item>
-                </el-col>
-                </el-form-item>
-                <el-form-item prop="contractPeriodType" label="合同期限类型">
-                <el-select v-model="formLabor.contractPeriodType">
-                    <el-option label="固定期限合同" value="0"></el-option>
-                    <el-option label="以完成一定工作为期限的合同" value="1"></el-option>
-                </el-select>
-                </el-form-item>
-                <el-form-item prop="corpCode" label="所属企业组织机构代码" class="labelWidth">
-                    <el-input v-model="formLabor.corpCode"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button class="F-Grey" round @click="cloneLaborForm('refLabor')">取消</el-button>
-                    <el-button class="F-Blue" round @click="submiLabortForm('refLabor')">确定</el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog>
+          <el-table-column
+            type="selection"
+            fixed
+            prop="id"
+            @selection-change="handleSelectionChange"
+          ></el-table-column>
+          <el-table-column prop="data" label="公司名称" min-width="100"></el-table-column>
+          <el-table-column prop="name" label="负责人" min-width="90"></el-table-column>
+          <el-table-column prop="address" label="联系方式" min-width="110"></el-table-column>
+          <el-table-column prop="serviceCompany" label="服务单位" min-width="80"></el-table-column>
+          <el-table-column prop="projectCode" label="项目编号" min-width="100"></el-table-column>
+          <el-table-column prop="projectName" label="项目名称" min-width="100"></el-table-column>
+          <el-table-column prop="contractCode" label="合同编号" min-width="120"></el-table-column>
+          <el-table-column label="有效时间" min-width="200">
+            <template slot-scope="scope">
+              <span>{{scope.row.startDate}}</span> 至
+              <span>{{scope.row.endDate}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="contractPeriodType" label="合同期限类型" min-width="210"></el-table-column>
+          <el-table-column prop="corpCode" label="组织机构代码" min-width="120"></el-table-column>
+          <el-table-column prop="status" label="状态"></el-table-column>
+          <el-table-column label="操作" width="240" fixed="right">
+            <template slot-scope="scope">
+              <el-button
+                class="T-R-B-Green"
+                size="mini"
+                @click="editRowClick(scope.$index, scope.row)"
+              >编辑</el-button>
+              <el-button
+                class="T-R-B-Grey"
+                size="mini"
+                @click="deleteRowClick(scope.$index, scope.row)"
+              >删除</el-button>
+              <el-button
+                class="T-R-B-Violet"
+                size="mini"
+                @click="createdTeamClick(scope.$index, scope.row)"
+              >创建班组</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          background
+          class="pagination-box"
+          layout="total, prev, pager,next"
+          :current-page="page"
+          :page-size="pageSize"
+          :total="total"
+          @prev-click="prev"
+          @next-click="next"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        ></el-pagination>
+      </el-menu>
+    </el-container>
 
-<!-- 创建班组 -->
-        <el-dialog
-            width="450px"
-            title="新增班组"
-            class="popupDialog"
-            :visible.sync="dialogVisibleTeam"
-            :center="true"
-            :show-close="false"
-            :close-on-click-modal="false"
-            :hide-required-asterisk="true"
-        >
-            <el-form
-                method="post"
-                ref="refTeam"
-                label-width="100px"
-                :rules="rulesForm"
-                :model="formTeam"
-                action="" 
-            >
-                <el-form-item prop="pLabourCompanyId">
-                    <el-input v-model="formTeam.pLabourCompanyId" type="text" hidden></el-input>
-                </el-form-item>
-                <el-form-item prop="projectName" label="工程名称：">
-                    <el-input v-model="formTeam.projectName" type="text" placeholder="请输入"></el-input>
-                </el-form-item>
-                <el-form-item prop="teamName" label="班组名称：">
-                <el-input v-model="formTeam.teamName" placeholder="请输入"></el-input>
-                </el-form-item>
-                <el-form-item prop="teamType" label="班组类型：">
-                    <el-select v-model="formTeam.teamType" >
-                        <el-option v-for="item in teamOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="teamLeaderName" label="班组长：">
-                    <el-input v-model="formTeam.teamLeaderName" placeholder="请输入"></el-input>
-                </el-form-item>
-                <el-form-item prop="teamLeaderPhone" label="手机号码：">
-                    <el-input v-model="formTeam.teamLeaderPhone" placeholder="请输入"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button class="F-Grey" round @click="cloneTeamForm('refTeam')">取 消</el-button>
-                    <el-button class="F-Blue" round @click="submitTeamForm('refTeam')">确 定</el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog>
-    </div>
+    <!-- 添加 -->
+    <el-dialog
+      width="450px"
+      class="popupDialog abow_dialog"
+      :title="titleLabor"
+      :visible.sync="dialogVisibleLabor"
+      :close-on-click-modal="false"
+      :center="true"
+      :show-close="false"
+      :hide-required-asterisk="true"
+    >
+      <el-form
+        ref="refLabor"
+        :rules="rulesForm"
+        :model="formLabor"
+        label-width="80px"
+        class="demo-ruleForm"
+      >
+        <el-form-item prop="company" label="公司名称">
+          <el-input v-model="formLabor.company"></el-input>
+        </el-form-item>
+        <el-form-item prop="responsiblePersonName" label="负责人">
+          <el-input v-model="formLabor.responsiblePersonName"></el-input>
+        </el-form-item>
+        <el-form-item prop="responsiblePersonPhone" label="联系方式">
+          <el-input v-model="formLabor.responsiblePersonPhone"></el-input>
+        </el-form-item>
+        <el-form-item prop="serviceCompany" label="服务单位">
+          <el-input v-model="formLabor.serviceCompany"></el-input>
+        </el-form-item>
+        <el-form-item prop="projectCode" label="项目编号">
+          <el-input v-model="formLabor.projectCode"></el-input>
+        </el-form-item>
+        <el-form-item prop="projectName" label="项目名称">
+          <el-input v-model="formLabor.projectName"></el-input>
+        </el-form-item>
+        <el-form-item prop="contractCode" label="合同编号">
+          <el-input v-model="formLabor.contractCode"></el-input>
+        </el-form-item>
+        <el-form-item label="有效时间" required>
+          <el-col :span="11">
+            <el-form-item prop="startDate">
+              <el-date-picker
+                type="date"
+                :editable="false"
+                placeholder="开始日期"
+                v-model="formLabor.startDate"
+                style="width: 100%;"
+              ></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col class="line" :span="2">至</el-col>
+          <el-col :span="11">
+            <el-form-item prop="endDate">
+              <el-date-picker
+                type="date"
+                :editable="false"
+                placeholder="结束日期"
+                v-model="formLabor.endDate"
+                style="width: 100%;"
+              ></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item prop="contractPeriodType" label="合同期限类型">
+          <el-select v-model="formLabor.contractPeriodType">
+            <el-option label="固定期限合同" value="0"></el-option>
+            <el-option label="以完成一定工作为期限的合同" value="1"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="corpCode" label="所属企业组织机构代码" class="labelWidth">
+          <el-input v-model="formLabor.corpCode"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button class="F-Grey" round @click="cloneLaborForm('refLabor')">取消</el-button>
+          <el-button class="F-Blue" round @click="submiLabortForm('refLabor')">确定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <!-- 创建班组 -->
+    <el-dialog
+      width="450px"
+      title="新增班组"
+      class="popupDialog"
+      :visible.sync="dialogVisibleTeam"
+      :center="true"
+      :show-close="false"
+      :close-on-click-modal="false"
+      :hide-required-asterisk="true"
+    >
+      <el-form
+        method="post"
+        ref="refTeam"
+        label-width="100px"
+        :rules="rulesForm"
+        :model="formTeam"
+        action
+      >
+        <el-form-item prop="pLabourCompanyId">
+          <el-input v-model="formTeam.pLabourCompanyId" type="text" hidden></el-input>
+        </el-form-item>
+        <el-form-item prop="projectName" label="工程名称：">
+          <el-input v-model="formTeam.projectName" type="text" placeholder="请输入"></el-input>
+        </el-form-item>
+        <el-form-item prop="teamName" label="班组名称：">
+          <el-input v-model="formTeam.teamName" placeholder="请输入"></el-input>
+        </el-form-item>
+        <el-form-item prop="teamType" label="班组类型：">
+          <el-select v-model="formTeam.teamType">
+            <el-option
+              v-for="item in teamOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="teamLeaderName" label="班组长：">
+          <el-input v-model="formTeam.teamLeaderName" placeholder="请输入"></el-input>
+        </el-form-item>
+        <el-form-item prop="teamLeaderPhone" label="手机号码：">
+          <el-input v-model="formTeam.teamLeaderPhone" placeholder="请输入"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button class="F-Grey" round @click="cloneTeamForm('refTeam')">取 消</el-button>
+          <el-button class="F-Blue" round @click="submitTeamForm('refTeam')">确 定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -249,10 +254,46 @@ export default {
     data() {
         return {
             //  初始化页面
+            headClass:{},
             page: 1, // 初始页
             pageSize: 10, // 默认每页数据量
             total: 0, //总条数
-            tableData: [], // 初始化表格
+             tableData: [
+                {
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1510 弄'
+                },
+                {
+                date: '2016-05-04',
+                name: '李小虎',
+                address: '上海市普陀区金沙江路 1511 弄'
+                },
+                {
+                date: '2016-05-01',
+                name: '孙小虎',
+                address: '上海市普陀区金沙江路 1512 弄'
+                },
+                {
+                date: '2016-05-02',
+                name: '朱小虎',
+                address: '上海市普陀区金沙江路 1513 弄'
+                },
+                {
+                date: '2016-05-04',
+                name: '钱小虎',
+                address: '上海市普陀区金沙江路 1514 弄'
+                },
+                {
+                date: '2016-05-01',
+                name: '杜小虎',
+                address: '上海市普陀区金沙江路 1515 弄'
+                },
+                {
+                date: '2016-05-03',
+                name: '赵小虎',
+                address: '上海市普陀区金沙江路 1516 弄'
+                }],
             gridData: [], // 查看下属表格初始化
             dialogVisibleLabor: false, // 添加/编辑弹窗
             dialogVisibleTeam: false,   // 班组
@@ -264,6 +305,20 @@ export default {
                 teamLeaderName: '',
                 teamLeaderPhone: ''
             },
+            tableTitleData: [
+                {
+                label: '日期',
+                prop: 'date'
+                },
+                {
+                label: '姓名',
+                prop: 'name'
+                },
+                {
+                label: '地址',
+                prop: 'address'
+                }
+            ],
             teamOptions: [
                 { id: 0, name: '班组1' },
                 { id: 0, name: '班组2' }
@@ -567,25 +622,27 @@ export default {
         },
 //  导出
         exportStaffClick() {
-        // 导出表格的表头设置
-        //   let allColumns = this.tableTitleData
-        //   var columnNames = []
-        //   var columnValues = []
-        //   for (var i = 0; i < allColumns.length; i++) {
-        //     columnNames[i] = allColumns[i].label
-        //     columnValues[i] = allColumns[i].prop
-        //   }
-        //   require.ensure([], () => {
-        //     const { export_json_to_excel } = require('vendor/Export2Excel')
-        //     const tHeader = columnNames
-        //     const filterVal = columnValues
-        //     const list = this.tableData
-        //     const data = this.formatJson(filterVal, list)
-        //     export_json_to_excel(tHeader, data, '导出excel列表demo')
-        //   })
-        // },
-        // formatJson(filterVal, jsonData) {
-        //   return jsonData.map(v => filterVal.map(j => v[j]))
+        // 导出的方法
+      let allColumns = this.tableTitleData
+      var columnNames = []
+      var columnValues = []
+      for (var i = 0; i < allColumns.length; i++) {
+        columnNames[i] = allColumns[i].label
+        columnValues[i] = allColumns[i].prop
+      }
+      require.ensure([], () => {
+        const { export_json_to_excel } = require('vendor/Export2Excel')
+        const tHeader = columnNames
+        const filterVal = columnValues
+
+        const list = this.tableData
+        const data = this.formatJson(filterVal, list)
+        export_json_to_excel(tHeader, data, '导出excel列表demo')
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
+  }
         },
         //  导入
         importStaffClick() {},
@@ -665,7 +722,7 @@ export default {
         return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
         }
     }
-};
+
 </script>
 
 <style lang="stylus" scoped>

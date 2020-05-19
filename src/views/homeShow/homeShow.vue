@@ -75,6 +75,7 @@
                             type="card"
                             @tab-click="handleAttendanceClick"
                             tab-position="top"
+                            class="tab1"
                         >
                             <el-tab-pane label="班组" name="team">
                                 <div style="padding: 0 100px;">
@@ -1076,5 +1077,8 @@ html, body, .main-container1 {
 .grid-station span{
     font-size:12px;
     color: #0D69F1;
+}
+.tab1 .el-tabs__nav-scroll {
+    padding-left:710px;
 }
 </style>
