@@ -95,19 +95,19 @@
                 <el-button
                   size="mini"
                   class="T-R-B-Cyan"
-                  @click="submit(scope.row)"
+                  @click="submit(scope.row,1)"
                   type="primary"
                 >提交</el-button>
                 <el-button
                   size="mini"
                   class="T-R-B-Cyan"
-                  @click="pass(scope.row)"
+                  @click="submit(scope.row,2)"
                   type="primary"
                 >通过</el-button>
                 <el-button
                   size="mini"
                   class="T-R-B-Cyan"
-                  @click="reject(scope.row)"
+                  @click="submit(scope.row,3)"
                   type="primary"
                 >驳回</el-button>
               </template>
@@ -457,7 +457,7 @@ export default {
             "/smart/worker/train/" +
             sessionStorage.getItem("userId") +
             "/technical/common/1/1";
-          this.http.get(url, data).then(res => {
+          this.http.post(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
               var rows = res.rows;
@@ -477,20 +477,38 @@ export default {
           });
         });
     },
-    submit(row){
+    submit(row,value){
       var id =row.technicalId;
       var ids=[];
        ids.push(id);
+        //未提交0 提交1 通过2 驳回3
+      var title='';
+      var message='';
+      var cancelMessage='';
+      if(value==1){
+        title='确认提交';
+        message='提交成功！';
+        cancelMessage='已取消提交';
+      }
+      if(value==2){
+        title='确认通过';
+        message='已通过！';
+        cancelMessage='已取消';
+      }
+      if(value==3){
+        title='确认驳回';
+        message='已驳回！';
+        cancelMessage='已取消';
+      }
       //未提交0 提交1 通过2 驳回3
-      handleCofirm("确认提交")
+      handleCofirm(title)
         .then(res => {
           var data = JSON.stringify(ids);
-          ///smart/worker/train/{userId}/technical/common/{type}/{status}
           var url =
             "/smart/worker/train/" +
             sessionStorage.getItem("userId") +
-            "/technical/common/1/1";
-          this.http.get(url, data).then(res => {
+            "/technical/common/1/"+value;
+          this.http.post(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
               var rows = res.rows;
@@ -498,7 +516,7 @@ export default {
               this.total = total;
               this.$message({
                 type: "success",
-                message: "提交成功!"
+                message: message
               });
             }
           });
@@ -506,7 +524,7 @@ export default {
         .catch(err => {
           this.$message({
             type: "info",
-            message: "已取消提交"
+            message:cancelMessage
           });
         });
     },
@@ -522,7 +540,7 @@ export default {
             "/smart/worker/train/" +
             sessionStorage.getItem("userId") +
             "/technical/common/1/2";
-          this.http.get(url, data).then(res => {
+          this.http.post(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
               var rows = res.rows;
@@ -554,7 +572,7 @@ export default {
             "/smart/worker/train/" +
             sessionStorage.getItem("userId") +
             "/technical/common/1/3";
-          this.http.get(url, data).then(res => {
+          this.http.post(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
               var rows = res.rows;
