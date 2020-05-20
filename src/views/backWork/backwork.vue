@@ -91,18 +91,14 @@
         </el-table-column>
       </el-table>
       <div style="text-align: center; padding-top:20px;">
-        <el-pagination
-          background
-          :page-sizes="[10, 50,100]"
-          layout="total, sizes,prev, pager,next,jumper"
-          :page-size="pageSize"
-          :current-page="page"
+         <pagination
+          class="pagination-box"
+          v-if="total>0"
           :total="total"
-          @prev-click="prev"
-          @next-click="next"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getTable"
+        />
       </div>
     </div>
     <!-- --------------------------------- -->
@@ -187,14 +183,21 @@
 
 <script>
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "@/components/pagination";
 export default {
+  name: "main-box",
+ components: {
+    Pagination
+  },
   data() {
     return {
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      },
       //  初始化页面
       id: null, // 当前选中的id
       ids: null, // 选中的id
-      page: 1, // 初始页
-      pageSize: 10, // 默认每页数据量
       total: 0, //总条数
       rowIndex: null, //选中当前行下标
       tableData: [], // 初始化表格
@@ -270,10 +273,9 @@ export default {
     this.getLocalStorage();
     this.getTable();
   },
-  components: {},
+  // components: {},
   methods: {
     acrosstheClick(index, scope) {
-      console.log("mouseover");
        this.tableWidth = "600";
       this.rowIndex = index;
     },
@@ -289,33 +291,12 @@ export default {
       this.admin = window.localStorage.getItem("admin");
       this.token = window.localStorage.getItem("token");
     },
-    // 每页显示多少条 @size-change
-    handleSizeChange(size) {
-      this.pageSize = size;
-      this.getTable();
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    // 点击跳转第几页 @current-change
-    handleCurrentChange(page) {
-      this.page = page;
-      this.getTable();
-    },
-    // 上一页 @prev-click
-    prev(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
-    // 下一页 @next-click
-    next(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
         backWorkDate: this.screenForm.backWorkTime,
-        pageSize: this.pageSize,
-        page: this.page
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
       });
       //请求
       // var url =

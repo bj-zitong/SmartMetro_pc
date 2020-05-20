@@ -22,7 +22,7 @@
           <el-button class="T-H-B-DarkBlue" @click="addStaffClick()">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick()">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick()">导出</el-button>
-            <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
+          <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
         </div>
         <div class="tableView">
           <el-table
@@ -58,19 +58,14 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-pagination
-          class="paging"
-          @size-change="handleSizeChange"
-          :current-page="page"
-          layout="total, sizes,prev, pager,next,jumper"
-          :page-size="pageSize"
-          @prev-click="pre"
-          @next-click="next"
-          @current-change="handleCurrentChange"
+        <pagination
+          class="pagination-box"
+          v-if="total>0"
           :total="total"
-          background
-          :page-sizes="[10, 50,100]"
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getOtherStaffs"
+        />
       </el-main>
     </div>
     <otherStaffsdialog v-if="changOrder" ref="turnOrder" />
@@ -110,10 +105,12 @@ import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
 import otherStaffsdialog from "./dialog/otherStaffsdialog";
+import Pagination from "../../components/pagination";
 export default {
   name: "echarts",
   components: {
-    otherStaffsdialog
+    otherStaffsdialog,
+    Pagination
   },
   data() {
     return {
@@ -123,8 +120,6 @@ export default {
         major: "",
         name: ""
       },
-      page: 1, // 初始页
-      pageSize: 8, //    每页的数据
       total: 100, //总条数
       changOrder: false, //查看详情
       tableData: [],
@@ -132,7 +127,11 @@ export default {
       file: {
         uploadFile: ""
       },
-      fileList: []
+      fileList: [],
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      }
     };
   },
   created() {
@@ -145,8 +144,8 @@ export default {
       var name = this.form.name;
       var major = this.form.major;
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         name: name,
         workerType: major
       });
@@ -188,24 +187,6 @@ export default {
       ];
       this.total = result.length;
       this.tableData = result;
-    },
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size; //每页下拉显示数据
-      // this.getOtherStaffs()
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      this.getOtherStaffs(); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      // this.getOtherStaffs()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      // this.getOtherStaffs()
     },
     //新增
     addStaffClick() {
@@ -294,7 +275,6 @@ export default {
               });
             }
           });
-
         })
         .catch(err => {
           this.$message({
@@ -387,7 +367,7 @@ export default {
     },
     //导入
     importCsv() {
-      console.log(this.file.uploadFile[0].raw);
+      // console.log(this.file.uploadFile[0].raw);
       var url =
         "/smart/worker/roster/" +
         sessionStorage.getItem("userId") +

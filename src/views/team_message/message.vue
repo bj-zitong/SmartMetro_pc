@@ -51,25 +51,14 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- 分页 total  //这是显示总共有多少数据，
-                    pagesize //显示当前行的条数
-                    sizes这是下拉框可以选择的，每选择一行，要展示多少内容
-                     :page-sizes="[5, 10, 20, 40]" 下拉选择
-                     layout="total, sizes, prev, pager, next, jumper"
-        -->
-        <el-pagination
-          style="text-align:center;padding:10px;"
-          background
-          @size-change="handleSizeChange"
-          :current-page="page"
-          layout="total, sizes,prev, pager,next,jumper"
-          :page-size="pageSize"
-          :page-sizes="[10, 50,100]"
-          @prev-click="pre"
-          @next-click="next"
-          @current-change="handleCurrentChange"
+        <pagination
+          class="pagination-box"
+          v-if="total>0"
           :total="total"
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getTalks"
+        />
       </div>
     </div>
     <!-- 新增 修改-->
@@ -245,7 +234,12 @@
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "../../components/pagination";
 export default {
+  name: "container",
+  components: {
+    Pagination
+  },
   data() {
     return {
       id: null, //当前选中的id
@@ -253,8 +247,6 @@ export default {
       // 动态数据
       tableData: [],
       persons: [],
-      page: 1, // 初始页
-      pageSize: 8, //    每页的数据
       total: 0, //总条数
       ids: null, //选中的id
       form: {
@@ -341,7 +333,11 @@ export default {
         { id: "2", name: "kkkkkk" },
         { id: "3", name: "tttttt" }
       ],
-      selectedPersonIds: []
+      selectedPersonIds: [],
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      }
     };
   },
   created: function() {
@@ -351,32 +347,10 @@ export default {
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
     },
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size;
-      this.getTalks();
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      this.getTalks();
-      // console.log(this.page); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      // console.log("cpage" + cpage);
-      this.getTalks();
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      // console.log("下一页" + cpage);
-      this.getTalks();
-    },
     getTalks() {
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         company: this.form.laborCompany
       });
       //请求
@@ -423,10 +397,8 @@ export default {
         // 获得id
         var id = arrays[i].teamMasterId;
         ids.push(id);
-        // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      //  this.multipleSelection = val;
     },
     changeFunPerson() {
       var ids = [];
@@ -437,12 +409,10 @@ export default {
       }
       this.selectedPersonIds = ids;
       return ids;
-      // console.log("选中的pids" + ids);
     },
     // 批量删除
     deleteAll() {
       var ids = this.changeFun();
-      // console.log(ids);
       if (ids.length <= 0) {
         this.$message("请选择删除的数据！");
         return;
@@ -497,7 +467,6 @@ export default {
         return item.id == vid; // 筛选出匹配数据
       });
       this.form.laborCompany = obj.id;
-      console.log("劳务公司" + this.form.laborCompany);
     },
     selectEvaluate(vid) {
       let obj = {};
@@ -505,7 +474,6 @@ export default {
         return item.id == vid; // 筛选出匹配数据
       });
       this.evaluated = obj.id;
-      // console.log("选中" + this.evaluated);
     },
     // 删除
     handleDelete(row) {
@@ -542,7 +510,6 @@ export default {
       var uid = row.teamMasterId;
       this.id = uid;
       this.formClass = row;
-      // console.log(uid);
       //获得详情
       var params = null;
       this.formClass.projectName = "123";
@@ -594,7 +561,6 @@ export default {
             }
           });
         } else {
-          console.log("error");
           return false;
         }
       });
@@ -689,7 +655,7 @@ export default {
     cancelSpeachForm(formSpeech) {
       this.outerVisible = false;
       this.$refs[formSpeech].resetFields();
-    },
+    }
   }
 };
 </script>

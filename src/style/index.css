@@ -129,6 +129,7 @@ T-H-B-Grey      灰色
 T-H-B-Cyan      青色
 T-H-B-SkyBlue   天蓝色
 T-H-B-DarkGreen 深绿色
+T-H-B-Yellow 黄色
 */
 .T-H-B-DarkBlue{
   background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);
@@ -209,6 +210,23 @@ T-H-B-DarkGreen 深绿色
   color:rgba(255,255,255,1);
   border: none;
 }
+
+.T-H-B-Yellow{
+  background:linear-gradient(180deg,rgba(252,200,121,1) 0%,rgba(230,149,26,1) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-Yellow:hover, .T-H-B-Yellow:focus{
+  background:linear-gradient(180deg,rgb(247, 207, 146) 0%,rgb(233, 160, 50) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+.T-H-B-Yellow:active{
+  background:linear-gradient(180deg,rgba(252,200,121,1) 0%,rgba(230,149,26,1) 100%);
+  color:rgba(255,255,255,1);
+  border: none;
+}
+
 /*
 表格行按钮
 T 表格 R 行内 B 按钮 -颜色

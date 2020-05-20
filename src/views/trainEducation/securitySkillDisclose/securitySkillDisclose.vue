@@ -75,25 +75,6 @@
             </el-table-column>
           </el-table>
         </div>
-        <!-- 分页 total  //这是显示总共有多少数据，
-                    pagesize //显示当前行的条数
-                    sizes这是下拉框可以选择的，每选择一行，要展示多少内容
-                     :page-sizes="[5, 10, 20, 40]" 下拉选择
-                     layout="total, sizes, prev, pager, next, jumper"
-        -->
-        <!-- <el-pagination
-          class="page-end"
-          @size-change="handleSizeChange()"
-          :current-page="page"
-          :page-sizes="[10, 50,100]"
-          layout="total, sizes,prev, pager,next,jumper"
-          :page-size="pageSize"
-          @prev-click="pre()"
-          @next-click="next()"
-          @current-change="handleCurrentChange()"
-          :total="total"
-          background
-        ></el-pagination> -->
         <pagination
           class="pagination-box"
           v-if="total>0"
@@ -233,7 +214,7 @@ export default {
   data() {
     return {
        listQuery: {
-        currentPage: 0, //与后台定义好的分页参数
+        currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
       token: null, // token
@@ -380,7 +361,7 @@ export default {
       // var  uid = sessionStorage.getItem('uid')
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
-        page: this.listQuery.currentPage+1,
+        page: this.listQuery.currentPage,
         constructionOrg: company,
         workType: profession,
         disclosureDate: time
@@ -423,24 +404,6 @@ export default {
       ];
       this.tableData = result;
       this.total = result.length;
-    },
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size; //每页下拉显示数据
-      // this.handleUserList()
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      this.handleUserList(); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      // this.handleUserList()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      // this.handleUserList()
     },
     // 下拉框获得值
     selectCompany(vid) {
