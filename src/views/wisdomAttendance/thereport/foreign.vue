@@ -154,6 +154,7 @@ export default {
         },
         legend: {
           x: "right",
+          right:'50px',
           data: ["蒸发量", "降水量"]
         },
         calculable: true,
@@ -294,7 +295,7 @@ export default {
 }
 
 .bottom_echarts {
-  width: 97.5%;
+  width: 96.8%;
   height: 350px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);

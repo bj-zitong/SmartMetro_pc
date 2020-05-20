@@ -50,25 +50,24 @@
                   class="T-R-B-Grey"
                   size="mini"
                   type="warning"
-                  @click="personnelDetailClick(scope.row)"
+                  @click="detailClick(scope.row)"
                 >删除</el-button>
                 <el-button
                   class="T-R-B-BlackishGreen btn"
                   size="mini"
                   type="warning"
-                  @click="personnelDetailClick(scope.row)"
+                  @click="throughClick(scope.row)"
                 >通过</el-button>
+                <el-button
+                  class="T-R-B-Cyan"
+                  size="mini"
+                  type="warning"
+                  @click="rejectClick(scope.row)"
+                >驳回</el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
-        <!-- 分页 total  //这是显示总共有多少数据，
-                    pagesize //显示当前行的条数
-                    sizes这是下拉框可以选择的，每选择一行，要展示多少内容
-                     :page-sizes="[5, 10, 20, 40]" 下拉选择
-                     layout="total, sizes, prev, pager, next, jumper"
-
-        -->
         <pagination
           class="pagination-box"
           v-if="total>0"
@@ -99,6 +98,7 @@
 </template>
 <script>
 import Pagination from "@/components/pagination";
+import { handleCofirm } from "@/utils/confirm";
 export default {
   components: {
     Pagination
@@ -116,17 +116,17 @@ export default {
           blackReason: "嗯嗯",
           provePath: "111",
           evaluate: "好好",
-          status:'2'
+          status: "2"
         },
         {
-          uuid: 0,
+          uuid: 1,
           labourCompany: "安保公司",
           name: "张三",
           workType: "木工",
           blackReason: "嗯嗯",
           provePath: "111",
           evaluate: "好好",
-          status:'2'
+          status: "2"
         }
       ],
       total: 50,
@@ -139,12 +139,12 @@ export default {
       }
     };
   },
-  mounted(){
+  mounted() {
     this.getDateList();
   },
   methods: {
-    handleUserList(){
-         this.getDateList()
+    handleUserList() {
+      this.getDateList();
     },
     // 列表请求
     getDateList() {
@@ -190,12 +190,139 @@ export default {
       });
     },
     //取消
-    cancelClick(){
-        
+    cancelClick(row) {
+      var uid = row.uuid;
+      var ids = [];
+      ids.push(uid);
+      console.log(ids);
+      // /smart/worker/integrity/{userId}/black/change/{status}
+      handleCofirm("确认取消")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/integrity/" +
+            sessionStorage.getItem("userId") +
+            "/black/change/1";
+          this.http.post(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "取消成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
     },
-    changeFun(){
-
-    }
+    //通过
+    throughClick(row) {
+      var uid = row.uuid;
+      var ids = [];
+      ids.push(uid);
+      console.log(ids);
+      // /smart/worker/integrity/{userId}/black/change/{status}
+      handleCofirm("确认通过")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/integrity/" +
+            sessionStorage.getItem("userId") +
+            "/black/change/2";
+          this.http.post(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "通过成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消通过"
+          });
+        });
+    },
+    //驳回
+    rejectClick(row) {
+      var uid = row.uuid;
+      var ids = [];
+      ids.push(uid);
+      console.log(ids);
+      // /smart/worker/integrity/{userId}/black/change/{status}
+      handleCofirm("确认驳回")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/integrity/" +
+            sessionStorage.getItem("userId") +
+            "/black/change/3";
+          this.http.post(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "驳回成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消驳回"
+          });
+        });
+    },
+    detailClick(row) {
+      var uid = row.uuid;
+      var ids = [];
+      ids.push(uid);
+      handleCofirm("确认删除")
+        .then(res => {
+          var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/integrity/" +
+            sessionStorage.getItem("userId") +
+            "/black";
+          this.http.post(url, data).then(res => {
+            if (res.code == 200) {
+              var total = res.total;
+              var rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    changeFun() {}
   }
 };
 </script>

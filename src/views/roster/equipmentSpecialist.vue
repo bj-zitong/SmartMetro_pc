@@ -117,6 +117,7 @@ import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
 import equipmentdialog from "./dialog/equipmentdialog";
+
 export default {
   name: "echarts",
   components: {

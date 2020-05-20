@@ -151,7 +151,14 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination background layout="prev, pager, next" :total="1000" class="pagination-box"></el-pagination>
+           <pagination
+          class="pagination-box"
+          v-if="total>0"
+          :total="total"
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getDataFun"
+        />
           <!-- </el-main> -->
         </div>
       </el-menu>
@@ -242,10 +249,12 @@ import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
 import personneldialog from "./dialog/personneldialog";
+import Pagination from "@/components/pagination";
 export default {
   name: "echarts",
   components: {
-    personneldialog
+    personneldialog,
+    Pagination
   },
   data() {
     return {
@@ -275,9 +284,11 @@ export default {
       headClass: headClass,
       centerDialogVisible: false,
       evaluatDialogVisible: false,
-      page: 1, // 初始页
-      pageSize: 10, // 默认每页数据量
-      total: 0, //总条数
+      total: 50,
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      },
       options: options,
       btnShow: false,
       tableWidth: "300",
@@ -363,6 +374,10 @@ export default {
     addStaffClick() {
       this.$router.push({ path: "/LabourNewlyadded" });
     },
+    //  listQuery: {
+    //     currentPage: 1, //与后台定义好的分页参数
+    //     pageSize: 10
+    //   },
     //表格渲染
     getDataFun() {
       let _this = this;
@@ -371,8 +386,8 @@ export default {
         name: _this.formInline.name,
         jobNum: _this.formInline.jobNum,
         workerType: _this.formInline.workerType,
-        pageSize: _this.pageSize,
-        page: _this.page
+        pageSize: _this.listQuery.pageSize,
+        page: _this.listQuery.currentPage
       });
       var url =
         "/smart/worker/roster/" +
@@ -383,7 +398,7 @@ export default {
           var total = res.total;
           var rows = res.rows;
           this.tableData = rows;
-          this.total = total;
+          this.listQuery.total = total;
         }
       });
     },
