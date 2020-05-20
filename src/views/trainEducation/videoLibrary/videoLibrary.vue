@@ -1,4 +1,5 @@
 <template>
+<!-- 人管智慧管理-培训教育-视频库 -->
     <div class="main-box">
 <!-- 头部 -->
         <el-container>
@@ -6,9 +7,8 @@
             <el-menu class="main-top-box">
                 <el-form :inline="true" ref="screenForm" :model="screenForm">
                     <el-form-item label="视频类型：">
-                        <el-select v-model="screenForm.grouping" placeholder="请选择类型">
-                            <el-option label="视频类型1" value="0"></el-option>
-                            <el-option label="视频类型2" value="1"></el-option>
+                        <el-select v-model="screenForm.videoType" placeholder="请选择类型">
+                            <el-option v-for="item in videoTypes" :key="item.index" :label="item.label" :value="item.index"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
@@ -24,10 +24,16 @@
                 <div class="main-btn-box">
                     <el-upload
                         class="upload"
-                        action=""
+                        accept=".qlv, .mp4, .qsv, .ogg, .flv, .avi, .wmv, .rmvb"
+                        :action="uploadUrl()"
+                        :data="uploadData()"
+                        :headers="headers()"
                         :show-file-list="false"
+                        :before-upload="beforeUpload"
+                        :on-success="uploadSuccess"
+                        :on-error="uploadError"
                     >
-                        <el-button class="T-H-B-SkyBlue" type="primary" @click="uploadQuestionsClick">上传</el-button>
+                        <el-button class="T-H-B-SkyBlue">上传</el-button>
                     </el-upload>
                     <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
                 </div>
@@ -78,6 +84,9 @@
 </template>
 
 <script>
+
+import { handleCofirm } from "@/utils/confirm";
+
 export default {
     data() {
         return {
@@ -85,11 +94,14 @@ export default {
             pageSize: 10, // 默认每页数据量
             total: 0, //总条数
             tableData: [], // 初始化表格
-            screenForm: { // 筛选
-                grouping: "",
-                person: "",
-                type: ""
-            }
+            screenForm: {
+                videoType: ""
+            },
+            videoTypes: [
+                { index: 1, label: "mp41" },
+                { index: 2, label: "mp42" },
+                { index: 3, label: "mp43" }
+            ],
         }
     },
     created() {
@@ -101,7 +113,6 @@ export default {
         handleSizeChange(size) {
             this.pageSize = size;
             this.getTable();
-        // console.log(this.pageSize)  //每页下拉显示数据
         },
         // 点击跳转第几页 @current-change
         handleCurrentChange(page) {
@@ -126,9 +137,9 @@ export default {
             });
             //请求
             var url =
-                "/smart/worker/labour/" +
+                "/smart/worker/train/" +
                 sessionStorage.getItem("userId") +
-                "/company/management";
+                "/video/management";
             this.http.post(url, data).then(res => {
                 if (res.code == 200) {
                 var total = res.total;
@@ -165,47 +176,86 @@ export default {
                 // 获得id
                 var id = arrays[i].id;
                 ids.push(id);
-                // console.log("获得id"+arrays[i].userId);
             }
             return ids;
-            //  this.multipleSelection = val;
         },
         // 查询
         onScreen() {
             let data = JSON.stringify(this.screenForm);
+            let url =
+                "/smart/worker/train/" +
+                sessionStorage.getItem("userId") +
+                "/video/management";
             this.http
-                .post("/smart/worker/labour/1/company/management", data)
-                .then(res => {
+            .post(url, data)
+            .then(res => {
                 console.log(res);
             });
         },
-        uploadQuestionsClick () {
-
-		},
-//批量删除
+        // 上传action地址
+        uploadUrl() {
+            return "/smart/worker/train/"+ sessionStorage.getItem('userId') +"/video/upload"
+        },
+        // 上传请求头
+        headers() {
+            return {
+                Authorization: sessionStorage.getItem('token')
+            }
+        },
+        // 传参
+        uploadData(){
+            return {
+                videoType: '视频类型1'
+            }
+        },
+        // 上传之前触发 点击提交时
+        beforeUpload(file) {
+            console.log(file)
+            const isLt10M = file.size / 1024 / 1024  < 10;
+            if (!isLt10M) {
+                this.$message.error('上传视频大小不能超过10MB哦!');
+                return false;
+            }
+        },
+        // 上传成功触发
+        uploadSuccess(response, file, fileList) {
+            this.$message({
+                type: "success",
+                message: "上传成功"
+            })
+            this.getTable();
+        },
+        // 上传失败触发
+        uploadError(err, file, fileList) {
+            this.$message({
+                type: "error",
+                message: "上传失败"
+            })
+        },
+        //  批量删除
         deleteBatchClick() {
             var ids = this.handleSelectionChange();
             if (ids.length <= 0) {
                 this.$message("请选择删除的数据！");
                 return;
             }
-            handleCofirm("确定删除该员工信息吗？")
+            handleCofirm("确定删除吗？")
             .then(res => {
                 let data = JSON.stringify(ids);
                 let url =
-                    "/smart/worker/labour/" +
+                    "/smart/worker/train/" +
                     sessionStorage.getItem("userId") +
-                    "/company";
+                    "/video";
                 this.http.delete(url, data).then(res => {
                     if (res.code == 200) {
-                    let total = res.total;
-                    let rows = res.rows;
-                    this.tableData = rows;
-                    this.total = total;
-                    this.$message({
-                        type: "success",
-                        message: "删除成功!"
-                    });
+                        let total = res.total;
+                        let rows = res.rows;
+                        this.tableData = rows;
+                        this.total = total;
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
                     }
                 });
             })
@@ -218,31 +268,43 @@ export default {
         },
         //  表格操作
         //  下载
-        downRowClick () {
-
+        downRowClick (index, row) {
+            let params = null;
+            let url = "/smart/worker/train/1/common/"+ row.id +"/download"
+            this.http.get(url, params)
+            .then(res => {
+                if(res.data == 200) {
+                    this.$message({
+                        type:"success",
+                        message:"下载成功"
+                    })
+                }
+            })
+            .catch(err => {
+                this.$message({
+                    type:"success",
+                    message:"下载失败"
+                })
+            })
         },
 //删除
         deleteRowClick(index, row) {
             let ids = [];
             ids.push(row.id)
 
-            handleCofirm("确定删除该员工信息吗？")
+            handleCofirm("确定删除吗？")
             .then(res => {
                 var data = JSON.stringify(ids);
                 var url =
-                    "/smart/worker/labour/" +
+                    "/smart/worker/train/" +
                     sessionStorage.getItem("userId") +
-                    "/company";
+                    "/video";
                 this.http.delete(url, data).then(res => {
                     if (res.code == 200) {
-                    var total = res.total;
-                    var rows = res.rows;
-                    this.tableData = rows;
-                    this.total = total;
-                    this.$message({
-                        type: "success",
-                        message: "删除成功!"
-                    });
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
                     }
                 });
             })
