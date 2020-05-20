@@ -29,7 +29,12 @@
             :header-cell-style="headClass"
             style="width: 100%"
           >
-            <el-table-column type="selection" width="65" prop="pOutlanderId" @selection-change="changeFun"></el-table-column>
+            <el-table-column
+              type="selection"
+              width="65"
+              prop="pOutlanderId"
+              @selection-change="changeFun"
+            ></el-table-column>
             <el-table-column prop="name" label="姓名" width="120"></el-table-column>
             <el-table-column prop="idNum" label="身份证号" width="150"></el-table-column>
             <el-table-column prop="phone" label="电话" width="150"></el-table-column>
@@ -47,25 +52,14 @@
             </el-table-column>
           </el-table>
         </div>
-        <!-- 分页 total  //这是显示总共有多少数据，
-                    pagesize //显示当前行的条数
-                    sizes这是下拉框可以选择的，每选择一行，要展示多少内容
-                     :page-sizes="[5, 10, 20, 40]" 下拉选择
-                     layout="total, sizes, prev, pager, next, jumper"
-        -->
-        <el-pagination
-          class="page-end"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="page"
-          :page-sizes="[10, 50,100]"
-          :page-size="pageSize"
-          layout="total, sizes,prev, pager,next,jumper"
-          @prev-click="pre"
-          @next-click="next"
+        <pagination
+          class="pagination-box"
+          v-if="total>0"
           :total="total"
-          background
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="handleUserList"
+        />
       </el-main>
     </div>
     <!--新增-->
@@ -154,71 +148,84 @@
       </el-dialog>
     </div>
     <!-- 详情-->
-     <el-dialog
-    title
-    :visible.sync="dialogFormVisibleDetail"
-    :close-on-click-modal="false"
-    :show-close="false"
-    width="30%"
-  >
-    <div class="AddEquipment_form">
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            姓名:
-            <span>9996666</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">身份证号:
-             <span>9996666</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            来访单位:
-            <span>9996666666666</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">被访部门:
-            <span>9996666666666</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            被访人姓名:
-            <span>9996666666666</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">来访事由:
+    <el-dialog
+      title
+      :visible.sync="dialogFormVisibleDetail"
+      :close-on-click-modal="false"
+      :show-close="false"
+      width="30%"
+    >
+      <div class="AddEquipment_form">
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              姓名:
+              <span>9996666</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              身份证号:
+              <span>9996666</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              来访单位:
               <span>9996666666666</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            来访时间:
-            <span>9996666666666</span>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <template slot="footer" class="dialog-footer">
-      <el-button type="default" @click="dialogFormVisibleDetail = false" round class="T-R-B-Grey">取消</el-button>
-    </template>
-  </el-dialog>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              被访部门:
+              <span>9996666666666</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              被访人姓名:
+              <span>9996666666666</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              来访事由:
+              <span>9996666666666</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="grid-content bg-purple">
+              来访时间:
+              <span>9996666666666</span>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <template slot="footer" class="dialog-footer">
+        <el-button
+          type="default"
+          @click="dialogFormVisibleDetail = false"
+          round
+          class="T-R-B-Grey"
+        >取消</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "../../components/pagination";
 export default {
+  name: "container",
+  components: {
+    Pagination
+  },
   data() {
     return {
       token: null, // token
@@ -281,6 +288,10 @@ export default {
         intervieweeDate: [
           { required: true, message: "请选择被访时间", trigger: "change" }
         ]
+      },
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
       }
     };
   },
@@ -303,39 +314,20 @@ export default {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
-          var form=this.form;
-          form.name=result.name;
-          form.idNum=result.idNum;
-          form.phone=result.phone;
-          form.company=result.company;
-          form.intervieweeDepartmentId=result.intervieweeDepartmentId;
-          form.interviewee=result.interviewee;
-          form.busNum=result.busNum;
-          form.visitReason=result.visitReason;
-          form.visitTime=result.visitTime;
-          form.pOutlanderId=id;
+          var form = this.form;
+          form.name = result.name;
+          form.idNum = result.idNum;
+          form.phone = result.phone;
+          form.company = result.company;
+          form.intervieweeDepartmentId = result.intervieweeDepartmentId;
+          form.interviewee = result.interviewee;
+          form.busNum = result.busNum;
+          form.visitReason = result.visitReason;
+          form.visitTime = result.visitTime;
+          form.pOutlanderId = id;
         }
       });
       this.dialogFormVisibleDetail = true;
-    },
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size; //每页下拉显示数据
-      this.handleUserList()
-    },
-    handleCurrentChange: function(page) {
-      console.log('页面'+page);
-      this.page = page;
-      this.handleUserList(); //几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      this.handleUserList()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      this.handleUserList()
     },
     // 下拉框获得值
     selectProfession(vid) {
@@ -394,8 +386,7 @@ export default {
               busNum: this.form.carNum,
               interviewee: this.form.interviewee,
               visitReason: this.form.intervieweeReason,
-              visitTime: this.form.intervieweeDate,
-
+              visitTime: this.form.intervieweeDate
             });
             var url =
               "/smart/worker/roster/" +
@@ -407,7 +398,7 @@ export default {
                 this.dialogFormVisible = false;
               }
             });
-             this.$refs[form].resetFields();
+            this.$refs[form].resetFields();
             this.dialogFormVisible = false;
           }
         } else {
@@ -415,7 +406,7 @@ export default {
         }
       });
     },
-    cancel(form){
+    cancel(form) {
       this.dialogFormVisible = false;
       this.$refs[form].resetFields();
     },
@@ -504,8 +495,8 @@ export default {
       var unum = this.formInline.searchUname;
       //   // 获得当前用户的id
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         name: uname,
         company: unum
       });
@@ -693,43 +684,44 @@ export default {
 <style scoped lang="stylus">
 .container {
   .el-row {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 
-  &:last-child {
-    margin-bottom: 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
-}
 
-.el-col {
-  border-radius: 4px;
-}
-
-.bg-purple-dark {
-  // background: #99a9bf;
-}
-
-.bg-purple {
-  // background: #d3dce6;
-}
-
-.bg-purple-light {
-  // background: #e5e9f2;
-}
-
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-  font-size: 14px;
-
-  span {
-    color: rgba(0, 88, 162, 1);
+  .el-col {
+    border-radius: 4px;
   }
-}
 
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
+  .bg-purple-dark {
+    // background: #99a9bf;
+  }
+
+  .bg-purple {
+    // background: #d3dce6;
+  }
+
+  .bg-purple-light {
+    // background: #e5e9f2;
+  }
+
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+    font-size: 14px;
+
+    span {
+      color: rgba(0, 88, 162, 1);
+    }
+  }
+
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+
   .el-header, .el-footer {
     background-color: #B3C0D1;
     color: #333;

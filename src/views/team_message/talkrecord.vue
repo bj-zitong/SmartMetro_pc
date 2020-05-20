@@ -53,27 +53,6 @@
             <!-- accessoryPath 路径-->
             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope">
-                <!-- <el-form :model="videoForm" ref="videoForm">
-                  <el-form-item label prop="getVideo">
-                    <el-upload
-                      action
-                      :on-change="handleChange(scope.row)"
-                      :file-list="fileList"
-                      accept=".mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb"
-                      multiple
-                      v-model="videoForm.getVideo"
-                      @click="uploadVideo(scope.row)"
-                      :auto-upload="false"
-                    >
-                      <img
-                        src="../../../static/image/shangchuan.png"
-                        style="width:26px;height:26px"
-                      />
-                    </el-upload>
-                  </el-form-item>
-                </el-form>-->
-                <!--
-                <i class="el-icon-upload" style="width:26px;height:26px"></i>-->
                 <img
                   src="../../../static/image/shangchuan.png"
                   style="width:26px;height:26px"
@@ -89,25 +68,14 @@
             </el-table-column>
           </el-table>
         </div>
-        <!-- 分页 total  //这是显示总共有多少数据，
-                    pagesize //显示当前行的条数
-                    sizes这是下拉框可以选择的，每选择一行，要展示多少内容
-                     :page-sizes="[5, 10, 20, 40]" 下拉选择
-                     layout="total, sizes, prev, pager, next, jumper"
-        -->
-        <el-pagination
-          class="page-view"
-          background
-          @size-change="handleSizeChange"
-          :current-page="page"
-          layout="total, sizes,prev, pager,next,jumper"
-          :page-size="pageSize"
-          :page-sizes="[10, 50,100]"
-          @prev-click="pre"
-          @next-click="next"
-          @current-change="handleCurrentChange"
+        <pagination
+          class="pagination-box"
+          v-if="total>0"
           :total="total"
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getTalks"
+        />
       </el-main>
     </div>
     <!--编辑讲话-->
@@ -235,7 +203,12 @@
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "../../components/pagination";
 export default {
+  name: "container",
+  components: {
+    Pagination
+  },
   data() {
     return {
       id: null, //当前选中的id
@@ -246,8 +219,6 @@ export default {
       // 动态数据
       tableData: [],
       persons: [],
-      page: 1, // 初始页
-      pageSize: 8, //    每页的数据
       total: 0, //总条数
       ids: null, //选中的id
       outerVisible: false, //新增讲话
@@ -297,7 +268,11 @@ export default {
         { id: 1, name: "劳务公司一" },
         { id: 2, name: "劳务公司二" },
         { id: 3, name: "劳务公司三" }
-      ]
+      ],
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      }
     };
   },
   created: function() {
@@ -312,7 +287,7 @@ export default {
       this.file.uploadFile = fileList;
     },
     impotVideo() {
-      console.log(this.videoForm.getVideo[0].raw);
+      // console.log(this.videoForm.getVideo[0].raw);
       var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -329,32 +304,10 @@ export default {
       this.videoForm.getVideo = false;
     },
     handlePreview(row, file) {},
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size;
-      // this.getTalks()
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      this.getTalks();
-      // console.log(this.page); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      // console.log("cpage" + cpage);
-      // this.getTalks()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      // console.log("下一页" + cpage);
-      // this.getTalks()
-    },
     getTalks() {
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         company: this.form.laborCompany
       });
       var url =
@@ -408,10 +361,8 @@ export default {
         // 获得id
         var id = arrays[i].pShiftMeetingId;
         ids.push(id);
-        // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      //  this.multipleSelection = val;
     },
     changeFunPerson() {
       var ids = [];
@@ -422,7 +373,6 @@ export default {
       }
       this.selectedPersonIds = ids;
       return ids;
-      // console.log("选中的pids" + ids);
     },
     // 批量删除
     deleteAll() {
@@ -487,12 +437,6 @@ export default {
     uploadVideo(row) {
       var uid = row.pShiftMeetingId;
       this.id = uid;
-      // this.uploadUrl =
-      //   "/smart/worker/labour/" +
-      //   sessionStorage.getItem("userId") +
-      //   "/team/" +
-      //   uid +
-      //   "/meeting/upload";
       this.csvVisible = true;
     },
     //选择下拉安全用品
@@ -521,9 +465,8 @@ export default {
     },
     //编辑讲话
     handleEdit(row) {
-      console.log(row);
       var uid = row.pShiftMeetingId;
-       this.formSpeech=row;
+      this.formSpeech = row;
       //获得详情
       var url =
         "/smart/worker/labour/" +
@@ -578,9 +521,9 @@ export default {
         }
       });
     },
-    cancelForm(formSpeech){
-        this.outerVisible=false;
-        this.$refs[formSpeech].resetFields();
+    cancelForm(formSpeech) {
+      this.outerVisible = false;
+      this.$refs[formSpeech].resetFields();
     },
     //选择劳务公司
     selectCompanys(vid) {
@@ -589,7 +532,6 @@ export default {
         return item.id == vid; // 筛选出匹配数据
       });
       this.form.laborCompany = obj.id;
-      console.log("劳务公司" + this.form.laborCompany);
     }
   }
 };
