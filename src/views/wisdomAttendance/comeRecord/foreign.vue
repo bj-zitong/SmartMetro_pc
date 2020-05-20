@@ -1,5 +1,5 @@
 <template>
-<!-- 外来 -->
+  <!-- 外来 -->
   <div class="container">
     <el-container>
       <el-main class="main-content">
@@ -15,7 +15,7 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-       <el-button @click="deleteBatchClick" class="T-H-B-Grey">删除</el-button>
+        <el-button @click="deleteBatchClick" class="T-H-B-Grey">删除</el-button>
         <el-button @click="poiExcel" class="T-H-B-Cyan">导出</el-button>
         <div class="table-content">
           <el-table
@@ -46,82 +46,82 @@
             </el-table-column>
           </el-table>
         </div>
-       <!-- 分页& -->
+        <!-- 分页& -->
         <el-pagination
-            background
-            class="pagination-box"
-            layout="total, prev, pager,next"
-            :current-page="page"
-            :page-size="pageSize"
-            :total="total"
-            @prev-click="prev"
-            @next-click="next"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+          background
+          class="pagination-box"
+          layout="total, prev, pager,next"
+          :current-page="page"
+          :page-size="pageSize"
+          :total="total"
+          @prev-click="prev"
+          @next-click="next"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         ></el-pagination>
       </el-main>
     </div>
     <!-- 查看详情 -->
     <el-dialog
-        width="450px"
-        class="popupDialog seeDetails"
-        title="出入记录"
-        :visible.sync="dialogFormVisible"
-        :close-on-click-modal="false"
-        :center="true"
-        :show-close="true"
-        :hide-required-asterisk="true"
+      width="450px"
+      class="popupDialog seeDetails"
+      title="出入记录"
+      :visible.sync="dialogFormVisible"
+      :close-on-click-modal="false"
+      :center="true"
+      :show-close="true"
+      :hide-required-asterisk="true"
     >
-        <el-row>
-            <el-col :span="8">
-                <span>作业区域：</span>
-            </el-col>
-            <el-col :span="16">
-                <span class="colorB">{{ workingArea }}</span>
-            </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="8">
-                <span>作业设备：</span>
-            </el-col>
-            <el-col :span="16">
-                <span class="colorB">{{ equipmentNo }}</span>
-            </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="8">
-                <span>打卡时间：</span>
-            </el-col>
-            <el-col :span="16">
-                <span class="colorR">{{ date }} {{ direction }}</span>
-            </el-col>
-        </el-row>
-        <br>
-        <br>
-        <el-row>
-            <el-col :span="8">
-                <span>作业区域：</span>
-            </el-col>
-            <el-col :span="16">
-                <span class="colorB">{{ workingArea }}</span>
-            </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="8">
-                <span>作业设备：</span>
-            </el-col>
-            <el-col :span="16">
-                <span class="colorB">{{ equipmentNo }}</span>
-            </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="8">
-                <span>打卡时间：</span>
-            </el-col>
-            <el-col :span="16">
-                <span class="colorG">{{ date }} {{ direction }}</span>
-            </el-col>
-        </el-row>
+      <el-row>
+        <el-col :span="8">
+          <span>作业区域：</span>
+        </el-col>
+        <el-col :span="16">
+          <span class="colorB">{{ workingArea }}</span>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <span>作业设备：</span>
+        </el-col>
+        <el-col :span="16">
+          <span class="colorB">{{ equipmentNo }}</span>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <span>打卡时间：</span>
+        </el-col>
+        <el-col :span="16">
+          <span class="colorR">{{ date }} {{ direction }}</span>
+        </el-col>
+      </el-row>
+      <br />
+      <br />
+      <el-row>
+        <el-col :span="8">
+          <span>作业区域：</span>
+        </el-col>
+        <el-col :span="16">
+          <span class="colorB">{{ workingArea }}</span>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <span>作业设备：</span>
+        </el-col>
+        <el-col :span="16">
+          <span class="colorB">{{ equipmentNo }}</span>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <span>打卡时间：</span>
+        </el-col>
+        <el-col :span="16">
+          <span class="colorG">{{ date }} {{ direction }}</span>
+        </el-col>
+      </el-row>
     </el-dialog>
   </div>
 </template>
@@ -132,7 +132,7 @@ import { headClass } from "@/utils";
 export default {
   data() {
     return {
-      headClass:headClass,
+      headClass: headClass,
       dialogFormVisible: false,
       // 动态数据
       page: 1, // 初始页
@@ -146,158 +146,161 @@ export default {
         { id: 3, name: "部门三" }
       ],
       tableData: [],
-      screenForm: { // 筛选
-        name: ''
+      screenForm: {
+        // 筛选
+        name: ""
       },
-      workingArea: '昌平三班南段',
-      equipmentNo: '西南侧挖掘机设备一台',
-      date: '2020-4-30 14:22',
-      direction: '出'
+      workingArea: "昌平三班南段",
+      equipmentNo: "西南侧挖掘机设备一台",
+      date: "2020-4-30 14:22",
+      direction: "出"
     };
   },
   created: function() {
     this.getTable();
   },
   methods: {
-      // 每页显示多少条 @size-change
-        handleSizeChange(size) {
-            this.pageSize = size;
-            this.getTable();
+    // 每页显示多少条 @size-change
+    handleSizeChange(size) {
+      this.pageSize = size;
+      this.getTable();
+    },
+    // 点击跳转第几页 @current-change
+    handleCurrentChange(page) {
+      this.page = page;
+      this.getTable();
+    },
+    // 上一页 @prev-click
+    prev(cpage) {
+      this.page = cpage;
+      this.getTable();
+    },
+    // 下一页 @next-click
+    next(cpage) {
+      this.page = cpage;
+      this.getTable();
+    },
+    // 表格加载请求
+    getTable() {
+      var data = JSON.stringify({
+        pageSize: this.pageSize,
+        page: this.page
+      });
+      //请求
+      var url =
+        "/smart/worker/access/" +
+        sessionStorage.getItem("userId") +
+        "/outlander/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.total;
+          var rows = res.rows;
+          this.tableData = rows;
+          this.total = total;
+        }
+      });
+      var result = [
+        {
+          pAccessId: 1,
+          name: "张三",
+          idNum: "232323000000000000",
+          company: "单位1",
+          visitReason: "吃饭",
+          equipmentNo: "设备1",
+          date: "8小时",
+          direction: "入"
         },
-        // 点击跳转第几页 @current-change
-        handleCurrentChange(page) {
-            this.page = page;
-            this.getTable();
-        },
-        // 上一页 @prev-click
-        prev(cpage) {
-            this.page = cpage;
-            this.getTable();
-        },
-        // 下一页 @next-click
-        next(cpage) {
-            this.page = cpage;
-            this.getTable();
-        },
-        // 表格加载请求
-        getTable() {
-            var data = JSON.stringify({
-                pageSize: this.pageSize,
-                page: this.page
-            });
-            //请求
-            var url =
-                "/smart/worker/access/" +
-                sessionStorage.getItem("userId") +
-                "/outlander/management";
-            this.http.post(url, data).then(res => {
-                if (res.code == 200) {
-                var total = res.total;
-                var rows = res.rows;
-                this.tableData = rows;
-                this.total = total;
-                }
-            });
-            var result = [
-                {
-                    pAccessId: 1,
-                    name: '张三',
-                    idNum: '232323000000000000',
-                    company: '单位1',
-                    visitReason: '吃饭',
-                    equipmentNo: '设备1',
-                    date: '8小时',
-                    direction: '入'
-                },
-                {
-                    pAccessId: 2,
-                    name: '张三',
-                    idNum: '232323000000000000',
-                    company: '单位1',
-                    visitReason: '吃饭',
-                    equipmentNo: '设备1',
-                    date: '8小时',
-                    direction: '入'
-                },
-            ];
-            this.tableData = result;
-            this.total = result.length;
-        },
-        //获得表格前面选中的id值
-        handleSelectionChange() {
-            var ids = new Array();
-            var arrays = this.$refs.multipleTable.selection;
-            console.log(arrays)
-            for (var i = 0; i < arrays.length; i++) {
-                var id = arrays[i].id;
-                ids.push(id);
-            }
-            return ids;
-        },
-        // 查询
-        onScreen() {
-            let data = JSON.stringify(this.screenForm);
-            let url = "/smart/worker/access/"+
-                    sessionStorage.getItem("userId")+
-                    "/outlander/management"
-            this.http.post(url, data)
-            .then(res => {
-                console.log(res);
-            });
-        },
-        //  批量删除
-        deleteBatchClick() {
-            var ids = this.handleSelectionChange();
-            if (ids.length <= 0) {
-                this.$message("请选择删除的数据！");
-                return;
-            }
-            handleCofirm("确定删除该员工信息吗？")
-            .then(res => {
-                let data = JSON.stringify(ids);
-                let url =
-                    "/smart/worker/access/"+
-                    sessionStorage.getItem("userId")+
-                    "/outlander";
-                this.http.delete(url, data)
-                .then(res => {
-                    if (res.code == 200) {
-                        let total = res.total;
-                        let rows = res.rows;
-                        this.tableData = rows;
-                        this.total = total;
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                    }
-                });
-            })
-            .catch(err => {
-                this.$message({
-                    type: "info",
-                    message: "已取消删除"
-                });
-            });
-        },
-    //详情 
-    personnelDetailClick(index, row) {
-        this.dialogFormVisible = true;
-        let url =
-            "/smart/worker/access/"+
-            sessionStorage.getItem("userId") +
-            "/common/"+ row.id +"/detail";
-        this.http.delete(url, data)
+        {
+          pAccessId: 2,
+          name: "张三",
+          idNum: "232323000000000000",
+          company: "单位1",
+          visitReason: "吃饭",
+          equipmentNo: "设备1",
+          date: "8小时",
+          direction: "入"
+        }
+      ];
+      this.tableData = result;
+      this.total = result.length;
+    },
+    //获得表格前面选中的id值
+    handleSelectionChange() {
+      var ids = new Array();
+      var arrays = this.$refs.multipleTable.selection;
+      console.log(arrays);
+      for (var i = 0; i < arrays.length; i++) {
+        var id = arrays[i].id;
+        ids.push(id);
+      }
+      return ids;
+    },
+    // 查询
+    onScreen() {
+      let data = JSON.stringify(this.screenForm);
+      let url =
+        "/smart/worker/access/" +
+        sessionStorage.getItem("userId") +
+        "/outlander/management";
+      this.http.post(url, data).then(res => {
+        console.log(res);
+      });
+    },
+    //  批量删除
+    deleteBatchClick() {
+      var ids = this.handleSelectionChange();
+      if (ids.length <= 0) {
+        this.$message("请选择删除的数据！");
+        return;
+      }
+      handleCofirm("确定删除该员工信息吗？")
         .then(res => {
+          let data = JSON.stringify(ids);
+          let url =
+            "/smart/worker/access/" +
+            sessionStorage.getItem("userId") +
+            "/outlander";
+          this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-                console.log(res)
+              let total = res.total;
+              let rows = res.rows;
+              this.tableData = rows;
+              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
             }
+          });
         })
         .catch(err => {
-            this.$message({
-                type: "info",
-                message: "访问失败"
-            });
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    //详情
+    personnelDetailClick(index, row) {
+      this.dialogFormVisible = true;
+      let url =
+        "/smart/worker/access/" +
+        sessionStorage.getItem("userId") +
+        "/common/" +
+        row.id +
+        "/detail";
+      this.http
+        .delete(url, data)
+        .then(res => {
+          if (res.code == 200) {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "访问失败"
+          });
         });
     },
     // poi导出
@@ -309,9 +312,10 @@ export default {
         pageSize: _this.pageSize,
         page: _this.page
       });
-      var url = "/smart/worker/access/"+
-                sessionStorage.getItem("userId")+
-                "/outlander/management/export";
+      var url =
+        "/smart/worker/access/" +
+        sessionStorage.getItem("userId") +
+        "/outlander/management/export";
       _this
         .$http({
           // 头部信息编码格式
@@ -493,16 +497,19 @@ export default {
     margin-top: 30px;
   }
 }
-.addUser-content{
-  height :300px;
-  p{
-    text-align :center;
-    width :100%;
-    border-bottom:1px solid #000;
-     padding-bottom:20px
+
+.addUser-content {
+  height: 300px;
+
+  p {
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
   }
 }
-.addUser-content h6{
-   text-align :left
+
+.addUser-content h6 {
+  text-align: left;
 }
 </style>

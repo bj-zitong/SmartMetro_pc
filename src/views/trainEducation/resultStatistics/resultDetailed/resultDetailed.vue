@@ -15,18 +15,22 @@
     <div class="R-L-T table-main">
       <div style="margin-bottom: 30px;">
         <el-upload
+          style="display:inline-block; margin-right: 10px;"
           class="upload-demo"
           ref="upload"
+          v-model="file.uploadFile"
           action="https://jsonplaceholder.typicode.com/posts/"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :file-list="fileList"
           :auto-upload="false"
+          :show-file-list="showFileList"
+          :on-change="changeImg"
         >
-          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          <el-button slot="trigger" class="T-H-B-SkyBlue" type="primary">上传</el-button>
         </el-upload>
         <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
-        <el-button class="T-H-B-DarkGreen" @click="downBatchClick">下载</el-button>
+        <!-- <el-button class="T-H-B-DarkGreen" @click="downloadClick">下载</el-button> -->
       </div>
       <el-table
         ref="multipleTable"
@@ -72,14 +76,19 @@
             <el-button
               class="T-R-B-Grey"
               size="mini"
-              @click="deleteRowClick(scope.$index, scope.row)"
+              @click="downloadClick(scope.$index, scope.row)"
             >下载试卷</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div style="text-align: center; padding-top:20px;">
-        <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
-      </div>
+      <pagination
+          class="pagination-box"
+          v-if="total>0"
+          :total="total"
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getDatelist"
+        />
     </div>
     <el-dialog :visible.sync="dialogFormVisible" width="20%" center :show-close="false">
       <el-form
@@ -103,35 +112,21 @@
         >确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="csvVisible" width="50%">
-      <div>
-        <el-upload
-          ref="upload"
-          action
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          :auto-upload="false"
-          show-file-list="false"
-        >
-          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-        </el-upload>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="csvVisible = false">取消</el-button>
-        <el-button type="primary" @click="importCsv()">导入</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "@/components/pagination";
 export default {
+  components: {
+    Pagination
+  },
   data() {
     return {
       value: true,
       csvVisible: false,
+      showFileList: false,
       tableData: [
         {
           pScoreId: 0,
@@ -187,7 +182,7 @@ export default {
       file: {
         uploadFile: ""
       },
-      fileList: [{}],
+      fileList: []
     };
   },
   mounted() {
@@ -242,6 +237,39 @@ export default {
         this.total = result.length;
       });
     },
+    changeImg(file, fileList) {
+      this.file.uploadFile = fileList;
+      console.log(this.file.uploadFile);
+      console.log(this.file.uploadFile[0].raw);
+    },
+
+
+    //下载试卷
+    downloadClick(index,row) {
+      handleCofirm("确认下载吗")
+        .then(res => {
+          // var data = JSON.stringify(ids);
+          var url =
+            "/smart/worker/train/" +
+            sessionStorage.getItem("userId") +
+            "/common/"+row.pScoreId+"/download";
+            // /smart/worker/train/{userId}/common/{resourcePoolId}/download
+          this.http.get(url, {}).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "下载成功!"
+              });
+            }
+          });
+        })
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消下载"
+          });
+        });
+    },
     //查询
     queryClick() {
       this.getDatelist();
@@ -256,7 +284,20 @@ export default {
       this.pInfoId = row.pInfoId;
       this.dialogFormVisible = true;
     },
-
+    myUpload(content) {
+      console.log(content);
+      let formData = new FormData();
+      formData.append("file", content.file); // 'file[]' 代表数组 其中`file`是可变的
+      // request
+      //   .post(content.action, formData)
+      //   .then(rs => {
+      //     this.$store.dispatch("GetInfo");
+      //   })
+      //   .catch(err => {
+      //     this.$store.dispatch("LogMessage", "用户头像上传失败!");
+      //     console.log(err);
+      //   });
+    },
     //上传文件
     uploadFile(row) {
       this.csvVisible = true;
@@ -382,6 +423,10 @@ export default {
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
   opacity: 1;
   border-radius: 10px;
+}
+
+.upload-demo {
+  float: left;
 }
 
 .screen-form-h {

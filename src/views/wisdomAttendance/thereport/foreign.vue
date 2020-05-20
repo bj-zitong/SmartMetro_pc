@@ -21,15 +21,15 @@
     </el-container>
     <el-container class="right_echarts">
       <div class="sign">
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
+        <p style="border:4px solid rgba(79,197,234,1)"></p>
+        <p style="border:4px solid rgba(96,90,216,1)"></p>
+        <p style="border:4px solid rgba(249,205,51,1)"></p>
+        <p style="border:4px solid rgba(143,85,231,1)"></p>
+        <p style="border:4px solid rgba(94,216,169,1)"></p>
+        <p style="border:4px solid rgba(108,111,191,1)"></p>
+        <p style="border:4px solid rgba(248,104,70,1)"></p>
+        <p style="border:4px solid rgba(120,196,70,1)"></p>
+        <p style="border:4px solid rgba(255,177,26,1)"></p>
       </div>
       <div class="sign_classify">
         <p>工长</p>

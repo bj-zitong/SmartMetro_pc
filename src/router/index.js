@@ -526,8 +526,8 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 meta: {
                     title: '人员评价',
-                    icon: '../../static/image/pingjia.png',
-                    AfterIcon: '../../static/image/pingjia.png',
+                    icon: '../../static/image/renyuanpingjia.png',
+                    AfterIcon: '../../static/image/renyuanpingjia.png',
                     enable: "Y",
                     parent: '诚信管理'
                 },

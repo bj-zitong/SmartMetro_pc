@@ -14,7 +14,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="queryClick">查询</el-button>
+            <el-button type="primary" @click="getDatalist">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -123,7 +123,7 @@ import { handleCofirm } from "@/utils/confirm";
 import managerDialog from "./dialog/managerdialog";
 import Pagination from "@/components/pagination";
 export default {
-  name: "echarts",
+  name: "roster",
   components: {
     managerDialog,
     Pagination
@@ -251,6 +251,9 @@ export default {
     addStaffClick() {
       this.$router.push({ path: "/AddAdministration" });
     },
+    // queryClick(){
+    //    this.getDatalist()
+    // },
     //列表请求
     getDatalist() {
       var name = this.formInline.name;
