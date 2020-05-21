@@ -151,14 +151,14 @@
               </template>
             </el-table-column>
           </el-table>
-           <pagination
-          class="pagination-box"
-          v-if="total>0"
-          :total="total"
-          :page.sync="listQuery.currentPage"
-          :limit.sync="listQuery.pageSize"
-          @pagination="getDataFun"
-        />
+          <!-- <pagination
+            class="pagination-box"
+            v-if="total>0"
+            :total="total"
+            :page.sync="listQuery.currentPage"
+            :limit.sync="listQuery.pageSize"
+            @pagination="getDataFun"
+          />-->
           <!-- </el-main> -->
         </div>
       </el-menu>
@@ -175,7 +175,7 @@
             class="upload-demo"
             v-model="from.photo"
             action
-            :on-change="handleChange"
+            :on-change="schandleChange"
             :file-list="fileList"
             :auto-upload="false"
             :limit="1"
@@ -250,11 +250,13 @@ import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
 import personneldialog from "./dialog/personneldialog";
 import Pagination from "@/components/pagination";
+import overallUploadFile from "@/components/Upload";
 export default {
   name: "echarts",
   components: {
     personneldialog,
-    Pagination
+    Pagination,
+    overallUploadFile
   },
   data() {
     return {
@@ -264,6 +266,7 @@ export default {
         jobNum: "",
         workerType: ""
       },
+      QualificationInput: false,
       from: {
         Reason: "",
         photo: ""
@@ -299,7 +302,7 @@ export default {
       Rules: {
         evaluate: [{ required: true, message: "请输入评价", trigger: "blur" }]
       },
-      fileList: [],
+      UploadFileFileList: [],
       tableData: [
         {
           pInfoId: "1",
@@ -354,7 +357,9 @@ export default {
         Reason: [
           { required: true, message: "请输入公司名称", trigger: "blur" }
         ],
-        photo: [{ required: true, message: "请上传证明材料", trigger: "change" }]
+        photo: [
+          { required: true, message: "请上传证明材料", trigger: "change" }
+        ]
       },
       file: {
         uploadFile: ""
@@ -610,10 +615,15 @@ export default {
       });
     },
     handleChange(file, fileList) {
-      this.$refs.file.clearValidate();
+      console.log(this.$rules);
+      this.$refs.photoImage.clearValidate();
       this.file.uploadFile = fileList;
     },
-     //  导入
+    schandleChange(file, fileList) {
+      this.$refs.from.clearValidate();
+      this.from.photo = fileList;
+    },
+    //  导入
     importStaffClick() {
       this.csvVisible = true;
     },
@@ -741,11 +751,9 @@ export default {
       this.$refs[from].validate(valid => {
         if (valid) {
           var form = this.$refs["from"].model;
-          console.log(form);
           var data = new FormData();
           data.append("name", form.Reason);
           data.append("file", form.photo[0].raw);
-          console.log(data);
           var url =
             "/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
@@ -787,4 +795,3 @@ export default {
   }
 };
 </script>
-<style lang="stylus"></style>

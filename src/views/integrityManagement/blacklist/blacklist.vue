@@ -14,7 +14,20 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
-        <el-button class="T-H-B-SkyBlue">上传</el-button>
+        <!-- <el-button class="T-H-B-SkyBlue">上传</el-button> -->
+        <el-upload
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-remove="beforeRemove"
+          multiple
+          :limit="1"
+          :on-exceed="handleExceed"
+          :file-list="fileList"
+        >
+          <el-button class="T-H-B-SkyBlue">上传</el-button>
+        </el-upload>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -321,6 +334,9 @@ export default {
             message: "已取消删除"
           });
         });
+    },
+    beforeRemove(){
+      
     },
     changeFun() {}
   }

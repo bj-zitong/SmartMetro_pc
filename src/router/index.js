@@ -67,8 +67,7 @@ export const constantRouterMap = [
         hidden: true,
         component: Layout,
         name: '实名认证',
-        // redirect: '/home',
-        redirect: '/labor_Subcontract1',
+        redirect: '/home',
         children: [
             {
                 path: 'home',
@@ -90,6 +89,7 @@ export const constantRouterMap = [
             enable: "Y",
             parent: '首页'
         },
+        redirect: '/homeShow',
         children: [
             {
                 path: '/homeShow',
