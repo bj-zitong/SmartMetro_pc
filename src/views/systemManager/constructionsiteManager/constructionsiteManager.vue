@@ -6,19 +6,9 @@
         <el-form :inline="true" ref="screenForm" :model="screenForm">
           <el-form-item label="项目中心：" prop="projectName">
             <el-input v-model="screenForm.projectName" placeholder="请输入"></el-input>
-            <!-- <i
-              class="el-icon-search"
-              style="position: absolute;top:8px;right: 8px;"
-              @click="getTable()"
-            ></i> -->
           </el-form-item>
           <el-form-item label="标段/工地：" prop="section">
             <el-input v-model="screenForm.section" placeholder="请输入"></el-input>
-            <!-- <i
-              class="el-icon-search"
-              style="position: absolute;top:8px;right: 8px;"
-              @click="getTable()"
-            ></i> -->
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="getTable()">查询</el-button>
@@ -30,7 +20,7 @@
     <el-container>
       <el-menu class="main-con-box">
         <div class="main-btn-box">
-          <el-button class="T-H-B-DarkBlue" @click="addClick()">新增</el-button>
+          <el-button class="T-H-B-DarkBlue" @click="addClick('refLabor')">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteBatchClick()">删除</el-button>
         </div>
         <el-table
@@ -72,22 +62,16 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          background
+        <pagination
           class="pagination-box"
-          :page-sizes="[10, 50,100]"
-          layout="total, sizes,prev, pager,next,jumper"
-          :current-page="page"
-          :page-size="pageSize"
+          v-if="total>0"
           :total="total"
-          @prev-click="prev"
-          @next-click="next"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getTable"
+        />
       </el-menu>
     </el-container>
-
     <!-- 添加 编辑 -->
     <el-dialog
       width="450px"
@@ -145,14 +129,15 @@
 
 <script>
 import { handleCofirm } from "@/utils/confirm";
-
+import Pagination from "../../../components/pagination";
 export default {
   name: "excelExport",
+  components: {
+    Pagination
+  },
   data() {
     return {
       //  初始化页面
-      page: 1, // 初始页
-      pageSize: 10, // 默认每页数据量
       total: 0, //总条数
       tableData: [], // 初始化表格
       gridData: [], // 查看下属表格初始化
@@ -209,6 +194,10 @@ export default {
         location: [
           { required: true, message: "请输入所在位置", trigger: "blur" }
         ]
+      },
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
       }
     };
   },
@@ -216,7 +205,6 @@ export default {
     // 页面加载时获取信息
     this.getTable();
   },
-  components: {},
   methods: {
     // 下拉框 中心
     selectProfession(vid) {
@@ -234,37 +222,15 @@ export default {
       });
       this.formLabor.line = obj.id;
     },
-    // 每页显示多少条 @size-change
-    handleSizeChange(size) {
-      this.pageSize = size;
-      this.getTable();
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    // 点击跳转第几页 @current-change
-    handleCurrentChange(page) {
-      this.page = page;
-      this.getTable();
-    },
-    // 上一页 @prev-click
-    prev(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
-    // 下一页 @next-click
-    next(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         projectCenter: this.screenForm.projectName,
         siteName: this.screenForm.section
       });
       //请求
-      ///smart/auth/{userId}/org/management
       var url =
         "/smart/auth/" + sessionStorage.getItem("userId") + "/org/management";
       this.http.post(url, data).then(res => {
@@ -309,15 +275,12 @@ export default {
     handleSelectionChange() {
       var ids = new Array();
       var arrays = this.$refs.multipleTable.selection;
-      console.log(arrays);
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
         var id = arrays[i].orgSiteId;
         ids.push(id);
-        // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      //  this.multipleSelection = val;
     },
     //  添加/编辑 提交
     submiLabortForm(refLabor) {
@@ -340,7 +303,6 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleLabor = false;
@@ -353,12 +315,12 @@ export default {
               this.formLabor.orgSiteId;
             var data = JSON.stringify({
               projectCenter: this.formLabor.projectCenter,
-              line:this.formLabor.line,
-              siteName:this.formLabor.siteName,
-              buildCorpName:this.formLabor.buildCorpName,
-              responsiblePersonName:this.formLabor.responsiblePersonName,
-              cellPhone:this.formLabor.cellPhone,
-              location:this.formLabor.location
+              line: this.formLabor.line,
+              siteName: this.formLabor.siteName,
+              buildCorpName: this.formLabor.buildCorpName,
+              responsiblePersonName: this.formLabor.responsiblePersonName,
+              cellPhone: this.formLabor.cellPhone,
+              location: this.formLabor.location
             });
             this.http
               .put(url, data)
@@ -371,13 +333,12 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleLabor = false;
+            this.$refs[refLabor].resetFields();
           }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -485,4 +446,3 @@ export default {
 }
 </style>
 
-<style lang="stylus"></style>

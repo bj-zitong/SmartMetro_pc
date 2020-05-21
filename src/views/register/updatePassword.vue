@@ -172,7 +172,6 @@ export default {
           this.randomNum(0, this.identifyCodes.length)
         ];
       }
-      console.log(this.identifyCode);
     },
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min);
@@ -262,7 +261,6 @@ export default {
           var form = this.form;
           //请求参数
           var params = JSON.stringify({
-            userId: sessionStorage.getItem("userId"),
             account: form.phone,
             loginPassword: form.password,
             changePassword: form.newpassword
@@ -344,6 +342,7 @@ export default {
       box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
       opacity: 1;
       border-radius: 4px;
+      margin-top: 15px;
     }
 
     .button-end-title {

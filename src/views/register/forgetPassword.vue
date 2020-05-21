@@ -108,7 +108,6 @@ export default {
   },
   data() {
     const validateVerifycode = (rule, value, callback) => {
-      console.log(value);
       if (value === undefined) {
         callback(new Error("请输入验证码"));
       } else if (value !== this.identifyCode) {
@@ -127,7 +126,7 @@ export default {
           { required: true, message: "请输入手机号", trigger: "blur" },
           {
             pattern: /^1[34578]\d{9}$/,
-            message: "目前只支持中国大陆的手机号码"
+            message: "手机号格式不正确"
           }
         ],
         account: [{ required: true, message: "请输入账号", trigger: "blur" }],
@@ -178,7 +177,6 @@ export default {
           this.randomNum(0, this.identifyCodes.length)
         ];
       }
-      console.log(this.identifyCode);
     },
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min);
@@ -200,13 +198,14 @@ export default {
           }
           //请求参数
           var params = JSON.stringify({
-            name: form.userName2,
+            userName: form.userName2,
             cellPhone: form.phone2,
             idNum: form.idNum,
             account: form.account,
             password: form.password2
           });
-          this.http.post("/smart/auth/password/forget", params).then(res => {
+          var url = "/smart/auth/password/forget";
+          this.http.post(url, params).then(res => {
             if (res.code == 200) {
               this.$message("修改成功！");
               this.$router.push({ path: "/login" });
@@ -390,7 +389,7 @@ export default {
         box-sizing: border-box;
         position: absolute;
         left: 50%;
-        top: 44%;
+        top: 40%;
         transform: translate(-50%, -50%);
       }
 
@@ -419,6 +418,7 @@ export default {
         box-shadow: 3px 6px 12px rgba(0, 88, 162, 0.23);
         opacity: 1;
         border-radius: 4px;
+        margin-top: 10px;
       }
 
       .button-end-title {

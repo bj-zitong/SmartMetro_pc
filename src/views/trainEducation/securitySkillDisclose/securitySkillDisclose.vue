@@ -25,8 +25,12 @@
             </el-select>
           </el-form-item>
           <el-form-item label="时间" style="margin-left:60px" prop="time">
-            <el-date-picker v-model="formInline.time" type="date"
-            placeholder="选择时间"   value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+            <el-date-picker
+              v-model="formInline.time"
+              type="date"
+              placeholder="选择时间"
+              value-format="yyyy-MM-dd HH:mm:ss"
+            ></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="skillList()" style="margin-left:30px;">查询</el-button>
@@ -37,9 +41,24 @@
     <div class="table-main">
       <el-main class="table-button">
         <el-button @click="dialogFormVisible = true" type="success" class="T-H-B-DarkBlue">新增</el-button>
-        <el-button @click="deleteAllClick()" type="danger" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
-        <el-button @click="submitAll()" type="primary" class="T-H-B-Cyan" style="margin-left:30px;">提交</el-button>
-        <el-button @click="poiExcel()" type="primary" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
+        <el-button
+          @click="deleteAllClick()"
+          type="danger"
+          class="T-H-B-Grey"
+          style="margin-left:30px;"
+        >删除</el-button>
+        <el-button
+          @click="submitAll()"
+          type="primary"
+          class="T-H-B-Cyan"
+          style="margin-left:30px;"
+        >提交</el-button>
+        <el-button
+          @click="poiExcel()"
+          type="primary"
+          class="T-H-B-Cyan"
+          style="margin-left:30px;"
+        >导出</el-button>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -65,12 +84,42 @@
             <el-table-column prop="status" label="审核状态" width="100"></el-table-column>
             <el-table-column label="操作" style="width:500px" fixed="right">
               <template slot-scope="scope">
-                <el-button size="mini" class="T-R-B-Green" @click="handleEdit(scope.row)" type="success">编辑</el-button>
-                <el-button size="mini" class="T-R-B-Grey" @click="handleDelete(scope.row)" type="info">删除</el-button>
-                <el-button size="mini" class="T-R-B-Orange" @click="getDetail(scope.row)" type="success">查看详情</el-button>
-                <el-button size="mini" class="T-R-B-Violet" @click="submit(scope.row,1)" type="primary">提交</el-button>
-                <el-button size="mini" class="T-R-B-Cyan" @click="submit(scope.row,2)" type="primary">通过</el-button>
-                <el-button size="mini" class="T-R-B-Cyan" @click="submit(scope.row,3)" type="primary">驳回</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Green"
+                  @click="handleEdit(scope.row)"
+                  type="success"
+                >编辑</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Grey"
+                  @click="handleDelete(scope.row)"
+                  type="info"
+                >删除</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Orange"
+                  @click="getDetail(scope.row)"
+                  type="success"
+                >查看详情</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Violet"
+                  @click="submit(scope.row,1)"
+                  type="primary"
+                >提交</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Cyan"
+                  @click="submit(scope.row,2)"
+                  type="primary"
+                >通过</el-button>
+                <el-button
+                  size="mini"
+                  class="T-R-B-Cyan"
+                  @click="submit(scope.row,3)"
+                  type="primary"
+                >驳回</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -86,7 +135,14 @@
       </el-main>
     </div>
     <!--新增-->
-    <el-dialog title="安全技术交底" :visible.sync="dialogFormVisible" width="500px" :center="true" top="0vh" :show-close="false">
+    <el-dialog
+      title="安全技术交底"
+      :visible.sync="dialogFormVisible"
+      width="500px"
+      :center="true"
+      top="0vh"
+      :show-close="false"
+    >
       <el-form :model="form" label-width="80px" ref="form" :rules="formRules">
         <el-form-item label="施工单位" prop="constructionOrg">
           <el-input v-model="form.constructionOrg" placeholder="施工单位"></el-input>
@@ -97,15 +153,29 @@
         <el-form-item label="工种" prop="workType">
           <el-input v-model="form.workType" placeholder="工种"></el-input>
         </el-form-item>
-         <el-form-item label="交底日期" prop="disclosureDate">
-            <el-date-picker v-model="form.disclosureDate" type="date"
-            placeholder="选择时间"   value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
-          </el-form-item>
+        <el-form-item label="交底日期" prop="disclosureDate">
+          <el-date-picker
+            v-model="form.disclosureDate"
+            type="date"
+            placeholder="选择时间"
+            value-format="yyyy-MM-dd HH:mm:ss"
+          ></el-date-picker>
+        </el-form-item>
         <el-form-item label="交底内容" prop="disclosureContent">
-          <el-input type="textarea" :rows="6" placeholder="请输入交底内容" v-model="form.disclosureContent"></el-input>
+          <el-input
+            type="textarea"
+            :rows="6"
+            placeholder="请输入交底内容"
+            v-model="form.disclosureContent"
+          ></el-input>
         </el-form-item>
         <el-form-item label="针对性交底" prop="aimDisclosureContent">
-          <el-input type="textarea" :rows="6" placeholder="请输入针对性交底" v-model="form.aimDisclosureContent"></el-input>
+          <el-input
+            type="textarea"
+            :rows="6"
+            placeholder="请输入针对性交底"
+            v-model="form.aimDisclosureContent"
+          ></el-input>
         </el-form-item>
         <div>
           <el-form-item label="交底人" style="width:200px;float:left" prop="disclosurePerson">
@@ -123,7 +193,7 @@
             <el-input v-model="form.receiverDuty" placeholder="职务"></el-input>
           </el-form-item>
         </div>
-       <div class="dialog-footer" style="text-align:center;">
+        <div class="dialog-footer" style="text-align:center;">
           <el-button @click="cancelForm('form')" class="F-Grey" round>取 消</el-button>
           <el-button
             type="primary"
@@ -135,94 +205,102 @@
         </div>
       </el-form>
     </el-dialog>
-     <!-- 详情-->
-     <el-dialog
-    title
-    :visible.sync="dialogFormVisibleDetail"
-    :close-on-click-modal="false"
-    :show-close="false"
-    width="30%"
-  >
-    <div class="AddEquipment_form">
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            施工单位:
-            <span>{{showdata.constructionOrg}}</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">交底部位:
-             <span>{{showdata.disclosurePart}}</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            工种:
-            <span>{{showdata.workType}}</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">交底人:
-            <span>{{showdata.disclosurePerson}}</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            职务:
-            <span>{{showdata.disclosurePersonDuty}}</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">接收人:
+    <!-- 详情-->
+    <el-dialog
+      title
+      :visible.sync="dialogFormVisibleDetail"
+      :close-on-click-modal="false"
+      :show-close="false"
+      width="30%"
+    >
+      <div class="AddEquipment_form">
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              施工单位:
+              <span>{{showdata.constructionOrg}}</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              交底部位:
+              <span>{{showdata.disclosurePart}}</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              工种:
+              <span>{{showdata.workType}}</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              交底人:
+              <span>{{showdata.disclosurePerson}}</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              职务:
+              <span>{{showdata.disclosurePersonDuty}}</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              接收人:
               <span>{{showdata.receiver}}</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            接收人职务:
-            <span>{{showdata.receiverDuty}}</span>
-          </div>
-        </el-col>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
-          <div class="grid-content bg-purple">
-            审核状态:
-            <span>{{showdata.status}}</span>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <template slot="footer" class="dialog-footer">
-      <el-button type="default" @click="dialogFormVisibleDetail = false" round class="T-R-B-Grey">取消</el-button>
-    </template>
-  </el-dialog>
+            <div class="grid-content bg-purple">
+              接收人职务:
+              <span>{{showdata.receiverDuty}}</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content bg-purple">
+              审核状态:
+              <span>{{showdata.status}}</span>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <template slot="footer" class="dialog-footer">
+        <el-button
+          type="default"
+          @click="dialogFormVisibleDetail = false"
+          round
+          class="T-R-B-Grey"
+        >取消</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "../../../components/pagination";
 export default {
-    components: {
+  components: {
     Pagination
   },
   data() {
     return {
-       listQuery: {
+      listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
       token: null, // token
       dialogFormVisible: false,
-      dialogFormVisibleDetail:false,
+      dialogFormVisibleDetail: false,
       // 动态数据
       tableData: [],
-      showdata:[],
+      showdata: [],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
       total: 100, //总条数
@@ -245,14 +323,14 @@ export default {
         constructionOrg: "",
         disclosurePart: null,
         workType: "",
-        disclosureDate:"",
+        disclosureDate: "",
         disclosureContent: "",
         aimDisclosureContent: "",
         disclosurePerson: "",
-        disclosurePersonDuty:"",
+        disclosurePersonDuty: "",
         receiver: "",
         receiverDuty: "",
-        technicalId:null
+        technicalId: null
       },
       formRules: {
         constructionOrg: [
@@ -262,7 +340,9 @@ export default {
           { required: true, message: "请输入交底部位", trigger: "blur" }
         ],
         workType: [{ required: true, message: "请输入工种", trigger: "blur" }],
-        disclosureDate:[{ required: true, message: "请选择交底日期", trigger: "change" }],
+        disclosureDate: [
+          { required: true, message: "请选择交底日期", trigger: "change" }
+        ],
         disclosureContent: [
           { required: true, message: "请输入交底内容", trigger: "blur" }
         ],
@@ -272,8 +352,8 @@ export default {
         disclosurePerson: [
           { required: true, message: "请输入交底人", trigger: "blur" }
         ],
-        disclosurePersonDuty:[
-           { required: true, message: "请输入交底人职务", trigger: "blur" }
+        disclosurePersonDuty: [
+          { required: true, message: "请输入交底人职务", trigger: "blur" }
         ],
         receiver: [
           { required: true, message: "请输入接收人", trigger: "blur" }
@@ -288,12 +368,12 @@ export default {
     this.skillList();
   },
   methods: {
-    cancelForm(form){
+    cancelForm(form) {
       this.$refs[form].resetFields();
       this.dialogFormVisible = false;
     },
     addSkillClick(form) {
-       this.$refs[form].validate(valid => {
+      this.$refs[form].validate(valid => {
         //校验
         if (valid) {
           var form = this.$refs["form"].model;
@@ -301,13 +381,13 @@ export default {
             //新增 id为空
             var params = JSON.stringify({
               constructionOrg: form.constructionOrg,
-              disclosurePart:form.disclosurePart,
-              workType:form.workType,
+              disclosurePart: form.disclosurePart,
+              workType: form.workType,
               disclosureDate: form.disclosureDate,
-              disclosureContent:form.disclosureContent,
-              aimDisclosureContent:form.aimDisclosureContent,
+              disclosureContent: form.disclosureContent,
+              aimDisclosureContent: form.aimDisclosureContent,
               disclosurePerson: form.disclosurePerson,
-              disclosurePersonDuty:form.disclosurePersonDuty,
+              disclosurePersonDuty: form.disclosurePersonDuty,
               receiver: form.receiver,
               receiverDuty: form.receiverDuty
             });
@@ -325,13 +405,13 @@ export default {
             //新增 id为空
             var params = JSON.stringify({
               constructionOrg: form.constructionOrg,
-              disclosurePart:form.disclosurePart,
-              workType:form.workType,
+              disclosurePart: form.disclosurePart,
+              workType: form.workType,
               disclosureDate: form.disclosureDate,
-              disclosureContent:form.disclosureContent,
-              aimDisclosureContent:form.aimDisclosureContent,
+              disclosureContent: form.disclosureContent,
+              aimDisclosureContent: form.aimDisclosureContent,
               disclosurePerson: form.disclosurePerson,
-              disclosurePersonDuty:form.disclosurePersonDuty,
+              disclosurePersonDuty: form.disclosurePersonDuty,
               receiver: form.receiver,
               receiverDuty: form.receiverDuty,
               technicalId: form.technicalId
@@ -348,13 +428,12 @@ export default {
             });
           }
         } else {
-          console.log("error");
           return false;
         }
       });
     },
     skillList() {
-     var company = this.formInline.company;
+      var company = this.formInline.company;
       var profession = this.formInline.profession;
       var time = this.formInline.time;
       //   // 获得当前用户的id
@@ -382,24 +461,24 @@ export default {
         {
           technicalId: 1,
           constructionOrg: "安保部一",
-          disclosurePart:"22222",
-          workType:"xxxxx",
-          disclosurePersonDuty:'2222',
+          disclosurePart: "22222",
+          workType: "xxxxx",
+          disclosurePersonDuty: "2222",
           disclosurePerson: "123",
           receiver: "22222222",
-          receiverDuty:'7777',
-          status: "22222222",
+          receiverDuty: "7777",
+          status: "22222222"
         },
         {
           technicalId: 2,
-          disclosurePart:"5555",
+          disclosurePart: "5555",
           constructionOrg: "44444",
           disclosurePerson: "44444",
-          disclosurePersonDuty:'2222',
+          disclosurePersonDuty: "2222",
           receiver: "444",
           status: 44444,
-          workType:'ccccc',
-          receiverDuty:'7777',
+          workType: "ccccc",
+          receiverDuty: "7777"
         }
       ];
       this.tableData = result;
@@ -455,9 +534,9 @@ export default {
         });
     },
     handleDelete(row) {
-       handleCofirm("确认删除")
+      handleCofirm("确认删除")
         .then(res => {
-          var ids=[];
+          var ids = [];
           ids.push(row.technicalId);
           var data = JSON.stringify(ids);
           var url =
@@ -491,7 +570,8 @@ export default {
       var url =
         "/smart/worker/train/" +
         sessionStorage.getItem("userId") +
-        "/technical/2/"+uid;
+        "/technical/2/" +
+        uid;
       this.http.get(url, null).then(res => {
         if (res.code == 200) {
           //渲染数据
@@ -503,8 +583,8 @@ export default {
     },
     //详情
     getDetail(row) {
-       this.dialogFormVisibleDetail=true;
-      this.showdata=row;
+      this.dialogFormVisibleDetail = true;
+      this.showdata = row;
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -517,8 +597,8 @@ export default {
       }
       return ids;
     },
-    submitAll(){
-       var ids = this.changeFun();
+    submitAll() {
+      var ids = this.changeFun();
       if (ids.length <= 0) {
         this.$message("请选择提交的数据！");
         return;
@@ -549,30 +629,29 @@ export default {
             message: "已取消提交"
           });
         });
-
     },
-     submit(row,value){
-      var id =row.technicalId;
-      var ids=[];
-       ids.push(id);
+    submit(row, value) {
+      var id = row.technicalId;
+      var ids = [];
+      ids.push(id);
       //未提交0 提交1 通过2 驳回3
-      var title='';
-      var message='';
-      var cancelMessage='';
-      if(value==1){
-        title='确认提交';
-        message='提交成功！';
-        cancelMessage='已取消提交';
+      var title = "";
+      var message = "";
+      var cancelMessage = "";
+      if (value == 1) {
+        title = "确认提交";
+        message = "提交成功！";
+        cancelMessage = "已取消提交";
       }
-      if(value==2){
-        title='确认通过';
-        message='已通过！';
-        cancelMessage='已取消';
+      if (value == 2) {
+        title = "确认通过";
+        message = "已通过！";
+        cancelMessage = "已取消";
       }
-      if(value==3){
-        title='确认驳回';
-        message='已驳回！';
-        cancelMessage='已取消';
+      if (value == 3) {
+        title = "确认驳回";
+        message = "已驳回！";
+        cancelMessage = "已取消";
       }
       handleCofirm(title)
         .then(res => {
@@ -580,7 +659,8 @@ export default {
           var url =
             "/smart/worker/train/" +
             sessionStorage.getItem("userId") +
-            "/technical/common/2/"+value;
+            "/technical/common/2/" +
+            value;
           this.http.post(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
@@ -603,7 +683,7 @@ export default {
     },
     //导出
     poiExcel() {
-       // //获得token
+      // //获得token
       // var token = sessionStorage.getItem("token");
       var company = this.formInline.company;
       var profession = this.formInline.profession;
@@ -647,7 +727,7 @@ export default {
         URL.revokeObjectURL(objectUrl); // 释放内存
         // alert("调用导出！");
       });
-    },
+    }
   }
 };
 </script>
@@ -706,7 +786,6 @@ export default {
 
     .table-content {
       margin-top: 30px;
-      // padding: 30px;
     }
   }
 
@@ -715,17 +794,37 @@ export default {
   }
 }
 
-  .cancel-style{
-    border-radius:18px;
-    width:80px;
-    height:35px;
-    background:linear-gradient(180deg,rgba(225,225,225,1) 0%,rgba(190,190,190,1) 100%);
-    opacity:1;
-  }
-</style>
+.el-row {
+  margin-bottom: 20px;
 
-<style lang="stylus">
-.el-dialog__header {
-  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.el-col {
+  border-radius: 4px;
+}
+
+.bg-purple-dark {
+  background: #FFFFFF;
+}
+
+.bg-purple {
+  background: #FFFFFF;
+}
+
+.bg-purple-light {
+  background: #FFFFFF;
+}
+
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
 }
 </style>

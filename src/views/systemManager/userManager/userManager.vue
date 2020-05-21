@@ -6,14 +6,9 @@
         <el-form :inline="true" ref="screenForm" :model="screenForm">
           <el-form-item label="用户名：" prop="userName">
             <el-input v-model="screenForm.userName" placeholder="请输入"></el-input>
-            <!-- <i
-              class="el-icon-search"
-              style="position: absolute;top:8px;right: 8px;"
-              @click="getTable()"
-            ></i> -->
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="getTable()">查询</el-button>
+            <el-button type="primary" @click="getTable()" style="margin-left:30px;">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -58,26 +53,21 @@
                 @click="deleteRowClick(scope.$index, scope.row)"
               >删除</el-button>
               <el-button
-               class="T-R-B-Orange"
+                class="T-R-B-Orange"
                 size="mini"
                 @click="getUserdetail(scope.$index, scope.row)"
               >详情</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          background
+        <pagination
           class="pagination-box"
-          :page-sizes="[10, 50,100]"
-          layout="total, sizes,prev, pager,next,jumper"
-          :current-page="page"
-          :page-size="pageSize"
+          v-if="total>0"
           :total="total"
-          @prev-click="prev"
-          @next-click="next"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getTable"
+        />
       </el-menu>
     </el-container>
     <!-- 创建用户 -->
@@ -133,81 +123,93 @@
     </el-dialog>
     <!--详情 -->
     <el-dialog
-    title
-    :visible.sync="dialogFormVisibleDetail"
-    :close-on-click-modal="false"
-    :show-close="false"
-    width="30%"
-  >
-    <div class="AddEquipment_form">
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            用户名:
-            <span>9996666</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">手机号:
-             <span>9996666</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            角色:
-            <span>9996666666666</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">用户状态:
-            <span>9996666666666</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            创建时间:
-            <span>9996666666666</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">密码:
+      title
+      :visible.sync="dialogFormVisibleDetail"
+      :close-on-click-modal="false"
+      :show-close="false"
+      width="30%"
+    >
+      <div class="AddEquipment_form">
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              用户名:
+              <span>9996666</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              手机号:
+              <span>9996666</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              角色:
               <span>9996666666666</span>
-          </div>
-        </el-col>
-            <el-col :span="10">
-          <div class="grid-content bg-purple">账号:
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              用户状态:
               <span>9996666666666</span>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <template slot="footer" class="dialog-footer">
-      <el-button type="default" @click="dialogFormVisibleDetail = false" round class="T-R-B-Grey">取消</el-button>
-      <!-- <el-button type="primary" @click="handleSubmit">提交</el-button> -->
-    </template>
-  </el-dialog>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              创建时间:
+              <span>9996666666666</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              密码:
+              <span>9996666666666</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              账号:
+              <span>9996666666666</span>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <template slot="footer" class="dialog-footer">
+        <el-button
+          type="default"
+          @click="dialogFormVisibleDetail = false"
+          round
+          class="T-R-B-Grey"
+        >取消</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
-
 <script>
 import { handleCofirm } from "@/utils/confirm";
-
+import Pagination from "@/components/pagination";
 export default {
-  name: "excelExport",
+  name: "main-box",
+  components: {
+    Pagination
+  },
   data() {
     return {
       //  初始化页面
-      page: 1, // 初始页
-      pageSize: 10, // 默认每页数据量
-      total: 0, //总条数
+      total: 5, //总条数
       tableData: [], // 初始化表格
       gridData: [], // 查看下属表格初始化
       dialogVisibleTeam: false, //
-      dialogFormVisibleDetail:false,
+      dialogFormVisibleDetail: false,
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      },
       formTeam: {
         //班组初始化
         sysUserId: null,
@@ -215,8 +217,8 @@ export default {
         cellPhone: "",
         account: "",
         password: "",
-        confimPassword:"",
-        roles:[],
+        confimPassword: "",
+        roles: [],
         orgSite: ""
       },
       options: [
@@ -253,7 +255,9 @@ export default {
         account: [{ required: true, message: "请输入账号", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         roles: [{ required: false, message: "请选择角色", trigger: "change" }],
-        confimPassword:[{ required: true, message: "请输入密码", trigger: "blur" }]
+        confimPassword: [
+          { required: true, message: "请输入密码", trigger: "blur" }
+        ]
       }
     };
   },
@@ -261,34 +265,12 @@ export default {
     // 页面加载时获取信息
     this.getTable();
   },
-  components: {},
   methods: {
-    // 每页显示多少条 @size-change
-    handleSizeChange(size) {
-      this.pageSize = size;
-      this.getTable();
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    // 点击跳转第几页 @current-change
-    handleCurrentChange(page) {
-      this.page = page;
-      this.getTable();
-    },
-    // 上一页 @prev-click
-    prev(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
-    // 下一页 @next-click
-    next(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         userName: this.screenForm.userName
       });
       //请求
@@ -324,26 +306,23 @@ export default {
       this.total = result.length;
     },
     //用户详情
-    getUserdetail(index,row){
-         // 用户id
-         ///smart/auth/{userId}/user/{id}
+    getUserdetail(index, row) {
+      // 用户id
+      ///smart/auth/{userId}/user/{id}
       var uid = row.sysUserId;
       this.formTeam.sysUserId = uid;
       var url =
-        "/smart/auth/" +
-        sessionStorage.getItem("userId") +
-        "/user/" +
-        uid;
+        "/smart/auth/" + sessionStorage.getItem("userId") + "/user/" + uid;
       this.http.get(url, null).then(res => {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
-          this.formTeam.orgSite=result.orgSite;
-          this.formTeam.userName=result.userName;
-          this.formTeam.cellPhone=result.cellPhone;
-          this.formTeam.account=result.account;
-          this.formTeam.password=result.password;
-          this.formTeam.roles=result.roles;
+          this.formTeam.orgSite = result.orgSite;
+          this.formTeam.userName = result.userName;
+          this.formTeam.cellPhone = result.cellPhone;
+          this.formTeam.account = result.account;
+          this.formTeam.password = result.password;
+          this.formTeam.roles = result.roles;
         }
       });
       this.dialogFormVisibleDetail = true;
@@ -352,15 +331,12 @@ export default {
     handleSelectionChange() {
       var ids = new Array();
       var arrays = this.$refs.multipleTable.selection;
-      console.log(arrays);
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
         var id = arrays[i].sysUserId;
         ids.push(id);
-        // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      //  this.multipleSelection = val;
     },
     //选中的角色
     handleCheckedRoleChange() {
@@ -368,9 +344,7 @@ export default {
       // obj = this.options.find(item => {
       //   return item.id == vid; // 筛选出匹配数据
       // });
-      // console.log(obj);
       // this.formTeam.roles = obj.id;
-      console.log(this.formTeam.roles);
     },
     //  新增
     addClick() {
@@ -395,10 +369,7 @@ export default {
         .then(res => {
           let data = JSON.stringify(ids);
           ///smart/auth/{userId}/user
-          let url =
-            "/smart/auth/" +
-            sessionStorage.getItem("userId") +
-            "/user";
+          let url = "/smart/auth/" + sessionStorage.getItem("userId") + "/user";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               let total = res.total;
@@ -426,10 +397,7 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
-           let url =
-            "/smart/auth/" +
-            sessionStorage.getItem("userId") +
-            "/user";
+          let url = "/smart/auth/" + sessionStorage.getItem("userId") + "/user";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
@@ -455,14 +423,13 @@ export default {
       this.$refs[refTeam].validate(valid => {
         if (valid) {
           let form = this.$refs[refTeam].model;
-          console.log(form.userName);
           if (form.sysUserId == null) {
             let data = JSON.stringify(this.formTeam);
-            if(form.password!=form.confimPassword){
-               this.$message({
-                    message: "密码不一致!"
-                  });
-                  return;
+            if (form.password != form.confimPassword) {
+              this.$message({
+                message: "密码不一致!"
+              });
+              return;
             }
             let url =
               "/smart/auth/" + sessionStorage.getItem("userId") + "/user";
@@ -477,16 +444,15 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleTeam = false;
           } else {
-             if(form.password!=form.confimPassword){
-               this.$message({
-                    message: "密码不一致!"
-                  });
-                  return;
+            if (form.password != form.confimPassword) {
+              this.$message({
+                message: "密码不一致!"
+              });
+              return;
             }
             ///smart/auth/{userId}/user/{id}
             var url =
@@ -513,13 +479,11 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleLabor = false;
           }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -553,6 +517,39 @@ export default {
 .screen-form-h {
   height: 36px;
 }
+
+.el-row {
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.el-col {
+  border-radius: 4px;
+}
+
+.bg-purple-dark {
+  background: #FFFFFF;
+}
+
+.bg-purple {
+  background: #FFFFFF;
+}
+
+.bg-purple-light {
+  background: #e5e9f2;
+}
+
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
 </style>
 
-<style lang="stylus"></style>

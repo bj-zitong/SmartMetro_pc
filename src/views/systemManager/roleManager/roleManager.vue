@@ -6,11 +6,6 @@
         <el-form :inline="true" ref="screenForm" :model="screenForm">
           <el-form-item label="角色名：" prop="userName">
             <el-input v-model="screenForm.userName" placeholder="请输入"></el-input>
-            <!-- <i
-              class="el-icon-search"
-              style="position: absolute;top:8px;right: 8px;"
-              @click="getTable()"
-            ></i> -->
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="getTable()">查询</el-button>
@@ -60,19 +55,14 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          background
+        <pagination
           class="pagination-box"
-          :page-sizes="[10, 50,100]"
-          layout="total, sizes,prev, pager,next,jumper"
-          :current-page="page"
-          :page-size="pageSize"
+          v-if="total>0"
           :total="total"
-          @prev-click="prev"
-          @next-click="next"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getTable"
+        />
       </el-menu>
     </el-container>
     <!-- 创建用户 -->
@@ -119,14 +109,19 @@
 
 <script>
 import { handleCofirm } from "@/utils/confirm";
-
+import Pagination from "../../../components/pagination";
 export default {
   name: "excelExport",
+  components: {
+    Pagination
+  },
   data() {
     return {
       //  初始化页面
-      page: 1, // 初始页
-      pageSize: 10, // 默认每页数据量
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      },
       total: 0, //总条数
       tableData: [], // 初始化表格
       gridData: [], // 查看下属表格初始化
@@ -137,7 +132,7 @@ export default {
         sysRoleId: null,
         roleName: "",
         status: "",
-        permissionName:[],
+        permissionName: [],
         password: "",
         memo: "",
         createTime: ""
@@ -179,34 +174,12 @@ export default {
     // 页面加载时获取信息
     this.getTable();
   },
-  components: {},
   methods: {
-    // 每页显示多少条 @size-change
-    handleSizeChange(size) {
-      this.pageSize = size;
-      this.getTable();
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    // 点击跳转第几页 @current-change
-    handleCurrentChange(page) {
-      this.page = page;
-      this.getTable();
-    },
-    // 上一页 @prev-click
-    prev(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
-    // 下一页 @next-click
-    next(cpage) {
-      this.page = cpage;
-      this.getTable();
-    },
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         roleName: this.screenForm.userName
       });
       //请求
@@ -245,15 +218,12 @@ export default {
     handleSelectionChange() {
       var ids = new Array();
       var arrays = this.$refs.multipleTable.selection;
-      console.log(arrays);
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
         var id = arrays[i].sysRoleId;
         ids.push(id);
-        // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-      //  this.multipleSelection = val;
     },
     //选中的角色
     handleCheckedRoleChange() {
@@ -261,9 +231,7 @@ export default {
       // obj = this.options.find(item => {
       //   return item.id == vid; // 筛选出匹配数据
       // });
-      // console.log(obj);
       // this.formTeam.roles = obj.id;
-      console.log(this.formTeam.permissionName);
     },
     //  新增
     addClick() {
@@ -287,7 +255,6 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           let data = JSON.stringify(ids);
-          ///smart/auth/{userId}/role
           let url = "/smart/auth/" + sessionStorage.getItem("userId") + "/role";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
@@ -342,12 +309,11 @@ export default {
       this.$refs[refTeam].validate(valid => {
         if (valid) {
           let form = this.$refs[refTeam].model;
-          console.log(form.userName);
           if (form.sysRoleId == null) {
-          var data = JSON.stringify({
+            var data = JSON.stringify({
               roleName: form.roleName,
               memo: form.memo,
-              permissions:form.permissionName
+              permissions: form.permissionName
             });
             let url =
               "/smart/auth/" + sessionStorage.getItem("userId") + "/role";
@@ -362,12 +328,10 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleTeam = false;
           } else {
-            ////smart/auth/{userId}/role/{id}
             var url =
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
@@ -376,7 +340,7 @@ export default {
             var data = JSON.stringify({
               roleName: form.roleName,
               memo: form.memo,
-              permissions:form.permissionName
+              permissions: form.permissionName
             });
             this.http
               .put(url, data)
@@ -389,13 +353,11 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleLabor = false;
           }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -431,4 +393,3 @@ export default {
 }
 </style>
 
-<style lang="stylus"></style>

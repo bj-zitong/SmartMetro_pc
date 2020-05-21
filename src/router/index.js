@@ -492,20 +492,19 @@ export const constantRouterMap = [
                 },
                 children: [
                     {
-                        path: '/lineUpperTrain',
-                        name: 'lineUpperTrain',
-                        component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
-                        meta: { title: '线上培训记录', icon: '', enable: "Y", parent: '培训教育' }
-                    },
-                    {
                         path: '/lineLowerTrain',
                         name: 'lineLowerTrain',
                         component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
-                        meta: { title: '线下视频培训记录', icon: '', enable: "Y", parent: '培训教育' }
+                        meta: { title: '线下培训记录', icon: '', enable: "Y", parent: '培训教育' }
+                    },
+                    {
+                        path: '/lineUpperTrain',
+                        name: 'lineUpperTrain',
+                        component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
+                        meta: { title: '线上视频培训记录', icon: '', enable: "Y", parent: '培训教育' }
                     }
                 ]
             }
-
         ]
     },
     {

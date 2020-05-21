@@ -232,7 +232,8 @@ export default {
         },
         //  下载
         downRowClick (index, row) {
-            let ids = row.id;
+            let ids = [];
+            ids.push(row.id)
             let params = null;
             let url =
                 "/smart/worker/train/" +

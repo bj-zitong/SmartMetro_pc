@@ -147,7 +147,12 @@
           <el-input v-model="form.prjName" placeholder="工程名称"></el-input>
         </el-form-item>
         <el-form-item label="交底时间" prop="disclosureDate">
-          <el-date-picker v-model="form.disclosureDate" type="date" placeholder="选择交底时间"  value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+          <el-date-picker
+            v-model="form.disclosureDate"
+            type="date"
+            placeholder="选择交底时间"
+            value-format="yyyy-MM-dd HH:mm:ss"
+          ></el-date-picker>
         </el-form-item>
         <el-form-item label="单位名称" prop="constructionOrg">
           <el-input v-model="form.constructionOrg" placeholder="单位名称"></el-input>
@@ -179,73 +184,81 @@
         </div>
       </el-form>
     </el-dialog>
-      <!-- 详情-->
-     <el-dialog
-    title
-    :visible.sync="dialogFormVisibleDetail"
-    :close-on-click-modal="false"
-    :show-close="false"
-    width="30%"
-  >
-    <div class="AddEquipment_form">
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            工程名称:
-            <span>{{showdata.prjName}}</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">交底时间:
-             <span>{{showdata.disclosureDate}}</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            施工单位:
-            <span>{{showdata.constructionOrg}}</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">分项工程名称:
-            <span>{{showdata.branchPrjName}}</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <div class="grid-content bg-purple">
-            交底提要:
-            <span>{{showdata.disclosureAbstract}}</span>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="grid-content bg-purple">交底人:
+    <!-- 详情-->
+    <el-dialog
+      title
+      :visible.sync="dialogFormVisibleDetail"
+      :close-on-click-modal="false"
+      :show-close="false"
+      width="30%"
+    >
+      <div class="AddEquipment_form">
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              工程名称:
+              <span>{{showdata.prjName}}</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              交底时间:
+              <span>{{showdata.disclosureDate}}</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              施工单位:
+              <span>{{showdata.constructionOrg}}</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              分项工程名称:
+              <span>{{showdata.branchPrjName}}</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              交底提要:
+              <span>{{showdata.disclosureAbstract}}</span>
+            </div>
+          </el-col>
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              交底人:
               <span>{{showdata.disclosurePerson}}</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            接受交底人:
-            <span>{{showdata.receiver}}</span>
-          </div>
-        </el-col>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
-          <div class="grid-content bg-purple">
-            状态:
-            <span>{{showdata.status}}</span>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <template slot="footer" class="dialog-footer">
-      <el-button type="default" @click="dialogFormVisibleDetail = false" round class="T-R-B-Grey">取消</el-button>
-    </template>
-  </el-dialog>
+            <div class="grid-content bg-purple">
+              接受交底人:
+              <span>{{showdata.receiver}}</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content bg-purple">
+              状态:
+              <span>{{showdata.status}}</span>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <template slot="footer" class="dialog-footer">
+        <el-button
+          type="default"
+          @click="dialogFormVisibleDetail = false"
+          round
+          class="T-R-B-Grey"
+        >取消</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -263,7 +276,7 @@ export default {
       },
       token: null, // token
       dialogFormVisible: false,
-      dialogFormVisibleDetail:false,
+      dialogFormVisibleDetail: false,
       // 动态数据
       tableData: [],
       total: 100, //总条数
@@ -317,7 +330,7 @@ export default {
         ],
         receiver: [{ required: true, message: "请输入接收人", trigger: "blur" }]
       },
-      showdata:[]
+      showdata: []
     };
   },
   created() {
@@ -376,7 +389,6 @@ export default {
             });
           }
         } else {
-          console.log("error");
           return false;
         }
       });
@@ -438,7 +450,7 @@ export default {
       this.$refs[form].resetFields();
       this.dialogFormVisible = false;
     },
-    submitAll(){
+    submitAll() {
       var ids = this.changeFun();
       if (ids.length <= 0) {
         this.$message("请选择提交的数据！");
@@ -473,28 +485,28 @@ export default {
           });
         });
     },
-    submit(row,value){
-      var id =row.technicalId;
-      var ids=[];
-       ids.push(id);
-        //未提交0 提交1 通过2 驳回3
-      var title='';
-      var message='';
-      var cancelMessage='';
-      if(value==1){
-        title='确认提交';
-        message='提交成功！';
-        cancelMessage='已取消提交';
+    submit(row, value) {
+      var id = row.technicalId;
+      var ids = [];
+      ids.push(id);
+      //未提交0 提交1 通过2 驳回3
+      var title = "";
+      var message = "";
+      var cancelMessage = "";
+      if (value == 1) {
+        title = "确认提交";
+        message = "提交成功！";
+        cancelMessage = "已取消提交";
       }
-      if(value==2){
-        title='确认通过';
-        message='已通过！';
-        cancelMessage='已取消';
+      if (value == 2) {
+        title = "确认通过";
+        message = "已通过！";
+        cancelMessage = "已取消";
       }
-      if(value==3){
-        title='确认驳回';
-        message='已驳回！';
-        cancelMessage='已取消';
+      if (value == 3) {
+        title = "确认驳回";
+        message = "已驳回！";
+        cancelMessage = "已取消";
       }
       //未提交0 提交1 通过2 驳回3
       handleCofirm(title)
@@ -503,7 +515,8 @@ export default {
           var url =
             "/smart/worker/train/" +
             sessionStorage.getItem("userId") +
-            "/technical/common/1/"+value;
+            "/technical/common/1/" +
+            value;
           this.http.post(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
@@ -520,77 +533,13 @@ export default {
         .catch(err => {
           this.$message({
             type: "info",
-            message:cancelMessage
-          });
-        });
-    },
-    pass(row){
-      var id =row.technicalId;
-      var ids=[];
-       ids.push(id);
-      //未提交0 提交1 通过2 驳回3
-      handleCofirm("确认通过")
-        .then(res => {
-          var data = JSON.stringify(ids);
-          var url =
-            "/smart/worker/train/" +
-            sessionStorage.getItem("userId") +
-            "/technical/common/1/2";
-          this.http.post(url, data).then(res => {
-            if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "已通过!"
-              });
-            }
-          });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消"
-          });
-        });
-    },
-    reject(row){
-      var id =row.technicalId;
-      var ids=[];
-       ids.push(id);
-      //未提交0 提交1 通过2 驳回3
-      handleCofirm("确认驳回")
-        .then(res => {
-          var data = JSON.stringify(ids);
-          var url =
-            "/smart/worker/train/" +
-            sessionStorage.getItem("userId") +
-            "/technical/common/1/3";
-          this.http.post(url, data).then(res => {
-            if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "已驳回!"
-              });
-            }
-          });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消"
+            message: cancelMessage
           });
         });
     },
     //导出
     poiExcel() {
-       // //获得token
+      // //获得token
       // var token = sessionStorage.getItem("token");
       var company = this.formInline.company;
       var profession = this.formInline.profession;
@@ -652,7 +601,7 @@ export default {
     },
     //删除
     deleteAllClick() {
-       var ids = this.changeFun();
+      var ids = this.changeFun();
       if (ids.length <= 0) {
         this.$message("请选择删除的数据！");
         return;
@@ -685,9 +634,9 @@ export default {
         });
     },
     handleDelete(row) {
-       handleCofirm("确认删除")
+      handleCofirm("确认删除")
         .then(res => {
-          var ids=[];
+          var ids = [];
           ids.push(row.technicalId);
           var data = JSON.stringify(ids);
           var url =
@@ -721,7 +670,8 @@ export default {
       var url =
         "/smart/worker/train/" +
         sessionStorage.getItem("userId") +
-        "/technical/1/"+uid;
+        "/technical/1/" +
+        uid;
       this.http.get(url, null).then(res => {
         if (res.code == 200) {
           //渲染数据
@@ -733,8 +683,8 @@ export default {
     },
     //详情
     getDetail(row) {
-      this.dialogFormVisibleDetail=true;
-      this.showdata=row;
+      this.dialogFormVisibleDetail = true;
+      this.showdata = row;
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -805,7 +755,6 @@ export default {
 
     .table-content {
       margin-top: 30px;
-      // padding: 30px;
     }
   }
 
@@ -814,16 +763,37 @@ export default {
   }
 }
 
-.cancel-style {
-  border-radius: 18px;
-  width: 80px;
-  height: 35px;
-  background: linear-gradient(180deg, rgba(225, 225, 225, 1) 0%, rgba(190, 190, 190, 1) 100%);
-  opacity: 1;
+.el-row {
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
-</style>
-<style lang="stylus">
-.el-dialog__header {
-  background: linear-gradient(180deg, rgba(54, 130, 243, 1) 0%, rgba(0, 88, 162, 1) 100%);
+
+.el-col {
+  border-radius: 4px;
+}
+
+.bg-purple-dark {
+  background: #FFFFFF;
+}
+
+.bg-purple {
+  background: #FFFFFF;
+}
+
+.bg-purple-light {
+  background: #FFFFFF;
+}
+
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
 }
 </style>

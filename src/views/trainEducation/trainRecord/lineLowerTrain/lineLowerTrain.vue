@@ -1,184 +1,457 @@
 <template>
-  <div class="main-box">
-    <!-- 筛选 -->
-    <div class="R-L-S screen-form">
-      <el-form :inline="true" ref="screenForm" :model="screenForm" class="screen-form-h">
-        <el-form-item label="培训主题">
-          <el-input v-model="screenForm.person" placeholder="请输入培训主题"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onScreen">查询</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <!-- 表格 -->
-    <div class="R-L-T table-main">
-		<div style="margin-bottom: 30px;">
-            <el-upload
-                style="display:inline-block; margin-right: 10px;"
-                class="upload-demo"
-                action=""
-                :show-file-list="false"
+<!-- 线下 -->
+    <div class="main-box">
+        <!-- 头部 -->
+        <el-container>
+            <!-- 筛选 -->
+            <el-menu class="main-top-box pl30">
+            <el-form :inline="true" ref="screenForm" :model="screenForm">
+                <el-form-item label="培训主题">
+                    <el-input v-model="screenForm.trainingName" placeholder="请输入培训主题"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onScreen">查询</el-button>
+                </el-form-item>
+            </el-form>
+            </el-menu>
+        </el-container>
+<!-- 主体 -->
+        <el-container>
+            <el-menu class="main-con-box">
+                <div class="main-btn-box">
+                    <el-button class="T-H-B-DarkBlue" @click="addClick">新增</el-button>
+                    <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
+                </div>
+                <!-- 表格& -->
+                <el-table
+                    ref="multipleTable"
+                    :data="tableData"
+                    stripe
+                    :header-cell-style="headClass"
+                    tooltip-effect="dark"
+                    style="width: 100%;"
+                    @selection-change="handleSelectionChange"
+                >
+                    <el-table-column type="selection" prop="id"></el-table-column>
+                    <el-table-column prop="uuid" label="编号"></el-table-column>
+                    <el-table-column prop="pTrainingId" label="培训主题"></el-table-column>
+                    <el-table-column prop="trainAmount" label="培训人数"></el-table-column>
+                    <el-table-column prop="trainObject" label="培训对象"></el-table-column>
+                    <el-table-column prop="trainDepartment" label="培训部门/召集人"></el-table-column>
+                    <el-table-column prop="trainer" label="主讲人"></el-table-column>
+                    <el-table-column prop="trimmer" label="记录整理人"></el-table-column>
+                    <el-table-column prop="trainingDate" label="培训时间"></el-table-column>
+                    <el-table-column prop="trainAddress" label="培训地点"></el-table-column>
+                    <el-table-column prop="trainDuration" label="学时"></el-table-column>
+                    <el-table-column prop="description" label="培训提纲"></el-table-column>
+                    <el-table-column label="操作" width="240" fixed="right">
+                    <template slot-scope="scope">
+                        <el-button
+                        class="T-R-B-BlackishGreen"
+                        size="mini"
+                        @click="downRowClick(scope.$index, scope.row)"
+                        >下载</el-button>
+                        <el-button
+                        class="T-R-B-Grey"
+                        size="mini" 
+                        @click="deleteRowClick(scope.$index, scope.row)"
+                        >删除</el-button>
+                        <el-button
+                        class="T-R-B-Green"
+                        size="mini"
+                        @click="editRowClick(scope.$index, scope.row)"
+                        >编辑</el-button>
+                    </template>
+                    </el-table-column>
+                </el-table>
+                <!-- 分页& -->
+                <el-pagination
+                    background
+                    class="pagination-box"
+                    layout="total, prev, pager,next"
+                    :current-page="page"
+                    :page-size="pageSize"
+                    :total="total"
+                    @prev-click="prev"
+                    @next-click="next"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                ></el-pagination>
+            </el-menu>
+        </el-container>
+    <!-- 添加& -->
+        <el-dialog
+            width="450px"
+            class="popupDialog abow_dialog"
+            :title="titleTrain"
+            :visible.sync="dialogVisibleTrain"
+            :close-on-click-modal="false"
+            :center="true"
+            :show-close="false"
+            :hide-required-asterisk="true"
+        >
+            <el-form
+                ref="refTrain"
+                class="demo-ruleForm"
+                label-width="80px"
+                :rules="rulesForm"
+                :model="formTrain"
             >
-                <el-button class="T-H-B-SkyBlue" type="primary" @click="uploadLowerTrainClick">上传</el-button>
-            </el-upload>
-			<el-button class="T-H-B-DarkBlue" @click="addStaffClick">新增</el-button>
-			<el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
-		</div>
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        stripe
-        :header-cell-style="headClass"
-        tooltip-effect="dark"
-        style="width: 100%;"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="number" label="序号"></el-table-column>
-        <el-table-column label="培训主题">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
-        </el-table-column>
-        <el-table-column prop="name" label="培训人数">
-          <template slot-scope="scope">{{ scope.row.phone }}</template>
-        </el-table-column>
-        <el-table-column prop="phone" label="培训对象"></el-table-column>
-        <el-table-column prop="company" label="培训部门/召集人" width="130"></el-table-column>
-        <el-table-column prop="projectCode" label="主讲人"></el-table-column>
-        <el-table-column prop="projectName" label="记录整理人"></el-table-column>
-        <el-table-column prop="contractCode" label="培训时间"></el-table-column>
-        <el-table-column prop="contractDate" label="培训地点" width="200"></el-table-column>
-        <el-table-column prop="contractType" label="学时"></el-table-column>
-        <el-table-column prop="mechanismCode" label="培训提纲"></el-table-column>
-        <el-table-column label="操作" width="240" fixed="right">
-          <template slot-scope="scope">
-            <el-button
-              class="T-R-B-BlackishGreen"
-              size="mini"
-              @click="downRowClick(scope.$index, scope.row)"
-            >下载</el-button>
-            <el-button
-              class="T-R-B-Grey"
-              size="mini"
-              @click="deleteRowClick(scope.$index, scope.row)"
-            >删除</el-button>
-            <el-button
-              class="T-R-B-Green"
-              size="mini"
-              @click="editRowClick(scope.$index, scope.row)"
-            >编辑</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div style="text-align: center; padding-top:20px;">
-        <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
-      </div>
+                <el-form-item prop="pTrainingId" label="培训主题" :required="true">
+                    <el-input v-model="formTrain.pTrainingId"></el-input>
+                </el-form-item>
+                <el-form-item prop="trainAmount" label="培训人数" :required="true">
+                    <el-input v-model="formTrain.trainAmount"></el-input>
+                </el-form-item>
+                <el-form-item prop="trainObject" label="培训对象" :required="true">
+                    <el-input v-model="formTrain.trainObject"></el-input>
+                </el-form-item>
+                <el-form-item prop="trainDepartment" label="培训部门/召集人" :required="true">
+                    <el-input v-model="formTrain.trainDepartment"></el-input>
+                </el-form-item>
+                <el-form-item prop="trainer" label="主讲人" :required="true">
+                    <el-input v-model="formTrain.trainer"></el-input>
+                </el-form-item>
+                <el-form-item prop="trimmer" label="记录整理人" :required="true">
+                    <el-input v-model="formTrain.trimmer"></el-input>
+                </el-form-item>
+                <el-form-item prop="trainingDate" label="培训时间" :required="true">
+                    <el-date-picker
+                        v-model="formTrain.trainingDate"
+                        type="datetime"
+                        style="width: 100%;"
+                        :editable="false"
+                        placeholder="选择培训时间">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item prop="trainAddress" label="地点" :required="true">
+                    <el-input v-model="formTrain.trainAddress"></el-input>
+                </el-form-item>
+                <el-form-item prop="trainDuration" label="学时" :required="true">
+                    <el-input v-model="formTrain.trainDuration"></el-input>
+                </el-form-item>
+                <el-form-item prop="description" label="培训提纲" :required="true">
+                    <el-input v-model="formTrain.description"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button class="F-Grey" round @click="cloneTrainForm('refTrain')">取消</el-button>
+                    <el-button class="F-Blue" round @click="submiTraintForm('refTrain')">确定</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
-    <addTrain v-if="isTrain"></addTrain>
-  </div>
 </template>
 
 <script>
-import Utils from "../../../../assets/js/util.js";
-import addTrain from "./add/add";
+
+import { handleCofirm } from "@/utils/confirm";
+
 export default {
-  data() {
-    return {
-		tableData: [
-        {
-			date: "第一公司",
-			name: "张三",
-			phone: "13888779977",
-			company: "第一单位",
-			projectCode: "007124241",
-			projectName: "第一项目",
-			contractCode: "HT123456",
-			contractDate: "2019-10-10 - 2020-10-09",
-			contractType: "专业分包",
-			mechanismCode: "354163831",
-			status: "未提交"
-        }
-		],
-		multipleSelection: [],
-		screenForm: {
-			grouping: "",
-			person: "",
-			type: ""
-		}
-    };
-	},
-    components: {
-        addTrain
+    data() {
+        return {
+            //  初始化页面
+            page: 1, // 初始页
+            pageSize: 10, // 默认每页数据量
+            total: 0, //总条数
+            dialogVisibleTrain: false,
+            tableData: [],
+            screenForm: {
+                trainingName: ""
+            },
+            titleTrain:'',
+            formTrain:{
+                id:null,
+                pTrainingId: '',
+                trainAmount: '',
+                trainObject: '',
+                trainDepartment: '',
+                trainer: '',
+                trimmer: '',
+                trainingDate: '',
+                trainAddress: '',
+                trainDuration: '',
+                description: ''
+            },
+            // 自定义表单验证
+            rulesForm: {
+                pTrainingId: [
+                    { required: true, message: "请输入培训主题", trigger: "blur" }
+                ],
+                trainAmount: [
+                    { required: true, message: "请输入培训人数", trigger: "blur" }
+                ],
+                trainObject: [
+                    { required: true, message: "请输入培训对象", trigger: "blur" }
+                ],
+                trainDepartment: [
+                    { required: true, message: "请输入部门/召集人", trigger: "blur" }
+                ],
+                trainer: [
+                    { required: true, message: "请输入主讲人", trigger: "blur" }
+                ],
+                trimmer: [
+                    { required: true, message: "请输入记录整理人", trigger: "blur" }
+                ],
+                trainingDate: [
+                    { required: true, message: "请选择培训时间", trigger: "change" }
+                ],
+                trainAddress: [
+                    { required: true, message: "请输入培训地点", trigger: "blur" }
+                ],
+                trainDuration: [
+                    { required: true, message: "请选择培训学时", trigger: "blur" }
+                ],
+                description: [
+                    { required: true, message: "请输入培训提纲", trigger: "blur" }
+                ]
+            }
+        };
+    },
+    created() {
+        // 页面加载时获取信息
+        this.getTable();
     },
 	methods: {
-		handleSelectionChange(val) {
-			this.multipleSelection = val;
-		},
-        onScreen() {},
-        //  新增培训记录
-        addStaffClick() {
-            isTrain: true
-            console.log(Utils);
-            Utils.$emit("addLowerTrain");
+        // 每页显示多少条 @size-change
+        handleSizeChange(size) {
+            this.pageSize = size;
+            this.getTable();
+        // console.log(this.pageSize)  //每页下拉显示数据
         },
-        //  上传培训记录
-        uploadQuestionsClick () {
+        // 点击跳转第几页 @current-change
+        handleCurrentChange(page) {
+            this.page = page;
+            this.getTable();
+        },
+        // 上一页 @prev-click
+        prev(cpage) {
+            this.page = cpage;
+            this.getTable();
+        },
+        // 下一页 @next-click
+        next(cpage) {
+            this.page = cpage;
+            this.getTable();
+        },
+        // 表格加载请求
+        getTable() {
+            var data = JSON.stringify({
+                pageSize: this.pageSize,
+                page: this.page
+            });
+            //请求
+            var url =
+                "/smart/worker/train/" +
+                sessionStorage.getItem("userId") +
+                "/record/management";
+            this.http.post(url, data).then(res => {
+                if (res.code == 200) {
+                var total = res.total;
+                var rows = res.rows;
+                this.tableData = rows;
+                this.total = total;
+                }
+            });
+            var result = [
+                {
+                    pTrainingId: '安全培训1',
+                    trainAmount: '50',
+                    trainObject: '安保部门',
+                    trainDepartment: '张三',
+                    trainer: '李四',
+                    trimmer: '王五',
+                    trainingDate: '2020-05-20 17:17:17',
+                    trainAddress: '北京房山',
+                    trainDuration: '4',
+                    description: '主讲安全培训'
+                },
+                {
+                    pTrainingId: '安全培训2',
+                    trainAmount: '51',
+                    trainObject: '安保部门',
+                    trainDepartment: '张三',
+                    trainer: '李四',
+                    trimmer: '王五',
+                    trainingDate: '2020-05-20 17:17:17',
+                    trainAddress: '北京房山',
+                    trainDuration: '4',
+                    description: '主讲安全培训'
+                }
+            ];
+            this.tableData = result;
+            this.total = result.length;
+        },
+//获得表格前面选中的id值
+        handleSelectionChange() {
+            var ids = new Array();
+            var arrays = this.$refs.multipleTable.selection;
+            console.log(arrays)
+            for (var i = 0; i < arrays.length; i++) {
+                // 获得id
+                var id = arrays[i].id;
+                ids.push(id);
+            }
+            return ids;
+        },
+        // 查询
+        onScreen() {
+            let data = JSON.stringify(this.screenForm);
+            this.http
+                .post("/smart/worker/train/"+ sessionStorage.getItem("userId") +"/record/management", data)
+                .then(res => {
+                console.log(res);
+            });
+        },
 
+//  添加/编辑 提交
+        submiTraintForm(refTrain) {
+            // 验证
+            this.$refs[refTrain].validate(valid => {
+                if (valid) {
+                    let form = this.$refs[refTrain].model;
+                    // 判断id是否为空
+                    if(form.id == null) {
+                        let data = JSON.stringify(this.formTrain);
+                        this.http
+                            .post("smart/worker/train/1/record", data)
+                            .then(res => {
+                                if (res.code == 200) {
+                                    this.$message({
+                                    type: "success",
+                                    message: "添加成功!"
+                                    });
+                                }
+                            })
+                            .catch(res => {
+                                console.log('error!')
+                                return false
+                            });
+                        this.dialogVisibleLabor = false;
+                    } else {
+                        let data = JSON.stringify(this.formTrain);
+                        this.http
+                            .put("smart/worker/train/1/record", data)
+                            .then(res => {
+                                if (res.code == 200) {
+                                    this.$message({
+                                    type: "success",
+                                    message: "修改成功!"
+                                    });
+                                }
+                            })
+                            .catch(res => {
+                                console.log('error!')
+                                return false
+                            });
+                        this.dialogVisibleLabor = false;
+                    }
+                    
+                } else {
+                    console.log("error submit!!");
+                    return false;
+                }
+            });
         },
-        //  批量删除
+
+//  新增/编辑   关闭
+        cloneTrainForm(refTrain) {
+            this.$refs[refTrain].resetFields();
+            this.dialogVisibleTrain = false;
+        },
+//  新增劳务公司
+        addClick() {
+            this.titleTrain = '新增培训记录'
+            this.dialogVisibleTrain = true
+        },
+//  编辑回显
+        editRowClick(inedx, row) {
+            this.titleTrain = '编辑培训记录'
+            this.formTrain = row;
+            this.dialogVisibleTrain = true;
+        },
+
+//  批量删除
         deleteBatchClick() {
-            this.$confirm("确定删除培训记录吗？", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                confirmButtonClass: 'detDel',
-                cancelButtonClass: 'cancelClone',
-                center: true,
-                roundButton: true
-            })
+            var ids = this.handleSelectionChange();
+            if (ids.length <= 0) {
+                this.$message("请选择删除的数据！");
+                return;
+            }
+            handleCofirm("确定删除吗？")
             .then(res => {
-                this.$message({
-                    type: "success",
-                    message: "删除成功!"
+                let data = JSON.stringify(ids);
+                let url =
+                    "/smart/worker/train/" +
+                    sessionStorage.getItem("userId") +
+                    "/record";
+                this.http.delete(url, data).then(res => {
+                    if (res.code == 200) {
+                        let total = res.total;
+                        let rows = res.rows;
+                        this.tableData = rows;
+                        this.total = total;
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                    }
                 });
             })
-            .catch(() => {
+            .catch(err => {
                 this.$message({
                     type: "info",
                     message: "已取消删除"
                 });
             });
         },
-        //  表格操作
-        //  编辑
-        editRowClick () {
-
-        },
-        //  删除
-        deleteRowClick () {
-            this.$confirm("确定删除培训记录吗？", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                confirmButtonClass: 'detDel',
-                cancelButtonClass: 'cancelClone',
-                center: true,
-                roundButton: true
+        // 下载
+        downRowClick(index, row){
+            let ids = [];
+            ids.push(row.id)
+            let params = null;
+            let url =
+                "/smart/worker/train/" +
+                sessionStorage.getItem("userId") +
+                "/common/"+ ids +"/download";
+            this.http.get(url, params).then(res => {
+                if (res.code == 200) {
+                    this.$message({
+                        type: "success",
+                        message: "下载成功!"
+                    });
+                }
             })
+        },
+        // 删除
+        deleteRowClick(index, row) {
+            let ids = [];
+            ids.push(row.id);
+            handleCofirm("确定删除吗？")
             .then(res => {
-                this.$message({
-                    type: "success",
-                    message: "删除成功!"
+                let data = JSON.stringify(ids);
+                let url =
+                    "/smart/worker/train/" +
+                    sessionStorage.getItem("userId") +
+                    "/record";
+                this.http.delete(url, data).then(res => {
+                    if (res.code == 200) {
+                        let total = res.total;
+                        let rows = res.rows;
+                        this.tableData = rows;
+                        this.total = total;
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                    }
                 });
             })
-            .catch(() => {
+            .catch(err => {
                 this.$message({
                     type: "info",
                     message: "已取消删除"
                 });
             });
-        },
-        //  下载
-        downRowClick () {
-
         },
         //  数据表格-表头样式
         headClass() {
