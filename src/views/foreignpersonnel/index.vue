@@ -491,8 +491,8 @@ export default {
     // 列表请求
     handleUserList() {
       // 获得搜索的内容
-      var uname = this.formInline.searchNum;
-      var unum = this.formInline.searchUname;
+      var unum = this.formInline.searchNum;
+      var uname = this.formInline.searchUname;
       //   // 获得当前用户的id
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
@@ -591,8 +591,8 @@ export default {
     poiExcel() {
       // //获得token
       // var token = sessionStorage.getItem("token");
-      var uname = this.formInline.searchNum;
-      var unum = this.formInline.searchUname;
+      var unum = this.formInline.searchNum;
+      var uname = this.formInline.searchUname;
       let _this = this;
       var data = JSON.stringify({
         name: uname,
