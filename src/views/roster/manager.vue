@@ -78,7 +78,7 @@
         </div>
         <pagination
           class="pagination-box"
-          v-if="total>0"
+          v-if="total>10"
           :total="total"
           :page.sync="listQuery.currentPage"
           :limit.sync="listQuery.pageSize"
@@ -136,7 +136,7 @@ export default {
         workerType: ""
       },
       changOrder: false, //查看详情
-      total: 50,
+      total: 11,
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
