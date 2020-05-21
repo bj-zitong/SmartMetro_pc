@@ -1,79 +1,86 @@
 <template>
+<!-- 线上 -->
   <div class="main-box">
-    <!-- 筛选 -->
-    <div class="R-L-S screen-form">
-      <el-form :inline="true" ref="screenForm" :model="screenForm" class="screen-form-h">
-        <el-form-item label="视频类型">
-          <el-input v-model="screenForm.person" placeholder="请输入视频类型"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onScreen">查询</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+    <!-- 头部 -->
+        <el-container>
+            <!-- 筛选 -->
+            <el-menu class="main-top-box">
+                <el-form :inline="true" ref="screenForm" :model="screenForm">
+                    <el-form-item label="培训类型：">
+                        <el-input v-model="screenForm.trainingType" placeholder="请输入培训类型"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onScreen">查询</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-menu>
+        </el-container>
     <!-- 表格 -->
-    <div class="R-L-T table-main">
-		<div style="margin-bottom: 30px;">
-			<el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
-		</div>
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        stripe
-        :header-cell-style="headClass"
-        tooltip-effect="dark"
-        style="width: 100%;"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="trainTyle" label="培训类型"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="130"></el-table-column>
-        <el-table-column prop="jobNumber" label="工号"></el-table-column>
-        <el-table-column prop="team" label="班组"></el-table-column>
-        <el-table-column prop="major" label="工种"></el-table-column>
-        <el-table-column prop="trainTime" label="培训时长"></el-table-column>
-        <el-table-column label="操作" fixed="right">
-          <template slot-scope="scope">
-            <el-button
-              class="T-R-B-Grey"
-              size="mini"
-              @click="deleteRowClick(scope.$index, scope.row)"
-            >删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div style="text-align: center; padding-top:20px;">
-        <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
-      </div>
-    </div>
+    <el-container>
+        <el-menu class="main-con-box">
+            <div class="main-btn-box">
+                <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
+            </div>
+            <el-table
+                ref="multipleTable"
+                :data="tableData"
+                stripe
+                :header-cell-style="headClass"
+                tooltip-effect="dark"
+                style="width: 100%;"
+                @selection-change="handleSelectionChange"
+            >
+                <el-table-column type="selection"></el-table-column>
+                <el-table-column prop="trainTyle" label="培训类型"></el-table-column>
+                <el-table-column prop="name" label="姓名" width="130"></el-table-column>
+                <el-table-column prop="jobNumber" label="工号"></el-table-column>
+                <el-table-column prop="team" label="班组"></el-table-column>
+                <el-table-column prop="major" label="工种"></el-table-column>
+                <el-table-column prop="trainTime" label="培训时长"></el-table-column>
+                <el-table-column label="操作" fixed="right">
+                <template slot-scope="scope">
+                    <el-button
+                        class="T-R-B-Grey"
+                        size="mini"
+                        @click="deleteRowClick(scope.$index, scope.row)"
+                    >删除</el-button>
+                </template>
+                </el-table-column>
+            </el-table>
+            <!-- 分页& -->
+            <el-pagination
+                background
+                class="pagination-box"
+                layout="total, prev, pager,next"
+                :current-page="page"
+                :page-size="pageSize"
+                :total="total"
+                @prev-click="prev"
+                @next-click="next"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+            ></el-pagination>
+        </el-menu>
+    </el-container>
   </div>
 </template>
 
 <script>
+
+import { handleCofirm } from "@/utils/confirm";
+
 export default {
   data() {
     return {
-		tableData: [
-        {
-			trainTyle: "培训类型",
-			name: "张三",
-			jobNumber: "135163",
-			team: "第一班组",
-			major: "电焊",
-			trainTime: "45",
-        }
-		],
-		multipleSelection: [],
+		tableData: [],
 		screenForm: {
-			grouping: "",
-			person: "",
-			type: ""
+            trainingType: ''
 		}
     };
 	},
 	methods: {
 		handleSelectionChange(val) {
-			this.multipleSelection = val;
+            
 		},
         onScreen() {},
         //  批量删除
