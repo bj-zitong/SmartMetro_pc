@@ -106,7 +106,7 @@ export default {
     },
     drawLine(ctx) {
       // 绘制干扰线
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i <0; i++) {
         ctx.strokeStyle = this.randomColor(
           this.lineColorMin,
           this.lineColorMax
@@ -125,7 +125,7 @@ export default {
     },
     drawDot(ctx) {
       // 绘制干扰点
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 10; i++) {
         ctx.fillStyle = this.randomColor(0, 255)
         ctx.beginPath()
         ctx.arc(
