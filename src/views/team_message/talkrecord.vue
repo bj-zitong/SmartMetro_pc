@@ -275,7 +275,7 @@ export default {
       }
     };
   },
-  created: function() {
+  activated:function() {
     this.getTalks();
   },
   methods: {
@@ -330,7 +330,7 @@ export default {
           homeworkPart: "作业部位1",
           workerInfo: "安保部一",
           homeworkNumber: 12,
-          jobContent: "内容一",
+          jobContent: "内容5一",
           isSafety: "安全防护用品配套使用",
           meetingContent: "eeeeeee",
           workNum: "44444444444",

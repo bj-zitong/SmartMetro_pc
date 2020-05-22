@@ -10,17 +10,30 @@
         </div>
         <div class="home-header-right fr">
           <div class="out fl">
-            <el-link :underline="false" class="out-text" @click.native="logout">13号线02标中铁二局</el-link>
+            <el-link :underline="false" class="out-text" @click.native="logout">{{orgSite}}</el-link>
+            <el-divider direction="vertical" class="borderline"></el-divider>
           </div>
-          <div class="interval fl"></div>
+          <!-- <div class="interval fl"></div> -->
           <div class="name fl">
             <div class="fl">
               <a href="javascript:;">
-                <img src="../../assets/images/home/home-head.png" alt="">
+                <img src="../../assets/images/home/home-head.png" alt="" class="loginimg">
               </a>
             </div>
-            <p href="javascript:;" class="name-text fr">用户名</p>
+            <p href="javascript:;" class="name-text fr">{{username}}</p>
           </div>
+          <el-dropdown trigger="click" style="margin-top:4px">
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="user-dropdown" slot="dropdown">
+              <el-dropdown-item @click.native="logout">
+                <span style="display:block;">{{$t('navbar.logOut')}}</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
     </div>
@@ -177,12 +190,17 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      username:'',
+      orgSite:''
       // 粒子开关
     };
   },
-  created() {
-    // 初始化时读取localStorage用户信息
-    let username = window.localStorage.getItem('username');
+  mounted() {
+    // var getuser = sessionStorage.setItem('user',res.data);
+    var getuser = JSON.parse(sessionStorage.getItem('user'));
+    console.log(getuser)
+      this.username=getuser.name
+      this.orgSite=getuser.orgSite
   },
   computed: {
     ...mapGetters(["name", "avatar"])
@@ -216,8 +234,7 @@ export default {
       })
     }
   },
-  watch: {},
-  mounted() {}
+  watch: {}
 };
 </script>
 <style lang="stylus" scoped>
@@ -281,19 +298,17 @@ ul,li {
   padding-top 6px;
 }
 .out-text{
-  width:65px;
   height:21px;
-  font-size:14px;
+  font-size:18px;
   font-family:Microsoft YaHei;
   font-weight:400;
   color:rgba(0,88,162,1);
   opacity:1;
 }
 .name-text{
-  width:60px;
   height:21px;
   margin-left 10px;
-  font-size:14px;
+  font-size:16px;
   font-family:Microsoft YaHei;
   font-weight:400;
   line-height:31px;
@@ -389,5 +404,12 @@ ul,li {
 }
 .fr{
   float right;
+}
+.borderline {
+  border: 1px solid rgba(0,88,162,1);
+}
+.loginimg{
+  width:30px;
+  height:30px;
 }
 </style>

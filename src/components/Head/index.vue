@@ -3,16 +3,16 @@
     <el-menu mode="horizontal" text-color="#fff" active-text-color="#fff">
       <div>
         <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
-        <div index="1" class="title-name">城市轨道交通智慧工地管理系统—人员智慧管理</div>
+        <div index="1" class="title-name" @click="homepage">城市轨道交通智慧工地管理系统—人员智慧管理</div>
       </div>
       <div class="avatar-container">
         <div class="exit_login">
-          <el-link :underline="false" class="exit_login_text">admin</el-link>
+          <el-link :underline="false" class="exit_login_text">{{orgSite}}</el-link>
           <el-divider direction="vertical" class="borderline"></el-divider>
         </div>
         <div class="Head_portrait">
           <img src="/static/image/Head_portrait.png" alt class="ri_icon_name" />
-          <span>名称</span>
+          <span>{{username}}</span>
           <el-dropdown trigger="click">
             <div class="avatar-wrapper">
               <div class="username-wrapper">
@@ -41,19 +41,31 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "",
   data() {
-    return {};
+    return {
+      username:'',
+      orgSite:''
+    };
   },
   computed: {
     ...mapGetters(["name", "avatar"])
   },
-  mounted() {},
+  mounted() {
+    // var getuser = sessionStorage.setItem('user',res.data);
+    var getuser = JSON.parse(sessionStorage.getItem('user'));
+      this.username=getuser.name
+      this.orgSite=getuser.orgSite
+  },
   methods: {
+    
     logout() {
       this.$router.push({ path: "/login" });
     },
     ...mapActions({
       userLogout: "logout"
-    })
+    }),
+    homepage(){
+      this.$router.push({ path: "/Selectpage" });
+    }
   }
 };
 </script>
@@ -77,6 +89,7 @@ export default {
   font-size: 24px;
   font-weight: bold;
   color: rgba(255, 255, 255, 1);
+  cursor:pointer
 }
 
 .top-navbar .screenfull {
