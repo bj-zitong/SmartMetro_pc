@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 // import router from '../router';
-let localhosts = 'http://192.168.1.100:8002';   //请求的后台域名
+let localhosts = 'http://192.168.1.100:8082';   //请求的后台域名
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
     return config
 },error =>{
@@ -12,7 +12,7 @@ axios.interceptors.response.use(response => {//数据拿到之后
     return response.data
 },error => {
     Message.error('Http请求失败，请联系管理员');
-    return Promise.reject(error.response);
+    return Promise.reject(error.response);;
 });
 function successfun(res){//处理后台返回的非200错误
     if(res.code === 200){
@@ -36,8 +36,8 @@ export default{
                  Authorization:sessionStorage.getItem('token'),
                  'Content-Type': 'application/json',
             },
-            baseURL:url,
-            
+            baseURL:localhosts,
+            url,
             data: data,
             withCredentials: true,
             timeout:5000,//响应时间,

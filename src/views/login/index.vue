@@ -166,8 +166,7 @@ export default {
            "account":  this.loginForm.username,
             "password":  this.loginForm.pwd
         });
-        
-        this.http.post(this.localhostssss+'/smart/auth/login', params).then(res => {
+        this.http.post(this.PersonnelLocalhosts+'/smart/auth/login', params).then(res => {
         console.log(res)
           if (res.code == 200) {
             this.$message("登录成功！");
