@@ -50,18 +50,15 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-pagination
-                    background
+                <!-- 分页& -->
+                <pagination
                     class="pagination-box"
-                    layout="total, prev, pager,next"
-                    :current-page="page"
-                    :page-size="pageSize"
+                    v-if="total>0"
                     :total="total"
-                    @prev-click="prev"
-                    @next-click="next"
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                ></el-pagination>
+                    :page.sync="listQuery.currentPage"
+                    :limit.sync="listQuery.pageSize"
+                    @pagination="getTable"
+                />
             </el-menu>
         </el-container>
     </div>
@@ -70,14 +67,18 @@
 <script>
 
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "@/components/pagination";
 
 export default {
+    components: {
+        Pagination
+    },
     data() {
         return {
-            //  初始化页面
-            page: 1, // 初始页
-            pageSize: 10, // 默认每页数据量
-            total: 0, //总条数
+        listQuery: {
+            currentPage: 1, //与后台定义好的分页参数
+            pageSize: 10
+        },
             tableData: [], // 初始化表格
         }
     },
@@ -85,27 +86,6 @@ export default {
         this.getTable();
     },
 	methods: {
-		// 每页显示多少条 @size-change
-        handleSizeChange(size) {
-            this.pageSize = size;
-            this.getTable();
-        // console.log(this.pageSize)  //每页下拉显示数据
-        },
-        // 点击跳转第几页 @current-change
-        handleCurrentChange(page) {
-            this.page = page;
-            this.getTable();
-        },
-        // 上一页 @prev-click
-        prev(cpage) {
-            this.page = cpage;
-            this.getTable();
-        },
-        // 下一页 @next-click
-        next(cpage) {
-            this.page = cpage;
-            this.getTable();
-        },
         // 表格加载请求
         getTable() {
             var data = JSON.stringify({

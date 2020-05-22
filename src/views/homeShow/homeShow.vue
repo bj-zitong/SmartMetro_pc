@@ -7,7 +7,7 @@
                         <div class="home-title">
                             <span>现场人员</span>
                         </div>
-                        <div style="width: 100%; height: 220px;" ref="left1" id="left1"></div>
+                        <div style="width: 100%; height: 100%;" ref="left1" id="left1"></div>
                     </div>
                     <div class="grid-content h-m-l2">
                         <div class="home-title">

@@ -297,7 +297,7 @@ export default {
                 let d = new Date();
                 let month = d.getMonth() + 1;
                 let excelName =
-                "管理人员-" +
+                "设备人员-" +
                 d.getFullYear() +
                 month +
                 d.getDate() +
