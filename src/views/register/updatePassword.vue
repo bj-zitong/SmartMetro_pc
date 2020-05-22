@@ -288,16 +288,21 @@ export default {
             method: "post",
             headers: {
               "Content-Type": "application/json",
-              'Authorization':sessionStorage.getItem('token')
+              Authorization: sessionStorage.getItem("token")
             },
-            url:'/api'+"/smart/auth/" +
-            sessionStorage.getItem("userId") +
-            "/password/change",
+            url:
+              "/api" +
+              "/smart/auth/" +
+              sessionStorage.getItem("userId") +
+              "/password/change",
             data: params,
-            timeout: 5000, //响应时间
+            timeout: 5000 //响应时间
           }).then(
             res => {
-             console.log(111);
+              if (res.code == 200) {
+                this.$message("修改成功！");
+                this.$router.push({ path: "/login" });
+              }
             },
             err => {
               return errorfun(err);
