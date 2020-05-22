@@ -119,8 +119,8 @@
           <el-input v-model="formLabor.location"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="F-Grey" round @click="cloneLaborForm('refLabor')">取消</el-button>
-          <el-button class="F-Blue" round @click="submiLabortForm('refLabor')">确定</el-button>
+          <el-button class="F-Grey" round @click.native="cloneLaborForm('refLabor')">取消</el-button>
+          <el-button class="F-Blue" round @click.native="submiLabortForm('refLabor')">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -232,44 +232,14 @@ export default {
       });
       //请求
       var url =
-        "/smart/auth/" + sessionStorage.getItem("userId") + "/org/management";
-      this.http.post(url, data).then(res => {
+       this.PersonnelLocalhosts+ "/smart/auth/" + sessionStorage.getItem("userId") + "/org/management";
+       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
-          this.tableData = rows;
+          var total = res.data.total;
+          this.tableData = res.data.orgSites;
           this.total = total;
         }
       });
-      var result = [
-        {
-          orgSiteId: 1,
-          projectCenter: "第一公司",
-          status: "未提交",
-          line: "13号线",
-          siteName: "霍营",
-          buildCorpName: "第一单位",
-          responsiblePersonName: "张三",
-          cellPhone: "15236985965",
-          location: "xxxxx",
-          createTime: "2019-10-01"
-        },
-        {
-          orgSiteId: 2,
-          projectCenter: "第二公司",
-          status: "未提交",
-          line: "12",
-          siteName: "xxxxx",
-          buildCorpName: "第二单位",
-          responsiblePersonName: "王五",
-          cellPhone: "15236985697",
-          contractCode: "HT654321",
-          location: "xxxxx",
-          createTime: "2020-10-07"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     //获得表格前面选中的id值
     handleSelectionChange() {
@@ -289,31 +259,29 @@ export default {
         if (valid) {
           let form = this.$refs[refLabor].model;
           // 判断id是否为空 /smart/auth/{userId}/org
-          var url = "/smart/auth/" + sessionStorage.getItem("userId") + "/org";
+          var url = this.PersonnelLocalhosts+"/smart/auth/" + sessionStorage.getItem("userId") + "/org";
           if (form.orgSiteId == null) {
             let data = JSON.stringify(this.formLabor);
             this.http
               .post(url, data)
               .then(res => {
                 if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: "添加成功!"
-                  });
+                  this.$message("添加成功！");
+                  this.getTable();
+                  this.dialogVisibleLabor = false;
                 }
               })
               .catch(res => {
                 return false;
               });
-            this.dialogVisibleLabor = false;
           } else {
             let data = JSON.stringify(this.formLabor);
             var url =
-              "/smart/auth/" +
+             this.PersonnelLocalhosts+ "/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/org/" +
               this.formLabor.orgSiteId;
-            var data = JSON.stringify({
+              var data = JSON.stringify({
               projectCenter: this.formLabor.projectCenter,
               line: this.formLabor.line,
               siteName: this.formLabor.siteName,
@@ -326,17 +294,14 @@ export default {
               .put(url, data)
               .then(res => {
                 if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: "修改成功!"
-                  });
+                  this.$message("编辑成功！");
+                  this.cloneLaborForm();
+                  this.getTable();
                 }
               })
               .catch(res => {
                 return false;
               });
-            this.dialogVisibleLabor = false;
-            this.$refs[refLabor].resetFields();
           }
         } else {
           return false;
@@ -346,6 +311,7 @@ export default {
     //  新增/编辑   关闭
     cloneLaborForm(refLabor) {
       this.$refs[refLabor].resetFields();
+      Object.assign(this.$data.formLabor, this.$options.data().formLabor) // 初始化data
       this.dialogVisibleLabor = false;
     },
     //  新增
@@ -356,7 +322,21 @@ export default {
     //  编辑回显
     editRowClick(inedx, row) {
       this.titleLabor = "编辑";
-      this.formLabor = row;
+      var id=row.orgSiteId;
+      // this.formLabor = row;
+      var url =
+          this.PersonnelLocalhosts+ "/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/org/" +
+        id;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.formLabor = JSON.parse(JSON.stringify(result));
+          console.log(this.formLabor);
+        }
+      });
       this.dialogVisibleLabor = true;
     },
     //  批量删除
@@ -369,18 +349,11 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           let data = JSON.stringify(ids);
-          ///smart/auth/{userId}/org
-          let url = "/smart/auth/" + sessionStorage.getItem("userId") + "/org";
+          let url =this.PersonnelLocalhosts+ "/smart/auth/" + sessionStorage.getItem("userId") + "/org";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              let total = res.total;
-              let rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
+               this.$message("已删除！");
+               this.getTable();
             }
           });
         })
@@ -398,17 +371,11 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
-          var url = "/smart/auth/" + sessionStorage.getItem("userId") + "/org";
+          var url = this.PersonnelLocalhosts+"/smart/auth/" + sessionStorage.getItem("userId") + "/org";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
+               this.$message("已删除！");
+               this.getTable();
             }
           });
         })

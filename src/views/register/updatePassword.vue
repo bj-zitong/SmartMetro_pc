@@ -101,6 +101,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
 import SIdentify from "../login/securityCode/securityCode";
+import axios from "axios";
 export default {
   components: {
     SIdentify
@@ -159,7 +160,9 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    this.refreshCode();
+  },
   methods: {
     refreshCode() {
       this.identifyCode = "";
@@ -259,18 +262,47 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           var form = this.form;
+          if (form.confirmPassword != form.newpassword) {
+            this.$message("密码不一致，请重新输入！");
+            return false;
+          }
           //请求参数
           var params = JSON.stringify({
             account: form.phone,
             loginPassword: form.password,
-            changePassword: form.newpassword
+            changePassword: form.newpassword,
+            userId: sessionStorage.getItem("userId")
           });
-          this.http.post("/smart/auth/password/change", params).then(res => {
-            if (res.code == 200) {
-              this.$message("修改成功！");
-              this.$router.push({ path: "/login" });
+          var url =
+            this.PersonnelLocalhosts +
+            "/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/password/change";
+          // this.http.post(url, params).then(res => {
+          //   if (res.code == 200) {
+          //     this.$message("修改成功！");
+          //     this.$router.push({ path: "/login" });
+          //   }
+          // });
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization':sessionStorage.getItem('token')
+            },
+            url:'/api'+"/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/password/change",
+            data: params,
+            timeout: 5000, //响应时间
+          }).then(
+            res => {
+             console.log(111);
+            },
+            err => {
+              return errorfun(err);
             }
-          });
+          );
         } else {
         }
       });

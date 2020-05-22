@@ -18,7 +18,7 @@ function successfun(res){//处理后台返回的非200错误
     if(res.code === 200){
         return res
     }else{
-         Message.warning(res.message);
+        //  Message.warning(res.message);
          return res;
     }
 }
@@ -37,7 +37,7 @@ export default{
                  'Content-Type': 'application/json',
             },
             baseURL:url,
-            
+
             data: data,
             withCredentials: true,
             timeout:5000,//响应时间,
@@ -48,6 +48,24 @@ export default{
             return errorfun(err);
         })
     },
+    post2(url,data){//post请求
+      return axios({
+          method:'post',
+          headers:{
+               'Content-Type': 'application/json'
+          },
+          baseURL:url,
+
+          data: data,
+          withCredentials: true,
+          timeout:5000,//响应时间,
+          responseType: "arraybuffer"
+      }).then(res => {
+          return successfun(res)
+      },err => {
+          return errorfun(err);
+      })
+  },
     get(url,params){//get请求
         return axios({
             method:'get',

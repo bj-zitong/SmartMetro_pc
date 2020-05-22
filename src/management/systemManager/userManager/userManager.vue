@@ -116,8 +116,8 @@
           </el-checkbox-group>
         </el-form-item>
         <el-form-item>
-          <el-button class="F-Grey" round @click="cloneTeamForm('refTeam')">取 消</el-button>
-          <el-button class="F-Blue" round @click="submitTeamForm('refTeam')">确 定</el-button>
+          <el-button class="F-Grey" round @click.native="cloneTeamForm('refTeam')">取 消</el-button>
+          <el-button class="F-Blue" round @click.native="submitTeamForm('refTeam')">确 定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -134,13 +134,13 @@
           <el-col :span="10">
             <div class="grid-content bg-purple">
               用户名:
-              <span>9996666</span>
+              <span>{{user.userName}}</span>
             </div>
           </el-col>
           <el-col :span="10">
             <div class="grid-content bg-purple">
               手机号:
-              <span>9996666</span>
+              <span>{{user.cellPhone}}</span>
             </div>
           </el-col>
         </el-row>
@@ -148,13 +148,13 @@
           <el-col :span="10">
             <div class="grid-content bg-purple">
               角色:
-              <span>9996666666666</span>
+              <span>{{user.roles}}</span>
             </div>
           </el-col>
           <el-col :span="10">
             <div class="grid-content bg-purple">
               用户状态:
-              <span>9996666666666</span>
+              <span>{{user.status}}</span>
             </div>
           </el-col>
         </el-row>
@@ -162,19 +162,19 @@
           <el-col :span="10">
             <div class="grid-content bg-purple">
               创建时间:
-              <span>9996666666666</span>
+              <span>{{user.createTime}}</span>
             </div>
           </el-col>
           <el-col :span="10">
             <div class="grid-content bg-purple">
               密码:
-              <span>9996666666666</span>
+              <span>{{user.password}}</span>
             </div>
           </el-col>
           <el-col :span="10">
             <div class="grid-content bg-purple">
               账号:
-              <span>9996666666666</span>
+              <span>{{user.account}}</span>
             </div>
           </el-col>
         </el-row>
@@ -210,6 +210,7 @@ export default {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
+      user: null,
       formTeam: {
         //班组初始化
         sysUserId: null,
@@ -275,7 +276,10 @@ export default {
       });
       //请求
       var url =
-        "/smart/auth/" + sessionStorage.getItem("userId") + "/user/management";
+        this.PersonnelLocalhosts +
+        "/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/user/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.data.total;
@@ -283,45 +287,24 @@ export default {
           this.total = total;
         }
       });
-      // var result = [
-      //   {
-      //     sysUserId: 1,
-      //     userName: "张三",
-      //     status: "使用中",
-      //     cellPhone: "15236985236",
-      //     roleName: "项目负责人",
-      //     createTime: "2019-10-01"
-      //   },
-      //   {
-      //     sysUserId: 2,
-      //     userName: "李四",
-      //     status: "使用中",
-      //     cellPhone: "13752369875",
-      //     roleName: "项目负责人",
-      //     createTime: "2019-10-01"
-      //   }
-      // ];
-      // this.tableData = result;
-      // this.total = result.length;
     },
     //用户详情
     getUserdetail(index, row) {
-      // 用户id
-      ///smart/auth/{userId}/user/{id}
+      // 用户i
       var uid = row.sysUserId;
       this.formTeam.sysUserId = uid;
       var url =
-        "/smart/auth/" + sessionStorage.getItem("userId") + "/user/" + uid;
+        this.PersonnelLocalhosts +
+        "/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/user/" +
+        uid;
       this.http.get(url, null).then(res => {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
-          this.formTeam.orgSite = result.orgSite;
-          this.formTeam.userName = result.userName;
-          this.formTeam.cellPhone = result.cellPhone;
-          this.formTeam.account = result.account;
-          this.formTeam.password = result.password;
-          this.formTeam.roles = result.roles;
+          this.user = JSON.parse(JSON.stringify(result));
+          console.log(this.user);
         }
       });
       this.dialogFormVisibleDetail = true;
@@ -353,7 +336,22 @@ export default {
     //  编辑回显
     editRowClick(inedx, row) {
       this.titleLabor = "编辑";
-      this.formTeam = row;
+      var id = row.sysUserId;
+      this.formTeam.sysUserId = id;
+      var url =
+        this.PersonnelLocalhosts +
+        "/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/user/" +
+        id;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.formTeam = JSON.parse(JSON.stringify(result));
+          console.log(res);
+        }
+      });
       this.dialogVisibleTeam = true;
     },
 
@@ -367,18 +365,15 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           let data = JSON.stringify(ids);
-          ///smart/auth/{userId}/user
-          let url = "/smart/auth/" + sessionStorage.getItem("userId") + "/user";
+          let url =
+            this.PersonnelLocalhosts +
+            "/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/user";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              let total = res.total;
-              let rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
+              this.$message("已删除！");
+              this.getTable();
             }
           });
         })
@@ -396,17 +391,15 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
-          let url = "/smart/auth/" + sessionStorage.getItem("userId") + "/user";
+          let url =
+            this.PersonnelLocalhosts +
+            "/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/user";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
+              this.$message("已删除！");
+              this.getTable();
             }
           });
         })
@@ -431,17 +424,17 @@ export default {
               return;
             }
             let url =
-              "/smart/auth/" + sessionStorage.getItem("userId") + "/user";
+              this.PersonnelLocalhosts +
+              "/smart/auth/" +
+              sessionStorage.getItem("userId") +
+              "/user";
             this.http
               .post(url, data)
               .then(res => {
                 if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: "添加成功!"
-                  });
+                  this.$message("添加成功！");
+                  this.getTable();
                 }
-                this.getTable();
               })
               .catch(res => {
                 return false;
@@ -454,8 +447,8 @@ export default {
               });
               return;
             }
-            ///smart/auth/{userId}/user/{id}
             var url =
+              this.PersonnelLocalhosts +
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/user/" +
@@ -472,10 +465,9 @@ export default {
               .put(url, data)
               .then(res => {
                 if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: "修改成功!"
-                  });
+                   this.$message("编辑成功！");
+                  this.getTable();
+                  this.cloneTeamForm();
                 }
               })
               .catch(res => {
@@ -490,6 +482,7 @@ export default {
     },
     cloneTeamForm(refTeam) {
       this.$refs[refTeam].resetFields();
+      Object.assign(this.$data.formTeam, this.$options.data().formTeam); // 初始化data
       this.dialogVisibleTeam = false;
     },
     //  表头样式

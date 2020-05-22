@@ -164,7 +164,9 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    this.refreshCode();
+  },
   methods: {
     refreshCode() {
       this.identifyCode = "";
@@ -204,7 +206,7 @@ export default {
             account: form.account,
             password: form.password2
           });
-          var url = "/smart/auth/password/forget";
+          var url =this.PersonnelLocalhosts + "/smart/auth/password/forget";
           this.http.post(url, params).then(res => {
             if (res.code == 200) {
               this.$message("修改成功！");

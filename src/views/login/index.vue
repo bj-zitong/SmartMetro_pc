@@ -24,7 +24,6 @@
               style="width:400px"
             ></el-input>
             <span class="svg-container svg-container_user" style="margin-top:2px">
-              <!-- <svg-icon icon-class="user" /> -->
               <img src="../../../static/image/yonghu.png" class="yonghu" />
             </span>
           </el-form-item>
@@ -56,8 +55,6 @@
               </el-button>
             </div>
           </el-form-item>
-          <!-- <code1 :message="istrue" @fromChild="getChild"></code1>
-          <h6 class="Verification">{{text}}</h6>-->
           <el-button
             type="primary"
             @click="onLogin('loginForm')"
@@ -77,7 +74,6 @@
   </el-container>
 </template>
 <script>
-// import { isValidUsername } from '@/utils/validate'
 import { saveToLocal, loadFromLocal } from "@/common/local-storage";
 import { mapActions } from "vuex";
 
@@ -89,14 +85,6 @@ export default {
     SIdentify
   },
   data() {
-    // username 验证
-    // const validateUsername = (rule, value, callback) => {
-    // if (!isValidUsername(value)) {
-    //   callback(new Error("请输入正确的用户名"));
-    // } else {
-    //   callback();
-    // }
-    // };
     // pwd 验证
     const validatePwd = (rule, value, callback) => {
       if (value.length < 6) {
@@ -106,11 +94,9 @@ export default {
       }
     };
     const validateVerifycode = (rule, value, callback) => {
-      console.log(value);
       if (value === undefined) {
         callback(new Error("请输入验证码"));
       } else if (value !== this.identifyCode) {
-        console.log("validateVerifycode:", value);
         callback(new Error("验证码不正确!"));
       } else {
         callback();
@@ -120,8 +106,8 @@ export default {
       // 粒子开关
       // toggleParticles: false,
       loginForm: {
-        username:'',
-        pwd:''
+        username: "",
+        pwd: ""
       },
       istrue: 0,
       remember: false,
@@ -131,12 +117,8 @@ export default {
       identifyCodes: "1234567890",
       identifyCode: "",
       rules: {
-        username: [
-          { required: true, message: "请输入账号", trigger: "blur" }
-        ],
-        pwd: [
-          { required: true, message: "请输入密码", trigger: "blur" }
-        ],
+        username: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        pwd: [{ required: true, message: "请输入密码", trigger: "blur" }],
         verifycode: [
           { required: true, trigger: "blur", validator: validateVerifycode }
         ]
@@ -152,6 +134,7 @@ export default {
       this.loginForm.username = "";
       this.loginForm.pwd = "";
     }
+    this.refreshCode();
   },
   methods: {
     ...mapActions(["login"]),
@@ -161,60 +144,29 @@ export default {
     },
     // 登录操作
     onLogin() {
-        console.log(this.http555)
-        var params = JSON.stringify({
-           "account":  this.loginForm.username,
-            "password":  this.loginForm.pwd
-        });
-        
-        this.http.post(this.localhostssss+'/smart/auth/login', params).then(res => {
-        console.log(res)
-          if (res.code == 200) {
-            this.$message("登录成功！");
-            sessionStorage.setItem('userId',res.data.userId);
-            sessionStorage.setItem('user',res.data);
-            sessionStorage.setItem('token',res.data.token);
-            console.log(sessionStorage.getItem('userId')+sessionStorage.getItem('user')+sessionStorage.getItem('token'));
-            // this.$router.push({ path: "/login" });
-          }
-        });
+      var params = JSON.stringify({
+        account: this.loginForm.username,
+        password: this.loginForm.pwd
+      });
       this.$refs.pwd.$el.getElementsByTagName("input")[0].blur();
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true;
-          this.$router.push({ path: "/Selectpage" });
-          // this.login(this.loginForm)
-          // .then(() => {
-          //   // 保存账号
-          //   if (this.remember) {
-          //     saveToLocal("username", this.loginForm.username);
-          //     saveToLocal("password", this.loginForm.pwd);
-          //     saveToLocal("remember", true);
-          //   } else {
-          //     saveToLocal("username", "");
-          //     saveToLocal("password", "");
-          //     saveToLocal("remember", false);
-          //   }
-
-          //   // this.$router.push({ path: "/" })
-          // })
-          // .catch(() => {
-          //   this.loading = false;
-          // });
+          this.http
+            .post2(this.PersonnelLocalhosts + "/smart/auth/login", params)
+            .then(res => {
+              if (res.code == 200) {
+                sessionStorage.setItem("userId", res.data.userId);
+                sessionStorage.setItem("user", res.data);
+                sessionStorage.setItem("token", res.data.token);
+                 this.loading = true;
+                this.$message("登录成功！");
+                this.$router.push({ path: "/Selectpage" });
+              }
+            });
         } else {
           return false;
         }
       });
-      // var data ={
-      //   "account": "1111",
-      //   "password": "2222"
-      // }
-      // this.http.post('/smart/auth/login',data).then(res => {
-      //   // if (res.code == 200) {
-      //   //   // this.info = res.data.list;
-      //   //   // this.page = res.data;
-      //   // }
-      // });
     },
     getChild(v) {
       this.getvalue = v;
@@ -238,7 +190,6 @@ export default {
           this.randomNum(0, this.identifyCodes.length)
         ];
       }
-      console.log(this.identifyCode);
     },
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min);
@@ -260,12 +211,14 @@ export default {
   background: mix(#494166, #424b50) url('../../../static/image/login-bg.jpg') center no-repeat;
   background-size: cover;
   overflow: hidden;
+
   .show-account {
     position: absolute;
     left: 15px;
     bottom: 20px;
     color: red;
   }
+
   .login_center {
     width: 1208px;
     height: 649px;
@@ -273,6 +226,7 @@ export default {
     opacity: 0.8;
     border: 1px solid #fff;
   }
+
   .el-card {
     position: absolute;
     top: 50%;
@@ -291,6 +245,7 @@ export default {
       opacity: 1;
       float: right;
       margin: 45px 30px 0 0;
+
       .rl_title {
         height: 37px;
         font-size: 24px;
@@ -302,6 +257,7 @@ export default {
         text-align: center;
         padding-top: 60px;
       }
+
       .Under_the_line {
         border-bottom: 2px solid #00206a;
         float: left;
@@ -310,8 +266,10 @@ export default {
         text-align: center;
         margin-left: 181px;
       }
+
       .register {
         margin-left: 44px;
+
         .updatePassword {
           font-size: 12px;
           color: rgba(192, 192, 192, 1);
