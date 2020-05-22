@@ -7,12 +7,12 @@
       </div>
       <div class="avatar-container">
         <div class="exit_login">
-          <el-link :underline="false" class="exit_login_text">admin</el-link>
+          <el-link :underline="false" class="exit_login_text">{{orgSite}}</el-link>
           <el-divider direction="vertical" class="borderline"></el-divider>
         </div>
         <div class="Head_portrait">
           <img src="/static/image/Head_portrait.png" alt class="ri_icon_name" />
-          <span>名称</span>
+          <span>{{username}}</span>
           <el-dropdown trigger="click">
             <div class="avatar-wrapper">
               <div class="username-wrapper">
@@ -41,12 +41,20 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "",
   data() {
-    return {};
+    return {
+      username:'',
+      orgSite:''
+    };
   },
   computed: {
     ...mapGetters(["name", "avatar"])
   },
-  mounted() {},
+  mounted() {
+    // var getuser = sessionStorage.setItem('user',res.data);
+    var getuser = JSON.parse(sessionStorage.getItem('user'));
+      this.username=getuser.name
+      this.orgSite=getuser.orgSite
+  },
   methods: {
     logout() {
       this.$router.push({ path: "/login" });

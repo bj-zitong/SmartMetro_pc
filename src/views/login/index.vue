@@ -89,14 +89,6 @@ export default {
     SIdentify
   },
   data() {
-    // username 验证
-    // const validateUsername = (rule, value, callback) => {
-    // if (!isValidUsername(value)) {
-    //   callback(new Error("请输入正确的用户名"));
-    // } else {
-    //   callback();
-    // }
-    // };
     // pwd 验证
     const validatePwd = (rule, value, callback) => {
       if (value.length < 6) {
@@ -144,6 +136,7 @@ export default {
     };
   },
   created() {
+    this.refreshCode()
     // 初始化时读取localStorage用户信息
     if (loadFromLocal("remember", false)) {
       this.loginForm.username = loadFromLocal("username", "");
@@ -171,10 +164,9 @@ export default {
           if (res.code == 200) {
             this.$message("登录成功！");
             sessionStorage.setItem('userId',res.data.userId);
-            sessionStorage.setItem('user',res.data);
+            sessionStorage.setItem('user',JSON.stringify(res.data));
             sessionStorage.setItem('token',res.data.token);
             console.log(sessionStorage.getItem('userId')+sessionStorage.getItem('user')+sessionStorage.getItem('token'));
-            // this.$router.push({ path: "/login" });
           }
         });
       this.$refs.pwd.$el.getElementsByTagName("input")[0].blur();
