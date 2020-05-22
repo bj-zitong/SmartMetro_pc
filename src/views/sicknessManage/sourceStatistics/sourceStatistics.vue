@@ -88,20 +88,15 @@
                     </template>
                     </el-table-column>
                 </el-table>
-                <!-- 分页 -->
-                    <el-pagination
-                        class="pagination-box"
-                        background
-                        layout="total, prev, pager,next"
-                        :page-size="pageSize"
-                        :current-page="page"
-                        :total="total"
-                        @prev-click="prev"
-                        @next-click="next"
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                    >
-                    </el-pagination>
+                <!-- 分页& -->
+                <pagination
+                    class="pagination-box"
+                    v-if="total>0"
+                    :total="total"
+                    :page.sync="listQuery.currentPage"
+                    :limit.sync="listQuery.pageSize"
+                    @pagination="getTable"
+                />
             </el-menu>
         </el-container>
 
@@ -217,16 +212,19 @@
 <script>
 
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "@/components/pagination";
 
 export default {
+    name: "excelExport",
+    components: {
+        Pagination
+    },
     data() {
         return {
-            //  初始化页面
-            id: null, // 当前选中的id
-            ids: null, // 选中的id
-            page: 1, // 初始页
-            pageSize: 10, // 默认每页数据量
-            total: 0, //总条数
+            listQuery: {
+                currentPage: 1, //与后台定义好的分页参数
+                pageSize: 10
+            },
             tableData: [], // 初始化表格
             gridData: [], // 查看下属表格初始化
             addOpen: false,// 添加弹窗初始隐藏
@@ -293,44 +291,14 @@ export default {
     },
     created() {
         // 页面加载时获取用户信息
-        this.getLocalStorage();
         this.getTable();
     },
-    components: {},
     methods: {
-        // 获取本地存储用户信息
-        getLocalStorage() {
-            this.username = window.localStorage.getItem("username");
-            this.userId = window.localStorage.getItem("userId");
-            this.admin = window.localStorage.getItem("admin");
-            this.token = window.localStorage.getItem("token");
-        },
-        // 每页显示多少条 @size-change
-        handleSizeChange(size) {
-            this.pageSize = size;
-            this.getTable();
-        // console.log(this.pageSize)  //每页下拉显示数据
-        },
-        // 点击跳转第几页 @current-change
-        handleCurrentChange(page) {
-            this.page = page;
-            this.getTable();
-        },
-        // 上一页 @prev-click
-        prev(cpage) {
-            this.page = cpage;
-            this.getTable();
-        },
-        // 下一页 @next-click
-        next(cpage) {
-            this.page = cpage;
-            this.getTable();
-        },
         // 表格加载请求
         getTable() {
             var data = JSON.stringify({
-                pageSize: this.pageSize,
-                page: this.page
+                pageSize: this.listQuery.pageSize,
+                page: this.listQuery.currentPage,
             });
             //请求
             var url =
@@ -403,12 +371,12 @@ export default {
         },
     //  批量删除
         deleteBatchClick() {
-            var ids = this.handleSelectionChange();
+            let ids = this.handleSelectionChange();
             if (ids.length <= 0) {
                 this.$message("请选择删除的数据！");
                 return;
             }
-            handleCofirm("确定删除该员工信息吗？")
+            handleCofirm("确定删除吗？")
             .then(res => {
                 var data = JSON.stringify(ids);
                 var url =

@@ -3,7 +3,7 @@
     <el-menu mode="horizontal" text-color="#fff" active-text-color="#fff">
       <div>
         <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
-        <div index="1" class="title-name">城市轨道交通智慧工地管理系统—人员智慧管理</div>
+          <el-link :underline="false" class="title-name" @click.native="out">城市轨道交通智慧工地管理系统—人员智慧管理</el-link>
       </div>
       <div class="avatar-container">
         <div class="exit_login">
@@ -13,7 +13,7 @@
         <div class="Head_portrait">
           <img src="/static/image/Head_portrait.png" alt class="ri_icon_name" />
           <span>名称</span>
-          <el-dropdown trigger="click">
+          <el-dropdown trigger="click" class="jiantou">
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -51,6 +51,9 @@ export default {
     logout() {
       this.$router.push({ path: "/login" });
     },
+    out() {
+      this.$router.push({ path: "/Selectpage" });
+    },
     ...mapActions({
       userLogout: "logout"
     })
@@ -61,7 +64,9 @@ export default {
 .top-navbar /deep/ .el-menu-item {
   font-size: 20px;
 }
-
+.jiantou{
+  color: #fff;
+}
 .top-navbar /deep/ .theme-container {
   position: absolute;
   top: 15px;

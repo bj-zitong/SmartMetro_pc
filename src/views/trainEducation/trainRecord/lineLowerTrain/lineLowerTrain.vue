@@ -65,18 +65,14 @@
                     </el-table-column>
                 </el-table>
                 <!-- 分页& -->
-                <el-pagination
-                    background
+                <pagination
                     class="pagination-box"
-                    layout="total, prev, pager,next"
-                    :current-page="page"
-                    :page-size="pageSize"
+                    v-if="total>0"
                     :total="total"
-                    @prev-click="prev"
-                    @next-click="next"
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                ></el-pagination>
+                    :page.sync="listQuery.currentPage"
+                    :limit.sync="listQuery.pageSize"
+                    @pagination="getTable"
+                />
             </el-menu>
         </el-container>
     <!-- 添加& -->
@@ -134,8 +130,8 @@
                     <el-input v-model="formTrain.description"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button class="F-Grey" round @click="cloneTrainForm('refTrain')">取消</el-button>
-                    <el-button class="F-Blue" round @click="submiTraintForm('refTrain')">确定</el-button>
+                    <el-button class="F-Grey" round @click.native="cloneTrainForm('refTrain')">取消</el-button>
+                    <el-button class="F-Blue" round @click.native="submiTraintForm('refTrain')">确定</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -145,14 +141,18 @@
 <script>
 
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "@/components/pagination";
 
 export default {
+    components: {
+        Pagination
+    },
     data() {
         return {
-            //  初始化页面
-            page: 1, // 初始页
-            pageSize: 10, // 默认每页数据量
-            total: 0, //总条数
+            listQuery: {
+                currentPage: 1, //与后台定义好的分页参数
+                pageSize: 10
+            },
             dialogVisibleTrain: false,
             tableData: [],
             screenForm: {
@@ -212,27 +212,6 @@ export default {
         this.getTable();
     },
 	methods: {
-        // 每页显示多少条 @size-change
-        handleSizeChange(size) {
-            this.pageSize = size;
-            this.getTable();
-        // console.log(this.pageSize)  //每页下拉显示数据
-        },
-        // 点击跳转第几页 @current-change
-        handleCurrentChange(page) {
-            this.page = page;
-            this.getTable();
-        },
-        // 上一页 @prev-click
-        prev(cpage) {
-            this.page = cpage;
-            this.getTable();
-        },
-        // 下一页 @next-click
-        next(cpage) {
-            this.page = cpage;
-            this.getTable();
-        },
         // 表格加载请求
         getTable() {
             var data = JSON.stringify({
@@ -345,7 +324,7 @@ export default {
                             });
                         this.dialogVisibleLabor = false;
                     }
-                    
+                    this.cloneTrainForm(refTrain);
                 } else {
                     console.log("error submit!!");
                     return false;
@@ -355,8 +334,9 @@ export default {
 
 //  新增/编辑   关闭
         cloneTrainForm(refTrain) {
-            this.$refs[refTrain].resetFields();
             this.dialogVisibleTrain = false;
+            this.$refs[refTrain].resetFields();
+            Object.assign(this.$data.formTrain, this.$options.data().formTrain) // 初始化data
         },
 //  新增劳务公司
         addClick() {
@@ -366,7 +346,7 @@ export default {
 //  编辑回显
         editRowClick(inedx, row) {
             this.titleTrain = '编辑培训记录'
-            this.formTrain = row;
+            this.formTrain = JSON.parse(JSON.stringify(row))
             this.dialogVisibleTrain = true;
         },
 

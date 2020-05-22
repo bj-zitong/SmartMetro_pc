@@ -19,8 +19,20 @@
                 <img src="../../assets/images/home/home-head.png" alt="">
               </a>
             </div>
-            <p href="javascript:;" class="name-text fr">用户名</p>
+            <p href="javascript:;" class="name-text fr">名称</p>
           </div>
+          <el-dropdown trigger="click">
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="user-dropdown" slot="dropdown">
+              <el-dropdown-item @click.native="logout">
+                <span style="display:block;">{{$t('navbar.logOut')}}</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
     </div>
@@ -281,7 +293,6 @@ ul,li {
   padding-top 6px;
 }
 .out-text{
-  width:65px;
   height:21px;
   font-size:14px;
   font-family:Microsoft YaHei;
@@ -290,7 +301,6 @@ ul,li {
   opacity:1;
 }
 .name-text{
-  width:60px;
   height:21px;
   margin-left 10px;
   font-size:14px;
