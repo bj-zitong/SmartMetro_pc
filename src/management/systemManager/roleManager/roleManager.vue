@@ -170,7 +170,7 @@ export default {
       }
     };
   },
-  created() {
+  activated() {
     // 页面加载时获取信息
     this.getTable();
   },
@@ -184,6 +184,7 @@ export default {
       });
       //请求
       var url =
+        this.PersonnelLocalhosts +
         "/smart/auth/" + sessionStorage.getItem("userId") + "/role/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
@@ -248,7 +249,7 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           let data = JSON.stringify(ids);
-          let url = "/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+          let url =  this.PersonnelLocalhosts + "/smart/auth/" + sessionStorage.getItem("userId") + "/role";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
                this.$message("已删除！");
@@ -270,7 +271,7 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
-          let url = "/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+          let url =  this.PersonnelLocalhosts + "/smart/auth/" + sessionStorage.getItem("userId") + "/role";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
@@ -297,13 +298,13 @@ export default {
               permissions: form.permissionName
             });
             let url =
-              "/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+                this.PersonnelLocalhosts +"/smart/auth/" + sessionStorage.getItem("userId") + "/role";
             this.http
               .post(url, data)
               .then(res => {
                 if (res.code == 200) {
                 this.$message("添加成功！");
-                this.dialogVisibleTeam = false;
+                this.cloneTeamForm(refTeam);
                 this.getTable();
                 }
               })
@@ -312,7 +313,7 @@ export default {
               });
           } else {
             var url =
-              "/smart/auth/" +
+                this.PersonnelLocalhosts +"/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/role/" +
               form.sysRoleId;
@@ -327,7 +328,7 @@ export default {
                 if (res.code == 200) {
                 this.$message("编辑成功！");
                 this.getTable();
-                this.cloneTeamForm();
+                this.cloneTeamForm(refTeam);
                 }
               })
               .catch(res => {

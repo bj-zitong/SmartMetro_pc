@@ -27,7 +27,8 @@ import http from '../src/api/https'
 Vue.prototype.api = api;
 Vue.prototype.http = http;
 //管理系统
-Vue.prototype.PersonnelLocalhosts = "http://192.168.1.108:8001";
+// Vue.prototype.PersonnelLocalhosts = "http://192.168.1.108:8001";
+Vue.prototype.PersonnelLocalhosts = "http://192.168.1.100:8001";
 import BaiduMap from 'vue-baidu-map'
 Vue.use(BaiduMap, {
   ak: 'PqfHQFagf9cB9Un7y46hbLVDCKwYxzDx'

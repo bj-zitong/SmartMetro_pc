@@ -4,8 +4,8 @@
     <el-container>
       <el-menu class="main-top-box pl30">
         <el-form :inline="true" ref="screenForm" :model="screenForm">
-          <el-form-item label="用户名：" prop="userName">
-            <el-input v-model="screenForm.userName" placeholder="请输入"></el-input>
+          <el-form-item label="用户名：" prop="searchName">
+            <el-input v-model="screenForm.searchName" placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="getTable()" style="margin-left:30px;">查询</el-button>
@@ -210,7 +210,7 @@ export default {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
-      user: null,
+      user: [],
       formTeam: {
         //班组初始化
         sysUserId: null,
@@ -234,7 +234,7 @@ export default {
       seeBranch: false, // 创建班组弹窗
       screenForm: {
         //  筛选
-        userName: ""
+        searchName: ""
       },
       screenCompany: [
         { id: 0, name: "第一公司" },
@@ -262,7 +262,7 @@ export default {
       }
     };
   },
-  created() {
+  activated() {
     // 页面加载时获取信息
     this.getTable();
   },
@@ -272,7 +272,7 @@ export default {
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
-        userName: this.screenForm.userName
+        userName: this.screenForm.searchName
       });
       //请求
       var url =
