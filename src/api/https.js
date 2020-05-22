@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 // import router from '../router';
-let localhosts = 'http://localhost:8080';   //请求的后台域名
+let localhosts = 'http://192.168.1.100:8001';   //请求的后台域名
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
     return config
 },error =>{
@@ -33,7 +33,7 @@ export default{
         return axios({
             method:'post',
             headers:{
-                 Authorization:'bdcf1af9c1f9000e465cd970f5a46fbebc26fad7fee9f912d3e9546e023e170d',
+                 Authorization:sessionStorage.getItem('token'),
                  'Content-Type': 'application/json',
             },
             baseURL:localhosts,
@@ -52,7 +52,7 @@ export default{
         return axios({
             method:'get',
             headers:{
-                Authorization:'bdcf1af9c1f9000e465cd970f5a46fbebc26fad7fee9f912d3e9546e023e170d',
+                Authorization:sessionStorage.getItem('token'),
                 'Content-Type': 'application/json',
             },
             baseURL:localhosts,
@@ -70,7 +70,7 @@ export default{
       return axios({
           method:'delete',
           headers:{
-              Authorization:'bdcf1af9c1f9000e465cd970f5a46fbebc26fad7fee9f912d3e9546e023e170d',
+              Authorization:sessionStorage.getItem('token'),
               'Content-Type': 'application/json',
           },
           baseURL:localhosts,
@@ -88,7 +88,7 @@ export default{
     return axios({
         method:'put',
         headers:{
-            Authorization:'bdcf1af9c1f9000e465cd970f5a46fbebc26fad7fee9f912d3e9546e023e170d',
+            Authorization:sessionStorage.getItem('token'),
             'Content-Type': 'application/json',
         },
         baseURL:localhosts,

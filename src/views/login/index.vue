@@ -120,8 +120,8 @@ export default {
       // 粒子开关
       // toggleParticles: false,
       loginForm: {
-        username: "admin",
-        pwd: "123456"
+        username:'',
+        pwd:''
       },
       istrue: 0,
       remember: false,
@@ -167,15 +167,19 @@ export default {
     // 登录操作
     onLogin() {
         var params = JSON.stringify({
-           "account": "123",
-            "password": "123"
+           "account":  this.loginForm.username,
+            "password":  this.loginForm.pwd
         });
         this.http.post("/smart/auth/login", params).then(res => {
         console.log(res)
-          // if (res.code == 200) {
-            // this.$message("注册成功！");
+          if (res.code == 200) {
+            this.$message("登录成功！");
+            sessionStorage.setItem('userId',res.data.userId);
+            sessionStorage.setItem('user',res.data);
+            sessionStorage.setItem('token',res.data.token);
+            console.log(sessionStorage.getItem('userId')+sessionStorage.getItem('user')+sessionStorage.getItem('token'));
             // this.$router.push({ path: "/login" });
-          // }
+          }
         });
       this.$refs.pwd.$el.getElementsByTagName("input")[0].blur();
       this.$refs.loginForm.validate(valid => {

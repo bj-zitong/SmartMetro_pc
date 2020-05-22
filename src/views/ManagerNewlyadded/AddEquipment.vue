@@ -85,9 +85,9 @@
                 type="primary"
                 round
                 style="background:#ccc;border:1px solid #ccc"
-                @click="cancel()"
+                @click.native="cancel('form')"
               >取消</el-button>
-              <el-button type="primary" round @click="submitForm('form')">提交</el-button>
+              <el-button type="primary" round @click.native="submitForm('form')">提交</el-button>
             </div>
           </div>
         </el-form>
@@ -124,7 +124,7 @@ export default {
         gender: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         phoneNumber: [
           { required: true, message: "请输入手机号码", trigger: "blur" },
-           {
+          {
             pattern: /^1[34578]\d{9}$/,
             message: "手机号格式"
           }
@@ -161,7 +161,9 @@ export default {
     }
   },
   methods: {
-    cancel() {
+    cancel(form) {
+      this.$refs[form].resetFields();
+      Object.assign(this.$data.form, this.$options.data().form); // 初始化data
       this.$router.push({ path: "/roster/equipmentSpecialist" });
     },
     //获得详情
@@ -247,6 +249,7 @@ export default {
               }
             });
           }
+          this.cancel();
         } else {
           return false;
         }

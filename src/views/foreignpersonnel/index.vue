@@ -20,6 +20,9 @@
         <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
         <el-button @click="deleteAll" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
         <el-button @click="poiExcel" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
+         <router-link :to="{path: '/userManager' }" style="color:#0058A2">马上登录</router-link>
+          <router-link :to="{path: '/roleManager' }" style="color:#0058A2">马上登录</router-link>
+           <router-link :to="{path: '/constructionsiteManager' }" style="color:#0058A2">马上登录</router-link>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -134,10 +137,10 @@
               ></el-date-picker>
             </el-form-item>
             <div class="dialog-footer" style="text-align:center;">
-              <el-button @click="cancel('form')" class="F-Grey" round>取 消</el-button>
+              <el-button @click.native="cancel('form')" class="F-Grey" round>取 消</el-button>
               <el-button
                 type="primary"
-                @click="addUser('form')"
+                @click.native="addUser('form')"
                 style="margin-left:60px;"
                 class="F-Blue"
                 round
@@ -398,8 +401,7 @@ export default {
                 this.dialogFormVisible = false;
               }
             });
-            this.$refs[form].resetFields();
-            this.dialogFormVisible = false;
+           this.cancel();
           }
         } else {
           return false;
@@ -407,8 +409,9 @@ export default {
       });
     },
     cancel(form) {
-      this.dialogFormVisible = false;
       this.$refs[form].resetFields();
+      Object.assign(this.$data.form,this.$options.data().form); //数据初始化
+      this.dialogFormVisible = false;
     },
     //身份证号校验
     IdentityCode(code) {

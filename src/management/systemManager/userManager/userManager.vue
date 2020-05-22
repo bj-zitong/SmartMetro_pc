@@ -278,32 +278,31 @@ export default {
         "/smart/auth/" + sessionStorage.getItem("userId") + "/user/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
-          this.tableData = rows;
+          var total = res.data.total;
+          this.tableData = res.data.rows;
           this.total = total;
         }
       });
-      var result = [
-        {
-          sysUserId: 1,
-          userName: "张三",
-          status: "使用中",
-          cellPhone: "15236985236",
-          roleName: "项目负责人",
-          createTime: "2019-10-01"
-        },
-        {
-          sysUserId: 2,
-          userName: "李四",
-          status: "使用中",
-          cellPhone: "13752369875",
-          roleName: "项目负责人",
-          createTime: "2019-10-01"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
+      // var result = [
+      //   {
+      //     sysUserId: 1,
+      //     userName: "张三",
+      //     status: "使用中",
+      //     cellPhone: "15236985236",
+      //     roleName: "项目负责人",
+      //     createTime: "2019-10-01"
+      //   },
+      //   {
+      //     sysUserId: 2,
+      //     userName: "李四",
+      //     status: "使用中",
+      //     cellPhone: "13752369875",
+      //     roleName: "项目负责人",
+      //     createTime: "2019-10-01"
+      //   }
+      // ];
+      // this.tableData = result;
+      // this.total = result.length;
     },
     //用户详情
     getUserdetail(index, row) {
@@ -442,6 +441,7 @@ export default {
                     message: "添加成功!"
                   });
                 }
+                this.getTable();
               })
               .catch(res => {
                 return false;
