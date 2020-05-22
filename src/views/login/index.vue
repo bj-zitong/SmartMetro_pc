@@ -156,7 +156,7 @@ export default {
             .then(res => {
               if (res.code == 200) {
                 sessionStorage.setItem("userId", res.data.userId);
-                sessionStorage.setItem("user", res.data);
+                sessionStorage.setItem("user", JSON.stringify(res.data));
                 sessionStorage.setItem("token", res.data.token);
                  this.loading = true;
                 this.$message("登录成功！");

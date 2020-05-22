@@ -49,7 +49,7 @@
             <el-table-column prop="jobContent" label="作业内容" width="200"></el-table-column>
             <el-table-column prop="isSafety" label="安全防护用品配套使用" width="120"></el-table-column>
             <el-table-column prop="meetingContent" label="班前讲话内容" width="100"></el-table-column>
-            <el-table-column prop="workerInfo" label="参加活动作业人员名单" width="200"></el-table-column>
+            <el-table-column prop="workerInfoIds" label="参加活动作业人员名单" width="200"></el-table-column>
             <!-- accessoryPath 路径-->
             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope">
@@ -102,13 +102,13 @@
           <el-input v-model="formSpeech.pShiftMeetingId" type="text" hidden></el-input>
         </el-form-item>
         <el-form-item prop="jobsite" label="作业部位:">
-          <el-input v-model="formSpeech.jobsite" placeholder="作业部位"></el-input>
+          <el-input v-model="formSpeech.homeworkPart" placeholder="作业部位"></el-input>
         </el-form-item>
         <el-form-item prop="jobNum" label="作业人数：">
-          <el-input v-model="formSpeech.jobNum" placeholder="作业人数"></el-input>
+          <el-input v-model="formSpeech.homeworkNumber" placeholder="作业人数"></el-input>
         </el-form-item>
         <el-form-item label="安全防护用品配套使用：" prop="protective">
-          <el-select v-model="formSpeech.protective" placeholder="请选择" @change="selectProtective">
+          <el-select v-model="formSpeech.isSafety" placeholder="请选择" @change="selectProtective">
             <el-option
               v-for="item in protectives"
               :key="item.id"
@@ -118,10 +118,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="作业内容:" prop="speachContent">
-          <el-input type="textarea" :rows="6" placeholder="作业内容" v-model="formSpeech.speachContent"></el-input>
+          <el-input type="textarea" :rows="6" placeholder="作业内容" v-model="formSpeech.jobContent"></el-input>
         </el-form-item>
         <el-form-item label="班前讲话内容:" prop="classContent">
-          <el-input type="textarea" :rows="6" placeholder="内容" v-model="formSpeech.classContent"></el-input>
+          <el-input type="textarea" :rows="6" placeholder="内容" v-model="formSpeech.meetingContent"></el-input>
         </el-form-item>
         <el-form-item label="参加活动人员名单:">
           <el-button type="primary" @click="selectPerson()">点击选择</el-button>
@@ -252,9 +252,8 @@ export default {
       },
       protectives: [
         { id: "", name: "请选择" },
-        { id: "1", name: "xxxxxx" },
-        { id: "2", name: "kkkkkk" },
-        { id: "3", name: "tttttt" }
+        { id: "0", name: "是" },
+        { id: "1", name: "否" }
       ],
       selectedPersonIds: [],
       uploadUrl: "",
@@ -275,7 +274,7 @@ export default {
       }
     };
   },
-  activated:function() {
+  activated: function() {
     this.getTalks();
   },
   methods: {
@@ -316,42 +315,13 @@ export default {
         "/team/meeting/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
+          console.log(res.data.rows);
           var total = res.total;
           var rows = res.rows;
-          this.tableData = rows;
+          this.tableData = res.data.rows;
           this.total = total;
         }
       });
-      var result = [
-        {
-          pShiftMeetingId: 1,
-          uuid: "001",
-          createTime: "2020-4-12",
-          homeworkPart: "作业部位1",
-          workerInfo: "安保部一",
-          homeworkNumber: 12,
-          jobContent: "内容5一",
-          isSafety: "安全防护用品配套使用",
-          meetingContent: "eeeeeee",
-          workNum: "44444444444",
-          accessoryPath: "22222222"
-        },
-        {
-          pShiftMeetingId: 2,
-          uuid: "002",
-          createTime: "2020-4-13",
-          homeworkPart: "作业部位2",
-          workerInfo: "安保部2",
-          homeworkNumber: 23,
-          jobContent: "内容2",
-          isSafety: "安全防护用品配套使用2",
-          meetingContent: "33333333",
-          workNum: "44444322222",
-          accessoryPath: "444323222"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -407,7 +377,7 @@ export default {
     // 删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.pShiftMeetingId;
+      var uid = row.pTeamMasterId;
       var ids = [];
       ids.push(uid);
       var data = JSON.stringify(ids);
@@ -426,6 +396,7 @@ export default {
               this.total = total;
             }
           });
+          this.getTalks();
         })
         .catch(err => {
           this.$message({
@@ -465,7 +436,9 @@ export default {
     },
     //编辑讲话
     handleEdit(row) {
-      var uid = row.pShiftMeetingId;
+      // console.log(row)
+      // return;
+      var uid = row.pTeamMasterId;
       this.formSpeech = row;
       //获得详情
       var url =
@@ -476,16 +449,18 @@ export default {
         "/meeting";
       var datas = null;
       this.http.get(url, datas).then(res => {
+        console.log(res.data);
         if (res.code == 200) {
           //回显
-          var result = res.data;
-          this.formSpeech.jobsite = result.homeworkPart;
-          this.formSpeech.jobNum = result.homeworkNumber;
-          this.formSpeech.protective = result.isSafety;
-          this.formSpeech.speachContent = result.jobContent;
-          this.formSpeech.classContent = result.meetingContent;
-          this.formSpeech.checkIds = result.workerInfo;
-          this.formSpeech.pShiftMeetingId = result.pShiftMeetingId;
+          console.log(JSON.stringify(JSON.parse(this.formSpeech)));
+          this.formSpeech = res.data;
+          // this.formSpeech.jobsite = result.homeworkPart;
+          // this.formSpeech.jobNum = result.homeworkNumber;
+          // this.formSpeech.protective = result.isSafety;
+          // this.formSpeech.speachContent = result.jobContent;
+          // this.formSpeech.classContent = result.meetingContent;
+          // this.formSpeech.checkIds = result.workerInfo;
+          // this.formSpeech.pShiftMeetingId = result.pShiftMeetingId;
         }
       });
       this.formSpeech.pShiftMeetingId = uid;

@@ -67,7 +67,7 @@ export const constantRouterMap = [
         hidden: true,
         component: Layout,
         name: '实名认证',
-        redirect: '/home',
+        redirect: '/labor_Subcontract1',
         children: [
             {
                 path: 'home',
@@ -122,8 +122,8 @@ export const constantRouterMap = [
                     import('@/views/labor_Subcontract/index'),
                 // alwaysShow: false,
                 meta: {
-                    icon: '../../static/image/laowu.png',
-                    AfterIcon: '../../static/image/Team.png',
+                    icon: '../../static/image/lwgl.png',
+                    AfterIcon: '../../static/image/lwgl.png',
                     title: '劳务公司管理',
                     enable: "Y",
                     parent: '实名认证',
