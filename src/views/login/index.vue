@@ -133,16 +133,11 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入账号", trigger: "blur" }
-          // { required: true, trigger: "blur", validator: validateUsername },
-          // { required: true, trigger: "change", validator: validateUsername }
         ],
         pwd: [
           { required: true, message: "请输入密码", trigger: "blur" }
-          // { required: true, trigger: "blur", validator: validatePwd },
-          // { required: true, trigger: "change", validator: validatePwd }
         ],
         verifycode: [
-          //  { required: true, message: "请输入验证码", trigger: "blur" }
           { required: true, trigger: "blur", validator: validateVerifycode }
         ]
       }
@@ -166,11 +161,13 @@ export default {
     },
     // 登录操作
     onLogin() {
+        console.log(this.http555)
         var params = JSON.stringify({
            "account":  this.loginForm.username,
             "password":  this.loginForm.pwd
         });
-        this.http.post("/smart/auth/login", params).then(res => {
+        
+        this.http.post(this.localhostssss+'/smart/auth/login', params).then(res => {
         console.log(res)
           if (res.code == 200) {
             this.$message("登录成功！");
@@ -186,7 +183,6 @@ export default {
         if (valid) {
           this.loading = true;
           this.$router.push({ path: "/Selectpage" });
-
           // this.login(this.loginForm)
           // .then(() => {
           //   // 保存账号
@@ -264,14 +260,12 @@ export default {
   background: mix(#494166, #424b50) url('../../../static/image/login-bg.jpg') center no-repeat;
   background-size: cover;
   overflow: hidden;
-
   .show-account {
     position: absolute;
     left: 15px;
     bottom: 20px;
     color: red;
   }
-
   .login_center {
     width: 1208px;
     height: 649px;
@@ -279,7 +273,6 @@ export default {
     opacity: 0.8;
     border: 1px solid #fff;
   }
-
   .el-card {
     position: absolute;
     top: 50%;
@@ -298,7 +291,6 @@ export default {
       opacity: 1;
       float: right;
       margin: 45px 30px 0 0;
-
       .rl_title {
         height: 37px;
         font-size: 24px;
@@ -310,7 +302,6 @@ export default {
         text-align: center;
         padding-top: 60px;
       }
-
       .Under_the_line {
         border-bottom: 2px solid #00206a;
         float: left;
@@ -319,10 +310,8 @@ export default {
         text-align: center;
         margin-left: 181px;
       }
-
       .register {
         margin-left: 44px;
-
         .updatePassword {
           font-size: 12px;
           color: rgba(192, 192, 192, 1);
