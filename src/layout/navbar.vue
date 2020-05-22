@@ -1,6 +1,6 @@
 <template>
   <div class="top-navbar">
-    <headUser/>
+    <headUser />
     <el-tabs
       v-model="editableTabsValue"
       type="border-card"
@@ -19,7 +19,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import main from "../main";
-import headUser from '@/components/Head';
+import headUser from "@/components/Head";
 //头部切换
 import list from "./sidebar/headerTab";
 export default {
@@ -86,7 +86,7 @@ export default {
     if (this.$route.query.code == 1) {
       this.$emit("selectNavBar", "用户管理");
       this.$router.push({ path: "/userManager" });
-      this.num=0
+      this.num = 0;
     } else {
       this.$emit("selectNavBar", "实名认证");
     }
@@ -116,10 +116,12 @@ export default {
   height: 140px;
   background: rgba(0, 88, 162, 1);
   opacity: 1;
+
   .WisdomSite_title {
     width: 500px;
     height: 36px;
     float: left;
+
     h6 {
       font-size: 24px;
       color: #fff;
@@ -130,33 +132,40 @@ export default {
       font-weight: normal;
     }
   }
+
   .WisdomSite_title_login {
     width: 50px;
     height: 50px;
     float: left;
     margin: 10px 0 0 43px;
   }
+
   .el-menu {
     border-bottom: none !important;
     background: rgba(0, 88, 162, 1);
+
     .lang-select {
       position: absolute;
       top: 18px;
       right: 150px;
     }
+
     .lang-select /deep/ .el-dropdown {
       font-size: 20px;
       color: #fff;
     }
+
     .avatar-container {
       position: absolute;
       top: 23px;
       right: 80px;
       width: 200px;
       outline: none;
+
       .avatar-wrapper {
         cursor: pointer;
       }
+
       .ri_icon {
         width: 16px;
         height: 16px;
@@ -164,15 +173,18 @@ export default {
         margin-top: 1px;
         margin-right: 3px;
       }
+
       .ri_icon_name {
         width: 30px;
         height: 30px;
         margin: -2px 10px 0 20px;
         float: left;
       }
+
       .exit_login {
         float: left;
       }
+
       .Head_portrait {
         // float: left;
         span {
@@ -187,9 +199,11 @@ export default {
         }
       }
     }
+
     .el-link.el-link--default {
       color: #fff;
     }
+
     .username-wrapper {
       display: inline-block;
       height: 30px;
@@ -198,9 +212,11 @@ export default {
     }
   }
 }
+
 .top-navbar /deep/ .el-menu-item {
   font-size: 20px;
 }
+
 .top-navbar /deep/ .theme-container {
   position: absolute;
   top: 15px;
@@ -209,6 +225,7 @@ export default {
   font-size: 24px;
   cursor: pointer;
 }
+
 .title-name {
   padding: 20px 0 0 13px;
   float: left;
@@ -216,11 +233,13 @@ export default {
   font-weight: bold;
   color: rgba(255, 255, 255, 1);
 }
+
 .top-navbar .screenfull {
   position: absolute;
   top: 20px;
   right: 190px;
 }
+
 .el-tabs--border-card {
   background-color: #F5F7FA;
   border-bottom: 1px solid #E4E7ED;
@@ -229,15 +248,18 @@ export default {
   border-radius: 30px;
   line-height: 50px;
 }
+
 .hed_tab>.el-tabs__header {
   border-radius: 30px !important;
 }
+
 .hed_tab /deep/ .is-active {
   border-radius: 30px !important;
   background: #FFFFFF;
   color: rgba(0, 88, 162, 1);
   font-weight: 400;
 }
+
 .hed_tab /deep/ .el-tabs__nav-scroll {
   background: #0058a2 url('../../static/image/bj_login.png');
   color: #fff;
@@ -247,6 +269,7 @@ export default {
   font-weight: 400;
   height: 50px;
 }
+
 .hed_tab {
   border: none;
   width: 95.5%;
@@ -254,15 +277,18 @@ export default {
   position: relative;
   top: 10px;
 }
+
 .icon_list {
   width: 23px;
   height: 23px;
   margin: 13px 10px 0 0;
   float: left;
 }
+
 .el-tabs--border-card>.el-tabs__content {
   padding: 0;
 }
+
 .hed_tab>.el-tabs__header .el-tabs__item {
   padding: 0 20px;
   color: #fff;
@@ -283,19 +309,24 @@ export default {
   color: rgba(255, 255, 255, 1);
   opacity: 1;
 }
-.borderline{
-  border:1px solid #fff;
+
+.borderline {
+  border: 1px solid #fff;
 }
+
 .hed_tab>.el-tabs__header .el-tabs__nav {
   width: 100%;
 }
+
 .hed_tab>.el-tabs__header .el-tabs__item:first-child {
   margin-left: 10px;
   width: 8%;
 }
+
 .hed_tab>.el-tabs__header .el-tabs__item:last-child {
   width: 11%;
 }
+
 .hed_tab>.el-tabs__nav-wrap.is-scrollable {
   padding: 0 0;
 }

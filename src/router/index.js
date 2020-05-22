@@ -814,7 +814,7 @@ export const constantRouterMap = [
         {
           path: '/constructionsiteManager',
           name: 'constructionsiteManager',
-          component: () => import('@/views/systemManager/constructionsiteManager/constructionsiteManager'),
+          component: () => import('@/management/systemManager/constructionsiteManager/constructionsiteManager'),
           meta: {
               title: '工地管理',
               enable: "Y",
@@ -841,7 +841,7 @@ export const constantRouterMap = [
       {
         path: '/roleManager',
         name: 'roleManager',
-        component: () => import('@/views/systemManager/roleManager/roleManager'),
+        component: () => import('@/management/systemManager/roleManager/roleManager'),
         meta: {
             title: '角色管理',
             enable: "Y",
@@ -868,7 +868,7 @@ export const constantRouterMap = [
     {
       path: '/userManager',
       name: 'userManager',
-      component: () => import('@/views/systemManager/userManager/userManager'),
+      component: () => import('@/management/systemManager/userManager/userManager'),
       meta: {
           title: '用户管理',
           enable: "Y",
