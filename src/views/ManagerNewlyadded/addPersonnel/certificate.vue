@@ -251,11 +251,13 @@ export default {
   mounted() {
     if (sessionStorage.getItem("certificate") != null) {
       // alert('000000')
-    
-    JSON.parse(sessionStorage.getItem("certificate")).productGroup.filter((item,index,arr)=>{
-      console.log(item)
-    // return item.hot == true;
-});
+
+      JSON.parse(sessionStorage.getItem("certificate")).productGroup.filter(
+        (item, index, arr) => {
+          console.log(item);
+          // return item.hot == true;
+        }
+      );
       this.form = JSON.parse(sessionStorage.getItem("certificate"));
     }
     // if (sessionStorage.getItem("data") != null) {
@@ -331,11 +333,11 @@ export default {
     uploadFile() {},
     handleChange(file, fileList) {
       this.$refs.form.clearValidate();
-      console.log(fileList)
+      console.log(fileList);
       this.form.productGroup[0].upload = fileList;
       this.form.productGroup.forEach((item, index, array) => {
-        console.log(item)
-       item.upload=fileList
+        console.log(item);
+        item.upload = fileList;
         // item[index]=fileList
         //执行代码
       });
