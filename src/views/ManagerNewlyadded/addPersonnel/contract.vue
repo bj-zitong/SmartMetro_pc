@@ -9,33 +9,52 @@
         ref="contract"
       >
         <el-col>
-          <el-form-item label="项目编号" prop="projectNo">
-            <el-input v-model="contract.projectNo"></el-input>
+          <el-form-item label="项目编号" prop="projectCode">
+            <el-input v-model="contract.projectCode" placeholder="请输入项目编号"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
           <el-form-item label="项目名称" prop="projectName">
-            <el-input v-model="contract.projectName"></el-input>
+            <el-input v-model="contract.projectName" placeholder="请输入项目名称"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="合同编号" prop="contractNo">
-            <el-input v-model="contract.contractNo"></el-input>
+          <el-form-item label="合同编号" prop="contractCode">
+            <el-input v-model="contract.contractCode" placeholder="请输入合同编号"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="合同期限" prop="contractPeriod">
-            <el-input v-model="contract.contractPeriod"></el-input>
+          <el-form-item label="合同开始时间" prop="startDate">
+            <!-- <el-input v-model="contract.startDate"></el-input> -->
+            <el-date-picker v-model="contract.startDate" type="datetime" placeholder="请选择合同开始时间"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="结算方式" prop="settlementMethod">
-            <el-input v-model="contract.settlementMethod"></el-input>
+          <el-form-item label="合同结束时间" prop="enddate">
+            <!-- <el-input v-model="contract.startDate"></el-input> -->
+            <el-date-picker v-model="contract.enddate" type="datetime" placeholder="请选择合同结束时间"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="所属企业组织机构代码" prop="enterpriseCode">
-            <el-input v-model="contract.enterpriseCode"></el-input>
+          <el-form-item prop="contractPeriodType" label="合同期限类型">
+            <el-select v-model="contract.contractPeriodType" placeholder="请选择合同期限类型">
+              <el-option label="固定期限合同" value="0"></el-option>
+              <el-option label="以完成一定工作为期限的合同" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col>
+          <el-form-item label="结算方式" prop="clearingType">
+            <!-- <el-input v-model="contract.clearingType"></el-input> -->
+            <el-select v-model="contract.clearingType" placeholder="请选择结算方式">
+              <el-option label="1" value="0"></el-option>
+              <el-option label="2" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col>
+          <el-form-item label="所属企业组织机构代码" prop="corpCode">
+            <el-input v-model="contract.corpCode" placeholder="请选择所属企业组织机构代码"></el-input>
           </el-form-item>
         </el-col>
         <!-- <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
@@ -61,52 +80,60 @@ export default {
       labelPosition: "left",
       field: "contractInformation", // 合同信息字段
       contract: {
-        projectNo: "",
+        projectCode: "",
         projectName: "",
-        contractNo: "",
-        contractPeriod: "",
-        settlementMethod: "",
-        enterpriseCode: ""
+        contractCode: "",
+        startDate: "",
+        enddate:'',
+        contractPeriodType: "",
+        ProfessionalCode:'',
+        clearingType: "",
+        corpCode: ""
       },
       rules: {
-        projectNo: [
+        projectCode: [
           { required: true, message: "请输入项目编号", trigger: "blur" }
         ],
         projectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" }
         ],
-        contractNo: [
+        contractCode: [
           { required: true, message: "请输入合同编号", trigger: "blur" }
         ],
-        contractPeriod: [
-          { required: true, message: "请输入合同期限", trigger: "blur" }
+        startDate: [
+          { required: true, message: "请输入合同开始时间", trigger: "blur" }
+        ],
+        enddate: [
+          { required: true, message: "请输入合同结束时间", trigger: "blur" }
+        ],
+        contractPeriodType: [
+          { required: true, message: "请选择合同期限", trigger: "blur" }
         ],
         ProfessionalCode: [
           { required: true, message: "请输入结算方式", trigger: "blur" }
         ],
-        enterpriseCode: [
-          { required: true, message: "请输入企业代码", trigger: "blur" }
+        corpCode: [
+          { required: true, message: "请输入所属企业组织机构代码", trigger: "blur" }
         ],
-        settlementMethod: [
-          { required: true, message: "请输入结算方式", trigger: "blur" }
+        clearingType: [
+          { required: true, message: "请选择结算方式", trigger: "blur" }
         ]
       }
     };
   },
   mounted() {
-    if (localStorage.getItem("contractInformation") != null) {
-      this.contract = JSON.parse(localStorage.getItem("contractInformation"));
+    if (sessionStorage.getItem("contractInformation") != null) {
+      this.contract = JSON.parse(sessionStorage.getItem("contractInformation"));
     }
   },
   methods: {
     submitForm(contract) {
-     
       this.$refs[contract].validate(valid => {
         if (valid) {
           handleCofirm("确认保存吗", "warning")
             .then(res => {
               console.log(JSON.stringify(this.contract));
-              localStorage.setItem(
+              sessionStorage.setItem(
                 "contractInformation",
                 JSON.stringify(this.contract)
               );

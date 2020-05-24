@@ -9,37 +9,37 @@
         ref="form"
       >
         <el-col>
-          <el-form-item label="工资单编号" prop="PayrollNo">
-            <el-input v-model="form.PayrollNo" placeholder="请输入工资单编号"></el-input>
+          <el-form-item label="工资单编号" prop="payRollCode">
+            <el-input v-model="form.payRollCode" placeholder="请输入工资单编号"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="发放金额" prop="IssuedAmount">
-            <el-input v-model="form.IssuedAmount" placeholder="请输入发放金额"></el-input>
+          <el-form-item label="发放金额" prop="totalPayAmount">
+            <el-input v-model="form.totalPayAmount" placeholder="请输入发放金额"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="发放日期" prop="value1">
-            <el-date-picker v-model="form.value1" type="datetime" placeholder="请选择日期"></el-date-picker>
+          <el-form-item label="发放日期" prop="balanceDate">
+            <el-date-picker v-model="form.balanceDate" type="datetime" placeholder="请选择日期"></el-date-picker>
             <!-- <el-date-picker v-model="form.value1" type="date" placeholder="请选择日期"></el-date-picker> -->
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="发放方式" prop="distributionMethod">
-            <el-select v-model="form.distributionMethod" placeholder="发放方式">
-              <el-option label="现金" value="xianjin"></el-option>
-              <el-option label="电汇" value="dianhui"></el-option>
+          <el-form-item label="发放方式" prop="provideType">
+            <el-select v-model="form.provideType" placeholder="发放方式">
+              <el-option label="现金" value="0"></el-option>
+              <el-option label="电汇" value="1"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="发放银行" prop="Bank">
-            <el-select v-model="form.Bank" placeholder="发放银行">
-              <el-option label="交通银行" value="shanghai"></el-option>
-              <el-option label="建设银行" value="beijing"></el-option>
-              <el-option label="工商银行" value="beijing"></el-option>
-              <el-option label="农业银行" value="beijing"></el-option>
-              <el-option label="招商银行" value="beijing"></el-option>
+          <el-form-item label="发放银行" prop="provideBank">
+            <el-select v-model="form.provideBank" placeholder="发放银行">
+              <el-option label="交通银行" value="0"></el-option>
+              <el-option label="建设银行" value="1"></el-option>
+              <el-option label="工商银行" value="2"></el-option>
+              <el-option label="农业银行" value="3"></el-option>
+              <el-option label="招商银行" value="4"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -70,8 +70,8 @@ export default {
     return {
       labelPosition: "left",
       form: {
-        PayrollNo: "",
-        IssuedAmount: "",
+        payRollCode: "",
+        totalPayAmount: "",
         value1: "",
         distributionMethod: "",
         Bank: "",
@@ -80,17 +80,17 @@ export default {
       field: "payrollRecords",
       value1: "",
       rules: {
-        PayrollNo: [
+        payRollCode: [
           { required: true, message: "请输入工资单编号", trigger: "blur" }
         ],
-        IssuedAmount: [
+        totalPayAmount: [
           { required: true, message: "请输入发放金额 ", trigger: "blur" }
         ],
-        value1: [{ required: true, message: "请输入日期 ", trigger: "blur" }],
-        distributionMethod: [
+        balanceDate: [{ required: true, message: "请输入日期 ", trigger: "blur" }],
+        provideType: [
           { required: true, message: "请选择发放方式 ", trigger: "blur" }
         ],
-        Bank: [{ required: true, message: "请选择发放银行 ", trigger: "blur" }],
+        provideBank: [{ required: true, message: "请选择发放银行", trigger: "blur" }],
         bankCardNo: [
           { required: true, message: "请填写银行卡号", trigger: "blur" }
         ]
@@ -122,8 +122,8 @@ export default {
     };
   },
   mounted() {
-    if (localStorage.getItem("payrollRecords1") != null) {
-      this.form = JSON.parse(localStorage.getItem("payrollRecords1"));
+    if (sessionStorage.getItem("payrollRecords1") != null) {
+      this.form = JSON.parse(sessionStorage.getItem("payrollRecords1"));
     }
   },
   methods: {
@@ -134,7 +134,7 @@ export default {
         if (valid) {
           handleCofirm("确认保存吗", "warning")
             .then(res => {
-              localStorage.setItem(
+              sessionStorage.setItem(
                 "payrollRecords1",
                 JSON.stringify(this.form)
               );

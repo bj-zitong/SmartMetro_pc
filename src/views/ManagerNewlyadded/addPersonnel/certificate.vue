@@ -249,9 +249,21 @@ export default {
     };
   },
   mounted() {
-    if (localStorage.getItem("certificate") != null) {
-      this.form = JSON.parse(localStorage.getItem("certificate"));
+    if (sessionStorage.getItem("certificate") != null) {
+      // alert('000000')
+    
+    JSON.parse(sessionStorage.getItem("certificate")).productGroup.filter((item,index,arr)=>{
+      console.log(item)
+    // return item.hot == true;
+});
+      this.form = JSON.parse(sessionStorage.getItem("certificate"));
     }
+    // if (sessionStorage.getItem("data") != null) {
+    //   this.form = JSON.parse(sessionStorage.getItem("data"));
+    //   let name = JSON.parse(sessionStorage.getItem("data")).photo[0].name;
+    //   this.fileList.push({ name });
+    //   // console.log(this.form.photo)
+    // }
   },
   methods: {
     handleClick(tab, event) {
@@ -271,7 +283,7 @@ export default {
         if (valid) {
           handleCofirm("确认保存吗", "warning")
             .then(res => {
-              localStorage.setItem("certificate", JSON.stringify(this.form));
+              sessionStorage.setItem("certificate", JSON.stringify(this.form));
               this.$emit("field", this.field);
               this.$message({
                 type: "success",
@@ -300,7 +312,8 @@ export default {
         certificateLevel: "",
         value1: "",
         value2: "",
-        status: ""
+        status: "",
+        upload: ""
       });
     },
     deleteLadder(index) {

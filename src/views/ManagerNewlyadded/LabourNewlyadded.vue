@@ -120,24 +120,24 @@ export default {
     };
   },
   mounted(){
-         let getArr= JSON.parse(localStorage.getItem("personalPersonal"))
+         let getArr= JSON.parse(sessionStorage.getItem("personalPersonal"))
          if(getArr!=null){
             this.contractInformation=false
             this.activeName='third'
          }
-          let getContract= JSON.parse(localStorage.getItem("getContractInformation"))
+          let getContract= JSON.parse(sessionStorage.getItem("getContractInformation"))
          if(getContract!=null){
             this.payrollRecords=false
          }
-          let getpayroll= JSON.parse(localStorage.getItem("payrollRecords"))
+          let getpayroll= JSON.parse(sessionStorage.getItem("payrollRecords"))
          if(getpayroll!=null){
             this.qualification=false
          }
-          let getqualification= JSON.parse(localStorage.getItem("qualification"))
+          let getqualification= JSON.parse(sessionStorage.getItem("qualification"))
          if(getqualification!=null){
             this.History=false
          }
-          let getHistoryRecord= JSON.parse(localStorage.getItem("HistoryRecord"))
+          let getHistoryRecord= JSON.parse(sessionStorage.getItem("HistoryRecord"))
          if(getHistoryRecord!=null){
             this.SourceInformation=false
          }
@@ -146,7 +146,7 @@ export default {
       // allArr(newName, oldName) {
       //   var arr = []
       //   arr.push(newName)
-      //   localStorage.setItem('arr',JSON.stringify(arr))
+      //   sessionStorage.setItem('arr',JSON.stringify(arr))
       // }
   },
   methods: {
@@ -166,37 +166,37 @@ export default {
     handleChange() {},
     //个人基本信息
     getField(v){
-      localStorage.setItem('personalPersonal',JSON.stringify(v))
+      sessionStorage.setItem('personalPersonal',JSON.stringify(v))
       this.contractInformation=false
       this.activeName='third'
     },
 
      //合同信息
     getContractInformation(v){
-      localStorage.setItem('getContractInformation',JSON.stringify(v))
+      sessionStorage.setItem('getContractInformation',JSON.stringify(v))
       this.payrollRecords=false
       this.activeName='fourth'
     },
     //工资记录
     getPayrollRecords(v){
-      localStorage.setItem('payrollRecords',JSON.stringify(v))
+      sessionStorage.setItem('payrollRecords',JSON.stringify(v))
       this.activeName='certificate'
       this.qualification=false
     },
     //历史评价记录
     getQualification(v){
-      localStorage.setItem('qualification',JSON.stringify(v))
+      sessionStorage.setItem('qualification',JSON.stringify(v))
       this.activeName='evaluate'
       this.History=false
     },
     
     getHistory(v){
-      localStorage.setItem('HistoryRecord',JSON.stringify(v))
+      sessionStorage.setItem('HistoryRecord',JSON.stringify(v))
       this.activeName='first'
       this.SourceInformation=false
     },
     // getHistory(v){
-    //    localStorage.setItem('qualification',JSON.stringify(v))
+    //    sessionStorage.setItem('qualification',JSON.stringify(v))
     //   this.activeName='evaluate'
     //   this.History=false
     // }

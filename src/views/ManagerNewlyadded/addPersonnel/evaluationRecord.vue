@@ -8,14 +8,14 @@
         :rules="rules"
         ref="form"
       >
-        <el-form-item label="评价记录" prop="desc">
-          <el-input type="textarea" v-model="form.desc"></el-input>
+        <el-form-item label="评价记录" prop="evaluate">
+          <el-input type="textarea" v-model="form.evaluate"></el-input>
         </el-form-item>
-        <el-col :span="24" style="float:right;height:40px;">
+        <!-- <el-col :span="24" style="float:right;height:40px;">
           <el-form-item style="float:right">
             <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="24">
           <el-form-item style="float:right;position:relative;bottom:0;">
             <el-button type="primary" round class="cancel-style">取消</el-button>
@@ -34,17 +34,17 @@ export default {
       labelPosition: "left",
       field: "evaluationRecord",
       form: {
-        desc: ""
+        evaluate: ""
       },
       value1: "",
       rules: {
-        desc: [{ required: true, message: "请输入评价记录", trigger: "blur" }]
+        evaluate: [{ required: true, message: "请输入评价记录", trigger: "blur" }]
       }
     };
   },
   mounted() {
-    if (localStorage.getItem("History") != null) {
-      this.form = JSON.parse(localStorage.getItem("History"));
+    if (sessionStorage.getItem("History") != null) {
+      this.form = JSON.parse(sessionStorage.getItem("History"));
     }
   },
   methods: {
@@ -52,17 +52,9 @@ export default {
       console.log(formName);
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    preservationClick() {
-      handleCofirm("确认保存吗", "warning")
+           handleCofirm("确认保存吗", "warning")
         .then(res => {
-          localStorage.setItem("History", JSON.stringify(this.form));
+          sessionStorage.setItem("History", JSON.stringify(this.form));
           this.$emit("field", this.field);
           this.$message({
             type: "success",
@@ -75,6 +67,11 @@ export default {
             message: "已取消保存"
           });
         });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     }
   }
 };

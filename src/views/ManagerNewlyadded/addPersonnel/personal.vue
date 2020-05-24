@@ -31,9 +31,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="工种" class="region" prop="region">
+            <el-form-item label="工种" class="region" prop="workerType">
               <el-select
-                v-model="form.region"
+                v-model="form.workerType"
                 placeholder="请选择工种"
                 filterable
                 clearable
@@ -49,98 +49,98 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="电话" prop="telephone" class="el-form-item">
-              <el-input v-model="form.telephone" placeholder="请输入电话"></el-input>
+            <el-form-item label="电话" prop="cellPhone" class="el-form-item">
+              <el-input v-model="form.cellPhone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="承建单位" prop="Company" class="el-form-item">
-              <el-input v-model="form.Company" placeholder="请输入承建单位"></el-input>
+            <el-form-item label="承建单位" prop="buildCorpName" class="el-form-item">
+              <el-input v-model="form.buildCorpName" placeholder="请输入承建单位"></el-input>
             </el-form-item>
           </el-col>
           <!-- <el-col :span="8">
             <el-form-item label="部门" prop="department" class="el-form-item">
               <el-input v-model="form.department" placeholder="请输入部门"></el-input>
             </el-form-item>
-          </el-col> -->
+          </el-col>-->
           <el-col :span="8">
-            <el-form-item label="紧急联系人" prop="emergencycontact" class="el-form-item">
-              <el-input v-model="form.emergencycontact" placeholder="请输入紧急联系人"></el-input>
+            <el-form-item label="紧急联系人" prop="urgentLinkMan" class="el-form-item">
+              <el-input v-model="form.urgentLinkMan" placeholder="请输入紧急联系人"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="电话" prop="emergencyTelephone" class="el-form-item">
-              <el-input v-model="form.emergencyTelephone" placeholder="请输入电话"></el-input>
+            <el-form-item label="电话" prop="urgentLinkManPhone" class="el-form-item">
+              <el-input v-model="form.urgentLinkManPhone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="16">
-            <el-form-item label="现居住地" prop="Currentresidence" class="el-form-item">
-              <el-input v-model="form.Currentresidence" placeholder="请输入现居住地"></el-input>
+            <el-form-item label="现居住地" prop="address" class="el-form-item">
+              <el-input v-model="form.address" placeholder="请输入现居住地"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="籍贯" prop="nativeplace" class="el-form-item">
-              <el-input v-model="form.nativeplace" placeholder="请输入籍贯"></el-input>
+            <el-form-item label="籍贯" prop="birthPlace" class="el-form-item">
+              <el-input v-model="form.birthPlace" placeholder="请输入籍贯"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="婚姻状况" prop="maritalStatus">
               <el-select v-model="form.maritalStatus" placeholder="请选择婚姻状况">
-                <el-option label="已婚" value="yihun"></el-option>
-                <el-option label="未婚" value="weihun"></el-option>
-                <el-option label="离异" value="liyi"></el-option>
-                <el-option label="丧偶" value="sango"></el-option>
+                <el-option label="已婚" value="0"></el-option>
+                <el-option label="未婚" value="1"></el-option>
+                <el-option label="离异" value="2"></el-option>
+                <el-option label="丧偶" value="4"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="学位" prop="AcademicDegree">
-              <el-select v-model="form.AcademicDegree" placeholder="请选择学位">
+            <el-form-item label="学位" prop="degree">
+              <el-select v-model="form.degree" placeholder="请选择学位">
                 <el-option label="身份证" value="sfz"></el-option>
                 <el-option label="护照" value="hz"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="文化程度" prop="degree">
-              <el-select v-model="form.degree" placeholder="请选择文化程度">
-                <el-option label="大专" value="dazhuan"></el-option>
-                <el-option label="小学" value="xiaoxue"></el-option>
-                <el-option label="初中" value="chuzhong"></el-option>
-                <el-option label="高中" value="gaozhong"></el-option>
-                <el-option label="本科" value="benke"></el-option>
-                <el-option label="研究生" value="yjs"></el-option>
-                <el-option label="博士" value="boshi"></el-option>
-                <el-option label="硕士" value="shuoshi"></el-option>
+            <el-form-item label="文化程度" prop="cultureLevelType">
+              <el-select v-model="form.cultureLevelType" placeholder="请选择文化程度">
+                <el-option label="大专" value="1"></el-option>
+                <el-option label="小学" value="2"></el-option>
+                <el-option label="初中" value="3"></el-option>
+                <el-option label="高中" value="4"></el-option>
+                <el-option label="本科" value="5"></el-option>
+                <el-option label="研究生" value="6"></el-option>
+                <el-option label="博士" value="7"></el-option>
+                <el-option label="硕士" value="8"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件类型" prop="documentType" class="el-form-item">
-              <el-select v-model="form.documentType" placeholder="请选择证件类型">
-                <el-option label="身份证" value="shenfenzheng"></el-option>
-                <el-option label="护照" value="huzhao"></el-option>
+            <el-form-item label="证件类型" prop="idCardType" class="el-form-item">
+              <el-select v-model="form.idCardType" placeholder="请选择证件类型">
+                <el-option label="身份证" value="0"></el-option>
+                <el-option label="护照" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="户口类型" prop="accountType" class="el-form-item">
-              <el-select v-model="form.accountType" placeholder="请选择户口类型">
-                <el-option label="城市户口" value="chengshi"></el-option>
-                <el-option label="农村户口" value="nongchun"></el-option>
+            <el-form-item label="户口类型" prop="registrationType" class="el-form-item">
+              <el-select v-model="form.registrationType" placeholder="请选择户口类型">
+                <el-option label="城市户口" value="2"></el-option>
+                <el-option label="农村户口" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件编码" prop="CertificateCode">
-              <el-input v-model="form.CertificateCode" placeholder="请填写证件编码"></el-input>
+            <el-form-item label="证件编码" prop="idCardCode">
+              <el-input v-model="form.idCardCode" placeholder="请填写证件编码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="班组长" prop="foreman">
-              <el-select v-model="form.foreman" placeholder="请选择班组长">
-                <el-option label="是" value="yes"></el-option>
-                <el-option label="否" value="no"></el-option>
+            <el-form-item label="班组长" prop="isTeamLeader">
+              <el-select v-model="form.isTeamLeader" placeholder="请选择班组长">
+                <el-option label="是" value="0"></el-option>
+                <el-option label="否" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -153,31 +153,35 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="持证上岗" prop="certificate">
-              <el-select v-model="form.certificate" placeholder="请选择持证上岗">
-                <el-option label="是" value="yes"></el-option>
-                <el-option label="否" value="no"></el-option>
+            <el-form-item label="持证上岗" prop="isRelatedCertificates">
+              <el-select v-model="form.isRelatedCertificates" placeholder="请选择持证上岗">
+                <el-option label="是" value="0"></el-option>
+                <el-option label="否" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="居住证" prop="residencePermit">
-              <el-select v-model="form.residencePermit" placeholder="请选择居住证">
-                <el-option label="是" value="yes"></el-option>
-                <el-option label="否" value="no"></el-option>
+            <el-form-item label="居住证" prop="isResidencePermit">
+              <el-select v-model="form.isResidencePermit" placeholder="请选择居住证">
+                <el-option label="是" value="0"></el-option>
+                <el-option label="否" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="居住证办理日期" prop="date">
-              <el-date-picker v-model="form.date" type="date" placeholder="请选择日期"></el-date-picker>
+            <el-form-item label="居住证办理日期" prop="residencePermitDate">
+              <el-date-picker
+                v-model="form.residencePermitDate"
+                type="datetime"
+                placeholder="请选择居住证日期"
+              ></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="特殊工种体检情况" prop="PhysicalExamination">
-              <el-select v-model="form.PhysicalExamination" placeholder="请选择特殊工种体检情况">
-                <el-option label="已通过" value="ytg"></el-option>
-                <el-option label="未通过" value="wtg"></el-option>
+            <el-form-item label="特殊工种体检情况" prop="isSpecialWorkTypeCheckups">
+              <el-select v-model="form.isSpecialWorkTypeCheckups" placeholder="请选择特殊工种体检情况">
+                <el-option label="通过" value="0"></el-option>
+                <el-option label="不通过" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -190,22 +194,30 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="政治面貌" prop="Team">
-              <el-select v-model="form.Team" placeholder="请选择政治面貌">
-                <el-option label="企业自有职工" value="qiye"></el-option>
-                <el-option label="劳务派遣人员" value="laowu"></el-option>
+            <el-form-item label="政治面貌" prop="politicsType">
+              <el-select v-model="form.politicsType" placeholder="请选择政治面貌">
+                <el-option label="企业自有职工" value="1"></el-option>
+                <el-option label="劳务派遣人员" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="一寸照片" prop="photo">
-              <el-upload class="upload-demo" :limit="1" v-model="form.photo" :auto-upload="false" action :on-change="handleChange" :file-list="fileList">
+              <el-upload
+                class="upload-demo"
+                :limit="1"
+                v-model="form.photo"
+                :auto-upload="false"
+                action
+                :on-change="handleChange"
+                :file-list="fileList"
+                :on-exceed="gobeyondExceed"
+              >
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
             </el-form-item>
           </el-col>
 
-          
           <!-- <el-col :span="24">
             <el-form-item label="角色" prop="type">
               <el-checkbox-group v-model="form.type">
@@ -255,31 +267,28 @@ export default {
         gender: "",
         age: "",
         nation: "",
-        department: "",
-        Company: "",
-        post: "",
-        emergencycontact: "",
-        emergencyTelephone: "",
-        Currentresidence: "",
-        nativeplace: "",
+        workerType: "",
+        cellPhone: "",
+        buildCorpName: "",
+        urgentLinkMan: "",
+        urgentLinkManPhone: "",
+        address: "",
+        birthPlace: "",
+        cultureLevelType: "",
         maritalStatus: "",
-        AcademicDegree: "",
         degree: "",
-        CertificateCode: "",
+        idCardCode: "",
         residencePermit: "",
-        date: "",
-        documentType: "",
+        residencePermitDate: "",
+        idCardType: "",
         Personneltype: "",
-        PoliticalOutlook: "",
+        politicsType: "",
         photo: "",
-        type: "",
-        region: "",
-        accountType: "",
-        foreman: "",
+        registrationType: "",
+        isTeamLeader: "",
         training: "",
-        certificate: "",
-        PhysicalExamination: "",
-        Team: ""
+        isRelatedCertificates: "",
+        isSpecialWorkTypeCheckups: ""
       },
       getImgCodeResults: "",
       keyResults: "",
@@ -290,69 +299,72 @@ export default {
         gender: [{ required: true, message: "请输入性别", trigger: "blur" }],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         nation: [{ required: true, message: "请输入民族", trigger: "blur" }],
-        telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
+        workerType: [
+          { required: true, message: "请选择工种", trigger: "blur" }
+        ],
+        cellPhone: [{ required: true, message: "请输入电话", trigger: "blur" }],
         // department: [
         //   { required: true, message: "请输入部门", trigger: "blur" }
         // ],
-        Company: [
+        buildCorpName: [
           { required: true, message: "请输入承建单位", trigger: "blur" }
         ],
-        post: [{ required: true, message: "请选择岗位/职责", trigger: "blur" }],
-        emergencycontact: [
+        // post: [{ required: true, message: "请选择岗位/职责", trigger: "blur" }],
+        urgentLinkMan: [
           { required: true, message: "请输入紧急联系人", trigger: "blur" }
         ],
-        emergencyTelephone: [
-          { required: true, message: "请输入电话", trigger: "blur" }
+        urgentLinkManPhone: [
+          { required: true, message: "请输入紧急联系人电话", trigger: "blur" }
         ],
-        Currentresidence: [
+        address: [
           { required: true, message: "请输入现居住地", trigger: "blur" }
         ],
-        nativeplace: [
+        birthPlace: [
           { required: true, message: "请输入籍贯", trigger: "blur" }
         ],
         maritalStatus: [
           { required: true, message: "请选择婚姻状况", trigger: "blur" }
         ],
-        AcademicDegree: [
-          { required: true, message: "请选择学位", trigger: "blur" }
-        ],
-        degree: [
+        degree: [{ required: true, message: "请选择学位", trigger: "blur" }],
+        cultureLevelType: [
           { required: true, message: "请选择文化程度", trigger: "blur" }
         ],
-        CertificateCode: [
+        idCardCode: [
           { required: true, message: "请选择证件编码", trigger: "blur" }
         ],
-        residencePermit: [
+        isResidencePermit: [
           { required: true, message: "请选择居住证", trigger: "blur" }
         ],
-        date: [
+        residencePermitDate: [
           { required: true, message: "请选择居住证办理日期", trigger: "blur" }
         ],
-        documentType: [
+        idCardType: [
           { required: true, message: "请选择证件类型", trigger: "blur" }
         ],
-        Personneltype: [
-          { required: true, message: "请选择人员类型", trigger: "blur" }
-        ],
-        PoliticalOutlook: [
+        // Personneltype: [
+        //   { required: true, message: "请选择班组", trigger: "blur" }
+        // ],
+        politicsType: [
           { required: true, message: "请选择政治面貌", trigger: "blur" }
         ],
         photo: [{ required: true, message: "请上传照片", trigger: "change" }],
-        type: [{ required: true, message: "请选择人员类型", trigger: "blur" }],
-        region: [
-          { required: true, message: "请选择人员类型", trigger: "blur" }
-        ],
-        accountType: [
+        // type: [{ required: true, message: "请选择人员类型", trigger: "blur" }],
+        // region: [
+        //   { required: true, message: "请选择人员类型", trigger: "blur" }
+        // ],
+        registrationType: [
           { required: true, message: "请选择户口类型", trigger: "blur" }
         ],
-        foreman: [{ required: true, message: "请选择班组长", trigger: "blur" }],
-        training: [
-          { required: true, message: "请选择参加培训", trigger: "blur" }
+        isTeamLeader: [
+          { required: true, message: "请选择班组长", trigger: "blur" }
         ],
-        certificate: [
+        // training: [
+        //   { required: true, message: "请选择参加培训", trigger: "blur" }
+        // ],
+        isRelatedCertificates: [
           { required: true, message: "请选择持证上岗", trigger: "blur" }
         ],
-        PhysicalExamination: [
+        isSpecialWorkTypeCheckups: [
           { required: true, message: "请选择特殊工种体检情况", trigger: "blur" }
         ],
         Team: [{ required: true, message: "请选择班组", trigger: "blur" }]
@@ -394,13 +406,11 @@ export default {
     };
   },
   mounted() {
-    if (localStorage.getItem("data") != null) {
-      this.form = JSON.parse(localStorage.getItem("data"));
-      let name = JSON.parse(localStorage.getItem("data")).photo[0].name
-      // console.log(aa)
-      this.fileList.push({name})
-      console.log(this.fileList)
-    // console.log(this.form.photo)
+    if (sessionStorage.getItem("data") != null) {
+      this.form = JSON.parse(sessionStorage.getItem("data"));
+      let name = JSON.parse(sessionStorage.getItem("data")).photo[0].name;
+      this.fileList.push({ name });
+      // console.log(this.form.photo)
     }
   },
   methods: {
@@ -417,14 +427,11 @@ export default {
       console.log(file);
     },
     submitForm(formName) {
-      console.log(JSON.parse(localStorage.getItem("data")))
       this.$refs[formName].validate(valid => {
         if (valid) {
           handleCofirm("确认保存吗", "warning")
             .then(res => {
-              console.log(this.form.photo[0].name)
-              console.log(this.fileList)
-              localStorage.setItem("data", JSON.stringify(this.form));
+              sessionStorage.setItem("data", JSON.stringify(this.form));
               this.$emit("field", this.field);
               this.$message({
                 type: "success",
@@ -449,8 +456,15 @@ export default {
     //保存
     preservationClick() {},
     handleChange(file, fileList) {
+      let name = JSON.parse(sessionStorage.getItem("data")).photo[0].name;
       this.$refs.form.clearValidate();
       this.form.photo = fileList;
+    },
+    gobeyondExceed(files, fileList) {
+      this.$message({
+        message: "请删除当前已经上传的",
+        type: "warning"
+      });
     },
     handleButton() {}
   }
