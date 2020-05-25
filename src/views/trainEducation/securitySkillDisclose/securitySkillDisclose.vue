@@ -364,7 +364,7 @@ export default {
       }
     };
   },
-  created() {
+  activated() {
     this.skillList();
   },
   methods: {

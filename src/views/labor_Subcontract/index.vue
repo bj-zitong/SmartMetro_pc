@@ -240,7 +240,7 @@ export default {
   },
   data() {
     return {
-        total:'',
+      total:'',
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10

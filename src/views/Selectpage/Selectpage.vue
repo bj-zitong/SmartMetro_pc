@@ -1,290 +1,292 @@
 <template>
-  <div class="home-box">
-    <div class="home-header">
-      <div class="home-header-min-box af">
-        <div class="home-header-left fl">
-          <div class="header-left fl">
-            <img src="../../assets/images/home/home-logo.png" alt="">
-          </div>
-          <div class="header-right fr">城市轨道交通智慧工地管理系统</div>
-        </div>
-        <div class="home-header-right fr">
-          <div class="out fl">
-            <el-link :underline="false" class="out-text" @click.native="logout">{{orgSite}}</el-link>
-            <el-divider direction="vertical" class="borderline"></el-divider>
-          </div>
-          <!-- <div class="interval fl"></div> -->
-          <div class="name fl">
-            <div class="fl">
-              <a href="javascript:;">
-                <img src="../../assets/images/home/home-head.png" alt="" class="loginimg">
-              </a>
+    <div class="home-box">
+        <div class="home-header">
+        <div class="home-header-min-box af">
+            <div class="home-header-left fl">
+            <div class="header-left fl">
+                <img src="../../assets/images/home/home-logo.png" alt="">
             </div>
-            <p href="javascript:;" class="name-text fr">{{username}}</p>
-          </div>
-          <el-dropdown trigger="click" style="margin-top:4px">
-            <div class="avatar-wrapper">
-              <div class="username-wrapper">
-                <i class="el-icon-caret-bottom"></i>
-              </div>
+            <div class="header-right fr">城市轨道交通智慧工地管理系统</div>
             </div>
-            <el-dropdown-menu class="user-dropdown" slot="dropdown">
-              <el-dropdown-item @click.native="logout">
-                <span style="display:block;">{{$t('navbar.logOut')}}</span>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+            <div class="home-header-right fr">
+            <div class="out fl">
+                <el-link :underline="false" class="out-text">{{orgSite}}</el-link>
+                <el-divider direction="vertical" class="borderline"></el-divider>
+            </div>
+            <!-- <div class="interval fl"></div> -->
+            <div class="name fl">
+                <div class="fl">
+                <a href="javascript:;">
+                    <img src="../../assets/images/home/home-head.png" alt="" class="loginimg">
+                </a>
+                </div>
+                <p href="javascript:;" class="name-text fr">{{username}}</p>
+            </div>
+            <el-dropdown trigger="click" style="margin-top:4px">
+                <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                    <i class="el-icon-caret-bottom"></i>
+                </div>
+                </div>
+                <el-dropdown-menu class="user-dropdown" slot="dropdown">
+                <el-dropdown-item @click.native="logout">
+                    <span style="display:block;">{{$t('navbar.logOut')}}</span>
+                </el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="home-main">
-      <div class="home-mian-box">
-        <div class="home-mian-t af">
-          <el-row>
-            <el-col :span="6">
-              <div class="home-list home-personnel">
-                <img src="../../assets/images/home/home-personnel.png" alt="">
-                <div class="home-list-text">
-                  <ul class="af">
-                    <li>实名认证</li>
-                    <li>智慧考勤</li>
-                    <li>培训教育</li>
+        </div>
+        <div class="home-main">
+        <div class="home-mian-box">
+            <div class="home-mian-t af">
+            <el-row>
+                <el-col :span="6">
+                <div class="home-list home-personnel">
+                    <img src="../../assets/images/home/home-personnel.png" alt="">
+                    <div class="home-list-text">
+                    <ul class="af">
+                        <li>实名认证</li>
+                        <li>智慧考勤</li>
+                        <li>培训教育</li>
 
-                  </ul>
-                  <ul class="af">
-                    <li>诚信管理</li>
-                    <li>人员定位</li>
-                  </ul>
+                    </ul>
+                    <ul class="af">
+                        <li>诚信管理</li>
+                        <li>人员定位</li>
+                    </ul>
+                    </div>
+                    <el-button
+                    type="primary"
+                    round
+                    icon="el-icon-view"
+                    @click="adminPage"
+                    >人员智慧管理</el-button>
                 </div>
-                <el-button
-                  type="primary"
-                  round
-                  icon="el-icon-view"
-                  @click="adminPage"
-                >人员智慧管理</el-button>
-              </div>
-            </el-col>
-            <el-col :span="6">
-              <div class="home-list home-mechanics">
-                <img src="../../assets/images/home/hme-mechanics.png" alt="">
-                <div class="home-list-text">
-                  <ul class="af">
-                    <li>实名认证</li>
-                    <li>班组管理</li>
-                    <li>花名册</li>
-                  </ul>
-                  <ul class="af">
-                    <li>外来人员</li>
-                  </ul>
+                </el-col>
+                <el-col :span="6">
+                <div class="home-list home-mechanics">
+                    <img src="../../assets/images/home/hme-mechanics.png" alt="">
+                    <div class="home-list-text">
+                    <ul class="af">
+                        <li>实名认证</li>
+                        <li>班组管理</li>
+                        <li>花名册</li>
+                    </ul>
+                    <ul class="af">
+                        <li>外来人员</li>
+                    </ul>
+                    </div>
+                    <el-button type="primary" round icon="el-icon-view">机械设备管理</el-button>
                 </div>
-                <el-button type="primary" round icon="el-icon-view">机械设备管理</el-button>
-              </div>
-            </el-col>
-            <el-col :span="6">
-              <div class="home-list home-video">
-                <img src="../../assets/images/home/home-video.png" alt="">
-                <div class="home-list-text">
-                  <ul class="af">
-                    <li>实名认证</li>
-                    <li>班组管理</li>
-                    <li>花名册</li>
-                  </ul>
-                  <ul class="af">
-                    <li>外来人员</li>
-                  </ul>
+                </el-col>
+                <el-col :span="6">
+                <div class="home-list home-video">
+                    <img src="../../assets/images/home/home-video.png" alt="">
+                    <div class="home-list-text">
+                    <ul class="af">
+                        <li>实名认证</li>
+                        <li>班组管理</li>
+                        <li>花名册</li>
+                    </ul>
+                    <ul class="af">
+                        <li>外来人员</li>
+                    </ul>
+                    </div>
+                    <el-button type="primary" round icon="el-icon-view">视频监控管理</el-button>
                 </div>
-                <el-button type="primary" round icon="el-icon-view">视频监控管理</el-button>
-              </div>
-            </el-col>
-            <el-col :span="6">
-              <div class="home-list home-ambient">
-                <img src="../../assets/images/home/home-ambient.png" alt="">
-                <div class="home-list-text">
-                  <ul class="af">
-                    <li>实名认证</li>
-                    <li>班组管理</li>
-                    <li>花名册</li>
-                  </ul>
-                  <ul class="af">
-                    <li>外来人员</li>
-                  </ul>
+                </el-col>
+                <el-col :span="6">
+                <div class="home-list home-ambient">
+                    <img src="../../assets/images/home/home-ambient.png" alt="">
+                    <div class="home-list-text">
+                    <ul class="af">
+                        <li>实名认证</li>
+                        <li>班组管理</li>
+                        <li>花名册</li>
+                    </ul>
+                    <ul class="af">
+                        <li>外来人员</li>
+                    </ul>
+                    </div>
+                    <el-button type="primary" round icon="el-icon-view">环境能耗管理</el-button>
                 </div>
-                <el-button type="primary" round icon="el-icon-view">环境能耗管理</el-button>
-              </div>
-            </el-col>
-          </el-row>
+                </el-col>
+            </el-row>
+            </div>
+            <div class="home-mian-b af">
+            <el-row>
+                <el-col :span="6" :offset="3" style="width: 420px;margin-left:-50px;">
+                <div class="home-list home-list-lg home-materiel-sm">
+                    <img src="../../assets/images/home/home-materiel-sm.png" alt="">
+                    <img src="../../assets/images/home/home-materiel-lg.png" alt="" class="materiel-lg">
+                    <div class="home-list-text">
+                    <ul class="af">
+                        <li>实名认证</li>
+                        <li>班组管理</li>
+                        <li>花名册</li>
+                    </ul>
+                    <ul class="af">
+                        <li>外来人员</li>
+                    </ul>
+                    </div>
+                    <el-button type="primary" round icon="el-icon-view">物料智慧管理</el-button>
+                </div>
+                </el-col>
+                <el-col :span="6">
+                <div class="home-list home-progress">
+                    <img src="../../assets/images/home/home-progress.png" alt="">
+                    <div class="home-list-text">
+                    <ul class="af">
+                        <li>实名认证</li>
+                        <li>班组管理</li>
+                        <li>花名册</li>
+                    </ul>
+                    <ul class="af">
+                        <li>外来人员</li>
+                    </ul>
+                    </div>
+                    <el-button type="primary" round icon="el-icon-view">进度智慧管理</el-button>
+                </div>
+                </el-col>
+                <el-col :span="6">
+                <div class="home-list home-quality">
+                    <img src="../../assets/images/home/home-quality.png" alt="">
+                    <div class="home-list-text">
+                    <ul class="af">
+                        <li>实名认证</li>
+                        <li>班组管理</li>
+                        <li>花名册</li>
+                    </ul>
+                    <ul class="af">
+                        <li>外来人员</li>
+                    </ul>
+                    </div>
+                    <el-button type="primary" round icon="el-icon-view">系统管理</el-button>
+                </div>
+                </el-col>
+                <el-col :span="4">
+                <div class="home-list home-quality" @click="systemManager()">
+                    <img src="../../assets/images/home/home-quality.png" alt="">
+                    <div class="home-list-text">
+                    <ul class="af">
+                        <li>用户管理</li>
+                        <li>角色管理</li>
+                        <li>工地管理</li>
+                    </ul>
+                    </div>
+                    <el-button type="primary" round icon="el-icon-view">系统管理</el-button>
+                </div>
+                </el-col>
+            </el-row>
+            </div>
         </div>
-        <div class="home-mian-b af">
-          <el-row>
-            <el-col :span="6" :offset="3" style="width: 420px;margin-left:-50px;">
-              <div class="home-list home-list-lg home-materiel-sm">
-                <img src="../../assets/images/home/home-materiel-sm.png" alt="">
-                <img src="../../assets/images/home/home-materiel-lg.png" alt="" class="materiel-lg">
-                <div class="home-list-text">
-                  <ul class="af">
-                    <li>实名认证</li>
-                    <li>班组管理</li>
-                    <li>花名册</li>
-                  </ul>
-                  <ul class="af">
-                    <li>外来人员</li>
-                  </ul>
-                </div>
-                <el-button type="primary" round icon="el-icon-view">物料智慧管理</el-button>
-              </div>
-            </el-col>
-            <el-col :span="6">
-              <div class="home-list home-progress">
-                <img src="../../assets/images/home/home-progress.png" alt="">
-                <div class="home-list-text">
-                  <ul class="af">
-                    <li>实名认证</li>
-                    <li>班组管理</li>
-                    <li>花名册</li>
-                  </ul>
-                  <ul class="af">
-                    <li>外来人员</li>
-                  </ul>
-                </div>
-                <el-button type="primary" round icon="el-icon-view">进度智慧管理</el-button>
-              </div>
-            </el-col>
-            <el-col :span="6">
-              <div class="home-list home-quality">
-                <img src="../../assets/images/home/home-quality.png" alt="">
-                <div class="home-list-text">
-                  <ul class="af">
-                    <li>实名认证</li>
-                    <li>班组管理</li>
-                    <li>花名册</li>
-                  </ul>
-                  <ul class="af">
-                    <li>外来人员</li>
-                  </ul>
-                </div>
-                <el-button type="primary" round icon="el-icon-view">系统管理</el-button>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div class="home-list home-quality" @click="systemManager()">
-                <img src="../../assets/images/home/home-quality.png" alt="">
-                <div class="home-list-text">
-                  <ul class="af">
-                    <li>用户管理</li>
-                    <li>角色管理</li>
-                    <li>工地管理</li>
-                  </ul>
-                </div>
-                <el-button type="primary" round icon="el-icon-view">系统管理</el-button>
-              </div>
-            </el-col>
-          </el-row>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
-/* eslint-disable*/
-export default {
-  data() {
-    return {
-      username:'',
-      orgSite:''
-      // 粒子开关
-    };
-  },
-  mounted() {
-    // var getuser = sessionStorage.setItem('user',res.data);
-    var getuser = JSON.parse(sessionStorage.getItem('user'));
-    console.log(getuser)
-      this.username=getuser.name
-      this.orgSite=getuser.orgSite
-  },
-  computed: {
-    ...mapGetters(["name", "avatar"])
-  },
-  methods: {
-    ...mapActions({
-      userLogout: "logout"
-    }),
-    adminPage () {
-      this.$router.push({ path: "/home" })
-    },
-    logout() {
 
-      // this.userLogout()
-      //   .then(() => {
-      //     location.reload(); // 为了重新实例化vue-router对象 避免bug// 为了重新实例化vue-router对象 避免bug
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
-      this.$router.push({ path: "/login" })
+import { mapGetters, mapActions } from "vuex";
+import { handleCofirm } from "@/utils/confirm";
+
+export default {
+    data() {
+        return {
+        username:'',
+        orgSite:''
+        };
     },
-    systemManager(){
-      //  this.$router.push({ path: "/home/1"})
-      this.$router.push({
-        name: "home",
-　　　　　// 只是把query改了，其他都没变
-        query: {
-         code:'1'
+    mounted() {
+        var getuser = JSON.parse(sessionStorage.getItem('user'));
+        console.log(getuser)
+        this.username=getuser.name
+        this.orgSite=getuser.orgSite
+    },
+    computed: {
+        ...mapGetters(["name", "avatar"])
+    },
+    methods: {
+        ...mapActions({
+        userLogout: "logout"
+        }),
+        // 退出
+        logout() {
+        handleCofirm('您确定退出吗？')
+        // 点击确定 删除sessStorage本地存储 返回到登录页面
+        .then(res => {
+            sessionStorage.removeItem('userId');
+            sessionStorage.removeItem('user');
+            sessionStorage.removeItem('token');
+            this.$router.push({ path: "/login" })
+        })
+        },
+        // 人员智慧管理
+        adminPage () {
+        this.$router.push({ path: "/home" })
+        },
+        // 系统管理
+        systemManager(){
+        //  this.$router.push({ path: "/home/1"})
+        this.$router.push({
+            name: "home",
+    　　　　　// 只是把query改了，其他都没变
+            query: {
+            code:'1'
+            }
+        })
         }
-      })
-    }
-  },
-  watch: {}
+    },
+    watch: {}
 };
 </script>
 <style lang="stylus" scoped>
 .home-box {
-  width 100%;
-  height 100%;
+    width 100%;
+    height 100%;
 }
 ul,li {
-  margin: 0;
-  padding: 0;
-  list-style:none;
+    margin: 0;
+    padding: 0;
+    list-style:none;
 }
 .home-box {
-  position absolute;
-  min-width 1280px;
-  min-height : 590px;
+    position absolute;
+    min-width 1280px;
+    min-height : 590px;
 }
 /* 头部样式 */
 .home-header {
-  position relative;
-  height 70px;
+    position relative;
+    height 70px;
 }
 .home-header-min-box{
-  position relative;
-  padding 0 50px;
-  height 100%;
+    position relative;
+    padding 0 50px;
+    height 100%;
 }
 .home-header-left{
-  height 100%;
-  box-sizing border-box;
-  padding-top: 10px;
+    height 100%;
+    box-sizing border-box;
+    padding-top: 10px;
 }
 .header-left img{
-  width: 50px;
-  height: 50px;
+    width: 50px;
+    height: 50px;
 }
 .header-right{
-  width:342px;
-  height:31px;
-  font-size:24px;
-  font-family:Microsoft YaHei;
-  font-weight:bold;
-  line-height:50px;
-  color:rgba(0,88,162,1);
-  opacity:1;
+    width:342px;
+    height:31px;
+    font-size:24px;
+    font-family:Microsoft YaHei;
+    font-weight:bold;
+    line-height:50px;
+    color:rgba(0,88,162,1);
+    opacity:1;
 }
 .home-header-right{
-  height 100%;
-  box-sizing border-box;
-  padding-top 20px;
+    height 100%;
+    box-sizing border-box;
+    padding-top 20px;
 }
 .interval{
   width:0px;

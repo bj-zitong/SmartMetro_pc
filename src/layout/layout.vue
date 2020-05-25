@@ -66,6 +66,7 @@ export default {
   .main-container1 {
     padding-left: 0;
     padding-top: 140px;
+    height:100%
   }
 }
 </style>

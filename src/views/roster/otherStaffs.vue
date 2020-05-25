@@ -134,7 +134,7 @@ export default {
       }
     };
   },
-  created() {
+  activated() {
     this.getOtherStaffs();
   },
   methods: {
