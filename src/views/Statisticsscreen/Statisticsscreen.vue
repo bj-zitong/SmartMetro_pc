@@ -4,19 +4,26 @@
     <el-header class="Header" style="height: 88px;">
       <div class="Hea_left">
         <el-link type="primary" :underline="false" class="people">人员智慧管理</el-link>
+        <el-link type="primary" :underline="false" class="people">机械设备管理</el-link>
+        <el-link type="primary" :underline="false" class="people">物料智慧管理</el-link>
+        <el-link type="primary" :underline="false" class="people">环境与能耗管理</el-link>
       </div>
       <div class="Hea_center">
         <p>城市轨道交通智慧工地管理系统</p>
         <h6>13号线02标中铁二局</h6>
       </div>
-      <div class="Hea_right"></div>
+      <div class="Hea_right">
+        <el-link type="primary" :underline="false" class="right_management">质量管理</el-link>
+        <el-link type="primary" :underline="false" class="right_people">安全管理</el-link>
+        <el-link type="primary" :underline="false" class="right_people">进度智慧管理</el-link>
+        <el-link type="primary" :underline="false" class="right_people" @click="videomonitoring">视频监控管理</el-link>
+      </div>
       <div class="switch" @click="switchClick">
         <!-- switch -->
         <img src="../../../static/image/Statisticsscreen/switch.png" />
         <h6>切换</h6>
       </div>
     </el-header>
-
     <el-main class="Main">
       <div class="dp_left">
         <!-- 工友须知 -->
@@ -196,9 +203,9 @@
 </template>
 <script>
 import echarts from "echarts";
-import myChart from "./myChart";
-import cjrs from "./cjrs-assembly";
-import cxgl from "./IntegrityChart";
+import myChart from "./echartsPlugin/myChart";
+import cjrs from "./echartsPlugin/cjrs-assembly";
+import cxgl from "./echartsPlugin/IntegrityChart";
 export default {
   name: "statisticsScreen",
   components: {
@@ -298,6 +305,10 @@ export default {
         return "success-row";
       }
       return "";
+    },
+    //视频监控
+    videomonitoring(){
+        this.$router.push({ path: "/videomonitoring" });
     },
     //工种分析
     drawPie() {
@@ -656,6 +667,17 @@ export default {
 
     .people {
       padding: 13px 0 0 30px;
+      float: left;
+    }
+
+    .right_people {
+      padding: 13px 0 0 44px;
+      float: left;
+    }
+
+    .right_management {
+      float: left;
+      padding: 13px 0 0 80px;
     }
 
     .Hea_left {
@@ -1409,13 +1431,15 @@ export default {
   position: absolute;
   right: 10px;
   top: 60px;
-cursor:pointer;
+  cursor: pointer;
+
   img {
     width: 11px;
     height: 11px;
     float: left;
     margin-top: 2px;
   }
+
   h6 {
     height: 14px;
     font-size: 10px;
@@ -1427,6 +1451,7 @@ cursor:pointer;
     float: right;
   }
 }
+
 .dialogBox /deep/ .el-dialog__body {
   padding: 0 0;
 }
