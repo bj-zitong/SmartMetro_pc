@@ -7,7 +7,7 @@
       class="hed_tab"
       @tab-click="handleClick"
     >
-      <el-tab-pane v-for="(item,index) in list" :key="index" :label="item.title">
+      <el-tab-pane v-for="(item,index) in list" :key="index" :label="item.title" :name="item.title">
         <span slot="label" class="nav-text">
           <img :src="num==index?item.afterChangeimg:item.beforeChangeimg" alt class="icon_list" />
           {{item.title}}
@@ -59,7 +59,7 @@ export default {
         }
       ],
       editableTabsValue: "",
-      num: 1,
+      num: 0,
       list: ""
     };
   },
@@ -82,13 +82,19 @@ export default {
   },
   mounted() {
     this.list = this.$route.query.code == 1 ? this.systemList : list;
-    this.editableTabsValue = this.$route.query.code == 1 ? "0" : "1";
+    // this.editableTabsValue = this.$route.query.code == 1 ? "0" : "1";
     if (this.$route.query.code == 1) {
+      this.editableTabsValue="用户管理"
       this.$emit("selectNavBar", "用户管理");
       this.$router.push({ path: "/userManager" });
       this.num = 0;
     } else {
-      this.$emit("selectNavBar", "实名认证");
+      this.editableTabsValue="首页"
+      //  this.editableTabsValue = this.$route.query.code == 1 ? "1" : "0";
+      this.$emit("selectNavBar", "首页");
+      this.$router.push({ path: "/homeShow" });
+      // this.$router.push({ path: "/homeShow" });
+      this.num = 0;
     }
   },
   methods: {
@@ -96,6 +102,7 @@ export default {
       userLogout: "logout"
     }),
     handleClick(tab, event) {
+      console.log(tab, event);
       this.$emit("selectNavBar", tab.label);
       this.num = tab.index;
     },
@@ -332,17 +339,18 @@ export default {
 }
 
 .hed_tab .el-tabs__nav {
-  min-width:1280px;
+  min-width: 1280px;
 }
 
 @media screen and (max-width: 1600px) {
-    .nav-text{
-        font-size: 1rem;
-    }
+  .nav-text {
+    font-size: 1rem;
+  }
 }
+
 @media screen and (max-width: 1420px) {
-    .nav-text{
-        font-size: 0.7rem;
-    }
+  .nav-text {
+    font-size: 0.7rem;
+  }
 }
 </style>
