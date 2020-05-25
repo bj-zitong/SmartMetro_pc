@@ -148,7 +148,10 @@
           <el-col :span="10">
             <div class="grid-content bg-purple">
               角色:
-              <span>{{user.roles}}</span>
+              <v-if >
+
+              </v-if>
+              <!-- <span v-if="{{user.roles==1}}"></span> -->
             </div>
           </el-col>
           <el-col :span="10">
@@ -432,6 +435,7 @@ export default {
               .post(url, data)
               .then(res => {
                 if (res.code == 200) {
+                  this.dialogVisibleTeam = false;
                   this.$message("添加成功！");
                   this.getTable();
                 }
@@ -439,7 +443,6 @@ export default {
               .catch(res => {
                 return false;
               });
-            this.dialogVisibleTeam = false;
           } else {
             if (form.password != form.confimPassword) {
               this.$message({
@@ -464,16 +467,16 @@ export default {
             this.http
               .put(url, data)
               .then(res => {
-                if (res.code == 200) {
-                   this.$message("编辑成功！");
+                if (res.code==200) {
+                  console.log(form.roles);
+                  this.cloneTeamForm(refTeam);
+                  this.$message("编辑成功！");
                   this.getTable();
-                  this.cloneTeamForm();
                 }
               })
               .catch(res => {
                 return false;
               });
-            this.dialogVisibleLabor = false;
           }
         } else {
           return false;
