@@ -7,7 +7,7 @@
                         <div class="main-title">
                             <span>现场人员</span>
                         </div>
-                        <div id="left1" style="width: 100%; height: 100%;"></div>
+                        <div id="left1" class="charts" style="width: 100%; height: 100%;"></div>
                     </div>
                 </div>
                 <div class="h-m-l2">
@@ -15,7 +15,7 @@
                         <div class="main-title">
                             <span>在岗参建单位人数</span>
                         </div>
-                        <div id="left2" style="width: 100%; height: 100%;"></div>
+                        <div id="left2" class="charts" style="width: 100%; height: 100%;"></div>
                     </div>
                 </div>
                 <div class="h-m-l3">
@@ -23,7 +23,7 @@
                         <div class="main-title">
                             <span>近期人员变化</span>
                         </div>
-                        <div id="left3" style="width: 100%; height: 100%;"></div>
+                        <div id="left3" class="charts" style="width: 100%; height: 100%;"></div>
                     </div>
                 </div>
                 <div class="h-m-l4">
@@ -31,7 +31,7 @@
                         <div class="main-title">
                             <span>培训通过</span>
                         </div>
-                        <div id="left4" style="width: 100%; height: 100%;"></div>
+                        <div id="left4" class="charts" style="width: 100%; height: 100%;"></div>
                     </div>
                 </div>
             </div>
@@ -84,22 +84,22 @@
                 </div>
                 <div class="h-m-c2">
                     <div class="min-box">
-                        <div id="center2" style="width: 100%; height: 100%;"></div>
+                        <div id="center2" class="charts" style="width: 100%; height: 100%;"></div>
                     </div>
                 </div>
                 <div class="h-m-c3">
                     <div class="min-box" style="display:flex;">
                         <div style="width:25%;">
-                            <div id="center31" style="width: 100%; height: 100%;"></div>
+                            <div id="center31" class="charts" style="width: 100%; height: 100%;"></div>
                         </div>
                         <div style="width:25%;">
-                            <div id="center32" style="width: 100%; height: 100%;"></div>
+                            <div id="center32" class="charts" style="width: 100%; height: 100%;"></div>
                         </div>
                         <div style="width:25%;">
-                            <div id="center33" style="width: 100%; height: 100%;"></div>
+                            <div id="center33" class="charts" style="width: 100%; height: 100%;"></div>
                         </div>
                         <div style="width:25%;">
-                            <div id="center34" style="width: 100%; height: 100%;"></div>
+                            <div id="center34" class="charts" style="width: 100%; height: 100%;"></div>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                         <div class="main-title">
                             <span>计划返京员工统计</span>
                         </div>
-                        <div id="right1" style="width: 100%; height: 100%;"></div>
+                        <div id="right1" class="charts" style="width: 100%; height: 100%;"></div>
                     </div>
                 </div>
                 <div class="h-m-r2">
@@ -214,10 +214,20 @@ export default {
         this.drawCon33();
         this.drawCon34();
         this.drawRight1();
+        this.getHeight();
     },
     methods: {
+        getHeight() {
+          let charts = document.getElementsByClassName('charts')[0];
+          let parentNode = charts.parentNode.parentNode.parentNode.clientHeight;
+          console.log(charts)
+          console.log(parentNode)
+        },
         // 近7天出勤情况
         attendanceClick(tab, event) {
+            console.log(tab,event)
+        },
+        dynamicClick(tab, event) {
             console.log(tab,event)
         },
         drawLeft1() {
@@ -1033,8 +1043,6 @@ export default {
     color:rgba(0,88,162,1);
     opacity:1;
 }
-.h-m-r2{
-}
 .dynamic .el-tabs__header {
     border:none !important;
     padding-top:40px;
@@ -1049,7 +1057,6 @@ export default {
     font-size:12px;
     padding: 0 10px !important;
     border:none !important;
-
 }
 .dynamic .el-tabs__nav {
     border:none !important;

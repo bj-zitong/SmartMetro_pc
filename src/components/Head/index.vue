@@ -3,7 +3,7 @@
     <el-menu mode="horizontal" text-color="#fff" active-text-color="#fff">
       <div>
         <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
-        <div index="1" class="title-name" @click="homepage">城市轨道交通智慧工地管理系统—人员智慧管理</div>
+        <div index="1" class="title-name" @click="homepage" title="返回首页">城市轨道交通智慧工地管理系统—人员智慧管理</div>
       </div>
       <div class="avatar-container">
         <div class="exit_login">

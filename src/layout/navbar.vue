@@ -8,7 +8,7 @@
       @tab-click="handleClick"
     >
       <el-tab-pane v-for="(item,index) in list" :key="index" :label="item.title">
-        <span slot="label">
+        <span slot="label" class="nav-text">
           <img :src="num==index?item.afterChangeimg:item.beforeChangeimg" alt class="icon_list" />
           {{item.title}}
         </span>
@@ -329,5 +329,20 @@ export default {
 
 .hed_tab>.el-tabs__nav-wrap.is-scrollable {
   padding: 0 0;
+}
+
+.hed_tab .el-tabs__nav {
+  min-width:1280px;
+}
+
+@media screen and (max-width: 1600px) {
+    .nav-text{
+        font-size: 1rem;
+    }
+}
+@media screen and (max-width: 1420px) {
+    .nav-text{
+        font-size: 0.7rem;
+    }
 }
 </style>
