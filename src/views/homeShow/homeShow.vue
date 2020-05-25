@@ -1,82 +1,47 @@
 <template>
-    <div class="home-box">
-        <div class="home-main">
-            <el-row :gutter="30" style="height: 100%;">
-                <el-col :span="7" style="height: 100%;">
-                    <div class="grid-content h-m-l1">
-                        <div class="home-title">
+    <div style="height:100%;">
+        <div class="home-box">
+            <div class="main-left">
+                <div class="h-m-l1">
+                    <div class="min-box">
+                        <div class="main-title">
                             <span>现场人员</span>
                         </div>
-                        <div style="width: 100%; height: 100%;" ref="left1" id="left1"></div>
+                        <div id="left1" style="width: 100%; height: 100%;"></div>
                     </div>
-                    <div class="grid-content h-m-l2">
-                        <div class="home-title">
+                </div>
+                <div class="h-m-l2">
+                    <div class="min-box">
+                        <div class="main-title">
                             <span>在岗参建单位人数</span>
                         </div>
-                        <div style="padding-top:50px;">
-                            <el-row style="margin-bottom:20px;">
-                                <el-col :span="7" :push="2">
-                                    <div class="grid-station">
-                                        <span>劳务一组</span>
-                                    </div>
-                                </el-col>
-                                <el-col :span="14">
-                                    <div class="grid-station">
-                                        <el-progress :text-inside="true" :stroke-width="16" :percentage="50"></el-progress>
-                                    </div>
-                                </el-col>
-                            </el-row>
-                            <el-row style="margin-bottom:20px;">
-                                <el-col :span="7" :push="2">
-                                    <div class="grid-station">
-                                        <span>劳务二组</span>
-                                    </div>
-                                </el-col>
-                                <el-col :span="14">
-                                    <div class="grid-station">
-                                        <el-progress :text-inside="true" :stroke-width="16" :percentage="50"></el-progress>
-                                    </div>
-                                </el-col>
-                            </el-row>
-                            <el-row>
-                                <el-col :span="7" :push="2">
-                                    <div class="grid-station">
-                                        <span>劳务三组</span>
-                                    </div>
-                                </el-col>
-                                <el-col :span="14">
-                                    <div class="grid-station">
-                                        <el-progress :text-inside="true" :stroke-width="16" :percentage="50"></el-progress>
-                                    </div>
-                                </el-col>
-                            </el-row>
-                        </div>
+                        <div id="left2" style="width: 100%; height: 100%;"></div>
                     </div>
-                    <div class="grid-content h-m-l3">
-                        <div class="home-title">
+                </div>
+                <div class="h-m-l3">
+                    <div class="min-box">
+                        <div class="main-title">
                             <span>近期人员变化</span>
                         </div>
-                        <div style="width: 100%; height: 150px" id="left3"></div>
+                        <div id="left3" style="width: 100%; height: 100%;"></div>
                     </div>
-                    <div class="grid-content h-m-l4">
-                        <div class="home-title">
+                </div>
+                <div class="h-m-l4">
+                    <div class="min-box">
+                        <div class="main-title">
                             <span>培训通过</span>
                         </div>
-                        <div style="width: 100%; height: 220px" id="left4"></div>
+                        <div id="left4" style="width: 100%; height: 100%;"></div>
                     </div>
-                </el-col>
-                <el-col :span="12" style="height: 100%;">
-                    <div class="grid-content h-m-c1">
-                        <div class="home-title">
+                </div>
+            </div>
+            <div class="main-center">
+                <div class="h-m-c1">
+                    <div class="min-box">
+                        <div class="main-title">
                             <span>近7天出勤情况</span>
                         </div>
-                        <el-tabs
-                            v-model="activeCenter1"
-                            type="card"
-                            @tab-click="handleAttendanceClick"
-                            tab-position="top"
-                            class="tab1"
-                        >
+                        <el-tabs v-model="attendance" class="attendance" type="card" @tab-click="attendanceClick">
                             <el-tab-pane label="班组" name="team">
                                 <div style="padding: 0 100px;">
                                     <el-row :gutter="30">
@@ -113,87 +78,49 @@
                                     </el-row>
                                 </div>
                             </el-tab-pane>
-                            <el-tab-pane label="工种" name="work">工种</el-tab-pane>
+                            <el-tab-pane label="工种" name="workType">工种</el-tab-pane>
                         </el-tabs>
                     </div>
-                    <div class="grid-content h-m-c2">
-                        <div class="home-title">
-                            <span>1111111111</span>
-                        </div>
-                        <div style="width: 100%; height: 400px;" id="center2"></div>
+                </div>
+                <div class="h-m-c2">
+                    <div class="min-box">
+                        <div id="center2" style="width: 100%; height: 100%;"></div>
                     </div>
-                    <div class="grid-content h-m-c3">
-                        <div class="home-title">
-                            <span>出勤率</span>
+                </div>
+                <div class="h-m-c3">
+                    <div class="min-box" style="display:flex;">
+                        <div style="width:25%;">
+                            <div id="center31" style="width: 100%; height: 100%;"></div>
                         </div>
-                        <div style="padding: 7% 8% 0;">
-                            <el-row :gutter="20">
-                                <el-col :span="6">
-                                    <div class="">
-                                        <el-progress
-                                            type="circle"
-                                            color="#BA31FF"
-                                            :stroke-width="10"
-                                            :percentage="25"
-                                            
-                                        ></el-progress>
-                                        
-                                    </div>
-                                </el-col>
-                                <el-col :span="6">
-                                    <div class="">
-                                        <el-progress
-                                            type="circle"
-                                            color="#FA8E22"
-                                            :stroke-width="10"
-                                            :percentage="50"
-                                        ></el-progress>
-                                    </div>
-                                </el-col>
-                                <el-col :span="6">
-                                    <div class="">
-                                        <el-progress
-                                            type="circle"
-                                            color="#46D797"
-                                            :stroke-width="10"
-                                            :percentage="75"
-                                        ></el-progress>
-                                    </div>
-                                </el-col>
-                                <el-col :span="6">
-                                    <div class="">
-                                        <el-progress
-                                            type="circle"
-                                            color="#67BCFF"
-                                            :stroke-width="10"
-                                            :percentage="100"
-                                        ></el-progress>
-                                    </div>
-                                </el-col>
-                            </el-row>
+                        <div style="width:25%;">
+                            <div id="center32" style="width: 100%; height: 100%;"></div>
+                        </div>
+                        <div style="width:25%;">
+                            <div id="center33" style="width: 100%; height: 100%;"></div>
+                        </div>
+                        <div style="width:25%;">
+                            <div id="center34" style="width: 100%; height: 100%;"></div>
                         </div>
                     </div>
-                </el-col>
-                <el-col :span="5" style="height: 100%;">
-                    <div class="grid-content h-m-r1">
-                        <div class="home-title">
+                </div>
+            </div>
+            <div class="main-right">
+                <div class="h-m-r1">
+                    <div class="min-box">
+                        <div class="main-title">
                             <span>计划返京员工统计</span>
                         </div>
-                        <div style="width: 100%; height: 200px;" id="right1"></div>
+                        <div id="right1" style="width: 100%; height: 100%;"></div>
                     </div>
-                    <div class="grid-content h-m-r2" id="h-m-r-tab">
-                        <div class="home-title">
+                </div>
+                <div class="h-m-r2">
+                    <div class="min-box">
+                        <div class="main-title">
                             <span>人员动态</span>
                         </div>
-                        <div>
-                            <el-tabs
-                                v-model="activeRight2"
-                                type="card" 
-                                @tab-click="handleDynamicClick"
-                                class="tab-Dynamic"
-                            >
-                                <el-tab-pane label="最近出勤" name="attendance">
-                                    <div style="text-algin: center;">
+                        <el-tabs v-model="dynamic" class="dynamic" type="card" @tab-click="dynamicClick">
+                            <el-tab-pane label="最近出勤" name="dynamicTab1">
+                                <div style="text-algin: center;">
                                         <el-row>
                                             <el-col :span="6" :push="4"><div class="grid-tab-title">姓名</div></el-col>
                                             <el-col :span="6" :push="2"><div class="grid-tab-title">工号</div></el-col>
@@ -202,7 +129,7 @@
                                         </el-row>
                                     </div>
                                     <div class="con" style="padding-top: 20px">
-                                        <el-row>
+                                        <el-row class="dynamicRow">
                                             <el-col :span="2">
                                                 <div class="grid-con">
                                                     <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
@@ -213,7 +140,7 @@
                                             <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
                                             <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
                                         </el-row>
-                                        <el-row>
+                                        <el-row class="dynamicRow">
                                             <el-col :span="2">
                                                 <div class="grid-con">
                                                     <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
@@ -224,7 +151,7 @@
                                             <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
                                             <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
                                         </el-row>
-                                        <el-row>
+                                        <el-row class="dynamicRow">
                                             <el-col :span="2">
                                                 <div class="grid-con">
                                                     <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
@@ -235,7 +162,7 @@
                                             <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
                                             <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
                                         </el-row>
-                                        <el-row>
+                                        <el-row class="dynamicRow">
                                             <el-col :span="2">
                                                 <div class="grid-con">
                                                     <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
@@ -246,84 +173,7 @@
                                             <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
                                             <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
                                         </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
+                                        <el-row class="dynamicRow">
                                             <el-col :span="2">
                                                 <div class="grid-con">
                                                     <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
@@ -335,197 +185,46 @@
                                             <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
                                         </el-row>
                                     </div>
-                                </el-tab-pane>
-                                <el-tab-pane label="最近出场" name="comeout">
-                                    <div style="text-algin: center;">
-                                        <el-row>
-                                            <el-col :span="6" :push="4"><div class="grid-tab-title">姓名</div></el-col>
-                                            <el-col :span="6" :push="2"><div class="grid-tab-title">工号</div></el-col>
-                                            <el-col :span="6" :push="1"><div class="grid-tab-title">班组</div></el-col>
-                                            <el-col :span="6"><div class="grid-tab-title">时间</div></el-col>
-                                        </el-row>
-                                    </div>
-                                    <div class="con" style="padding-top: 20px">
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平三班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="2">
-                                                <div class="grid-con">
-                                                    <img src="../../assets/images/home/home-logo1.png" width="24px" height="24px">
-                                                </div>
-                                            </el-col>
-                                            <el-col :span="4" :push="1"><div class="grid-con">紫通</div></el-col>
-                                            <el-col :span="5"><div class="grid-con">3265421532</div></el-col>
-                                            <el-col :span="5" :push="1"><div class="grid-con">昌平二班</div></el-col>
-                                            <el-col :span="8"><div class="grid-con">2020-4-30 15:00</div></el-col>
-                                        </el-row>
-                                    </div>
-                                </el-tab-pane>
-                            </el-tabs>
-                        </div>
+                            </el-tab-pane>
+                            <el-tab-pane label="最近出场" name="dynamicTab2">最近出场</el-tab-pane>
+                        </el-tabs>
                     </div>
-                </el-col>
-            </el-row>
+                </div>
+            </div>
         </div>
-    </div> 
-</template> 
+    </div>
+</template>
 
 <script>
-import echarts from "echarts";
 export default {
-    name: "echarts",
-    data() {
+    data () {
         return {
-            activeCenter1: 'team',
-            activeRight2: 'attendance'
+            attendance: 'team',
+            dynamic: 'dynamicTab1'
         }
     },
-    created: {},
     mounted() {
         this.drawLeft1();
+        this.drawLeft2();
         this.drawLeft3();
         this.drawLeft4();
         this.drawCon2();
+        this.drawCon31();
+        this.drawCon32();
+        this.drawCon33();
+        this.drawCon34();
         this.drawRight1();
-        let left1 = echarts.init(this.$refs.left1);
-        this.handleAttendanceClick();
-        this.handleDynamicClick()
     },
     methods: {
-        // 现场人员
-        getHeight() {
-            
-        },
-        handleAttendanceClick(tab, event) {
-            console.log(tab, event);
-        },
-        handleDynamicClick(tab,event) {
-            console.log(tab, event);
+        // 近7天出勤情况
+        attendanceClick(tab, event) {
+            console.log(tab,event)
         },
         drawLeft1() {
             //  获取echarts
             let left1 = this.$echarts.init(document.getElementById("left1"));
             //  绘制图表
-            left1.setOption({
+            let left1Option = {
                 tooltip: { // hover 悬浮窗
                     trigger: 'item',
                     formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -577,65 +276,122 @@ export default {
                         }
                     }
                 ]
-            });
-            left1.resize({height: this.autoHeight});
+            };
+            left1.setOption(left1Option)
             window.addEventListener("resize", function () {
                 left1.resize();
             });
         },
-        // 在岗参见单位人数
+        // 近期人员变化
         drawLeft2() {
             //  获取echarts
             let left2 = this.$echarts.init(document.getElementById("left2"));
             //  绘制图表
-            left2.setOption({
-                color: ['#3398DB'],
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    }
+            var data = [70, 34, 60, 78, 69]
+            var titlename = ['劳务一组', '劳务二组', '劳务三组', '劳务四组', '劳务五组'];
+            var valdata = [100,100,100,100,100]
+            let left2Option = {
+                grid:{
+                    top:'20%',
+                    left:'20%',
+                    right:'20%',
+                    bottom: '10%'
                 },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
+                xAxis: {
+                    show: false,
+                    type:'value'
                 },
-                xAxis: [
-                    {
-                        type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                        axisTick: {
-                            alignWithLabel: true
-                        }
-                    }
-                ],
                 yAxis: [
                     {
-                        type: 'value'
+                        show: true,
+                        data: titlename,
+                        inverse: true,
+                        axisLine: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {// y轴文字
+                            color: '#0D69F1'
+                        },
+                    },
+                   
+                    {
+                        show: true,
+                        inverse: true,
+                        data: valdata,
+                        axisLabel: {
+                            textStyle: {
+                                fontSize: 10,
+                                color: '#ccc',
+                            },
+                        },
+                        axisLine: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        axisTick: {
+                            show: false
+                        },
+
                     }
                 ],
                 series: [
                     {
-                        name: '直接访问',
+                        name: '条',
                         type: 'bar',
-                        barWidth: '60%',
-                        data: [10, 52, 200, 334, 390, 330, 220]
+                        yAxisIndex: 0,
+                        data: data,
+                        barWidth: 10,
+                        itemStyle: {
+                            normal: {
+                                barBorderRadius: 30,
+                                color: '#0D69F1',
+                            }
+                        },
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'inside'
+                            }
+                        }
+                    },
+                    {
+                        name: '框',
+                        type: 'bar',
+                        yAxisIndex: 1,
+                        barGap: '-100%',
+                        data: [100, 100, 100, 100, 100],
+                        barWidth: 11,
+                        itemStyle: {
+                            normal: {
+                                color: 'none',
+                                borderColor: '#70AAFF',
+                                borderWidth: 3,
+                                barBorderRadius: 15,
+                            }
+                        },
+                        barCateGoryGap:20
                     }
                 ]
+            };
+            left2.setOption(left2Option)
+            window.addEventListener("resize", function () {
+                left2.resize();
             });
-            // window.addEventListener("resize", function () {
-            //     left1.resize();
-            // });
         },
-        
         // 近期人员变化
         drawLeft3() {
             //  获取echarts
             let left3 = this.$echarts.init(document.getElementById("left3"));
             //  绘制图表
-            left3.setOption({
+            let left3Option = {
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -733,19 +489,25 @@ export default {
                         data: [45, 84, 25, 75, 195, 57, 37]
                     }
                 ]
+            };
+            left3.setOption(left3Option)
+            window.addEventListener("resize", function () {
+                left3.resize();
             });
-            // window.addEventListener("resize", function () {
-            //     left3.resize();
-            // });
         },
-        // 培训通过
         // 近期人员变化
         drawLeft4() {
             //  获取echarts
             let left4 = this.$echarts.init(document.getElementById("left4"));
             //  绘制图表
-            left4.setOption({
+            let left4Option = {
                 tooltip: {}, //  鼠标悬浮
+                grid: {
+                    top:'40%',
+                    left:'10%',
+                    bottom:'15%',
+                    right:'10%'
+                },
                 xAxis: {
                     //  x轴配置
                     name: "日期", // 坐标轴名称
@@ -791,25 +553,27 @@ export default {
                     {
                         name: "分数",
                         type: "bar",
-                        barWidth: 45,
+                        barWidth: 30,
                         itemStyle: {
-                        normal: {
-                            color: "#5D95E0" //  柱状图颜色
-                        }
+                            normal: {
+                                color: "#5D95E0" //  柱状图颜色
+                            }
                         },
                         data: [12, 32, 51, 23, 18, 35, 52,]
                     }
                 ]
+            };
+            left4.setOption(left4Option)
+            window.addEventListener("resize", function () {
+                left4.resize();
             });
-            // window.addEventListener("resize", function () {
-            //     left4.resize();
-            // });
         },
+        // 进7天出勤情况
         drawCon2() {
             //  获取echarts
             let center2 = this.$echarts.init(document.getElementById("center2"));
             //  绘制图表
-            center2.setOption({
+            let center2Option = {
                 tooltip: {}, //  鼠标悬浮
                 xAxis: {
                     //  x轴配置
@@ -856,122 +620,402 @@ export default {
                 {
                     name: "分数",
                     type: "bar",
-                    barWidth: 45,
+                    barWidth: 30,
                     itemStyle: {
-                    normal: {
-                        color: "#5D95E0" //  柱状图颜色
-                    }
+                        normal: {
+                            color: "#5D95E0" //  柱状图颜色
+                        }
                     },
                     data: [12, 32, 16, 23, 45, 35, 52,]
                 }
                 ]
+            }
+            center2.setOption(center2Option)
+            window.addEventListener("resize", function () {
+                center2.resize();
+            });
+        },
+        // 进7天出勤情况
+        drawCon31() {
+            //  获取echarts
+            let center31 = this.$echarts.init(document.getElementById("center31"));
+            //  绘制图表
+            let data = [80]
+            let center31Option = {
+                title: {
+                    text: '管理人员',
+                    x: 'center',
+                    y:'center',
+                    textStyle: {
+                        fontWeight: 'normal',
+                        color: '#BA31FF',
+                        fontSize: '14'
+                    },
+                    subtext:data+'%',
+                    subtextStyle:{
+                        color:'#BA31FF',
+                        fontSize: '20',
+                        x: 'center',
+                        y:'center'
+                    }
+                },
+                color: ['#F9F9F9'], 
+                series: [{
+                    name: 'Line 1',
+                    type: 'pie',
+                    clockWise: true,
+                    radius: ['50%', '66%'],
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            borderWidth:5
+                        }
+                    },
+                    hoverAnimation: false, 
+                    data: [{
+                        value: data,
+                        name: '01',
+                        itemStyle: {
+                            normal: {
+                                color: '#BA31FF' // 0% 处的颜色
+                            } 
+                        }
+                    }, {
+                        name: '02',
+                        value: 20
+                    }]
+                }]
+            }
+            center31.setOption(center31Option)
+            window.addEventListener("resize", function () {
+                center31.resize();
+            });
+        },
+        drawCon32() {
+            //  获取echarts
+            let center32 = this.$echarts.init(document.getElementById("center32"));
+            //  绘制图表
+            let data = [80]
+            let center32Option = {
+                title: {
+                    text: '劳务人员',
+                    x: 'center',
+                    y:'center',
+                    textStyle: {
+                        fontWeight: 'normal',
+                        color: '#FA8E22',
+                        fontSize: '14'
+                    },
+                    subtext:data+'%',
+                    subtextStyle:{
+                        color:'#FA8E22',
+                        fontSize: '20',
+                        x: 'center',
+                        y:'center'
+                    }
+                },
+                color: ['#F9F9F9'], 
+                series: [{
+                    name: 'Line 1',
+                    type: 'pie',
+                    clockWise: true,
+                    radius: ['50%', '66%'],
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            borderWidth:5
+                        }
+                    },
+                    hoverAnimation: false, 
+                    data: [{
+                        value: data,
+                        name: '01',
+                        itemStyle: {
+                            normal: {
+                                color: '#FA8E22' // 0% 处的颜色
+                            } 
+                        }
+                    }, {
+                        name: '02',
+                        value: 20
+                    }]
+                }]
+            }
+            center32.setOption(center32Option)
+            window.addEventListener("resize", function () {
+                center32.resize();
+            });
+        },
+        drawCon33() {
+            //  获取echarts
+            let center33 = this.$echarts.init(document.getElementById("center33"));
+            //  绘制图表
+            let data = [80]
+            let center33Option = {
+                title: {
+                    text: '设备管理人员',
+                    x: 'center',
+                    y:'center',
+                    textStyle: {
+                        fontWeight: 'normal',
+                        color: '#46D797',
+                        fontSize: '14'
+                    },
+                    subtext:data+'%',
+                    subtextStyle:{
+                        color:'#46D797',
+                        fontSize: '20',
+                        x: 'center',
+                        y:'center'
+                    }
+                },
+                color: ['#F9F9F9'], 
+                series: [{
+                    name: 'Line 1',
+                    type: 'pie',
+                    clockWise: true,
+                    radius: ['50%', '66%'],
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            borderWidth:5
+                        }
+                    },
+                    hoverAnimation: false, 
+                    data: [{
+                        value: data,
+                        name: '01',
+                        itemStyle: {
+                            normal: {
+                                color: '#46D797' // 0% 处的颜色
+                            } 
+                        }
+                    }, {
+                        name: '02',
+                        value: 20
+                    }]
+                }]
+            }
+            center33.setOption(center33Option)
+            window.addEventListener("resize", function () {
+                center33.resize();
+            });
+        },
+        drawCon34() {
+            //  获取echarts
+            let center34 = this.$echarts.init(document.getElementById("center34"));
+            //  绘制图表
+            let data = [80]
+            let center34Option = {
+                title: {
+                    text: '其他服务类人员',
+                    x: 'center',
+                    y:'center',
+                    textStyle: {
+                        fontWeight: 'normal',
+                        color: '#67BCFF',
+                        fontSize: '14'
+                    },
+                    subtext:data+'%',
+                    subtextStyle:{
+                        color:'#67BCFF',
+                        fontSize: '20',
+                        x: 'center',
+                        y:'center'
+                    }
+                },
+                color: ['#F9F9F9'], 
+                series: [{
+                    name: 'Line 1',
+                    type: 'pie',
+                    clockWise: true,
+                    radius: ['50%', '66%'],
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            borderWidth:5
+                        }
+                    },
+                    hoverAnimation: false, 
+                    data: [{
+                        value: data,
+                        name: '01',
+                        itemStyle: {
+                            normal: {
+                                color: '#67BCFF' // 0% 处的颜色
+                            } 
+                        }
+                    }, {
+                        name: '02',
+                        value: 20
+                    }]
+                }]
+            }
+            center34.setOption(center34Option)
+            window.addEventListener("resize", function () {
+                center34.resize();
             });
         },
         drawRight1() {
             //  获取echarts
             let right1 = this.$echarts.init(document.getElementById("right1"));
             //  绘制图表
-            right1.setOption({
-                grid:{
-                    x:50,
-                    y:50,
-                    x2:50,
-                    y2:30
+            let right1Option = {
+                grid: {
+                    top: '30%',
+                    left: '15%',
+                    right: '15%',
+                    bottom:'15%'
                 },
                 xAxis: {
-                    name:'日期',
-                    nameTextStyle:{
-                        color:'rgba(192,192,192,1)'
-                    },
                     type: 'category',
-                    data: ['4-21', '4-22', '4-23', '4-24', '4-25', '4-26', '4-27']
+                    data: ['5-1', '5-2', '5-3', '5-4', '5-5', '5-6', '5-7']
                 },
                 yAxis: {
-                    name:'人数(个)',
-                    nameTextStyle:{
-                        color:'rgba(192,192,192,1)'
-                    },
                     type: 'value'
                 },
                 series: [{
                     data: [820, 932, 901, 934, 1290, 1330, 1320],
-                    type: 'line',
-                    areaStyle: {}
+                    type: 'line'
                 }]
+            };
+            right1.setOption(right1Option)
+            window.addEventListener("resize", function () {
+                right1.resize();
             });
-            // window.addEventListener("resize", function () {
-            //     left3.resize();
-            // });
         },
     }
 }
-/**
- * 现场人员 饼形图  二期优化 实现图例的 scroll
- * 
- */
 </script>
 
-<style lang="stylus" scoped>
-.home-box, .home-main {
-    width: 100%;
+<style scoped>
+.home-box {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    background: #eee;
+    padding: 0 15px 15px;
+}
+.home-box>div {
+    margin: 0 15px;
     height: 100%;
 }
-.home-main {
-    padding: 0 30px;
+.home-box .main-left {
+    width: 30%;
 }
-.home-main .grid-content {
-    width:100%;
+.home-box .main-center {
+    width: 50%;
+}
+.home-box .main-right {
+    width: 20%;
+}
+.min-box {
+    height: 100%;
     background:rgba(255,255,255,1);
     box-shadow:0px 3px 6px rgba(0,0,0,0.16);
     opacity:1;
     border-radius:10px;
     position: relative;
 }
-.home-title {
-    position: absolute;
-    border-left:3px solid #0058A2;
-    border-radius: 3px;
-    padding-left: 10px;
-    top: 15px;
-}
-.home-title span {
+.main-title {
     font-size:14px;
     font-family:Microsoft YaHei;
     font-weight:bold;
+    line-height:19px;
     color:rgba(0,88,162,1);
     opacity:1;
-}
-.h-m-l1, .h-m-l2, .h-m-l3, .h-m-c1, .h-m-c2, .h-m-r1 {
-    margin-bottom: 10px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+
 }
 .h-m-l1 {
-    height: 26%;
+    height: 27%;
 }
 .h-m-l2 {
-    height: 25%;
+    padding-top: 15px;
+    height: 27%;
 }
 .h-m-l3 {
-    height: 20%;
+    padding-top: 15px;
+    height: 22%;
 }
 .h-m-l4 {
+    padding-top: 15px;
     height: 24%;
 }
 .h-m-c1 {
-    height: 17%;
+    height: 19%;
 }
 .h-m-c2 {
-    height: 48%;
+    padding-top: 15px;
+    height: 49%;
 }
 .h-m-c3 {
-    height: 31.2%;
+    padding-top: 15px;
+    height: 32%;
 }
 .h-m-r1 {
-    height: 26%;
+    height: 27%;
 }
 .h-m-r2 {
-    height: 71.4%;
+    padding-top: 15px;
+    height: 73%;
 }
-.tab-title {
+
+/* @media screen and (max-width: 1600px) {
+    .home-box {
+        flex-direction: column;
+    }
+    .h-m-l1 {
+        height: 300px;
+    }
+} */
+/* | row-reverse | column | column-reverse */
+</style>
+<style lang="stylus">
+.attendance .el-tabs__header {
+    border:none !important;
+}
+.attendance .el-tabs__nav-scroll{
+    padding-left:80%;
+}
+.attendance .el-tabs__header {
+    padding-top:10px;
+}
+.attendance .el-tabs__nav {
+    height:26px;
+    border-bottom: 1px solid #E4E7ED !important;
+}
+.attendance .el-tabs__item {
+    height:26px;
+    line-height:26px;
+}
+.attendance .is-active {
+    background: #0058A2;
+    color:#fff;
+}
+.attendance .tab-title {
     text-align: center;
     font-size:14px;
     font-family:Microsoft YaHei;
@@ -980,7 +1024,7 @@ export default {
     color:rgba(99,99,99,1);
     opacity:1;
 }
-.tab-con {
+.attendance .tab-con {
     text-align: center;
     font-size:24px;
     font-family:Microsoft YaHei;
@@ -989,97 +1033,50 @@ export default {
     color:rgba(0,88,162,1);
     opacity:1;
 }
-.tab-Dynamic{
-    padding-top: 54px;
+.h-m-r2{
 }
+.dynamic .el-tabs__header {
+    border:none !important;
+    padding-top:40px;
+}
+.dynamic .el-tabs__nav-scroll {
+    padding-left:30%;
 
-</style>
-<style lang="stylus">
-html, body, .main-container1 {
-    width: 100%;
-    height: 100%;
 }
-.main-app {
-    height: calc(100% - 40px)
+.dynamic .el-tabs__item {
+    height:26px;
+    line-height:26px;
+    font-size:12px;
+    padding: 0 10px !important;
+    border:none !important;
+
 }
-.h-m-c1 .el-tabs__nav-scroll .el-tabs__nav is-top{
-    position:absolute;
-    right:'5%';
+.dynamic .el-tabs__nav {
+    border:none !important;
 }
-.h-m-c1 .el-tabs__item {
-    border:1px solid rgba(225,225,225,1);
-    border-radius: 20px;
-    font-size: 12px;
-    -webkit-transform: scale(0.8);
-    color:#0058A2;
+.dynamic .is-active {
+    height:26px;
+    background:rgba(0,88,162,1);
+    color:#fff;
+    opacity:1;
+    border-radius:13px;
 }
-.tab-Dynamic .el-tabs__item {
-    border:1px solid rgba(225,225,225,1);
-    border-radius: 20px;
-    font-size: 12px;
-    -webkit-transform: scale(0.8);
-    color:#0058A2;
-}
-.h-m-c1 .el-tabs__item.is-active {
-    border:1px solid #0058A2;
-    background: #0058A2;
-    font-size: 12px;
-    -webkit-transform: scale(0.8);
-    color:#FFFFFF;
-}
-.tab-Dynamic .el-tabs__item.is-active {
-    border:1px solid #0058A2;
-    background: #0058A2;
-    border-radius: 20px;
-    font-size: 12px;
-    -webkit-transform: scale(0.8);
-    color:#FFFFFF;
-}
-.tab-Dynamic .el-tabs__nav-scroll {
-    padding-left:100px;
-}
-.el-tabs__header {
-    border: none;
-}
-.el-tabs__nav {
-    width:200px;
-    margin: 0 auto;
-    border: none;
-}
-.tab-Dynamic .el-tabs__header,
-.tab-Dynamic .el-tabs__header .el-tabs__nav
-{
-    border: none;
-}
-.grid-tab-title{
+.dynamic .grid-tab-title {
     font-size:14px;
     font-family:Microsoft YaHei;
     font-weight:bold;
-    line-height:19px;
     color:rgba(0,88,162,1);
     opacity:1;
 }
-.con {
-    padding: 20px 20px;
-}
-.con .grid-con{
-    font-size:12px;
-    -webkit-transform: scale(0.8);
+.dynamic .grid-con {
+    font-size:10px;
     font-family:Microsoft YaHei;
-    font-weight:400;
-    line-height:22px;
+    line-height:14px;
     color:rgba(51,51,51,1);
     opacity:1;
 }
-.el-progress-bar__innerText{
-    font-size:12px;
-    -webkit-transform: scale(0.8);
-}
-.grid-station span{
-    font-size:12px;
-    color: #0D69F1;
-}
-.tab1 .el-tabs__nav-scroll {
-    padding-left:710px;
+.dynamicRow {
+    padding-left: 15px;
+    height: 35px;
 }
 </style>
