@@ -333,7 +333,7 @@ export default {
       showdata: []
     };
   },
-  created() {
+  activated() {
     this.skillList();
   },
   methods: {

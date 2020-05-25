@@ -340,7 +340,7 @@ export default {
       }
     };
   },
-  created: function() {
+  activated: function() {
     this.getTalks();
   },
   methods: {

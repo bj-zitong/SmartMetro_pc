@@ -268,7 +268,7 @@ export default {
       ]
     };
   },
-  created() {
+  activated() {
     // 页面加载时获取用户信息
     this.getLocalStorage();
     this.getTable();
@@ -288,7 +288,6 @@ export default {
     getLocalStorage() {
       this.username = window.localStorage.getItem("username");
       this.userId = window.localStorage.getItem("userId");
-      this.admin = window.localStorage.getItem("admin");
       this.token = window.localStorage.getItem("token");
     },
     // 表格加载请求

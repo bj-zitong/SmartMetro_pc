@@ -100,7 +100,7 @@ export default {
       ],
     };
   },
-  created: function() {
+  activated: function() {
     this.handleUserList();
   },
   methods: {

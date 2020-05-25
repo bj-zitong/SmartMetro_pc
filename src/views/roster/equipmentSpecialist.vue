@@ -158,7 +158,7 @@ export default {
       fileList: []
     };
   },
-  created: function() {
+  activated: function() {
     this.getEquiments();
   },
   methods: {
