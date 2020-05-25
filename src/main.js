@@ -28,6 +28,11 @@ Vue.prototype.api = api;
 Vue.prototype.http = http;
 //管理系统
 Vue.prototype.PersonnelLocalhosts = "http://192.168.1.100:8001";
+//视频
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+Vue.use(VideoPlayer)
 import BaiduMap from 'vue-baidu-map'
 Vue.use(BaiduMap, {
   ak: 'PqfHQFagf9cB9Un7y46hbLVDCKwYxzDx'

@@ -5,7 +5,7 @@
 </template>
 <script>
 import myChart from "echarts";
-import "../../../node_modules/echarts/map/js/china";
+import "../../../../node_modules/echarts/map/js/china";
 export default {
   data() {
     return {};

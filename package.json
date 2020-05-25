@@ -35,6 +35,7 @@
     "vue-baidu-map": "^0.21.22",
     "vue-i18n": "^7.6.0",
     "vue-router": "^3.0.1",
+    "vue-video-player": "^5.0.2",
     "vuedraggable": "^2.23.0",
     "vuex": "^3.0.1",
     "wired-elements": "^0.5.8",

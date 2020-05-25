@@ -212,34 +212,13 @@
                 :on-change="handleChange"
                 :file-list="fileList"
                 :on-exceed="gobeyondExceed"
+                :on-error="imgUploadError"
+                :before-upload="beforeAvatarUpload"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
             </el-form-item>
           </el-col>
-
-          <!-- <el-col :span="24">
-            <el-form-item label="角色" prop="type">
-              <el-checkbox-group v-model="form.type">
-                <el-checkbox label="超级管理员" name="type"></el-checkbox>
-                <el-checkbox label="项目负责人" name="type"></el-checkbox>
-                <el-checkbox label="项目技术负责人" name="type"></el-checkbox>
-                <el-checkbox label="智慧工地管理员" name="type"></el-checkbox>
-                <el-checkbox label="BIM管理" name="type"></el-checkbox>
-                <el-checkbox label="物资管理" name="type"></el-checkbox>
-                <el-checkbox label="质量管理" name="type"></el-checkbox>
-                <el-checkbox label="劳务管理" name="type"></el-checkbox>
-                <el-checkbox label="生产管理" name="type"></el-checkbox>
-                <el-checkbox label="安全管理" name="type"></el-checkbox>
-                <el-checkbox label="其他" name="type"></el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-          </el-col>-->
-          <!-- <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
-            <el-form-item style="float:right">
-              <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button>
-            </el-form-item>
-          </el-col>-->
           <el-col :span="24">
             <el-form-item style="float:right;position:relative;bottom:6px;">
               <el-button type="primary" round class="cancel-style">取消</el-button>
@@ -255,6 +234,7 @@
 import rules from "@/utils/rules";
 import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
+import { beforeAvatarUpload } from "@/common/imgcompress";
 // import { isValidUsername } from '@/utils/validate'
 export default {
   data() {
@@ -456,9 +436,20 @@ export default {
     //保存
     preservationClick() {},
     handleChange(file, fileList) {
-      let name = JSON.parse(sessionStorage.getItem("data")).photo[0].name;
+      if (JSON.parse(sessionStorage.getItem("data")) != null) {
+        let name = JSON.parse(sessionStorage.getItem("data")).photo[0].name;
+      }
       this.$refs.form.clearValidate();
       this.form.photo = fileList;
+    },
+    beforeAvatarUpload(file) {
+      return new Promise(resolve => {
+        console.log(resolve);
+      });
+    },
+    //图片上传失败调用
+    imgUploadError(err, file, fileList) {
+      this.$message.error("上传图片失败!");
     },
     gobeyondExceed(files, fileList) {
       this.$message({
