@@ -24,10 +24,7 @@
             <el-table-column prop="status" label="状态"></el-table-column>
             <el-table-column label="操作" fixed="right">
               <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="handleEdit(scope.row)" class="T-R-B-Green"
-                >编辑</el-button>
+                <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
                 <el-button size="mini" @click="handleDelete(scope.row)" class="T-H-B-Grey">删除</el-button>
                 <el-button size="mini" @click="publishNotice(scope.row)" class="T-H-B-Yellow">发布</el-button>
               </template>

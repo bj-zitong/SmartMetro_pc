@@ -56,32 +56,23 @@
               <template slot-scope="scope">
                 <el-button class="T-R-B-Green" size="mini" @click="editRowClick(scope.row)">编辑</el-button>
                 <el-button class="T-R-B-Grey" size="mini" @click="deleteRowClick(scope.row)">删除</el-button>
-                <el-button
-                  class="T-R-B-Orange"
-                  size="mini"
-                  @click="detailsRowClick(scope.row)"
-                >查看详情</el-button>
+                <el-button class="T-R-B-Orange" size="mini" @click="detailsRowClick(scope.row)">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
-        <el-pagination
+        <pagination
           class="pagination-box"
-          @size-change="handleSizeChange"
-          :current-page="page"
-          layout="total, sizes,prev, pager,next,jumper"
-          :page-size="pageSize"
-          @prev-click="pre"
-          @next-click="next"
-          @current-change="handleCurrentChange"
-          :page-sizes="[10, 50,100]"
+          v-if="total>0"
           :total="total"
-          background
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getEquiments"
+        />
       </el-menu>
     </el-container>
     <equipmentdialog v-if="changOrder" ref="turnOrder" />
-     <el-dialog :visible.sync="csvVisible" width="50%">
+    <el-dialog :visible.sync="csvVisible" width="50%">
       <div>
         <el-form ref="file" label-width="120px">
           <el-form-item label="文件导入：" prop="uploadFile">
@@ -117,27 +108,27 @@ import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
 import equipmentdialog from "./dialog/equipmentdialog";
+import Pagination from "../../components/pagination";
 export default {
   name: "echarts",
   components: {
-    equipmentdialog
+    equipmentdialog,
+    Pagination
   },
   data() {
     return {
       headClass: headClass,
       tableData: [],
-      page: 1, // 初始页
-      pageSize: 8, //    每页的数据
-      total: 100, //总条数
+      total: null, //总条数
       changOrder: false,
-      csvVisible:false,
+      csvVisible: false,
       form: {
         major: "",
         name: ""
       },
       tableData: [],
       ids: [],
-       form: {
+      form: {
         name: "",
         age: null,
         corporateName: "",
@@ -152,10 +143,14 @@ export default {
         contractName: "",
         professional: ""
       },
-       file: {
+      file: {
         uploadFile: ""
       },
-      fileList: []
+      fileList: [],
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      }
     };
   },
   activated: function() {
@@ -168,8 +163,8 @@ export default {
       var major = this.form.major;
       //   // 获得当前用户的id
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         name: name,
         professional: major
       });
@@ -218,27 +213,8 @@ export default {
       this.tableData = result;
       this.total = result.length;
     },
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size; //每页下拉显示数据
-      // this.getEquiments()
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      this.handleUserList(); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      // this.getEquiments()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      // this.getEquiments()
-    },
     //新增
     addStaffClick() {
-      // this.$router.push({ path: "/AddEquipment" });
       this.$router.push({
         name: "AddEquipment",
         params: {
@@ -300,7 +276,7 @@ export default {
     },
     //  导入
     importStaffClick() {
-       this.csvVisible = true;
+      this.csvVisible = true;
     },
     //  表格操作
     //  编辑
@@ -376,9 +352,9 @@ export default {
     },
     detailsRowClick(row) {
       let _this = this;
-      var id=row.pInfoId;
+      var id = row.pInfoId;
       ////smart/worker/roster/{userId}/equipment/{id}
-       var url =
+      var url =
         "/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/equipment/" +

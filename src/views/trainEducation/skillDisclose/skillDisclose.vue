@@ -131,6 +131,7 @@
       width="450px"
       :center="true"
       top="0vh"
+      class="popupDialog abow_dialog"
       :show-close="false"
     >
       <el-form
@@ -173,10 +174,10 @@
           <el-input v-model="form.receiver" placeholder="接收人"></el-input>
         </el-form-item>
         <div class="dialog-footer" style="text-align:center;">
-          <el-button @click="cancelForm('form')" class="F-Grey" round>取 消</el-button>
+          <el-button @click.native="cancelForm('form')" class="F-Grey" round>取 消</el-button>
           <el-button
             type="primary"
-            @click="addSkillClick('form')"
+            @click.native="addSkillClick('form')"
             class="F-Blue"
             round
             style="margin-left:60px"
@@ -360,12 +361,11 @@ export default {
               "/technical/1";
             this.http.post(url, params).then(res => {
               if (res.code == 200) {
-                this.dialogFormVisible = false;
-                this.$refs[form].resetFields();
+                this.cancelForm(form);
+                this.skillList();
               }
             });
           } else {
-            //新增 id为空
             var params = JSON.stringify({
               constructionOrg: form.constructionOrg,
               disclosurePerson: form.disclosurePerson,
@@ -383,8 +383,8 @@ export default {
               "/technical/1";
             this.http.put(url, params).then(res => {
               if (res.code == 200) {
-                this.dialogFormVisible = false;
-                this.$refs[form].resetFields();
+                this.cancelForm(form);
+                this.skillList();
               }
             });
           }
@@ -448,6 +448,7 @@ export default {
     //cancelForm
     cancelForm(form) {
       this.$refs[form].resetFields();
+      Object.assign(this.$data.form, this.$options.data().form); // 初始化data
       this.dialogFormVisible = false;
     },
     submitAll() {

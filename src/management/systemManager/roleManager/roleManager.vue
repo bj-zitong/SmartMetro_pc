@@ -37,7 +37,20 @@
           ></el-table-column>
           <el-table-column prop="roleName" label="角色名称" min-width="100"></el-table-column>
           <el-table-column prop="permissionName" label="权限" min-width="90"></el-table-column>
-          <el-table-column prop="status" label="状态" min-width="80"></el-table-column>
+          <el-table-column prop="status" label="状态" min-width="80">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.status"
+                on-color="#00A854"
+                on-text="启动"
+                on-value="1"
+                off-color="#F04134"
+                off-text="禁止"
+                off-value="0"
+                @change="changeSwitch(scope.row)"
+              ></el-switch>
+            </template>
+          </el-table-column>
           <el-table-column prop="memo" label="备注" min-width="110"></el-table-column>
           <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
           <el-table-column label="操作" width="240" fixed="right">
@@ -174,6 +187,39 @@ export default {
     this.getTable();
   },
   methods: {
+    changeSwitch(val) {
+      //获得状态的值
+      console.log(val);
+      var data = null;
+      var status = val.status;
+      if (status) {
+        //该状态为启用
+        data = JSON.stringify({
+          status: 0,
+          sysRoleId: val.sysRoleId
+        });
+        //禁用
+      } else {
+        data = JSON.stringify({
+          status: 1,
+          sysRoleId: val.sysRoleId
+        });
+      }
+      var url =
+        this.PersonnelLocalhosts +
+        "/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/role";
+      this.http
+        .put(url, data)
+        .then(res => {
+          if (res.code == 200) {
+          }
+        })
+        .catch(res => {
+          return false;
+        });
+    },
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
@@ -184,7 +230,9 @@ export default {
       //请求
       var url =
         this.PersonnelLocalhosts +
-        "/smart/auth/" + sessionStorage.getItem("userId") + "/role/management";
+        "/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/role/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.data.total;
@@ -192,6 +240,26 @@ export default {
           this.total = total;
         }
       });
+       var result = [
+        {
+          sysRoleId: 1,
+          roleName: "张三",
+          status: true,
+          permissionName: "项目负责人",
+          memo: "15236985236",
+          createTime: "2019-10-01"
+        },
+        {
+          sysRoleId: 2,
+          roleName: "李四",
+          status: false,
+          permissionName: "项目负责人",
+          memo: "13752369875",
+          createTime: "2019-10-01"
+        }
+      ];
+      this.tableData = result;
+      this.total = result.length;
     },
     //获得表格前面选中的id值
     handleSelectionChange() {
@@ -223,7 +291,8 @@ export default {
       var id = row.sysRoleId;
       this.formTeam.sysRoleId = id;
       var url =
-          this.PersonnelLocalhosts+ "/smart/auth/" +
+        this.PersonnelLocalhosts +
+        "/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/role/" +
         id;
@@ -248,11 +317,15 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           let data = JSON.stringify(ids);
-          let url =  this.PersonnelLocalhosts + "/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+          let url =
+            this.PersonnelLocalhosts +
+            "/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/role";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-               this.$message("已删除！");
-               this.getTable();
+              this.$message("已删除！");
+              this.getTable();
             }
           });
         })
@@ -270,7 +343,11 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
-          let url =  this.PersonnelLocalhosts + "/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+          let url =
+            this.PersonnelLocalhosts +
+            "/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/role";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
@@ -297,14 +374,17 @@ export default {
               permissions: form.permissionName
             });
             let url =
-                this.PersonnelLocalhosts +"/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+              this.PersonnelLocalhosts +
+              "/smart/auth/" +
+              sessionStorage.getItem("userId") +
+              "/role";
             this.http
               .post(url, data)
               .then(res => {
                 if (res.code == 200) {
-                this.$message("添加成功！");
-                this.cloneTeamForm(refTeam);
-                this.getTable();
+                  this.$message("添加成功！");
+                  this.cloneTeamForm(refTeam);
+                  this.getTable();
                 }
               })
               .catch(res => {
@@ -312,22 +392,23 @@ export default {
               });
           } else {
             var url =
-                this.PersonnelLocalhosts +"/smart/auth/" +
+              this.PersonnelLocalhosts +
+              "/smart/auth/" +
               sessionStorage.getItem("userId") +
-              "/role/" +
-              form.sysRoleId;
+              "/role";
             var data = JSON.stringify({
               roleName: form.roleName,
               memo: form.memo,
-              permissions: form.permissionName
+              permissions: form.permissionName,
+              sysRoleId: form.sysRoleId
             });
             this.http
               .put(url, data)
               .then(res => {
                 if (res.code == 200) {
-                this.$message("编辑成功！");
-                this.getTable();
-                this.cloneTeamForm(refTeam);
+                  this.$message("编辑成功！");
+                  this.getTable();
+                  this.cloneTeamForm(refTeam);
                 }
               })
               .catch(res => {
@@ -341,7 +422,7 @@ export default {
     },
     cloneTeamForm(refTeam) {
       this.$refs[refTeam].resetFields();
-      Object.assign(this.$data.formTeam, this.$options.data().formTeam) // 初始化data
+      Object.assign(this.$data.formTeam, this.$options.data().formTeam); // 初始化data
       this.dialogVisibleTeam = false;
     },
     //  表头样式

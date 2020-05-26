@@ -14,4 +14,7 @@ export default {
   @import 'normalize.css/normalize.css';
   @import './style/index.css';
   @import './style/custom.css';
+  #app{
+    height: 100%;
+  }
 </style>

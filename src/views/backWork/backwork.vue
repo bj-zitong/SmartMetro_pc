@@ -10,9 +10,8 @@
         <el-form-item label="实际开复工时间：">
           <el-date-picker
             v-model="screenForm.backWorkTime"
-            type="datetime"
+            type="date"
             placeholder="请选择"
-            default-time="12:00:00"
             value-format="yyyy-MM-dd HH:mm:ss"
           ></el-date-picker>
         </el-form-item>
@@ -33,7 +32,12 @@
           action
           :show-file-list="false"
         >
-          <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick(this)" style="margin-left:30px;">导入</el-button>
+          <el-button
+            class="T-H-B-Cyan"
+            type="primary"
+            @click="importStaffClick(this)"
+            style="margin-left:30px;"
+          >导入</el-button>
         </el-upload>
       </div>
       <el-table
@@ -91,7 +95,7 @@
         </el-table-column>
       </el-table>
       <div style="text-align: center; padding-top:20px;">
-         <pagination
+        <pagination
           class="pagination-box"
           v-if="total>0"
           :total="total"
@@ -101,16 +105,16 @@
         />
       </div>
     </div>
-    <!-- --------------------------------- -->
     <!-- 添加 -->
     <el-dialog
       title="中铁十二局"
       width="450px"
       :visible.sync="addOpen"
       :close-on-click-modal="false"
-      class="popupDialog"
+      class="popupDialog abow_dialog"
       :center="true"
       :show-close="false"
+      top="0vh"
     >
       <el-form
         ref="addFormRef"
@@ -173,8 +177,13 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="F-Grey" round @click="cloneAddForm('addFormRef')">取消</el-button>
-          <el-button class="F-Blue" round @click="addSubmitForm('addFormRef')" style="margin-left:60px;">确定</el-button>
+          <el-button class="F-Grey" round @click.native="cloneAddForm('addFormRef')">取消</el-button>
+          <el-button
+            class="F-Blue"
+            round
+            @click.native="addSubmitForm('addFormRef')"
+            style="margin-left:60px;"
+          >确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -186,7 +195,7 @@ import { handleCofirm } from "@/utils/confirm";
 import Pagination from "@/components/pagination";
 export default {
   name: "main-box",
- components: {
+  components: {
     Pagination
   },
   data() {
@@ -202,7 +211,7 @@ export default {
       rowIndex: null, //选中当前行下标
       tableData: [], // 初始化表格
       addOpen: false, // 添加弹窗初始隐藏
-      tableWidth:'300',
+      tableWidth: "300",
       addLabor: {
         profession: "",
         engineerPlace: "",
@@ -276,7 +285,7 @@ export default {
   // components: {},
   methods: {
     acrosstheClick(index, scope) {
-       this.tableWidth = "600";
+      this.tableWidth = "600";
       this.rowIndex = index;
     },
     acrosstClick(index, scope) {
@@ -295,7 +304,7 @@ export default {
       var data = JSON.stringify({
         backWorkDate: this.screenForm.backWorkTime,
         pageSize: this.listQuery.pageSize,
-        page: this.listQuery.currentPage,
+        page: this.listQuery.currentPage
       });
       //请求
       // var url =
@@ -371,18 +380,12 @@ export default {
         // 获得id
         var id = arrays[i].id;
         ids.push(id);
-        // console.log("获得id"+arrays[i].id);
       }
       return ids;
     },
     // 查询
     onScreen() {
       var data = JSON.stringify(this.screenForm.backWorkTime);
-      // console.log("data" + data);
-      // this.http.post('/smart/worker/labour/1/company/management', data)
-      // .then(res => {
-      //     console.log(res)
-      // })
     },
     // 添加
     addSubmitForm(addFormRef) {
@@ -391,12 +394,11 @@ export default {
         if (valid) {
           var form = this.$refs["addFormRef"].model;
           if (form.id == null) {
-            console.log("新增");
+            this.cloneAddForm(addFormRef);
           } else {
-            console.log(form.id);
+            this.cloneAddForm(addFormRef);
           }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -420,12 +422,12 @@ export default {
     // 关闭添加弹窗
     cloneAddForm(addFormRef) {
       this.$refs[addFormRef].resetFields();
+      Object.assign(this.$data.addLabor, this.$options.data().addLabor); // 初始化data
       this.addOpen = false;
     },
     //  批量删除
     deleteBatchClick() {
       var ids = this.handleSelectionChange();
-      console.log("ids" + ids);
       if (ids.length <= 0) {
         this.$message("请选择删除的数据！");
         return;
@@ -468,11 +470,9 @@ export default {
       this.addLabor.id = id;
       this.addOpen = true;
       this.addLabor.engineerPlace = "1111";
-      console.log("id" + id);
     },
     //  删除
     deleteRowClick(row) {
-      console.log(row.id);
       this.$confirm("确定删除该信息吗？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -493,17 +493,11 @@ export default {
         });
     },
     //通过 pass
-    passClick(row) {
-      console.log(row.id);
-    },
+    passClick(row) {},
     //驳回
-    NopassClick(row) {
-      console.log(row.id);
-    },
+    NopassClick(row) {},
     //催办
-    pressClick(row) {
-      console.log(row.id);
-    },
+    pressClick(row) {},
     //  数据表格-表头样式
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
@@ -544,9 +538,10 @@ export default {
 .screen-form-h {
   height: 36px;
 }
-.app-wrapper{
-    padding-left: 0;
-    padding-top: 140px;
+
+.app-wrapper {
+  padding-left: 0;
+  padding-top: 140px;
 }
 </style>
 

@@ -1,77 +1,58 @@
 <template>
-  <div class="main-box">
-    <!-- 高温预警头部 -->
-    <div class="highTemperature-header clearfix">
-        <div class="ht-h-l fl">
-            <div class="ht-h-l-imgbox">
-                <div class="ht-h-l-imgminbox">
+  <div class="main-box flex">
+    <!-- 头部 -->
+    <el-container>
+        <el-menu class="main-top">
+            <div class="left">
+                <div class="left-img-box">
                     <img src="../../../../assets/images/peopleTemperature/high-thermometer.png" alt="">
                 </div>
+                <div class="left-text-box">
+                    <span>测温异常总数</span>
+                    <p>35358</p>
+                </div>
             </div>
-            <div class="ht-h-l-text">
-                <span>测温异常总数</span>
-                <p>45678</p>
+            <div class="center">
+                <span>疫情期间，请注意防护</span>
             </div>
-        </div>
-        <div class="ht-h-c fl">
-            <span>疫情期间，请注意防护</span>
-        </div>
-        <div class="ht-h-r fl">
-            <img src="../../../../assets/images/peopleTemperature/high-line.png" alt="">
-        </div>
-    </div>
-    <!-- 高温预警主体 -->
-    <div class="highTemperature-main">
-		<div class="th-m-title">
-            <span>异常体温携带人脸图片库</span>
-        </div>
-		<div class="th-m-main-imgbox">
-            <ul>
-                <li class="th-m-main-img-frame fl">
-                    <div class="fl">
+            <div class="right"></div>
+        </el-menu>
+    </el-container>
+    <!-- 主体 -->
+    <el-container>
+        <el-menu class="main-con-box flex">
+            <div class="main-min-title">
+                <span>异常体温携带人脸图片库</span>
+            </div>
+            <div class="main-min-box">
+                <ul class="main-img-box">
+                    <li>
                         <div>
                             <img src="../../../../assets/images/peopleTemperature/high-img.png" alt="">
                         </div>
-                    </div>
-                    <div class="th-m-main-img-text fl">
-                        <ul>
-                            <li>
-                                <span>姓名：</span>
-                                <span>张三</span>
-                            </li>
-                            <li>
-                                <span>工种：</span>
-                                <span>水电工</span>
-                            </li>
-                            <li>
-                                <span>班组：</span>
-                                <span>昌平南廷三班</span>
-                            </li>
-                            <li>
-                                <span>测温时间：</span>
-                                <span>14时56分</span>
-                            </li>
-                            <li>
-                                <span>测温设备：</span>
-                                <span>海淀五路居A口</span>
-                            </li>
-                            <li>
-                                <span>体温：</span>
-                                <span>38.6℃</span>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-		<div class="th-m-page-box" style="text-align: center;">
-            <el-pagination
-                background
-                layout="prev, pager, next"
-            >
-            </el-pagination>
-        </div>
-    </div>
+                        <div>
+                            <el-row :gutter="2">
+                                <el-col :span="12">姓名：</el-col>
+                                <el-col :span="12">张三</el-col>
+                            </el-row>
+                        </div>
+                    </li>
+                    <li>1</li>
+                    <li>1</li>
+                    <li>1</li>
+                </ul>
+            </div>
+            <!-- 分页& -->
+            <pagination
+            class="pagination-box"
+            v-if="total>0"
+            :total="total"
+            :page.sync="listQuery.currentPage"
+            :limit.sync="listQuery.pageSize"
+            @pagination="getTable"
+            />
+        </el-menu>
+    </el-container>
   </div>
 </template>
 
@@ -79,7 +60,11 @@
 export default {
     data() {
         return {
-            
+            total:'',
+            listQuery: {
+                currentPage: 1, //与后台定义好的分页参数
+                pageSize: 10
+            },
         };
     },
 	methods: {
@@ -89,27 +74,26 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.highTemperature-header {
+.flex{
+    display:flex;
+    flex-direction: column;
+}
+.main-top {
+    margin-bottom: 30px;
+    padding-left: 40px;
     width: 100%;
     background: rgba(255, 255, 255, 1);
     box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
     opacity: 1;
     border-radius: 10px;
-    margin-bottom 30px;
-    position: relative;
+    display:flex;
+    flex-direction: row;
+    overflow hidden
 }
-.ht-h-l{
-    position: relative;
+.main-top>div.left {
+    flex:1;
 }
-.ht-h-l-imgbox{
-    width: 128px;
-    height: 128px;
-    position: absolute;
-    z-index: 1;
-    left: 40px;
-    top: 15px;
-}
-.ht-h-l-imgminbox {
+.left-img-box {
     width:68px;
     height:68px;
     background:linear-gradient(180deg,rgba(237,125,115,1) 0%,rgba(238,41,22,1) 100%);
@@ -117,26 +101,29 @@ export default {
     border-radius:50%;
     opacity:1;
     position: absolute;
+    top: 15%;
+    left:40px;
 }
-.ht-h-l-imgbox img{
+.left-img-box img {
     width: 100%;
     height: 100%;
     position: absolute;
     left: 5px;
     top: 5px;
 }
-.ht-h-l-text{
-    margin-left: 155px;
-    padding-top: 6px;
+.left-text-box {
+    margin-left: 90px;
+    padding-top:15px;
 }
-.ht-h-l-text span {
-    font-size: 13px;
+.left-text-box span {
+    font-size:13px;
     font-family:Microsoft YaHei;
-    line-height:35px;
+    font-weight:400;
+    line-height:30px;
     color:rgba(99,99,99,1);
     opacity:1;
 }
-.ht-h-l-text p {
+.left-text-box p {
     font-size:32px;
     font-family:Microsoft YaHei;
     font-weight:bold;
@@ -144,75 +131,50 @@ export default {
     color:rgba(51,51,51,1);
     opacity:1;
 }
-.ht-h-c{
-    margin-left: 103px;
+.main-top>div.center {
+    flex:1;
+    text-align:center;
 }
-.ht-h-c span{
+.main-top>div.center span {
     font-size:18px;
     font-family:Microsoft YaHei;
     font-weight:400;
-    line-height:100px;
+    line-height 100px
     color:rgba(235,43,25,1);
     opacity:1;
 }
-.ht-h-r{
-    position:absolute;
-    right: 0;
-    margin-left: 89px;
-    width: 60%;
-    height: 100%;
+.main-top>div.right {
+    flex: 2.5;
+    background: url('../../../../assets/images/peopleTemperature/high-line.png') no-repeat;
+    background-size: 100% 100%;
 }
-@media screen and (max-width: 1280px) {
-    .ht-h-r {
-        width: 100%;
-    }
-}
-.ht-h-r img{
-    width: 100%;
-    height: 100%;
-}
-// 主体
-.highTemperature-main {
-    width: 100%;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
-    opacity: 1;
-    border-radius: 10px;
-    padding-bottom: 30px;
-}
-.th-m-title{
-    text-align: center;
-    padding: 30px 0;
-}
-.th-m-title span{
+.main-min-title {
+    margin:0 auto;
     font-size:19px;
     font-family:AdobeHeitiStd-Regular;
+    line-height:27px;
     color:rgba(238,41,22,1);
     opacity:1;
 }
-.th-m-main-imgbox{
-    width: 96%;
-    height: 100px;
-    margin: 0 auto;
-    margin-bottom: 20px;
+.main-min-box {
+    padding: 20px 20px;
 }
-.th-m-main-imgbox .th-m-main-img-frame{
-    width: 25%;
-}
-.th-m-main-imgbox li img{
-    width: 174px;
-    height: 204px;
-}
-.th-m-main-img-text{
-    padding-top:25px;
-}
-.th-m-main-imgbox li span{
-    display: inline-block;
-    font-size: 13px;
+.main-img-box {
+    display:flex;
+    font-size:13px;
     line-height: 25px;
 }
-</style>
-
-<style lang="stylus">
-
+.main-img-box li {
+    display:flex;
+    flex: 1;
+    background red
+}
+.main-img-box li>div {
+    display:flex;
+    flex: 1;
+}
+.main-img-box img {
+    width: 100%;
+    height:100%;
+}
 </style>

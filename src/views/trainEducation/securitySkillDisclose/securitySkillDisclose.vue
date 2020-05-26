@@ -142,6 +142,7 @@
       :center="true"
       top="0vh"
       :show-close="false"
+      class="popupDialog abow_dialog"
     >
       <el-form :model="form" label-width="80px" ref="form" :rules="formRules">
         <el-form-item label="施工单位" prop="constructionOrg">
@@ -194,10 +195,10 @@
           </el-form-item>
         </div>
         <div class="dialog-footer" style="text-align:center;">
-          <el-button @click="cancelForm('form')" class="F-Grey" round>取 消</el-button>
+          <el-button @click.native="cancelForm('form')" class="F-Grey" round>取 消</el-button>
           <el-button
             type="primary"
-            @click="addSkillClick('form')"
+            @click.native="addSkillClick('form')"
             class="F-Blue"
             round
             style="margin-left:60px"
@@ -370,6 +371,7 @@ export default {
   methods: {
     cancelForm(form) {
       this.$refs[form].resetFields();
+      Object.assign(this.$data.form, this.$options.data().form); // 初始化data
       this.dialogFormVisible = false;
     },
     addSkillClick(form) {
@@ -397,8 +399,7 @@ export default {
               "/technical/2";
             this.http.post(url, params).then(res => {
               if (res.code == 200) {
-                this.dialogFormVisible = false;
-                this.$refs[form].resetFields();
+                this.cancelForm(form);
               }
             });
           } else {
@@ -422,8 +423,7 @@ export default {
               "/technical/2";
             this.http.put(url, params).then(res => {
               if (res.code == 200) {
-                this.dialogFormVisible = false;
-                this.$refs[form].resetFields();
+                this.cancelForm(form);
               }
             });
           }

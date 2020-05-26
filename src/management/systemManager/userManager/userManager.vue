@@ -38,7 +38,20 @@
           <el-table-column prop="userName" label="用户名" min-width="100"></el-table-column>
           <el-table-column prop="cellPhone" label="手机号" min-width="90"></el-table-column>
           <el-table-column prop="roleName" label="角色" min-width="110"></el-table-column>
-          <el-table-column prop="status" label="用户状态" min-width="80"></el-table-column>
+          <el-table-column prop="status" label="用户状态" min-width="80">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.status"
+                on-color="#00A854"
+                on-text="启动"
+                on-value="1"
+                off-color="#F04134"
+                off-text="禁止"
+                off-value="0"
+                @change="changeSwitch(scope.row)"
+              ></el-switch>
+            </template>
+          </el-table-column>
           <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
           <el-table-column label="操作" width="240" fixed="right">
             <template slot-scope="scope">
@@ -148,10 +161,7 @@
           <el-col :span="10">
             <div class="grid-content bg-purple">
               角色:
-              <v-if >
-
-              </v-if>
-              <!-- <span v-if="{{user.roles==1}}"></span> -->
+              <span>{{user.roles}}</span>
             </div>
           </el-col>
           <el-col :span="10">
@@ -270,6 +280,38 @@ export default {
     this.getTable();
   },
   methods: {
+    changeSwitch(val) {
+      //获得状态的值
+      var data = null;
+      var status = val.status;
+      if (status) {
+        //该状态为启用
+        data = JSON.stringify({
+          status: 0,
+          sysUserId: val.sysUserId
+        });
+        //禁用
+      } else {
+        data = JSON.stringify({
+          status: 1,
+          sysUserId: val.sysUserId
+        });
+      }
+      var url =
+        this.PersonnelLocalhosts +
+        "/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/user";
+      this.http
+        .put(url, data)
+        .then(res => {
+          if (res.code == 200) {
+          }
+        })
+        .catch(res => {
+          return false;
+        });
+    },
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
@@ -290,6 +332,27 @@ export default {
           this.total = total;
         }
       });
+      var result = [
+        {
+          sysUserId: 1,
+          userName: "张三",
+          status: true,
+          cellPhone: "15236985236",
+          roleName: "项目负责人",
+
+          createTime: "2019-10-01"
+        },
+        {
+          sysUserId: 2,
+          userName: "李四",
+          status: false,
+          cellPhone: "13752369875",
+          roleName: "项目负责人",
+          createTime: "2019-10-01"
+        }
+      ];
+      this.tableData = result;
+      this.total = result.length;
     },
     //用户详情
     getUserdetail(index, row) {
@@ -454,20 +517,20 @@ export default {
               this.PersonnelLocalhosts +
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
-              "/user/" +
-              form.sysUserId;
+              "/user";
             var data = JSON.stringify({
               orgSite: form.orgSite,
               userName: form.userName,
               cellPhone: form.cellPhone,
               account: form.cellPhone,
               password: form.password,
-              roles: form.roles
+              roles: form.roles,
+              sysUserId: form.sysUserId
             });
             this.http
               .put(url, data)
               .then(res => {
-                if (res.code==200) {
+                if (res.code == 200) {
                   console.log(form.roles);
                   this.cloneTeamForm(refTeam);
                   this.$message("编辑成功！");
