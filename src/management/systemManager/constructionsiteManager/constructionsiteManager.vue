@@ -4,9 +4,14 @@
     <el-container>
       <el-menu class="main-top-box pl30">
         <el-form :inline="true" ref="screenForm" :model="screenForm">
-          <el-form-item label="项目中心：" prop="projectName">
+          <!-- <el-form-item label="项目中心：" prop="projectName">
             <el-input v-model="screenForm.projectName" placeholder="请输入"></el-input>
-          </el-form-item>
+          </el-form-item> -->
+          <el-form-item prop="projectName" label="项目中心">
+          <el-select v-model="screenForm.projectName" placeholder="请选择" @change="selectCenters">
+            <el-option v-for="item in centers" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
           <el-form-item label="标段/工地：" prop="section">
             <el-input v-model="screenForm.section" placeholder="请输入"></el-input>
           </el-form-item>
@@ -160,6 +165,12 @@ export default {
         { id: 2, name: "线路二" },
         { id: 3, name: "线路三" }
       ],
+      centers:[
+        { id: 0, name: "请选择" },
+        { id: 1, name: "中心一" },
+        { id: 2, name: "中心二" },
+        { id: 3, name: "中心三" }
+      ],
       // 新增/编辑
       formLabor: {
         orgSiteId: null,
@@ -222,12 +233,20 @@ export default {
       });
       this.formLabor.line = obj.id;
     },
+    //搜索的下拉选择
+    selectCenters(vid){
+      let obj = {};
+      obj = this.centers.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.screenForm.projectName=obj.id;
+    },
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
-        projectCenter: this.screenForm.projectName,
+        projectCenterId: this.screenForm.projectName,
         siteName: this.screenForm.section
       });
       //请求
@@ -270,7 +289,7 @@ export default {
           if (form.orgSiteId == null) {
             //this.formLabor
             let data = JSON.stringify({
-              projectCenter:form.projectCenter,
+              projectCenterId:form.projectCenter,
               line:form.line,
               siteName:form.siteName,
               buildCorpName:form.buildCorpName,
@@ -298,14 +317,14 @@ export default {
               sessionStorage.getItem("userId") +
               "/org";
             var data = JSON.stringify({
-              projectCenter: this.formLabor.projectCenter,
-              line: this.formLabor.line,
-              siteName: this.formLabor.siteName,
-              buildCorpName: this.formLabor.buildCorpName,
-              responsiblePersonName: this.formLabor.responsiblePersonName,
-              cellPhone: this.formLabor.cellPhone,
-              location: this.formLabor.location,
-              orgSiteId: this.formLabor.orgSiteId
+              projectCenterId: form.projectCenter,
+              line: form.line,
+              siteName: form.siteName,
+              buildCorpName:form.buildCorpName,
+              responsiblePersonName: form.responsiblePersonName,
+              cellPhone: form.cellPhone,
+              location: form.location,
+              orgSiteId: form.orgSiteId
             });
             this.http
               .put(url, data)
