@@ -20,8 +20,8 @@
         <template v-for="(item,index) in sideBarData.children" v-if="item.meta.enable == 'Y'">
             <template v-if="item.children.length == 0">
                 <el-menu-item :index="item.path" :key="item.meta.title" v-if="item.meta.enable == 'Y'" @click="togglePicture(item.meta.title)">
-                    <!-- <i :class="item.meta.icon" v-if="item.meta.icon"></i> -->
-                    <img :src="Picture == item.meta.title?item.meta.icon:item.meta.AfterIcon" class="iconImg"/>
+                    <img :src="item.meta.icon" class="iconImg"/>
+                    <!-- <img :src="Picture == item.meta.title?item.meta.icon:item.meta.AfterIcon" class="iconImg"/> -->
                     <span class="title">{{item.meta.title}}</span>
                 </el-menu-item>
             </template>

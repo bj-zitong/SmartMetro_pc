@@ -26,22 +26,8 @@ export default {
   name: "top-navbar",
   data() {
     return {
+      //用户管理
       systemList: [
-        // {
-        //   title: "用户管理",
-        //   beforeChangeimg: "/static/image/kfg.png",
-        //   afterChangeimg: "/static/image/selected_kfg.png"
-        // },
-        // {
-        //   title: "角色管理",
-        //   beforeChangeimg: "/static/image/kfg.png",
-        //   afterChangeimg: "/static/image/selected_kfg.png"
-        // },
-        // {
-        //   title: "工地管理",
-        //   beforeChangeimg: "/static/image/kfg.png",
-        //   afterChangeimg: "/static/image/selected_kfg.png"
-        // }
         {
           title: "用户管理",
           beforeChangeimg: "/static/image/yonghumanager.png",
@@ -54,6 +40,34 @@ export default {
         },
         {
           title: "工地管理",
+          beforeChangeimg: "/static/image/worker.png",
+          afterChangeimg: "/static/image/workermanager.png"
+        }
+      ],
+      //视频监控
+      videoList: [
+        {
+          title: "预览",
+          beforeChangeimg: "/static/image/yonghumanager.png",
+          afterChangeimg: "/static/image/usercheck.png"
+        },
+        {
+          title: "回放",
+          beforeChangeimg: "/static/image/rolemanager.png",
+          afterChangeimg: "/static/image/rolecheck.png"
+        },
+        {
+          title: "分析",
+          beforeChangeimg: "/static/image/worker.png",
+          afterChangeimg: "/static/image/workermanager.png"
+        },
+        {
+          title: "预警",
+          beforeChangeimg: "/static/image/worker.png",
+          afterChangeimg: "/static/image/workermanager.png"
+        },
+        {
+          title: "设备管理",
           beforeChangeimg: "/static/image/worker.png",
           afterChangeimg: "/static/image/workermanager.png"
         }
@@ -81,19 +95,27 @@ export default {
     }
   },
   mounted() {
-    this.list = this.$route.query.code == 1 ? this.systemList : list;
+    this.list =
+      this.$route.query.code == 1
+        ? this.systemList
+        : this.$route.query.code == 2
+        ? this.videoList
+        : list;
     // this.editableTabsValue = this.$route.query.code == 1 ? "0" : "1";
     if (this.$route.query.code == 1) {
-      this.editableTabsValue="用户管理"
+      this.editableTabsValue = "用户管理";
       this.$emit("selectNavBar", "用户管理");
       this.$router.push({ path: "/userManager" });
       this.num = 0;
+    } else if (this.$route.query.code == 2) {
+       this.editableTabsValue = "预览";
+      this.$emit("selectNavBar", "预览");
+      this.$router.push({ path: "/south" });
+      this.num = 0;
     } else {
-      this.editableTabsValue="首页"
-      //  this.editableTabsValue = this.$route.query.code == 1 ? "1" : "0";
+      this.editableTabsValue = "首页";
       this.$emit("selectNavBar", "首页");
       this.$router.push({ path: "/homeShow" });
-      // this.$router.push({ path: "/homeShow" });
       this.num = 0;
     }
   },

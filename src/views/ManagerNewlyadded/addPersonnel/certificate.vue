@@ -17,37 +17,37 @@
             <el-col>
               <el-form-item
                 label="真伪查询"
-                :prop="`productGroup.${index}.authenticityQuery`"
-                :rules="rules.authenticityQuery"
+                :prop="`productGroup.${index}.grantCompany`"
+                :rules="rules.grantCompany"
               >
-                <el-input v-model="item.authenticityQuery" placeholder="请输入发证单位"></el-input>
+                <el-input v-model="item.grantCompany" placeholder="请输入发证单位"></el-input>
               </el-form-item>
             </el-col>
             <el-col>
               <el-form-item
                 label="证书名称"
-                :prop="`productGroup.${index}.certificateName`"
-                :rules="rules.certificateName"
+                :prop="`productGroup.${index}.certificationName`"
+                :rules="rules.certificationName"
               >
-                <el-input v-model="item.certificateName" placeholder="请输入证书名称"></el-input>
+                <el-input v-model="item.certificationName" placeholder="请输入证书名称"></el-input>
               </el-form-item>
             </el-col>
             <el-col>
               <el-form-item
                 label="发证机关"
-                :prop="`productGroup.${index}.issuingAuthority`"
-                :rules="rules.issuingAuthority"
+                :prop="`productGroup.${index}.grantOrg`"
+                :rules="rules.grantOrg"
               >
-                <el-input v-model="item.issuingAuthority" placeholder="请输入发证机关"></el-input>
+                <el-input v-model="item.grantOrg" placeholder="请输入发证机关"></el-input>
               </el-form-item>
             </el-col>
             <el-col>
               <el-form-item
                 label="证书类型"
-                :prop="`productGroup.${index}.certificateType`"
-                :rules="rules.certificateType"
+                :prop="`productGroup.${index}.certificationType`"
+                :rules="rules.certificationType"
               >
-                <el-select v-model="item.certificateType" placeholder="请输入证书类型">
+                <el-select v-model="item.certificationType" placeholder="请输入证书类型">
                   <el-option label="类型一" value="type1"></el-option>
                   <el-option label="类型二" value="type2"></el-option>
                 </el-select>
@@ -56,65 +56,89 @@
             <el-col>
               <el-form-item
                 label="专业编码"
-                :prop="`productGroup.${index}.ProfessionalCode`"
-                :rules="rules.ProfessionalCode"
+                :prop="`productGroup.${index}.certificationCode`"
+                :rules="rules.certificationCode"
               >
-                <el-input v-model="item.ProfessionalCode" placeholder="请输入专业编码"></el-input>
+                <el-input v-model="item.certificationCode" placeholder="请输入专业编码"></el-input>
               </el-form-item>
             </el-col>
             <el-col>
               <el-form-item
                 label="证书等级"
-                :prop="`productGroup.${index}.certificateLevel`"
-                :rules="rules.certificateLevel"
+                :prop="`productGroup.${index}.credentialLevelType`"
+                :rules="rules.credentialLevelType"
               >
-                <el-select v-model="item.certificateLevel" placeholder="请输入证书等级">
-                  <el-option label="一级" value="type1"></el-option>
-                  <el-option label="二级" value="type2"></el-option>
+                <el-select v-model="item.credentialLevelType" placeholder="请选择证书等级">
+                  <el-option label="一级" value="0"></el-option>
+                  <el-option label="二级" value="1"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col>
+            <!-- <el-col>
               <el-form-item
                 label="发证日期"
                 :prop="`productGroup.${index}.value1`"
                 :rules="rules.value1"
               >
-                <el-date-picker v-model="item.value1" type="datetime" placeholder="请选择日期"></el-date-picker>
-                <!-- <el-date-picker v-model="item.value1" type="date" placeholder="请选择日期"></el-date-picker> -->
+                <el-date-picker v-model="item.value1" type="datetime" placeholder="请选择发证日期"></el-date-picker>
+              </el-form-item>
+            </el-col> -->
+            <el-col>
+              <el-form-item
+                label="第一次发证时间"
+                :prop="`productGroup.${index}.firstBeginDate`"
+                :rules="rules.firstBeginDate"
+              >
+                <el-date-picker
+                  v-model="item.firstBeginDate"
+                  type="datetime"
+                  placeholder="请选择第一次发证时间"
+                ></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col>
               <el-form-item
-                label="有效时间"
-                :prop="`productGroup.${index}.value2`"
-                :rules="rules.value2"
+                label="合同起始时间"
+                :prop="`productGroup.${index}.validBeginDate`"
+                :rules="rules.validBeginDate"
               >
-                <el-date-picker v-model="item.value2" type="datetime" placeholder="请选择有效时间"></el-date-picker>
-                <!-- <el-date-picker v-model="item.value2" type="date" placeholder="请选择有效时间"></el-date-picker> -->
+                <el-date-picker
+                  v-model="item.validBeginDate"
+                  type="datetime"
+                  placeholder="请选择合同起始时间"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col>
+              <el-form-item
+                label="合同结束时间"
+                :prop="`productGroup.${index}.validEndDate`"
+                :rules="rules.validEndDate"
+              >
+                <el-date-picker v-model="item.validEndDate" type="datetime" placeholder="请选择合同结束时间"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col>
               <el-form-item
                 label="资格状态"
-                :prop="`productGroup.${index}.status`"
-                :rules="rules.status"
+                :prop="`productGroup.${index}.certificationStatus`"
+                :rules="rules.certificationStatus"
               >
-                <el-select v-model="item.status" placeholder="资格状态">
-                  <el-option label="未过期" value="notexpired"></el-option>
-                  <el-option label="过期" value="expired"></el-option>
+                <el-select v-model="item.certificationStatus" placeholder="资格状态">
+                  <el-option label="未过期" value="1"></el-option>
+                  <el-option label="已过期" value="2"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col>
               <el-form-item
                 label="附件上传"
-                :prop="`productGroup.${index}.upload`"
-                :rules="rules.upload"
+                :prop="`productGroup.${index}.accessory`"
+                :rules="rules.accessory"
               >
                 <el-upload
                   class="upload-demo"
-                  v-model="item.upload"
+                  v-model="item.accessory"
                   action="https://jsonplaceholder.typicode.com/posts/"
                   :on-preview="handlePreview"
                   :on-remove="handleRemove"
@@ -126,7 +150,7 @@
                   <el-button size="small" type="primary">点击上传</el-button>
                 </el-upload>
               </el-form-item>
-              <!-- <input type="file" v-model="item.ProfessionalCode" name="photoFile" /> -->
+              <!-- <input type="file" v-model="item.certificationCode" name="photoFile" /> -->
               <!-- <input type="text" v-model="item.count" readonly="readonly"/> -->
               <!-- $("#photoFile")[0].files[0] -->
             </el-col>
@@ -164,16 +188,18 @@ export default {
       form: {
         productGroup: [
           {
-            authenticityQuery: "",
-            certificateName: "",
-            issuingAuthority: "",
-            certificateType: "",
-            ProfessionalCode: "",
-            certificateLevel: "",
+            grantCompany: "",
+            certificationName: "",
+            grantOrg: "",
+            certificationType: "",
+            certificationCode: "",
+            credentialLevelType: "",
             value1: "",
-            value2: "",
-            status: "",
-            upload: ""
+            firstBeginDate: "",
+            validBeginDate: "",
+            validEndDate: "",
+            certificationStatus: "",
+            accessory: ""
           }
         ]
       },
@@ -181,34 +207,37 @@ export default {
       keyResults: "",
       // 校验规则
       rules: {
-        authenticityQuery: [
+        grantCompany: [
           { required: true, message: "请输入真伪查询", trigger: "blur" }
         ],
-        certificateName: [
+        certificationName: [
           { required: true, message: "请输入证书名称", trigger: "blur" }
         ],
-        issuingAuthority: [
+        grantOrg: [
           { required: true, message: "请输入发证机关", trigger: "blur" }
         ],
-        certificateType: [
+        certificationType: [
           { required: true, message: "请输入证书类型", trigger: "blur" }
         ],
-        ProfessionalCode: [
+        certificationCode: [
           { required: true, message: "请输入专业编码", trigger: "blur" }
         ],
-        certificateLevel: [
+        credentialLevelType: [
           { required: true, message: "请输入证书等级", trigger: "blur" }
         ],
-        value1: [
-          { required: true, message: "请输入发证日期", trigger: "blur" }
+        firstBeginDate: [
+          { required: true, message: "请选择第一次发证时间", trigger: "blur" }
         ],
-        value2: [
-          { required: true, message: "请选择有效时间", trigger: "blur" }
+        validBeginDate: [
+          { required: true, message: "请选择合同起始时间", trigger: "blur" }
         ],
-        status: [
+        validEndDate: [
+          { required: true, message: "请选择合同结束时间", trigger: "blur" }
+        ],
+        certificationStatus: [
           { required: true, message: "请选择资格状态", trigger: "blur" }
         ],
-        upload: [
+        accessory: [
           { required: true, message: "请选择附件上传", trigger: "change" }
         ]
       },
@@ -260,12 +289,6 @@ export default {
       );
       this.form = JSON.parse(sessionStorage.getItem("certificate"));
     }
-    // if (sessionStorage.getItem("data") != null) {
-    //   this.form = JSON.parse(sessionStorage.getItem("data"));
-    //   let name = JSON.parse(sessionStorage.getItem("data")).photo[0].name;
-    //   this.fileList.push({ name });
-    //   // console.log(this.form.photo)
-    // }
   },
   methods: {
     handleClick(tab, event) {
@@ -306,16 +329,18 @@ export default {
     },
     addLadder() {
       this.form.productGroup.push({
-        authenticityQuery: "",
-        certificateName: "",
-        issuingAuthority: "",
-        certificateType: "",
-        ProfessionalCode: "",
-        certificateLevel: "",
+        grantCompany: "",
+        certificationName: "",
+        grantOrg: "",
+        certificationType: "",
+        certificationCode: "",
+        credentialLevelType: "",
         value1: "",
-        value2: "",
-        status: "",
-        upload: ""
+        firstBeginDate: "",
+        validBeginDate: "",
+        validEndDate: "",
+        certificationStatus: "",
+        accessory: ""
       });
     },
     deleteLadder(index) {
@@ -334,10 +359,10 @@ export default {
     handleChange(file, fileList) {
       this.$refs.form.clearValidate();
       console.log(fileList);
-      this.form.productGroup[0].upload = fileList;
+      this.form.productGroup[0].accessory = fileList;
       this.form.productGroup.forEach((item, index, array) => {
         console.log(item);
-        item.upload = fileList;
+        item.accessory = fileList;
         // item[index]=fileList
         //执行代码
       });
@@ -390,6 +415,6 @@ export default {
 
 .add {
   background: #ccc;
-  height: 600px;
+  height: 700px;
 }
 </style>

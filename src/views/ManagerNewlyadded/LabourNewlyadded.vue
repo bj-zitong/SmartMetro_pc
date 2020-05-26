@@ -3,9 +3,13 @@
     <el-container class="LabourNewlyadded">
       <el-main>
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          
           <!-- 个人基本信息 -->
-          <el-tab-pane label="个人基本信息" name="second" class="information" :disabled="personalPersonal">
+          <el-tab-pane
+            label="个人基本信息"
+            name="second"
+            class="information"
+            :disabled="personalPersonal"
+          >
             <personal @field="getField"></personal>
           </el-tab-pane>
           <!-- 合同信息 -->
@@ -17,7 +21,12 @@
             <payrollRecords @field="getPayrollRecords"></payrollRecords>
           </el-tab-pane>
           <!-- 资质证书 -->
-          <el-tab-pane label="资质证书" name="certificate" :disabled="qualification">
+          <el-tab-pane
+            label="资质证书"
+            name="certificate"
+            :disabled="qualification"
+            v-if="isCertificate"
+          >
             <certificate @field="getQualification"></certificate>
           </el-tab-pane>
           <!-- 历史评价记录 -->
@@ -27,7 +36,6 @@
           <!-- 来源地消息 -->
           <el-tab-pane label="来源地消息" name="first" :disabled="SourceInformation">
             <asource></asource>
-           
           </el-tab-pane>
         </el-tabs>
       </el-main>
@@ -60,7 +68,7 @@ export default {
   data() {
     return {
       activeName: "second",
-      allArr:[],
+      allArr: [],
       form: {
         name: "",
         region: "",
@@ -71,12 +79,13 @@ export default {
         resource: "",
         desc: ""
       },
-      personalPersonal:false,//个人基本信息
-      contractInformation:true,//合同信息
-      payrollRecords:true,//工资记录
-      qualification:true,//资质证书
-      History:true,//I历史评价记录
-      SourceInformation:true,//来源地信息,
+      personalPersonal: false, //个人基本信息
+      contractInformation: true, //合同信息
+      payrollRecords: true, //工资记录
+      qualification: true, //资质证书
+      History: true, //I历史评价记录
+      SourceInformation: true, //来源地信息,
+      isCertificate: false,
       //日历选择器
       pickerOptions: {
         disabledDate(time) {
@@ -119,39 +128,54 @@ export default {
       value2: ""
     };
   },
-  mounted(){
-         let getArr= JSON.parse(sessionStorage.getItem("personalPersonal"))
-         if(getArr!=null){
-            this.contractInformation=false
-            this.activeName='third'
-         }
-          let getContract= JSON.parse(sessionStorage.getItem("getContractInformation"))
-         if(getContract!=null){
-            this.payrollRecords=false
-         }
-          let getpayroll= JSON.parse(sessionStorage.getItem("payrollRecords"))
-         if(getpayroll!=null){
-            this.qualification=false
-         }
-          let getqualification= JSON.parse(sessionStorage.getItem("qualification"))
-         if(getqualification!=null){
-            this.History=false
-         }
-          let getHistoryRecord= JSON.parse(sessionStorage.getItem("HistoryRecord"))
-         if(getHistoryRecord!=null){
-            this.SourceInformation=false
-         }
+  watch: {
+    demo(val) {
+      this.value = this.demo;
+    }
   },
-  watch:{
-      // allArr(newName, oldName) {
-      //   var arr = []
-      //   arr.push(newName)
-      //   sessionStorage.setItem('arr',JSON.stringify(arr))
-      // }
+  mounted() {
+    let Information = JSON.parse(sessionStorage.getItem("data"));
+    if (Information != null) {
+      console.log(Information.workerType);
+      if (Information.workerType == "dg") {
+        alert(Information.workerType);
+        this.isCertificate = true;
+      }
+    }
+    let getArr = JSON.parse(sessionStorage.getItem("personalPersonal"));
+    if (getArr != null) {
+      console.log(getArr);
+      this.contractInformation = false;
+      this.activeName = "third";
+    }
+    let getContract = JSON.parse(
+      sessionStorage.getItem("getContractInformation")
+    );
+    if (getContract != null) {
+      this.payrollRecords = false;
+    }
+    let getpayroll = JSON.parse(sessionStorage.getItem("payrollRecords"));
+    if (getpayroll != null) {
+      this.qualification = false;
+    }
+    let getqualification = JSON.parse(sessionStorage.getItem("qualification"));
+    if (getqualification != null) {
+      this.History = false;
+    }
+    let getHistoryRecord = JSON.parse(sessionStorage.getItem("HistoryRecord"));
+    if (getHistoryRecord != null) {
+      this.SourceInformation = false;
+    }
+  },
+  watch: {
+    // allArr(newName, oldName) {
+    //   var arr = []
+    //   arr.push(newName)
+    //   sessionStorage.setItem('arr',JSON.stringify(arr))
+    // }
   },
   methods: {
     handleClick(tab, event) {
-
       console.log(tab, event);
     },
     onSubmit() {
@@ -165,36 +189,36 @@ export default {
     },
     handleChange() {},
     //个人基本信息
-    getField(v){
-      sessionStorage.setItem('personalPersonal',JSON.stringify(v))
-      this.contractInformation=false
-      this.activeName='third'
+    getField(v) {
+      sessionStorage.setItem("personalPersonal", JSON.stringify(v));
+      this.contractInformation = false;
+      this.activeName = "third";
     },
 
-     //合同信息
-    getContractInformation(v){
-      sessionStorage.setItem('getContractInformation',JSON.stringify(v))
-      this.payrollRecords=false
-      this.activeName='fourth'
+    //合同信息
+    getContractInformation(v) {
+      sessionStorage.setItem("getContractInformation", JSON.stringify(v));
+      this.payrollRecords = false;
+      this.activeName = "fourth";
     },
     //工资记录
-    getPayrollRecords(v){
-      sessionStorage.setItem('payrollRecords',JSON.stringify(v))
-      this.activeName='certificate'
-      this.qualification=false
+    getPayrollRecords(v) {
+      sessionStorage.setItem("payrollRecords", JSON.stringify(v));
+      this.activeName = "certificate";
+      this.qualification = false;
     },
     //历史评价记录
-    getQualification(v){
-      sessionStorage.setItem('qualification',JSON.stringify(v))
-      this.activeName='evaluate'
-      this.History=false
+    getQualification(v) {
+      sessionStorage.setItem("qualification", JSON.stringify(v));
+      this.activeName = "evaluate";
+      this.History = false;
     },
-    
-    getHistory(v){
-      sessionStorage.setItem('HistoryRecord',JSON.stringify(v))
-      this.activeName='first'
-      this.SourceInformation=false
-    },
+
+    getHistory(v) {
+      sessionStorage.setItem("HistoryRecord", JSON.stringify(v));
+      this.activeName = "first";
+      this.SourceInformation = false;
+    }
     // getHistory(v){
     //    sessionStorage.setItem('qualification',JSON.stringify(v))
     //   this.activeName='evaluate'

@@ -884,64 +884,109 @@ export const constantRouterMap = [
             },
         ]
     },
+    {
+        path: '/south',
+        name: '预览',
+        // hidden: true,
+        component: Layout,
+        meta: {
+            icon: '',
+            title: '预览',
+            enable: "Y",
 
-
-
-
-
-    //   {
-    //     path: '/systemManager',
-    //     name: '系统管理',
-    //     component: Layout,
-    //     meta: {
-    //         icon: '',
-    //         title: '系统管理',
-    //         enable: "Y",
-    //         parent: '系统管理'
-    //     },
-    //     redirect: '/userManager',
-    //     children: [
-    //         {
-    //             path: '/userManager',
-    //             // name: 'skillDisclose',
-    //             component: () => import('@/views/systemManager/userManager/userManager'),
-    //             meta: {
-    //                 title: '用户管理',
-    //                 icon: '../../static/image/technology.png',
-    //                 AfterIcon: '../../static/image/technology.png',
-    //                 enable: "Y",
-    //                 parent: '系统管理'
-    //             },
-    //             children: []
-    //         },
-    //         {
-    //             path: '/roleManager',
-    //             name: 'roleManager',
-    //             component: () => import('@/views/systemManager/roleManager/roleManager'),
-    //             meta: {
-    //                 title: '角色管理',
-    //                 icon: '../../static/image/security.png',
-    //                 AfterIcon: '../../static/image/security.png',
-    //                 enable: "Y",
-    //                 parent: '系统管理'
-    //             },
-    //             children: []
-    //         },
-    //         {
-    //             path: '/constructionsiteManager',
-    //             name: 'constructionsiteManager',
-    //             component: () => import('@/views/systemManager/constructionsiteManager/constructionsiteManager'),
-    //             meta: {
-    //                 title: '工地管理',
-    //                 icon: '../../static/image/Video.png',
-    //                 AfterIcon: '../../static/image/Video.png',
-    //                 enable: "Y",
-    //                 parent: '系统管理'
-    //             },
-    //             children: []
-    //         }
-    //     ]
-    // }
+        },
+        redirect: 'south',
+        children: [
+            {
+                path: '/south',
+                component: () =>
+                    import('@/management/videoMonitoring/south'),
+                // alwaysShow: false,
+                meta: {
+                    icon: '../../static/image/lwgl.png',
+                    AfterIcon: '../../static/image/lwgl.png',
+                    title: '南门大区',
+                    enable: "Y",
+                    parent: '预览',
+                },
+                // // redirect: 'labor_Subcontract1',
+                children: []
+            },
+            {
+                path: '/lifeArea',
+                component: () =>
+                    import('@/management/videoMonitoring/lifeArea/lifeArea1'),
+                // alwaysShow: true,
+                meta: {
+                    title: '生活区',
+                    icon: '../../static/image/roster.png',
+                    enable: "Y",
+                    parent: '预览'
+                },
+                // redirect: '/roster/manager',
+                children: [{
+                    path: '/lifeArea1',
+                    name: 'manager',
+                    component: () =>
+                        import('@/management/videoMonitoring/lifeArea/lifeArea1'),
+                    meta: { title: '生活区一', icon: '', enable: "Y", parent: '预览' }
+                },
+                {
+                    path: '/lifeArea2',
+                    name: 'personnel',
+                    component: () =>
+                        import('@/management/videoMonitoring/lifeArea/lifeArea2'),
+                    meta: { title: '生活区二', icon: '', enable: "Y", parent: '预览' }
+                }
+                ]
+            },
+            {
+                path: '/north',
+                name: 'CustomComponent',
+                // alwaysShow: true,
+                component: () =>
+                    import('@/management/videoMonitoring/north'),
+                meta: {
+                    icon: '../../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../../static/image/wlry.png',
+                    title: '北区',
+                    enable: "Y",
+                    parent: '预览'
+                },
+                children: []
+            },
+            {
+                path: '/east',
+                name: 'CustomComponent',
+                // alwaysShow: true,
+                component: () =>
+                    import('@/management/videoMonitoring/east'),
+                meta: {
+                    icon: '../../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../../static/image/wlry.png',
+                    title: '东区',
+                    enable: "Y",
+                    parent: '预览'
+                },
+                children: []
+            },
+            {
+                path: '/Western',
+                name: 'CustomComponent',
+                // alwaysShow: true,
+                component: () =>
+                    import('@/management/videoMonitoring/Western'),
+                meta: {
+                    icon: '../../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../../static/image/wlry.png',
+                    title: '西区',
+                    enable: "Y",
+                    parent: '预览'
+                },
+                children: []
+            },
+        ]
+    },
 ]
 export default new Router({
     // mode: 'history',  require service support
