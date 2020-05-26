@@ -145,10 +145,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="参加培训" prop="training">
-              <el-select v-model="form.training" placeholder="请选择参加培训">
-                <el-option label="是" value="yes"></el-option>
-                <el-option label="否" value="no"></el-option>
+            <el-form-item label="参加培训" prop="isProjectTrain">
+              <el-select v-model="form.isProjectTrain" placeholder="请选择参加培训">
+                <el-option label="是" value="0"></el-option>
+                <el-option label="否" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -186,10 +186,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="班组" prop="Personneltype">
-              <el-select v-model="form.Personneltype" placeholder="请选择班组">
-                <el-option label="已通过" value="ytg"></el-option>
-                <el-option label="未通过" value="wtg"></el-option>
+            <el-form-item label="班组" prop="teamId">
+              <el-select v-model="form.teamId" placeholder="请选择班组">
+                <el-option label="已通过" value="0"></el-option>
+                <el-option label="未通过" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -266,7 +266,7 @@ export default {
         photo: "",
         registrationType: "",
         isTeamLeader: "",
-        training: "",
+        isProjectTrain: "",
         isRelatedCertificates: "",
         isSpecialWorkTypeCheckups: ""
       },
@@ -321,9 +321,9 @@ export default {
         idCardType: [
           { required: true, message: "请选择证件类型", trigger: "blur" }
         ],
-        // Personneltype: [
-        //   { required: true, message: "请选择班组", trigger: "blur" }
-        // ],
+        teamId: [
+          { required: true, message: "请选择班组", trigger: "blur" }
+        ],
         politicsType: [
           { required: true, message: "请选择政治面貌", trigger: "blur" }
         ],
@@ -338,16 +338,15 @@ export default {
         isTeamLeader: [
           { required: true, message: "请选择班组长", trigger: "blur" }
         ],
-        // training: [
-        //   { required: true, message: "请选择参加培训", trigger: "blur" }
-        // ],
+        isProjectTrain: [
+          { required: true, message: "请选择是否参加培训", trigger: "blur" }
+        ],
         isRelatedCertificates: [
           { required: true, message: "请选择持证上岗", trigger: "blur" }
         ],
         isSpecialWorkTypeCheckups: [
           { required: true, message: "请选择特殊工种体检情况", trigger: "blur" }
-        ],
-        Team: [{ required: true, message: "请选择班组", trigger: "blur" }]
+        ]
       },
       //日历选择器
       pickerOptions: {

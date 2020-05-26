@@ -57,12 +57,12 @@
         <el-table-column prop="examTime" label="考试时间" width="180"></el-table-column>
         <el-table-column prop="examPath" label="试卷"></el-table-column>
         <el-table-column label="关联闸机" fixed="right" prop="isRelationQate">
-          <template slot-scope="gate">
+          <template slot-scope="scope">
             <el-switch
-              v-model="value"
+              v-model="scope.row.status"
               active-color="#13ce66"
               inactive-color="#ff4949"
-              @change="changeSwitch(gate.row)"
+              @change="changeSwitch(scope.row)"
             ></el-switch>
           </template>
         </el-table-column>
@@ -140,7 +140,8 @@ export default {
           score: "100",
           examTime: "10:00",
           examPath: "试卷",
-          isRelationQate: "true"
+          isRelationQate: "true",
+          status:true
         },
         {
           pScoreId: 1,
@@ -154,7 +155,8 @@ export default {
           score: "100",
           examTime: "10:00",
           examPath: "试卷",
-          isRelationQate: "true"
+          isRelationQate: "true",
+          status:false
         }
       ],
       rules: {
