@@ -256,6 +256,7 @@ export default {
       dialogVisible: false, //评价
       outerVisible: false, //新增讲话
       innerVisible: false, //二层
+      loading:true,
       formClass: {
         projectName: "",
         groupName: "",

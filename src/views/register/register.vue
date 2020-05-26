@@ -145,7 +145,7 @@ export default {
             message: "手机号格式不正确"
           }
         ],
-        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
+        idNum: [{ required: true, validator: rules.FormValidate.Form().IdentityCode, trigger: "blur"}],
         account: [{ required: true, message: "请输入账号", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         confirmPassword: [

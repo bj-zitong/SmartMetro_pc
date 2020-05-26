@@ -1,5 +1,5 @@
 <template>
-  <div class="roster">
+  <div class="roster" v-loading="loading">
     <!-- 头部 -->
     <el-container>
       <el-menu class="main-top-box">
@@ -30,6 +30,7 @@
         </div>
         <div class="tableView">
           <el-table
+            
             ref="multipleTable"
             :data="tableData"
             stripe
@@ -145,6 +146,7 @@ export default {
         uploadFile: ""
       },
       fileList: [],
+      loading: true,
       tableData: [
         {
           pInfoId: 0,
