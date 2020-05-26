@@ -20,9 +20,9 @@
         <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
         <el-button @click="deleteAll" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
         <el-button @click="poiExcel" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
-         <router-link :to="{path: '/userManager' }" style="color:#0058A2">马上登录</router-link>
-          <router-link :to="{path: '/roleManager' }" style="color:#0058A2">马上登录</router-link>
-           <router-link :to="{path: '/constructionsiteManager' }" style="color:#0058A2">马上登录</router-link>
+        <router-link :to="{path: '/userManager' }" style="color:#0058A2">马上登录</router-link>
+        <router-link :to="{path: '/roleManager' }" style="color:#0058A2">马上登录</router-link>
+        <router-link :to="{path: '/constructionsiteManager' }" style="color:#0058A2">马上登录</router-link>
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -224,6 +224,7 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "../../components/pagination";
+import rules from "@/utils/rules";
 export default {
   name: "container",
   components: {
@@ -276,7 +277,13 @@ export default {
             message: "手机号格式不正确"
           }
         ],
-        idNum: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
+        idNum: [
+          {
+            required: true,
+            trigger: "blur",
+            validator: rules.FormValidate.Form().IdentityCode
+          }
+        ],
         company: [{ required: true, message: "请输入单位", trigger: "blur" }],
         carNum: [{ required: true, message: "请输入车牌号", trigger: "blur" }],
         profession: [
@@ -346,11 +353,6 @@ export default {
         if (valid) {
           var form = this.$refs["form"].model;
           if (form.pOutlanderId == null) {
-            var idNumState = this.IdentityCode(form.idNum);
-            if (!idNumState) {
-              this.$message("身份证号格式不正确！");
-              return;
-            }
             var params = JSON.stringify({
               name: form.userName,
               phone: form.phone,
@@ -373,13 +375,6 @@ export default {
             });
             this.dialogFormVisible = false;
           } else {
-            if (form.idNum != undefined) {
-              var idNumState = this.IdentityCode(form.idNum);
-              if (idNumState == false) {
-                this.$message("身份证号格式不正确！");
-                return;
-              }
-            }
             var params = JSON.stringify({
               name: form.userName,
               phone: form.phone,
@@ -401,7 +396,7 @@ export default {
                 this.dialogFormVisible = false;
               }
             });
-           this.cancel();
+            this.cancel();
           }
         } else {
           return false;
@@ -410,86 +405,8 @@ export default {
     },
     cancel(form) {
       this.$refs[form].resetFields();
-      Object.assign(this.$data.form,this.$options.data().form); //数据初始化
+      Object.assign(this.$data.form, this.$options.data().form); //数据初始化
       this.dialogFormVisible = false;
-    },
-    //身份证号校验
-    IdentityCode(code) {
-      var city = {
-        11: "北京",
-        12: "天津",
-        13: "河北",
-        14: "山西",
-        15: "内蒙古",
-        21: "辽宁",
-        22: "吉林",
-        23: "黑龙江 ",
-        31: "上海",
-        32: "江苏",
-        33: "浙江",
-        34: "安徽",
-        35: "福建",
-        36: "江西",
-        37: "山东",
-        41: "河南",
-        42: "湖北 ",
-        43: "湖南",
-        44: "广东",
-        45: "广西",
-        46: "海南",
-        50: "重庆",
-        51: "四川",
-        52: "贵州",
-        53: "云南",
-        54: "西藏 ",
-        61: "陕西",
-        62: "甘肃",
-        63: "青海",
-        64: "宁夏",
-        65: "新疆",
-        71: "台湾",
-        81: "香港",
-        82: "澳门",
-        91: "国外 "
-      };
-      var pass = true;
-      var msg = "验证成功";
-      //验证身份证格式（6个地区编码，8位出生日期，3位顺序号，1位校验位）
-      if (
-        !code ||
-        !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|[xX])$/.test(
-          code
-        )
-      ) {
-        pass = false;
-        msg = "身份证号格式错误";
-      } else if (!city[code.substr(0, 2)]) {
-        pass = false;
-        msg = "身份证号地址编码错误";
-      } else {
-        //18位身份证需要验证最后一位校验位
-        if (code.length == 18) {
-          code = code.split("");
-          //∑(ai×Wi)(mod 11)
-          //加权因子
-          var factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-          //校验位
-          var parity = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];
-          var sum = 0;
-          var ai = 0;
-          var wi = 0;
-          for (var i = 0; i < 17; i++) {
-            ai = code[i];
-            wi = factor[i];
-            sum += ai * wi;
-          }
-          if (parity[sum % 11] != code[17].toUpperCase()) {
-            pass = false;
-            msg = "身份证号校验位错误";
-          }
-        }
-      }
-      return pass;
     },
     // 列表请求
     handleUserList() {

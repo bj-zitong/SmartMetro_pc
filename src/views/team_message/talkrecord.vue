@@ -315,7 +315,6 @@ export default {
         "/team/meeting/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          console.log(res.data.rows);
           var total = res.total;
           var rows = res.rows;
           this.tableData = res.data.rows;
@@ -436,8 +435,6 @@ export default {
     },
     //编辑讲话
     handleEdit(row) {
-      // console.log(row)
-      // return;
       var uid = row.pTeamMasterId;
       this.formSpeech = row;
       //获得详情
@@ -449,10 +446,8 @@ export default {
         "/meeting";
       var datas = null;
       this.http.get(url, datas).then(res => {
-        console.log(res.data);
         if (res.code == 200) {
           //回显
-          console.log(JSON.stringify(JSON.parse(this.formSpeech)));
           this.formSpeech = res.data;
           // this.formSpeech.jobsite = result.homeworkPart;
           // this.formSpeech.jobNum = result.homeworkNumber;

@@ -115,7 +115,10 @@ let FormValidate = (function () {
         }
       },
         //身份证号校验
-    IdentityCode(code) {
+    IdentityCode(rule,code,callback) {
+      if (!code) {
+        return callback(new Error('身份证不能为空'))
+      }
       var city = {
         11: "北京",
         12: "天津",
@@ -153,8 +156,8 @@ let FormValidate = (function () {
         82: "澳门",
         91: "国外 "
       };
-      var pass = true;
-      var msg = "验证成功";
+      // var pass = true;
+      // var msg = "验证成功";
       //验证身份证格式（6个地区编码，8位出生日期，3位顺序号，1位校验位）
       if (
         !code ||
@@ -162,11 +165,13 @@ let FormValidate = (function () {
           code
         )
       ) {
-        pass = false;
-        msg = "身份证号格式错误";
+        // pass = false;
+        callback(new Error('身份证号格式错误'))
+        // msg = "身份证号格式错误";
       } else if (!city[code.substr(0, 2)]) {
-        pass = false;
-        msg = "身份证号地址编码错误";
+        // pass = false;
+        // msg = "身份证号地址编码错误";
+        callback(new Error('身份证号地址编码错误'))
       } else {
         //18位身份证需要验证最后一位校验位
         if (code.length == 18) {
@@ -185,12 +190,11 @@ let FormValidate = (function () {
             sum += ai * wi;
           }
           if (parity[sum % 11] != code[17].toUpperCase()) {
-            pass = false;
-            msg = "身份证号校验位错误";
+            callback(new Error('身份证号校验位错误'))
           }
         }
       }
-      return pass;
+      // return pass;
     }
     }
   }

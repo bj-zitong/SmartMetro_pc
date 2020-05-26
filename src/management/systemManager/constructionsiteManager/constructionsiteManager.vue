@@ -296,17 +296,17 @@ export default {
               this.PersonnelLocalhosts +
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
-              "/org/" +
-              this.formLabor.orgSiteId;
-            // var data = JSON.stringify({
-            //   projectCenter: this.formLabor.projectCenter,
-            //   line: this.formLabor.line,
-            //   siteName: this.formLabor.siteName,
-            //   buildCorpName: this.formLabor.buildCorpName,
-            //   responsiblePersonName: this.formLabor.responsiblePersonName,
-            //   cellPhone: this.formLabor.cellPhone,
-            //   location: this.formLabor.location
-            // });
+              "/org";
+            var data = JSON.stringify({
+              projectCenter: this.formLabor.projectCenter,
+              line: this.formLabor.line,
+              siteName: this.formLabor.siteName,
+              buildCorpName: this.formLabor.buildCorpName,
+              responsiblePersonName: this.formLabor.responsiblePersonName,
+              cellPhone: this.formLabor.cellPhone,
+              location: this.formLabor.location,
+              orgSiteId: this.formLabor.orgSiteId
+            });
             this.http
               .put(url, data)
               .then(res => {
