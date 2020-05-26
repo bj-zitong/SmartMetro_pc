@@ -143,14 +143,13 @@ export default {
         { id: 3, name: "物料管理" },
         { id: 4, name: "安全管理" },
         { id: 5, name: "质量管理" },
-        { id: 6, name: "环境管理" },
-        { id: 7, name: "进度管理" },
-        { id: 8, name: "视频管理" },
-        { id: 9, name: "系统管理" },
-        { id: 10, name: "审核" },
-        { id: 11, name: "查看" },
-        { id: 12, name: "上传" },
-        { id: 13, name: "下载" }
+        { id: 6, name: "进度管理" },
+        { id: 7, name: "视频管理" },
+        { id: 8, name: "系统管理" },
+        { id: 9, name: "审核" },
+        { id: 10, name: "查看" },
+        { id: 11, name: "上传" },
+        { id: 12, name: "下载" }
       ],
       titleLabor: "", // 标题
       seeBranch: false, // 创建班组弹窗

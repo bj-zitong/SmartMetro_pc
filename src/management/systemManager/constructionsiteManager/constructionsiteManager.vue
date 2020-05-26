@@ -232,8 +232,11 @@ export default {
       });
       //请求
       var url =
-        this.PersonnelLocalhosts +"/smart/auth/" + sessionStorage.getItem("userId") + "/org/management";
-       this.http.post(url, data).then(res => {
+        this.PersonnelLocalhosts +
+        "/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/org/management";
+      this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.data.total;
           this.tableData = res.data.orgSites;
@@ -259,9 +262,22 @@ export default {
         if (valid) {
           let form = this.$refs[refLabor].model;
           // 判断id是否为空 /smart/auth/{userId}/org
-          var url =  this.PersonnelLocalhosts +"/smart/auth/" + sessionStorage.getItem("userId") + "/org";
+          var url =
+            this.PersonnelLocalhosts +
+            "/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/org";
           if (form.orgSiteId == null) {
-            let data = JSON.stringify(this.formLabor);
+            //this.formLabor
+            let data = JSON.stringify({
+              projectCenter:form.projectCenter,
+              line:form.line,
+              siteName:form.siteName,
+              buildCorpName:form.buildCorpName,
+              responsiblePersonName:form.responsiblePersonName,
+              cellPhone:form.cellPhone,
+              location: form.location
+            });
             this.http
               .post(url, data)
               .then(res => {
@@ -277,19 +293,20 @@ export default {
           } else {
             let data = JSON.stringify(this.formLabor);
             var url =
-               this.PersonnelLocalhosts + "/smart/auth/" +
+              this.PersonnelLocalhosts +
+              "/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/org/" +
               this.formLabor.orgSiteId;
-              var data = JSON.stringify({
-              projectCenter: this.formLabor.projectCenter,
-              line: this.formLabor.line,
-              siteName: this.formLabor.siteName,
-              buildCorpName: this.formLabor.buildCorpName,
-              responsiblePersonName: this.formLabor.responsiblePersonName,
-              cellPhone: this.formLabor.cellPhone,
-              location: this.formLabor.location
-            });
+            // var data = JSON.stringify({
+            //   projectCenter: this.formLabor.projectCenter,
+            //   line: this.formLabor.line,
+            //   siteName: this.formLabor.siteName,
+            //   buildCorpName: this.formLabor.buildCorpName,
+            //   responsiblePersonName: this.formLabor.responsiblePersonName,
+            //   cellPhone: this.formLabor.cellPhone,
+            //   location: this.formLabor.location
+            // });
             this.http
               .put(url, data)
               .then(res => {
@@ -311,7 +328,7 @@ export default {
     //  新增/编辑   关闭
     cloneLaborForm(refLabor) {
       this.$refs[refLabor].resetFields();
-      Object.assign(this.$data.formLabor, this.$options.data().formLabor) // 初始化data
+      Object.assign(this.$data.formLabor, this.$options.data().formLabor); // 初始化data
       this.dialogVisibleLabor = false;
     },
     //  新增
@@ -322,10 +339,11 @@ export default {
     //  编辑回显
     editRowClick(inedx, row) {
       this.titleLabor = "编辑";
-      var id=row.orgSiteId;
+      var id = row.orgSiteId;
       // this.formLabor = row;
       var url =
-           this.PersonnelLocalhosts + "/smart/auth/" +
+        this.PersonnelLocalhosts +
+        "/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/org/" +
         id;
@@ -349,11 +367,15 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           let data = JSON.stringify(ids);
-          let url =  this.PersonnelLocalhosts + "/smart/auth/" + sessionStorage.getItem("userId") + "/org";
+          let url =
+            this.PersonnelLocalhosts +
+            "/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/org";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-               this.$message("已删除！");
-               this.getTable();
+              this.$message("已删除！");
+              this.getTable();
             }
           });
         })
@@ -371,11 +393,15 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
-          var url =   this.PersonnelLocalhosts +"/smart/auth/" + sessionStorage.getItem("userId") + "/org";
+          var url =
+            this.PersonnelLocalhosts +
+            "/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/org";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-               this.$message("已删除！");
-               this.getTable();
+              this.$message("已删除！");
+              this.getTable();
             }
           });
         })
