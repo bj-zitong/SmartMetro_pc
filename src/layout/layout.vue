@@ -62,6 +62,7 @@ export default {
   .main-container {
     padding-left: 260px;
     padding-top: 140px;
+    height:100%
   }
   .main-container1 {
     padding-left: 0;
