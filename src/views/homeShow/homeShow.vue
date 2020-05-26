@@ -214,15 +214,8 @@ export default {
         this.drawCon33();
         this.drawCon34();
         this.drawRight1();
-        this.getHeight();
     },
     methods: {
-        getHeight() {
-          let charts = document.getElementsByClassName('charts')[0];
-          let parentNode = charts.parentNode.parentNode.parentNode.clientHeight;
-          console.log(charts)
-          console.log(parentNode)
-        },
         // 近7天出勤情况
         attendanceClick(tab, event) {
             console.log(tab,event)
@@ -239,7 +232,6 @@ export default {
                     trigger: 'item',
                     formatter: '{a} <br/>{b} : {c} ({d}%)'
                 },
-                resize:'220px',
                 legend: { // 图例组件
                     type:'plain',    // plain 普通图例   scroll  可滚动图例（图例数量多的时候使用）
                     orient: 'vertical', // 横向 horizontal 纵向 vertical
@@ -931,6 +923,7 @@ export default {
     height: 100%;
 }
 .home-box .main-left {
+    /* height: 502px; */
     width: 30%;
 }
 .home-box .main-center {
@@ -940,12 +933,16 @@ export default {
     width: 20%;
 }
 .min-box {
+    width: 100%;
     height: 100%;
     background:rgba(255,255,255,1);
     box-shadow:0px 3px 6px rgba(0,0,0,0.16);
     opacity:1;
     border-radius:10px;
     position: relative;
+}
+.min-box .charts{
+    position: unset;
 }
 .main-title {
     font-size:14px;
@@ -960,7 +957,7 @@ export default {
 
 }
 .h-m-l1 {
-    height: 27%;
+    height:27%;
 }
 .h-m-l2 {
     padding-top: 15px;
