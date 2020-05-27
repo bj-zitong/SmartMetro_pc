@@ -128,8 +128,8 @@ export const constantRouterMap = [
                     import('@/views/labor_Subcontract/index'),
                 // alwaysShow: false,
                 meta: {
-                    icon: '../../static/image/lwgl.png',
-                    AfterIcon: '../../static/image/lwgl.png',
+                    icon: '../static/image/lwgl.png',
+                    AfterIcon: '../static/image/lwgl.png',
                     title: '劳务公司管理',
                     enable: "Y",
                     parent: '实名认证',
@@ -146,7 +146,7 @@ export const constantRouterMap = [
                 // alwaysShow: true,
                 meta: {
                     title: '班组管理',
-                    icon: '../../static/image/Team.png',
+                    icon: '../static/image/Team.png',
                     enable: "Y",
                     parent: '实名认证'
                 },
@@ -174,7 +174,7 @@ export const constantRouterMap = [
                 // alwaysShow: true,
                 meta: {
                     title: '花名册',
-                    icon: '../../static/image/roster.png',
+                    icon: '../static/image/roster.png',
                     enable: "Y",
                     parent: '实名认证'
                 },
@@ -217,8 +217,8 @@ export const constantRouterMap = [
                 component: () =>
                     import('@/views/foreignpersonnel/index'),
                 meta: {
-                    icon: '../../static/image/wlry.png',
-                    AfterIcon: '../../static/image/wlry.png',
+                    icon: '../static/image/wlry.png',
+                    AfterIcon: '../static/image/wlry.png',
                     title: '外来人员',
                     enable: "Y",
                     parent: '实名认证'
@@ -245,8 +245,8 @@ export const constantRouterMap = [
                     import('@/views/wisdomAttendance/comeRecord/index'),
                 meta: {
                     title: '出入记录',
-                    icon: '../../static/image/attendanceRecord.png',
-                    AfterIcon: '../../static/image/attendanceRecord.png',
+                    icon: '../static/image/attendanceRecord.png',
+                    AfterIcon: '../static/image/attendanceRecord.png',
                     enable: "Y",
                     parent: '智慧考勤',
                 },
@@ -299,8 +299,8 @@ export const constantRouterMap = [
                 // alwaysShow: true,
                 meta: {
                     title: '出勤记录',
-                    icon: '../../static/image/sidebar_icon/Unchecked_Access.png',
-                    AfterIcon: '../../static/image/sidebar_icon/Unchecked_Access.png',
+                    icon: '../static/image/sidebar_icon/Unchecked_Access.png',
+                    AfterIcon: '../static/image/sidebar_icon/Unchecked_Access.png',
                     enable: "Y",
                     parent: '智慧考勤'
                 },
@@ -338,8 +338,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/wisdomAttendance/thereport/index'),
                 meta: {
 
-                    icon: '../../static/image/attendanceReport.png',
-                    AfterIcon: '../../static/image/attendanceReport.png',
+                    icon: '../static/image/attendanceReport.png',
+                    AfterIcon: '../static/image/attendanceReport.png',
                     title: '考勤报表',
                     enable: "Y",
                     parent: '智慧考勤'
@@ -348,8 +348,8 @@ export const constantRouterMap = [
                     {
                         path: '/menu1',
                         meta: {
-                            // icon: '../../static/image/attendanceReport.png',
-                            // AfterIcon: '../../static/image/attendanceReport.png',
+                            // icon: '../static/image/attendanceReport.png',
+                            // AfterIcon: '../static/image/attendanceReport.png',
                             title: '详细信息',
                             enable: "Y",
                             parent: '智慧考勤'
@@ -412,8 +412,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/trainEducation/skillDisclose/skillDisclose'),
                 meta: {
                     title: '技术交底',
-                    icon: '../../static/image/technology.png',
-                    AfterIcon: '../../static/image/technology.png',
+                    icon: '../static/image/technology.png',
+                    AfterIcon: '../static/image/technology.png',
                     enable: "Y",
                     parent: '培训教育'
                 },
@@ -425,8 +425,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/trainEducation/securitySkillDisclose/securitySkillDisclose'),
                 meta: {
                     title: '安全技术交底',
-                    icon: '../../static/image/security.png',
-                    AfterIcon: '../../static/image/security.png',
+                    icon: '../static/image/security.png',
+                    AfterIcon: '../static/image/security.png',
                     enable: "Y",
                     parent: '培训教育'
                 },
@@ -438,8 +438,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/trainEducation/videoLibrary/videoLibrary'),
                 meta: {
                     title: '视频库',
-                    icon: '../../static/image/Video.png',
-                    AfterIcon: '../../static/image/Video.png',
+                    icon: '../static/image/Video.png',
+                    AfterIcon: '../static/image/Video.png',
                     enable: "Y",
                     parent: '培训教育'
                 },
@@ -451,8 +451,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/trainEducation/questionsLibrary/questionsLibrary'),
                 meta: {
                     title: '试题库',
-                    icon: '../../static/image/testQuestions.png',
-                    AfterIcon: '../../static/image/testQuestions.png',
+                    icon: '../static/image/testQuestions.png',
+                    AfterIcon: '../static/image/testQuestions.png',
                     enable: "Y",
                     parent: '培训教育'
                 },
@@ -464,8 +464,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/trainEducation/resultStatistics/index'),
                 meta: {
                     title: '成绩统计',
-                    icon: '../../static/image/beforeAchievement.png',
-                    AfterIcon: '../../static/image/Achievement.png',
+                    icon: '../static/image/beforeAchievement.png',
+                    AfterIcon: '../static/image/Achievement.png',
                     enable: "Y",
                     parent: '培训教育'
                 },
@@ -491,8 +491,8 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 meta: {
                     title: '培训记录',
-                    icon: '../../static/image/peixun1.png',
-                    AfterIcon: '../../static/image/peixun1.png',
+                    icon: '../static/image/peixun1.png',
+                    AfterIcon: '../static/image/peixun1.png',
                     enable: "Y",
                     parent: '培训教育'
                 },
@@ -531,8 +531,8 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 meta: {
                     title: '人员评价',
-                    icon: '../../static/image/renyuanpingjia.png',
-                    AfterIcon: '../../static/image/renyuanpingjia.png',
+                    icon: '../static/image/renyuanpingjia.png',
+                    AfterIcon: '../static/image/renyuanpingjia.png',
                     enable: "Y",
                     parent: '诚信管理'
                 },
@@ -555,8 +555,8 @@ export const constantRouterMap = [
                 path: '/blacklist',
                 component: () => import('@/views/integrityManagement/blacklist/blacklist'),
                 meta: {
-                    icon: '../../static/image/blacklist.png',
-                    AfterIcon: '../../static/image/blacklist.png',
+                    icon: '../static/image/blacklist.png',
+                    AfterIcon: '../static/image/blacklist.png',
                     title: '黑名单',
                     enable: "Y",
                     parent: '诚信管理'
@@ -582,8 +582,8 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 meta: {
                     title: '劳务公司管理',
-                    icon: '../../static/image/blacklist.png',
-                    AfterIcon: '../../static/image/blacklist.png',
+                    icon: '../static/image/blacklist.png',
+                    AfterIcon: '../static/image/blacklist.png',
                     enable: "Y",
                     parent: '人员定位'
                 },
@@ -617,8 +617,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/testTemperature/realTimePreview/realTimePreview'),
                 meta: {
                     title: '实时预览',
-                    icon: '../../static/image/yulan.png',
-                    AfterIcon: '../../static/image/yulan.png',
+                    icon: '../static/image/yulan.png',
+                    AfterIcon: '../static/image/yulan.png',
                     enable: "Y",
                     parent: '人员测温'
                 },
@@ -630,8 +630,8 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 meta: {
                     title: '预警事件',
-                    icon: '../../static/image/yujing.png',
-                    AfterIcon: '../../static/image/yujing.png',
+                    icon: '../static/image/yujing.png',
+                    AfterIcon: '../static/image/yujing.png',
                     enable: "Y",
                     arent: '人员测温'
                 },
@@ -756,8 +756,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/sicknessManage/sourceStatistics/sourceStatistics'),
                 meta: {
                     title: '来源地统计',
-                    icon: '../../static/image/technology.png',
-                    AfterIcon: '../../static/image/technology.png',
+                    icon: '../static/image/technology.png',
+                    AfterIcon: '../static/image/technology.png',
                     enable: "Y",
                     parent: '疫情管理'
                 },
@@ -769,8 +769,8 @@ export const constantRouterMap = [
                 component: () => import('@/views/sicknessManage/plan/plan'),
                 meta: {
                     title: '计划',
-                    icon: '../../static/image/security.png',
-                    AfterIcon: '../../static/image/security.png',
+                    icon: '../static/image/security.png',
+                    AfterIcon: '../static/image/security.png',
                     enable: "Y",
                     parent: '疫情管理'
                 },
@@ -903,8 +903,8 @@ export const constantRouterMap = [
                     import('@/management/videoMonitoring/south'),
                 // alwaysShow: false,
                 meta: {
-                    icon: '../../static/image/lwgl.png',
-                    AfterIcon: '../../static/image/lwgl.png',
+                    icon: '../static/image/lwgl.png',
+                    AfterIcon: '../static/image/lwgl.png',
                     title: '南门大区',
                     enable: "Y",
                     parent: '预览',
@@ -919,7 +919,7 @@ export const constantRouterMap = [
                 // alwaysShow: true,
                 meta: {
                     title: '生活区',
-                    icon: '../../static/image/roster.png',
+                    icon: '../static/image/roster.png',
                     enable: "Y",
                     parent: '预览'
                 },
@@ -947,8 +947,8 @@ export const constantRouterMap = [
                 component: () =>
                     import('@/management/videoMonitoring/north'),
                 meta: {
-                    icon: '../../static/image/Statisticsscreen/gl_top.png',
-                    AfterIcon: '../../static/image/wlry.png',
+                    icon: '../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../static/image/wlry.png',
                     title: '北区',
                     enable: "Y",
                     parent: '预览'
@@ -962,8 +962,8 @@ export const constantRouterMap = [
                 component: () =>
                     import('@/management/videoMonitoring/east'),
                 meta: {
-                    icon: '../../static/image/Statisticsscreen/gl_top.png',
-                    AfterIcon: '../../static/image/wlry.png',
+                    icon: '../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../static/image/wlry.png',
                     title: '东区',
                     enable: "Y",
                     parent: '预览'
@@ -977,8 +977,8 @@ export const constantRouterMap = [
                 component: () =>
                     import('@/management/videoMonitoring/Western'),
                 meta: {
-                    icon: '../../static/image/Statisticsscreen/gl_top.png',
-                    AfterIcon: '../../static/image/wlry.png',
+                    icon: '../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../static/image/wlry.png',
                     title: '西区',
                     enable: "Y",
                     parent: '预览'

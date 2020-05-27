@@ -417,8 +417,8 @@ export default {
   }
 }
 </style>
-<style>
-.el-tabs__item {
+<style  lang="stylus">
+.contain .el-tabs__item {
   padding: 0 125px 0 125px;
   background-color: #0058a2;
   padding-right: 160px;

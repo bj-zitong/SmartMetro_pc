@@ -30,46 +30,46 @@ export default {
       systemList: [
         {
           title: "用户管理",
-          beforeChangeimg: "/static/image/yonghumanager.png",
-          afterChangeimg: "/static/image/usercheck.png"
+          beforeChangeimg: "../static/image/yonghumanager.png",
+          afterChangeimg: "../static/image/usercheck.png"
         },
         {
           title: "角色管理",
-          beforeChangeimg: "/static/image/rolemanager.png",
-          afterChangeimg: "/static/image/rolecheck.png"
+          beforeChangeimg: "../static/image/rolemanager.png",
+          afterChangeimg: "../static/image/rolecheck.png"
         },
         {
           title: "工地管理",
-          beforeChangeimg: "/static/image/worker.png",
-          afterChangeimg: "/static/image/workermanager.png"
+          beforeChangeimg: "../static/image/worker.png",
+          afterChangeimg: "../static/image/workermanager.png"
         }
       ],
       //视频监控
       videoList: [
         {
           title: "预览",
-          beforeChangeimg: "/static/image/yonghumanager.png",
-          afterChangeimg: "/static/image/usercheck.png"
+          beforeChangeimg: "../static/image/yonghumanager.png",
+          afterChangeimg: "../static/image/usercheck.png"
         },
         {
           title: "回放",
-          beforeChangeimg: "/static/image/rolemanager.png",
-          afterChangeimg: "/static/image/rolecheck.png"
+          beforeChangeimg: "../static/image/rolemanager.png",
+          afterChangeimg: "../static/image/rolecheck.png"
         },
         {
           title: "分析",
-          beforeChangeimg: "/static/image/worker.png",
-          afterChangeimg: "/static/image/workermanager.png"
+          beforeChangeimg: "../static/image/worker.png",
+          afterChangeimg: "../static/image/workermanager.png"
         },
         {
           title: "预警",
-          beforeChangeimg: "/static/image/worker.png",
-          afterChangeimg: "/static/image/workermanager.png"
+          beforeChangeimg: "../static/image/worker.png",
+          afterChangeimg: "../static/image/workermanager.png"
         },
         {
           title: "设备管理",
-          beforeChangeimg: "/static/image/worker.png",
-          afterChangeimg: "/static/image/workermanager.png"
+          beforeChangeimg: "../static/image/worker.png",
+          afterChangeimg: "../static/image/workermanager.png"
         }
       ],
       //快速进入页面标题传到父组件头部
