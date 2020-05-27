@@ -44,10 +44,10 @@
                 v-model="scope.row.status"
                 on-color="#00A854"
                 on-text="启动"
-                on-value="1"
+                on-value="0"
                 off-color="#F04134"
                 off-text="禁止"
-                off-value="0"
+                off-value="1"
                 @change="changeSwitch(scope.row)"
               ></el-switch>
             </template>
@@ -118,12 +118,17 @@
           <el-input v-model="formTeam.account" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item prop="password" label="密码：">
-          <el-input type="password" v-model="formTeam.password" placeholder="请输入"></el-input>
+          <el-input
+            type="password"
+            v-model="formTeam.password"
+            placeholder="请输入"
+            autocomplete="new-password"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="confimPassword" label="确认密码：">
           <el-input type="password" v-model="formTeam.confimPassword" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="角色" prop="roles">
+        <el-form-item label="角色">
           <el-checkbox-group v-model="formTeam.roles" @change="handleCheckedRoleChange">
             <el-checkbox v-for="item in options" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
           </el-checkbox-group>
@@ -242,7 +247,11 @@ export default {
         { id: 3, name: "项目技术负责人" },
         { id: 4, name: "质量巡检人员" },
         { id: 5, name: "劳务管理人员" },
-        { id: 6, name: "数据管理人员" }
+        { id: 6, name: "数据管理人员" },
+        { id: 7, name: "劳务管理员" },
+        { id: 8, name: "劳务人员" },
+        { id: 9, name: "设备专用人员" },
+        { id: 10, name: "其他服务类人员" }
       ],
       titleLabor: "", // 标题
       seeBranch: false, // 创建班组弹窗
@@ -299,9 +308,7 @@ export default {
         });
       }
       var url =
-        "/smart/auth/" +
-        sessionStorage.getItem("userId") +
-        "/user";
+        "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/user";
       this.http
         .put(url, data)
         .then(res => {
@@ -324,38 +331,20 @@ export default {
         "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/user/management";
-      // this.http.post(url, data).then(res => {
-      //   if (res.code == 200) {
-      //     var total = res.data.total;
-      //     this.tableData = res.data.rows;
-      //     this.total = total;
-      //   }
-      // });
-        axios({
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: sessionStorage.getItem("token")
-            },
-            url:
-              "/systemUrl" +
-               "/smart/auth/" +
-              sessionStorage.getItem("userId") +
-              "/user/management",
-            data: data,
-            timeout: 5000 //响应时间
-          }).then(
-            res => {
-              if (res.code == 200) {
-                var total = res.data.total;
-                this.tableData = res.data.rows;
-                this.total = total;
-              }
-            },
-            err => {
-              return errorfun(err);
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.data.total;
+          this.tableData = res.data.rows;
+          for (var i = 0; i < this.tableData.length; i++) {
+            if (this.tableData[i].status == "0") {
+              this.tableData[i].status = true;
+            } else {
+              this.tableData[i].status = false;
             }
-          );
+          }
+          this.total = total;
+        }
+      });
     },
     //用户详情
     getUserdetail(index, row) {
@@ -363,7 +352,7 @@ export default {
       var uid = row.sysUserId;
       this.formTeam.sysUserId = uid;
       var url =
-        "/smart/auth/" +
+        "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/user/" +
         uid;
@@ -372,7 +361,11 @@ export default {
           //渲染数据
           var result = res.data;
           this.user = JSON.parse(JSON.stringify(result));
-          console.log(this.user);
+          if (this.user.status == "0") {
+            this.user.status = "启用";
+          } else {
+            this.user.status = "禁用";
+          }
         }
       });
       this.dialogFormVisibleDetail = true;
@@ -396,18 +389,46 @@ export default {
       // });
       // this.formTeam.roles = obj.id;
     },
+    //获得用户角色
+    getRoles() {
+      var data = JSON.stringify({
+        pageSize: 100,
+        page: 1,
+        roleName: ""
+      });
+      //请求
+      var url =
+        "/systemUrl/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/role/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+          var total = res.data.total;
+          var role = res.data.rows;
+          var roles = [];
+          for (var i = 0; i < role.length; i++) {
+            if(role[i].status=="0"){
+              roles.push({id:role[i].sysRoleId,name:role[i].roleName});
+            }
+          }
+          this.options=roles;
+        }
+      });
+    },
     //  新增
     addClick() {
       this.titleLabor = "新增用户";
+      this.getRoles();
       this.dialogVisibleTeam = true;
     },
     //  编辑回显
     editRowClick(inedx, row) {
       this.titleLabor = "编辑";
+      this.getRoles();
       var id = row.sysUserId;
       this.formTeam.sysUserId = id;
       var url =
-        "/smart/auth/" +
+        "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/user/" +
         id;
@@ -416,7 +437,6 @@ export default {
           //渲染数据
           var result = res.data;
           this.formTeam = JSON.parse(JSON.stringify(result));
-          console.log(res);
         }
       });
       this.dialogVisibleTeam = true;
@@ -433,7 +453,7 @@ export default {
         .then(res => {
           let data = JSON.stringify(ids);
           let url =
-            "/smart/auth/" +
+            "/systemUrl/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/user";
           this.http.delete(url, data).then(res => {
@@ -458,7 +478,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           let url =
-            "/smart/auth/" +
+            "/systemUrl/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/user";
           this.http.delete(url, data).then(res => {
@@ -489,14 +509,14 @@ export default {
               return;
             }
             let url =
-              "/smart/auth/" +
+              "/systemUrl/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/user";
             this.http
               .post(url, data)
               .then(res => {
                 if (res.code == 200) {
-                  this.dialogVisibleTeam = false;
+                  this.cloneTeamForm(refTeam);
                   this.$message("添加成功！");
                   this.getTable();
                 }
@@ -512,23 +532,23 @@ export default {
               return;
             }
             var url =
-              "/smart/auth/" +
+              "/systemUrl/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/user";
-            var data = JSON.stringify({
-              orgSite: form.orgSite,
-              userName: form.userName,
-              cellPhone: form.cellPhone,
-              account: form.cellPhone,
-              password: form.password,
-              roles: form.roles,
-              sysUserId: form.sysUserId
-            });
+            // var data = JSON.stringify({
+            //   orgSite: form.orgSite,
+            //   userName: form.userName,
+            //   cellPhone: form.cellPhone,
+            //   account: form.cellPhone,
+            //   password: form.password,
+            //   roles: form.roles,
+            //   sysUserId: form.sysUserId
+            // });
+            let data = JSON.stringify(this.formTeam);
             this.http
               .put(url, data)
               .then(res => {
                 if (res.code == 200) {
-                  console.log(form.roles);
                   this.cloneTeamForm(refTeam);
                   this.$message("编辑成功！");
                   this.getTable();

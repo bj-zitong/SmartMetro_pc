@@ -189,7 +189,6 @@ export default {
   methods: {
     changeSwitch(val) {
       //获得状态的值
-      console.log(val);
       var data = null;
       var status = val.status;
       if (status) {
@@ -205,10 +204,7 @@ export default {
           sysRoleId: val.sysRoleId
         });
       }
-      var url =
-        "/smart/auth/" +
-        sessionStorage.getItem("userId") +
-        "/role";
+      var url = "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
       this.http
         .put(url, data)
         .then(res => {
@@ -218,6 +214,9 @@ export default {
         .catch(res => {
           return false;
         });
+    },
+    handleCheckedRoleChange(){
+
     },
     // 表格加载请求
     getTable() {
@@ -235,6 +234,13 @@ export default {
         if (res.code == 200) {
           var total = res.data.total;
           this.tableData = res.data.rows;
+          for (var i = 0; i < this.tableData.length; i++) {
+            if (this.tableData[i].status == "0") {
+              this.tableData[i].status = true;
+            } else {
+              this.tableData[i].status = false;
+            }
+          }
           this.total = total;
         }
       });
@@ -250,14 +256,6 @@ export default {
       }
       return ids;
     },
-    //选中的角色
-    handleCheckedRoleChange() {
-      // let obj = new Array();
-      // obj = this.options.find(item => {
-      //   return item.id == vid; // 筛选出匹配数据
-      // });
-      // this.formTeam.roles = obj.id;
-    },
     //  新增
     addClick() {
       this.titleLabor = "新增角色";
@@ -269,18 +267,16 @@ export default {
       var id = row.sysRoleId;
       this.formTeam.sysRoleId = id;
       var url =
-        "/smart/auth/" +
-        sessionStorage.getItem("userId") +
-        "/role/" +
-        id;
+        "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role/" + id;
       this.http.get(url, null).then(res => {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
           this.formTeam = JSON.parse(JSON.stringify(result));
-          console.log(this.formTeam);
+          this.formTeam.permissionName=result.permissions;
         }
       });
+      //  this.formTeam = JSON.parse(JSON.stringify(row));
       this.dialogVisibleTeam = true;
     },
 
@@ -294,10 +290,7 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           let data = JSON.stringify(ids);
-          let url =
-            "/smart/auth/" +
-            sessionStorage.getItem("userId") +
-            "/role";
+          let url = "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
@@ -319,10 +312,7 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
-          let url =
-            "/smart/auth/" +
-            sessionStorage.getItem("userId") +
-            "/role";
+          let url = "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
@@ -349,9 +339,7 @@ export default {
               permissions: form.permissionName
             });
             let url =
-              "/smart/auth/" +
-              sessionStorage.getItem("userId") +
-              "/role";
+              "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
             this.http
               .post(url, data)
               .then(res => {
@@ -366,13 +354,11 @@ export default {
               });
           } else {
             var url =
-              "/smart/auth/" +
-              sessionStorage.getItem("userId") +
-              "/role";
+              "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
             var data = JSON.stringify({
               roleName: form.roleName,
               memo: form.memo,
-              permissions: form.permissionName,
+              permissions: [1,2],
               sysRoleId: form.sysRoleId
             });
             this.http
