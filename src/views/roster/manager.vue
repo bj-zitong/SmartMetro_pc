@@ -1,5 +1,5 @@
 <template>
-  <div class="roster" v-loading="loading">
+  <div class="roster">
     <!-- 头部 -->
     <el-container>
       <el-menu class="main-top-box">

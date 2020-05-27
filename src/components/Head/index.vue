@@ -121,7 +121,7 @@ export default {
 }
 
 .hed_tab /deep/ .el-tabs__nav-scroll {
-  // background: #0058a2 url('../../static/image/bj_login.png');
+  background: #0058a2 url('../../../static/image/bj_login.png');
   color: #fff;
   border-radius: 30px;
   letter-spacing: 4px;

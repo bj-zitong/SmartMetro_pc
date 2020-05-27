@@ -109,7 +109,7 @@ export default {
   watch: {
     sideBarData(newV,oldV) {
       console.log(newV)
-        if(newV.name=="首页" || newV.name=="工友须知" || newV.name=="开复工管理"|| newV.name=="工地管理"|| newV.name=="角色管理"|| newV.name=="用户管理"){
+        if(newV.name=="首页" || newV.name=="工友须知" || newV.name=="开复工管理"|| newV.name=="工地管理"|| newV.name=="角色管理"|| newV.name=="用户管理" || newV.name=="分析" || newV.name=="预警"){
            this.hideSidebar='display:none'
         }else{
            this.hideSidebar='display:block'

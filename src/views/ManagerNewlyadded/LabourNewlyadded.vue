@@ -134,7 +134,6 @@ export default {
     }
   },
   mounted() {
-    alert("9999");
     let Information = JSON.parse(sessionStorage.getItem("data"));
     if (Information != null) {
       console.log(Information.workerType);

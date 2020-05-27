@@ -15,7 +15,9 @@
 import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
-    return {}
+    return {
+      // visitedTabsView:[]
+    }
   },
   created() {
     this.addTabsView()
@@ -63,6 +65,7 @@ export default {
   },
   watch: {
     $route() {
+     
       // console.log(this.$route)
       this.addTabsView()
     }
