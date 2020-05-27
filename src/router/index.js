@@ -217,7 +217,7 @@ export const constantRouterMap = [
                 component: () =>
                     import('@/views/foreignpersonnel/index'),
                 meta: {
-                    icon: '../../static/image/sidebar_icon/Unchecked_Outlander.png',
+                    icon: '../../static/image/wlry.png',
                     AfterIcon: '../../static/image/wlry.png',
                     title: '外来人员',
                     enable: "Y",
@@ -895,7 +895,7 @@ export const constantRouterMap = [
             enable: "Y",
 
         },
-        redirect: 'south',
+        redirect: '/south',
         children: [
             {
                 path: '/south',

@@ -7,6 +7,10 @@ const tabsview = {
   },
   mutations: {
     [SET_TABSVIEW](state, view) {
+      if(view.query.code==1){
+       
+        state.visitedTabsView=[]
+      }
       if (state.visitedTabsView.find((n) => n.path === view.path)) {
         return
       }
@@ -23,6 +27,7 @@ const tabsview = {
   actions: {
     // 添加一个新的tabsView
     addVisitedTabsView({ commit }, view) {
+      
       commit(SET_TABSVIEW, view)
     },
     // 关闭一个tabsView
