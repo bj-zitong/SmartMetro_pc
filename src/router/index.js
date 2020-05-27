@@ -896,6 +896,8 @@ export const constantRouterMap = [
 
         },
         redirect: '/south',
+        // ln -s /root/nodejs/bin/node /usr/sbin/node
+        
         children: [
             {
                 path: '/south',
