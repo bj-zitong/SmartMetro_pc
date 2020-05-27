@@ -15,7 +15,6 @@ axios.interceptors.response.use(response => {//数据拿到之后
     return Promise.reject(error.response);
 });
 function successfun(res) {//处理后台返回的非200错误
-    console.log(res)
     if (res.code === 200) {
         return res
     }else{

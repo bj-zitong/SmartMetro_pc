@@ -4,9 +4,6 @@
     <el-container>
       <el-menu class="main-top-box pl30">
         <el-form :inline="true" ref="screenForm" :model="screenForm">
-          <!-- <el-form-item label="项目中心：" prop="projectName">
-            <el-input v-model="screenForm.projectName" placeholder="请输入"></el-input>
-          </el-form-item> -->
           <el-form-item prop="projectName" label="项目中心">
           <el-select v-model="screenForm.projectName" placeholder="请选择" @change="selectCenters">
             <el-option v-for="item in centers" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -50,7 +47,20 @@
           <el-table-column prop="responsiblePersonName" label="项目负责人姓名" min-width="100"></el-table-column>
           <el-table-column prop="cellPhone" label="联系电话" min-width="100"></el-table-column>
           <el-table-column prop="location" label="所在位置" min-width="120"></el-table-column>
-          <el-table-column prop="status" label="状态"></el-table-column>
+          <el-table-column prop="status" label="状态">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.status"
+                on-color="#00A854"
+                on-text="启动"
+                on-value="1"
+                off-color="#F04134"
+                off-text="禁止"
+                off-value="0"
+                @change="changeSwitch(scope.row)"
+              ></el-switch>
+            </template>
+          </el-table-column>
           <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
           <el-table-column label="操作" width="240" fixed="right">
             <template slot-scope="scope">
@@ -150,7 +160,7 @@ export default {
       titleLabor: "", // 标题
       screenForm: {
         //  筛选
-        projectName: "",
+        projectName: 0,
         section: "" //标段
       },
       options: [
@@ -217,6 +227,34 @@ export default {
     this.getTable();
   },
   methods: {
+     changeSwitch(val) {
+      //获得状态的值
+      var data = null;
+      var status = val.status;
+      if (status) {
+        //该状态为启用
+        data = JSON.stringify({
+          status: 0,
+          orgSiteId: val.orgSiteId
+        });
+        //禁用
+      } else {
+        data = JSON.stringify({
+          status: 1,
+          orgSiteId: val.orgSiteId
+        });
+      }
+      var url = "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/org";
+      this.http
+        .put(url, data)
+        .then(res => {
+          if (res.code == 200) {
+          }
+        })
+        .catch(res => {
+          return false;
+        });
+    },
     // 下拉框 中心
     selectProfession(vid) {
       let obj = {};
@@ -257,7 +295,29 @@ export default {
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.data.total;
-          this.tableData = res.data.orgSites;
+          this.tableData = res.data.rows;
+          for (var i = 0; i < this.tableData.length; i++) {
+            if(this.tableData[i].projectCenterId==1){
+               this.tableData[i].projectCenter = '中心一';
+            }else if(this.tableData[i].projectCenterId==2){
+               this.tableData[i].projectCenter = '中心二';
+            }else{
+               this.tableData[i].projectCenter = '中心三';
+            }
+            if(this.tableData[i].lineId==1){
+               this.tableData[i].line = '线路一';
+            }else if(this.tableData[i].lineId==2){
+               this.tableData[i].line = '线路二';
+            }else{
+               this.tableData[i].line = '线路三';
+            }
+
+            if (this.tableData[i].status == "0") {
+              this.tableData[i].status = true;
+            } else {
+              this.tableData[i].status = false;
+            }
+          }
           this.total = total;
         }
       });
@@ -281,14 +341,14 @@ export default {
           let form = this.$refs[refLabor].model;
           // 判断id是否为空 /smart/auth/{userId}/org
           var url =
-            "/smart/auth/" +
+            "/systemUrl/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/org";
           if (form.orgSiteId == null) {
             //this.formLabor
             let data = JSON.stringify({
               projectCenterId:form.projectCenter,
-              line:form.line,
+              lineId:form.line,
               siteName:form.siteName,
               buildCorpName:form.buildCorpName,
               responsiblePersonName:form.responsiblePersonName,
@@ -300,8 +360,8 @@ export default {
               .then(res => {
                 if (res.code == 200) {
                   this.$message("添加成功！");
+                  this.cloneLaborForm(refLabor);
                   this.getTable();
-                  this.dialogVisibleLabor = false;
                 }
               })
               .catch(res => {
@@ -310,12 +370,12 @@ export default {
           } else {
             let data = JSON.stringify(this.formLabor);
             var url =
-              "/smart/auth/" +
+              "/systemUrl/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/org";
             var data = JSON.stringify({
               projectCenterId: form.projectCenter,
-              line: form.line,
+              lineId: form.line,
               siteName: form.siteName,
               buildCorpName:form.buildCorpName,
               responsiblePersonName: form.responsiblePersonName,
@@ -328,7 +388,7 @@ export default {
               .then(res => {
                 if (res.code == 200) {
                   this.$message("编辑成功！");
-                  this.cloneLaborForm();
+                  this.cloneLaborForm(refLabor);
                   this.getTable();
                 }
               })
@@ -358,7 +418,7 @@ export default {
       var id = row.orgSiteId;
       // this.formLabor = row;
       var url =
-        "/smart/auth/" +
+        "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/org/" +
         id;
@@ -367,7 +427,8 @@ export default {
           //渲染数据
           var result = res.data;
           this.formLabor = JSON.parse(JSON.stringify(result));
-          console.log(this.formLabor);
+          this.formLabor.projectCenter=result.projectCenterId;
+          this.formLabor.line=result.lineId;
         }
       });
       this.dialogVisibleLabor = true;
@@ -383,7 +444,7 @@ export default {
         .then(res => {
           let data = JSON.stringify(ids);
           let url =
-            "/smart/auth/" +
+            "/systemUrl/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/org";
           this.http.delete(url, data).then(res => {
@@ -408,7 +469,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/auth/" +
+            "/systemUrl/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/org";
           this.http.delete(url, data).then(res => {
