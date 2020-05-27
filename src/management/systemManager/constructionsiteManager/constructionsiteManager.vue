@@ -251,8 +251,7 @@ export default {
       });
       //请求
       var url =
-        this.PersonnelLocalhosts +
-        "/smart/auth/" +
+        "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/org/management";
       this.http.post(url, data).then(res => {
@@ -282,7 +281,6 @@ export default {
           let form = this.$refs[refLabor].model;
           // 判断id是否为空 /smart/auth/{userId}/org
           var url =
-            this.PersonnelLocalhosts +
             "/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/org";
@@ -312,7 +310,6 @@ export default {
           } else {
             let data = JSON.stringify(this.formLabor);
             var url =
-              this.PersonnelLocalhosts +
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/org";
@@ -361,7 +358,6 @@ export default {
       var id = row.orgSiteId;
       // this.formLabor = row;
       var url =
-        this.PersonnelLocalhosts +
         "/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/org/" +
@@ -387,7 +383,6 @@ export default {
         .then(res => {
           let data = JSON.stringify(ids);
           let url =
-            this.PersonnelLocalhosts +
             "/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/org";
@@ -413,7 +408,6 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            this.PersonnelLocalhosts +
             "/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/org";

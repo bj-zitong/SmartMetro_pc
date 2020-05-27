@@ -213,7 +213,7 @@ export default {
               Authorization: sessionStorage.getItem("token")
             },
             url:
-              "/api" +
+              "/systemUrl" +
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/password/change",

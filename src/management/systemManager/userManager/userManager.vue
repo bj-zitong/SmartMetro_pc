@@ -206,6 +206,7 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "@/components/pagination";
+import axios from "axios";
 export default {
   name: "main-box",
   components: {
@@ -298,7 +299,6 @@ export default {
         });
       }
       var url =
-        this.PersonnelLocalhosts +
         "/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/user";
@@ -321,38 +321,41 @@ export default {
       });
       //请求
       var url =
-        this.PersonnelLocalhosts +
-        "/smart/auth/" +
+        "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/user/management";
-      this.http.post(url, data).then(res => {
-        if (res.code == 200) {
-          var total = res.data.total;
-          this.tableData = res.data.rows;
-          this.total = total;
-        }
-      });
-      var result = [
-        {
-          sysUserId: 1,
-          userName: "张三",
-          status: true,
-          cellPhone: "15236985236",
-          roleName: "项目负责人",
-
-          createTime: "2019-10-01"
-        },
-        {
-          sysUserId: 2,
-          userName: "李四",
-          status: false,
-          cellPhone: "13752369875",
-          roleName: "项目负责人",
-          createTime: "2019-10-01"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
+      // this.http.post(url, data).then(res => {
+      //   if (res.code == 200) {
+      //     var total = res.data.total;
+      //     this.tableData = res.data.rows;
+      //     this.total = total;
+      //   }
+      // });
+        axios({
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: sessionStorage.getItem("token")
+            },
+            url:
+              "/systemUrl" +
+               "/smart/auth/" +
+              sessionStorage.getItem("userId") +
+              "/user/management",
+            data: data,
+            timeout: 5000 //响应时间
+          }).then(
+            res => {
+              if (res.code == 200) {
+                var total = res.data.total;
+                this.tableData = res.data.rows;
+                this.total = total;
+              }
+            },
+            err => {
+              return errorfun(err);
+            }
+          );
     },
     //用户详情
     getUserdetail(index, row) {
@@ -360,7 +363,6 @@ export default {
       var uid = row.sysUserId;
       this.formTeam.sysUserId = uid;
       var url =
-        this.PersonnelLocalhosts +
         "/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/user/" +
@@ -405,7 +407,6 @@ export default {
       var id = row.sysUserId;
       this.formTeam.sysUserId = id;
       var url =
-        this.PersonnelLocalhosts +
         "/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/user/" +
@@ -432,7 +433,6 @@ export default {
         .then(res => {
           let data = JSON.stringify(ids);
           let url =
-            this.PersonnelLocalhosts +
             "/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/user";
@@ -458,7 +458,6 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           let url =
-            this.PersonnelLocalhosts +
             "/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/user";
@@ -490,7 +489,6 @@ export default {
               return;
             }
             let url =
-              this.PersonnelLocalhosts +
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/user";
@@ -514,7 +512,6 @@ export default {
               return;
             }
             var url =
-              this.PersonnelLocalhosts +
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/user";
