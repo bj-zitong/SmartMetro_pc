@@ -1,6 +1,6 @@
 <template>
   <div class="top-navbar">
-    <headUser />
+    <headUser :tabTitle="tabTitle" />
     <el-tabs
       v-model="editableTabsValue"
       type="border-card"
@@ -72,6 +72,8 @@ export default {
           afterChangeimg: "/static/image/workermanager.png"
         }
       ],
+      //快速进入页面标题传到父组件头部
+      tabTitle: "",
       editableTabsValue: "",
       num: 0,
       list: ""
@@ -106,16 +108,19 @@ export default {
       this.editableTabsValue = "用户管理";
       this.$emit("selectNavBar", "用户管理");
       this.$router.push({ path: "/userManager" });
+      this.tabTitle = "系统管理";
       this.num = 0;
     } else if (this.$route.query.code == 2) {
-       this.editableTabsValue = "预览";
+      this.editableTabsValue = "预览";
       this.$emit("selectNavBar", "预览");
       this.$router.push({ path: "/south" });
+      this.tabTitle = "视频监控管理";
       this.num = 0;
     } else {
       this.editableTabsValue = "首页";
       this.$emit("selectNavBar", "首页");
       this.$router.push({ path: "/homeShow" });
+      this.tabTitle = "人员智慧管理";
       this.num = 0;
     }
   },

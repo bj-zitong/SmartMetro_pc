@@ -25,12 +25,12 @@ let regId = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
 let emailReg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
 
 let FormValidate = (function () {
-  function FormValidate () {}
+  function FormValidate() { }
   // From表单验证规则  可用于公用的校验部分
   FormValidate.Form = function () {
     return {
       // 账号的验证规则
-      validateCode (rule, value, callback) {
+      validateCode(rule, value, callback) {
         if (!value) {
           return callback(new Error('请输入账号'))
         }
@@ -42,7 +42,7 @@ let FormValidate = (function () {
       },
 
       // 只能数字的验证
-      validateNumber (rule, value, callback) {
+      validateNumber(rule, value, callback) {
         if (value !== '') {
           if (!numberReg.test(value)) {
             callback(new Error('必须为数字'))
@@ -55,7 +55,7 @@ let FormValidate = (function () {
       },
 
       // 密码的验证
-      validatePsdReg (rule, value, callback) {
+      validatePsdReg(rule, value, callback) {
         if (!value) {
           return callback(new Error('请输入密码'))
         }
@@ -67,7 +67,7 @@ let FormValidate = (function () {
       },
 
       // 联系人
-      validateContacts (rule, value, callback) {
+      validateContacts(rule, value, callback) {
         if (!value) {
           return callback(new Error('请输入联系人'))
         }
@@ -79,7 +79,7 @@ let FormValidate = (function () {
       },
 
       // 邮箱的验证规则
-      validateEmail (rule, value, callback) {
+      validateEmail(rule, value, callback) {
         if (value !== '') {
           if (!emailReg.test(value)) {
             callback(new Error('邮箱格式不正确'))
@@ -92,7 +92,7 @@ let FormValidate = (function () {
       },
 
       // 电话号码的验证
-      validatePhone (rule, value, callback) {
+      validatePhone(rule, value, callback) {
         if (!value) {
           return callback(new Error('请输入手机号码'))
         }
@@ -104,7 +104,8 @@ let FormValidate = (function () {
       },
 
       // 身份证的验证规则
-      ID (rule, value, callback) {
+      ID(rule, value, callback) {
+        console.log(value)
         if (!value) {
           return callback(new Error('身份证不能为空'))
         }
@@ -193,6 +194,7 @@ let FormValidate = (function () {
             callback(new Error('身份证号校验位错误'))
           }
         }
+        return pass;
       }
       // return pass;
     }

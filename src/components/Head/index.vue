@@ -3,7 +3,7 @@
     <el-menu mode="horizontal" text-color="#fff" active-text-color="#fff">
       <div>
         <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
-        <div index="1" class="title-name" @click="homepage" title="返回首页">城市轨道交通智慧工地管理系统—人员智慧管理</div>
+        <div index="1" class="title-name" @click="homepage" title="返回首页">城市轨道交通智慧工地管理系统—{{tabTitle}}</div>
       </div>
       <div class="avatar-container">
         <div class="exit_login">
@@ -39,11 +39,14 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
+  props: {
+    tabTitle: String,
+  },
   name: "",
   data() {
     return {
-      username:'',
-      orgSite:''
+      username: "",
+      orgSite: ""
     };
   },
   computed: {
@@ -51,19 +54,18 @@ export default {
   },
   mounted() {
     // var getuser = sessionStorage.setItem('user',res.data);
-    var getuser = JSON.parse(sessionStorage.getItem('user'));
-      this.username=getuser.name
-      this.orgSite=getuser.orgSite
+    var getuser = JSON.parse(sessionStorage.getItem("user"));
+    this.username = getuser.name;
+    this.orgSite = getuser.orgSite;
   },
   methods: {
-    
     logout() {
       this.$router.push({ path: "/login" });
     },
     ...mapActions({
       userLogout: "logout"
     }),
-    homepage(){
+    homepage() {
       this.$router.push({ path: "/Selectpage" });
     }
   }
@@ -89,7 +91,7 @@ export default {
   font-size: 24px;
   font-weight: bold;
   color: rgba(255, 255, 255, 1);
-  cursor:pointer
+  cursor: pointer;
 }
 
 .top-navbar .screenfull {

@@ -129,11 +129,12 @@ export default {
     };
   },
   watch: {
-    demo(val) {
-      this.value = this.demo;
+    getField(val) {
+      alert("6666");
     }
   },
   mounted() {
+    alert("9999");
     let Information = JSON.parse(sessionStorage.getItem("data"));
     if (Information != null) {
       console.log(Information.workerType);
@@ -167,13 +168,6 @@ export default {
       this.SourceInformation = false;
     }
   },
-  watch: {
-    // allArr(newName, oldName) {
-    //   var arr = []
-    //   arr.push(newName)
-    //   sessionStorage.setItem('arr',JSON.stringify(arr))
-    // }
-  },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
@@ -190,6 +184,7 @@ export default {
     handleChange() {},
     //个人基本信息
     getField(v) {
+      alert("22222")
       sessionStorage.setItem("personalPersonal", JSON.stringify(v));
       this.contractInformation = false;
       this.activeName = "third";
@@ -197,6 +192,7 @@ export default {
 
     //合同信息
     getContractInformation(v) {
+      alert("33333")
       sessionStorage.setItem("getContractInformation", JSON.stringify(v));
       this.payrollRecords = false;
       this.activeName = "fourth";
