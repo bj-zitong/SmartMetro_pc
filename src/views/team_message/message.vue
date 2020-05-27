@@ -400,7 +400,7 @@ export default {
       }
       return ids;
     },
-    changeFunPerson() {
+    changeFunPerson(val) {
       var ids = [];
       var arrays = this.$refs.multipleTable2.selection;
       for (var i = 0; i < arrays.length; i++) {
@@ -408,6 +408,8 @@ export default {
         ids.push(arrays[i].personId);
       }
       this.selectedPersonIds = ids;
+      this.multipleSelection = val;
+      console.log(val);
       return ids;
     },
     // 批量删除
@@ -601,22 +603,34 @@ export default {
       //设置全局变量
       this.id = uid;
     },
+    //选中的值
+     toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable2.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable2.clearSelection();
+        }
+      },
     //选择人员赋值
     selectPerson() {
+      console.log(this.selectedPersonIds);
       this.innerVisible = true;
       this.persons = [
         { personId: 1, jobNumber: "1111", personName: "aaaaa" },
         { personId: 2, jobNumber: "2222", personName: "b5bbbb" },
         { personId: 3, jobNumber: "3333", personName: "cc999ccc" }
       ];
-      if (this.selectedPersonIds != undefined) {
-        for (var i = 0; i < this.selectedPersonIds.length; i++) {
-          if (this.persons[i].containSpace == 1) {
-            //这是默认选中上的
-            this.$refs.multipleTable2.toggleRowSelection(this.persons[i], true);
-          }
-        }
-      }
+      //  this.$refs.multipleTable2.toggleRowSelection(this.persons[2], true);
+      // if (this.selectedPersonIds != undefined) {
+      //   for (var i = 0; i < this.selectedPersonIds.length; i++) {
+      //     if (this.persons[i].containSpace == 1) {
+      //       //这是默认选中上的
+      //       this.$refs.multipleTable2.toggleRowSelection(this.persons[2], true);
+      //     }
+      //   }
+      // }
     },
     //讲话
     addSpeech(row) {
