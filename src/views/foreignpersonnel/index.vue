@@ -20,9 +20,6 @@
         <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
         <el-button @click="deleteAll" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
         <el-button @click="poiExcel" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
-        <router-link :to="{path: '/userManager' }" style="color:#0058A2">马上登录</router-link>
-        <router-link :to="{path: '/roleManager' }" style="color:#0058A2">马上登录</router-link>
-        <router-link :to="{path: '/constructionsiteManager' }" style="color:#0058A2">马上登录</router-link>
         <div class="table-content">
           <el-table
             :data="tableData"
