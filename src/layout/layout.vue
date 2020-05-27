@@ -2,7 +2,7 @@
   <div class="app-wrapper">
     <navbar @selectNavBar="selectNavBar"></navbar>
     <sidebar :sideBarData="sideBarData"></sidebar>
-    <div :class="hideMainContainer=='首页'||hideMainContainer=='工友须知'||hideMainContainer=='开复工管理'||hideMainContainer=='工地管理'||hideMainContainer=='角色管理'||hideMainContainer=='用户管理'?'main-container1':'main-container'"
+    <div :class="hideMainContainer=='首页'||hideMainContainer=='工友须知'||hideMainContainer=='开复工管理'||hideMainContainer=='工地管理'||hideMainContainer=='角色管理'||hideMainContainer=='用户管理'||hideMainContainer=='分析'||hideMainContainer=='预警'?'main-container1':'main-container'"
     >
       <tabs-view></tabs-view>
       <app-main></app-main>

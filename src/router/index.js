@@ -884,6 +884,7 @@ export const constantRouterMap = [
             },
         ]
     },
+    // 视频监控管理-预览
     {
         path: '/south',
         name: '预览',
@@ -895,7 +896,7 @@ export const constantRouterMap = [
             enable: "Y",
 
         },
-        redirect: '/south',
+        redirect: 'south',
         children: [
             {
                 path: '/south',
@@ -903,8 +904,8 @@ export const constantRouterMap = [
                     import('@/management/videoMonitoring/south'),
                 // alwaysShow: false,
                 meta: {
-                    icon: '../static/image/lwgl.png',
-                    AfterIcon: '../static/image/lwgl.png',
+                    icon: '../../static/image/lwgl.png',
+                    AfterIcon: '../../static/image/lwgl.png',
                     title: '南门大区',
                     enable: "Y",
                     parent: '预览',
@@ -919,7 +920,7 @@ export const constantRouterMap = [
                 // alwaysShow: true,
                 meta: {
                     title: '生活区',
-                    icon: '../static/image/roster.png',
+                    icon: '../../static/image/roster.png',
                     enable: "Y",
                     parent: '预览'
                 },
@@ -947,8 +948,8 @@ export const constantRouterMap = [
                 component: () =>
                     import('@/management/videoMonitoring/north'),
                 meta: {
-                    icon: '../static/image/Statisticsscreen/gl_top.png',
-                    AfterIcon: '../static/image/wlry.png',
+                    icon: '../../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../../static/image/wlry.png',
                     title: '北区',
                     enable: "Y",
                     parent: '预览'
@@ -962,8 +963,8 @@ export const constantRouterMap = [
                 component: () =>
                     import('@/management/videoMonitoring/east'),
                 meta: {
-                    icon: '../static/image/Statisticsscreen/gl_top.png',
-                    AfterIcon: '../static/image/wlry.png',
+                    icon: '../../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../../static/image/wlry.png',
                     title: '东区',
                     enable: "Y",
                     parent: '预览'
@@ -977,11 +978,89 @@ export const constantRouterMap = [
                 component: () =>
                     import('@/management/videoMonitoring/Western'),
                 meta: {
-                    icon: '../static/image/Statisticsscreen/gl_top.png',
-                    AfterIcon: '../static/image/wlry.png',
+                    icon: '../../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../../static/image/wlry.png',
                     title: '西区',
                     enable: "Y",
                     parent: '预览'
+                },
+                children: []
+            },
+        ]
+    },
+    // 视频监控管理-分析
+    {
+        path: '/analyze',
+        name: '分析',
+        component: Layout,
+        meta: {
+            icon: '',
+            title: '分析',
+            enable: "Y",
+            parent: '分析'
+        },
+        redirect: '/analyze',
+        children: [
+            {
+                path: '/analyze',
+                name: 'analyze',
+                component: () => import('@/management/videoMonitoring/analyze/index'),
+                meta: {
+                    title: '分析',
+                    enable: "Y",
+                    parent: '分析'
+                },
+                children: []
+            },
+        ]
+    },
+    // 视频监控管理-预警
+    {
+        path: '/configUraition',
+        name: '预警',
+        component: Layout,
+        meta: {
+            icon: '',
+            title: '预警',
+            enable: "Y",
+            parent: '预警'
+        },
+        redirect: '/configUraition',
+        children: [
+            {
+                path: '/configUraition',
+                name: 'configUraition',
+                component: () => import('@/management/videoMonitoring/configUraition/index'),
+                meta: {
+                    title: '预警',
+                    enable: "Y",
+                    parent: '预警'
+                },
+                children: []
+            },
+        ]
+    },
+    // 视频监控管理-设备管理
+    {
+        path: '/device',
+        name: '设备管理',
+        component: Layout,
+        meta: {
+            icon: '',
+            title: '设备管理',
+            enable: "Y",
+            parent: '设备管理'
+        },
+        redirect: '/device',
+        children: [
+            {
+                path: '/device',
+                name: 'device',
+                component: () => import('@/management/videoMonitoring/device/index'),
+                meta: {
+                    title: '设备管理',
+                    enable: "Y",
+                    parent: '设备管理'
                 },
                 children: []
             },

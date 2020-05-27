@@ -7,45 +7,32 @@
                         <img src="../../assets/images/videoMonitoring/HD.png" alt="">
                     </div>
                     <div class="switch-grid">
-                        <el-dropdown trigger="click" @command="handleCompanyChange">
+                        <el-dropdown trigger="click" @command="screenChange">
                             <span class="el-dropdown-link switch-link">
                                 <img src="../../assets/images/videoMonitoring/HD.png" width="50%" height="50%" alt="">
                                 <i class="el-icon-caret-bottom el-icon--right" style="padding-top:5px;"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item 
-                                    v-for="(item,index) in companyOptions" 
-                                    :key="index" 
-                                    :command="item"
-                                >
-                                    {{item.name}}
-                                </el-dropdown-item>
-                                <!-- <el-dropdown-item
-                                v-for="item in index"
-                                :key="item"
-                                :command="item.name">{{item.name}}</el-dropdown-item> -->
-                                <!-- <el-dropdown-item command="bb">4</el-dropdown-item> -->
-                                <!-- <el-dropdown-item>1+5</el-dropdown-item>
-                                <el-dropdown-item>3+4</el-dropdown-item>
-                                <el-dropdown-item>1+7</el-dropdown-item>
-                                <el-dropdown-item>9</el-dropdown-item>
-                                <el-dropdown-item>1+12</el-dropdown-item>
-                                <el-dropdown-item>16</el-dropdown-item>
-                                <el-dropdown-item>2+18</el-dropdown-item> -->
+                                    v-for="list in playerBtnGroup" 
+                                    :key="list.num" 
+                                    :command="list.name"
+                                >{{list.name}}</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </div>
                     <div class="switch-layout">
-                        <el-dropdown trigger="click">
+                        <el-dropdown trigger="click" @command="screenChange">
                             <span class="el-dropdown-link switch-link">
                                 <img src="../../assets/images/videoMonitoring/HD.png" width="50%" height="50%" alt="">
                                 <i class="el-icon-caret-bottom el-icon--right" style="padding-top:5px;"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item>25</el-dropdown-item>
-                                <el-dropdown-item>36</el-dropdown-item>
-                                <el-dropdown-item>49</el-dropdown-item>
-                                <el-dropdown-item>64</el-dropdown-item>
+                                <el-dropdown-item
+                                    v-for="(item1,index1) in numOptions" 
+                                    :key="index1.id" 
+                                    :command="item1.name"
+                                >{{item1.name}}</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </div>
@@ -59,19 +46,38 @@
 export default {
     data() {
         return {
-            companyOptions:[
-                {item:'1', index: 1},
-                {item:'4', index: 2}
+            // 切换格子分屏
+            
+            // 切换数字分屏
+            numOptions:[
+                {name:'25', id: 1},
+                {name:'36', id: 2},
+                {name:'49', id: 3},
+                {name:'64', id: 4}
             ]
         }
     },
-    created() {
-
-    },
     methods: {
-        handleCompanyChange(command){
+        playerBtnGroup() {
+            let list = [
+                {name:'1', id: 1},
+                {name:'4', id: 2},
+                {name:'1+5', id: 3},
+                {name:'3+4', id: 4},
+                {name:'1+7', id: 5},
+                {name:'9', id: 6},
+                {name:'1+12', id: 7},
+                {name:'16', id: 8},
+                {name:'2+18', id: 9}
+            ]
+        },
+        handleGridChange(command){
             console.log("command",command);
-        }
+        },
+        handleNumChange(command){
+            console.log("command",command);
+        },
+        
     }
 }
 </script>
