@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 // import router from '../router';
-let localhosts = 'http://192.168.1.100:8002';   //请求的后台域名
+// let localhosts = 'http://192.168.1.100:8002';   //请求的后台域名
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
     return config
 }, error => {
@@ -31,23 +31,41 @@ function errorfun(res) {
 }
 export default {
     post(url, data) {//post请求
-        return axios({
-            method: 'post',
-            headers: {
-                Authorization: sessionStorage.getItem('token'),
-                'Content-Type': 'application/json',
-            },
-            baseURL: localhosts,
-            url,
-            data: data,
-            withCredentials: true,
-            timeout: 5000,//响应时间,
-            responseType: "arraybuffer"
-        }).then(res => {
+        // return axios({
+        //     method: 'post',
+        //     headers: {
+        //         Authorization: sessionStorage.getItem('token'),
+        //         'Content-Type': 'application/json',
+        //     },
+        //     baseURL: ,
+        //     url,
+        //     data: data,
+        //     withCredentials: true,
+        //     timeout: 5000,//响应时间,
+        //     responseType: "arraybuffer"
+        // }).then(res => {
+        //     return successfun(res)
+        // }, err => {
+        //     return errorfun(err);
+        // })
+        return  axios({
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: sessionStorage.getItem("token")
+          },
+          url:url,
+          data: data,
+          withCredentials: true,
+          timeout: 5000 //响应时间
+        }).then(
+          res => {
             return successfun(res)
-        }, err => {
+          },
+          err => {
             return errorfun(err);
-        })
+          }
+        );
     },
     post2(url,data){//post请求
       return axios({
@@ -55,8 +73,7 @@ export default {
           headers:{
                'Content-Type': 'application/json'
           },
-          baseURL:url,
-
+          url:url,
           data: data,
           withCredentials: true,
           timeout:5000,//响应时间,
@@ -74,8 +91,7 @@ export default {
                 Authorization: sessionStorage.getItem('token'),
                 'Content-Type': 'application/json',
             },
-            baseURL: localhosts,
-            url,
+            url:url,
             params,
             withCredentials: true,
             timeout: 5000,
@@ -92,8 +108,7 @@ export default {
                 Authorization: sessionStorage.getItem('token'),
                 'Content-Type': 'application/json',
             },
-            baseURL: localhosts,
-            url,
+            url:url,
             data: data,
             withCredentials: true,
             timeout: 5000,
@@ -110,8 +125,7 @@ export default {
                 Authorization: sessionStorage.getItem('token'),
                 'Content-Type': 'application/json',
             },
-            baseURL: localhosts,
-            url,
+            url:url,
             data: data,
             withCredentials: true,
             timeout: 5000,//响应时间

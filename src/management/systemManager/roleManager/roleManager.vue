@@ -206,7 +206,6 @@ export default {
         });
       }
       var url =
-        this.PersonnelLocalhosts +
         "/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/role";
@@ -229,8 +228,7 @@ export default {
       });
       //请求
       var url =
-        this.PersonnelLocalhosts +
-        "/smart/auth/" +
+        "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/role/management";
       this.http.post(url, data).then(res => {
@@ -240,26 +238,6 @@ export default {
           this.total = total;
         }
       });
-       var result = [
-        {
-          sysRoleId: 1,
-          roleName: "张三",
-          status: true,
-          permissionName: "项目负责人",
-          memo: "15236985236",
-          createTime: "2019-10-01"
-        },
-        {
-          sysRoleId: 2,
-          roleName: "李四",
-          status: false,
-          permissionName: "项目负责人",
-          memo: "13752369875",
-          createTime: "2019-10-01"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     //获得表格前面选中的id值
     handleSelectionChange() {
@@ -291,7 +269,6 @@ export default {
       var id = row.sysRoleId;
       this.formTeam.sysRoleId = id;
       var url =
-        this.PersonnelLocalhosts +
         "/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/role/" +
@@ -318,7 +295,6 @@ export default {
         .then(res => {
           let data = JSON.stringify(ids);
           let url =
-            this.PersonnelLocalhosts +
             "/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/role";
@@ -344,7 +320,6 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           let url =
-            this.PersonnelLocalhosts +
             "/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/role";
@@ -374,7 +349,6 @@ export default {
               permissions: form.permissionName
             });
             let url =
-              this.PersonnelLocalhosts +
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/role";
@@ -392,7 +366,6 @@ export default {
               });
           } else {
             var url =
-              this.PersonnelLocalhosts +
               "/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/role";

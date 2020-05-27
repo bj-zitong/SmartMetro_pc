@@ -10,14 +10,22 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {
-        target: 'http://192.168.1.108:8001',
+      '/systemUrl': {
+        target: 'http://192.168.1.30:8001', //系统
         secure: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/api': 'http://192.168.1.108:8001'
+          '^/systemUrl': 'http://192.168.1.30:8001'
         }
-      }
+      },
+      '/bashUrl': {
+        target: 'http://192.168.1.100:8001',
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/bashUrl': 'http://192.168.1.100:8001'
+        }
+      },
     },
 
     // Various Dev Server settings

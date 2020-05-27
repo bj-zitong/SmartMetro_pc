@@ -158,6 +158,7 @@ export default {
                 sessionStorage.setItem("userId", res.data.userId);
                 sessionStorage.setItem("user", JSON.stringify(res.data));
                 sessionStorage.setItem("token", res.data.token);
+                console.log(sessionStorage.getItem('token'));
                 this.loading = true;
                 this.$message("登录成功！");
                 this.$router.push({ path: "/Selectpage" });
