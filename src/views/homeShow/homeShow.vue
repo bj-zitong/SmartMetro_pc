@@ -883,33 +883,82 @@ export default {
             let right1 = this.$echarts.init(document.getElementById("right1"));
             //  绘制图表
             let right1Option = {
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        label: {
-                            backgroundColor: '#6a7985'
+                    tooltip: {
+                        trigger: 'axis',
+                        borderWidth:'0',
+                        backgroundColor:'#0058A2',
+                        formatter: function(params, ticket, callback) {
+                            console.log(params,'params')
+                            console.log(ticket,'ticket')
+                            console.log(callback,'callback')
+                            let res = `<div><div style="background: #008EFE;">${params[0].axisValue}</div></div><div style="background: #0058A2;padding-top:10px;">人数：${params[0].data}</div></div>`;
+                            return res;
                         }
-                    }
-                },
-                grid: {
-                    top: '30%',
-                    left: '15%',
-                    right: '15%',
-                    bottom:'15%'
-                },
-                xAxis: {
-                    type: 'category',
-                    data: ['5-1', '5-2', '5-3', '5-4', '5-5', '5-6', '5-7']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [{
-                    data: [820, 932, 901, 934, 1290, 1330, 1320],
-                    type: 'line'
-                }]
-            };
+                    },
+                    grid: {
+                        top: '30%',
+                        left: '15%',
+                        right: '15%',
+                        bottom:'15%'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        name:'日期',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#333'
+                            }
+                        },
+                        axisTick: {
+                        show: false  
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#F6F7F8' 
+                            }
+                        },
+                        data: ['5月1日', '5月2日', '5月3日', '5月4日', '5月5日', '5月6日', '5月7日']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name:'人数',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#333'
+                            }
+                        },
+                        axisTick: {
+                        show: false  
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#F6F7F8' 
+                            }
+                        },
+                        splitLine: {
+                        lineStyle:{
+                            color: '#F6F7F8'
+                        }  
+                        },
+                    },
+                    series: [{
+                        data: [820, 932, 901, 934, 1290, 1330, 1320],
+                        type: 'line',
+                        symbol: 'circle',
+                        symbolSize: 8,
+                        itemStyle:{
+                            normal:{
+                                color:'#2499FF', //折点颜色
+                                lineStyle:{
+                                    width:2,
+                                    color:'#2499FF' //折线颜色
+                                }
+                            }
+                        }
+                    }]
+                };
             right1.setOption(right1Option)
             window.addEventListener("resize", function () {
                 right1.resize();

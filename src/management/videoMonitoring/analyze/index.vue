@@ -64,7 +64,9 @@
             </div>
         </div>
         <div class="main-con">
-            <div>1</div>
+            <div>
+                <div id="left4" style="width: 100%; height: 100%;"></div>
+            </div>
             <div>
                 <div>1</div>
                 <div>2</div>
@@ -84,6 +86,7 @@ export default {
         this.drawLeft1();
         this.drawLeft2();
         this.drawLeft3();
+        this.drawLeft4();
     },
     methods: {
         drawLeft1() {
@@ -242,6 +245,117 @@ export default {
             left3.setOption(option)
             window.addEventListener("resize", function () {
                 left3.resize();
+            });
+        },
+        drawLeft4() {
+            //  获取echarts
+            let left4 = this.$echarts.init(document.getElementById("left4"));
+            //  绘制图表
+            let option = {
+                title : {
+                    text: '近6月已确认报警状态统计',
+                    textStyle:{
+                        color:"#394565"
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985',
+                        },
+                    }
+                },
+                grid: {
+                    left: '5%',
+                    right: '5%',
+                    top:'20%',
+                    bottom: '5%',
+                    containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['2020/02', '2020/03', '2020/04', '2020/05', '2020/06', '2020/07'],
+                    axisTick: {
+                                    show: false  
+                                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '##8995CB' //字体颜色
+                        }
+                    },
+                    splitLine:{
+                        show:false
+                        
+                    },
+                }],
+                yAxis: [{
+                    type: 'value',
+                    axisTick: {
+                                    show: false  
+                                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '##8995CB' //字体颜色
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color: '#D6DEE5'
+                            
+                        }
+                        
+                    },
+                }],
+                series: [
+                    {
+                        name: '报警状态',
+                        type: 'line',
+                        smooth: true,
+                        //  symbol: "none", //去掉折线点
+                        stack: 100,
+                        itemStyle: {
+                            normal: { 
+                                color: '#399DF2'
+                                // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                //     offset: 0,
+                                //     color: '#399DF2' // 0% 处的颜色
+                                // }, {
+                                //     offset: 0.5,
+                                //     color: '#399DF2' // 100% 处的颜色
+                                // }, {
+                                //     offset: 1,
+                                //     color: '#FFFFFF' // 100% 处的颜色
+                                // }]), //背景渐变色
+                                // lineStyle: { // 系列级个性化折线样式
+                                //     width: 0.5,
+                                //     type: 'solid',
+                                //     color: "#399DF2"
+                                // }
+                            }
+                        }, //线条样式
+                        symbolSize: 8, //折线点的大小
+                        areaStyle: {
+                            normal: {}
+                        },
+                        data: [20, 60, 50, 80, 120, 100],
+                    },
+                ]
+            };
+            left4.setOption(option)
+            window.addEventListener("resize", function () {
+                left4.resize();
             });
         }
     }
