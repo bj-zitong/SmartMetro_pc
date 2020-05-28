@@ -1,5 +1,11 @@
 <template>
-  <div class="main-box">
+  <div
+    class="main-box"
+    v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <!-- 筛选 -->
     <el-container>
       <el-menu class="main-top-box pl30">
@@ -8,7 +14,7 @@
             <el-input v-model="screenForm.searchName" placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="getTable()" style="margin-left:30px;">查询</el-button>
+            <el-button type="primary" @click="getTable(0)" style="margin-left:30px;">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -128,7 +134,7 @@
         <el-form-item prop="confimPassword" label="确认密码：">
           <el-input type="password" v-model="formTeam.confimPassword" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="角色">
+        <el-form-item label="角色" prop="roles">
           <el-checkbox-group v-model="formTeam.roles" @change="handleCheckedRoleChange">
             <el-checkbox v-for="item in options" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
           </el-checkbox-group>
@@ -229,6 +235,7 @@ export default {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
+      loading: true,
       user: [],
       formTeam: {
         //班组初始化
@@ -320,12 +327,19 @@ export default {
         });
     },
     // 表格加载请求
-    getTable() {
+    getTable(val) {
+      if(val==0){
+        this.loading=true;
+      }
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
         userName: this.screenForm.searchName
       });
+      setTimeout(() => {
+         // console.log(this);//this对象为vue实例
+          this.loading =false
+        }, 2000);
       //请求
       var url =
         "/systemUrl/smart/auth/" +
@@ -407,11 +421,11 @@ export default {
           var role = res.data.rows;
           var roles = [];
           for (var i = 0; i < role.length; i++) {
-            if(role[i].status=="0"){
-              roles.push({id:role[i].sysRoleId,name:role[i].roleName});
+            if (role[i].status == "0") {
+              roles.push({ id: role[i].sysRoleId, name: role[i].roleName });
             }
           }
-          this.options=roles;
+          this.options = roles;
         }
       });
     },
@@ -436,6 +450,10 @@ export default {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
+          console.log(result.roles);
+          if (result.roles == null) {
+            result.roles = [];
+          }
           this.formTeam = JSON.parse(JSON.stringify(result));
         }
       });
@@ -459,6 +477,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
+              this.loading=true;
               this.getTable();
             }
           });
@@ -484,6 +503,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
+              this.loading=true;
               this.getTable();
             }
           });
@@ -518,6 +538,7 @@ export default {
                 if (res.code == 200) {
                   this.cloneTeamForm(refTeam);
                   this.$message("添加成功！");
+                  this.loading=true;
                   this.getTable();
                 }
               })
@@ -551,6 +572,7 @@ export default {
                 if (res.code == 200) {
                   this.cloneTeamForm(refTeam);
                   this.$message("编辑成功！");
+                  this.loading=true;
                   this.getTable();
                 }
               })

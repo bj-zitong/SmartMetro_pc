@@ -1,5 +1,8 @@
 <template>
-  <div class="main-box">
+  <div class="main-box"  v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)">
     <!-- 筛选 -->
     <el-container>
       <el-menu class="main-top-box pl30">
@@ -13,7 +16,7 @@
             <el-input v-model="screenForm.section" placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="getTable()">查询</el-button>
+            <el-button type="primary" @click="getTable(0)">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -153,6 +156,7 @@ export default {
   data() {
     return {
       //  初始化页面
+      loading:true,
       total: 0, //总条数
       tableData: [], // 初始化表格
       gridData: [], // 查看下属表格初始化
@@ -280,7 +284,14 @@ export default {
       this.screenForm.projectName=obj.id;
     },
     // 表格加载请求
-    getTable() {
+    getTable(val) {
+       if (val == 0) {
+        this.loading = true;
+      }
+      setTimeout(() => {
+        // console.log(this);//this对象为vue实例
+        this.loading = false;
+      }, 2000);
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
@@ -361,6 +372,7 @@ export default {
                 if (res.code == 200) {
                   this.$message("添加成功！");
                   this.cloneLaborForm(refLabor);
+                  this.loading=true;
                   this.getTable();
                 }
               })
@@ -389,6 +401,7 @@ export default {
                 if (res.code == 200) {
                   this.$message("编辑成功！");
                   this.cloneLaborForm(refLabor);
+                  this.loading=true;
                   this.getTable();
                 }
               })
@@ -450,6 +463,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
+              this.loading=true;
               this.getTable();
             }
           });
@@ -475,6 +489,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
+              this.loading=true;
               this.getTable();
             }
           });

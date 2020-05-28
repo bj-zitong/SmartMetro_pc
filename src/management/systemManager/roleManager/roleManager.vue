@@ -1,5 +1,11 @@
 <template>
-  <div class="main-box">
+  <div
+    class="main-box"
+    v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <!-- 筛选 -->
     <el-container>
       <el-menu class="main-top-box pl30">
@@ -8,7 +14,7 @@
             <el-input v-model="screenForm.userName" placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="getTable()">查询</el-button>
+            <el-button type="primary" @click="getTable(0)">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -135,6 +141,7 @@ export default {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
+      loading: true,
       total: 0, //总条数
       tableData: [], // 初始化表格
       gridData: [], // 查看下属表格初始化
@@ -204,7 +211,8 @@ export default {
           sysRoleId: val.sysRoleId
         });
       }
-      var url = "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+      var url =
+        "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
       this.http
         .put(url, data)
         .then(res => {
@@ -215,11 +223,18 @@ export default {
           return false;
         });
     },
-    handleCheckedRoleChange(){
-
+    handleCheckedRoleChange() {
+      console.log(this.formTeam.permissionName);
     },
     // 表格加载请求
-    getTable() {
+    getTable(val) {
+      if (val == 0) {
+        this.loading = true;
+      }
+      setTimeout(() => {
+        // console.log(this);//this对象为vue实例
+        this.loading = false;
+      }, 2000);
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
@@ -267,13 +282,18 @@ export default {
       var id = row.sysRoleId;
       this.formTeam.sysRoleId = id;
       var url =
-        "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role/" + id;
+        "/systemUrl/smart/auth/" +
+        sessionStorage.getItem("userId") +
+        "/role/" +
+        id;
       this.http.get(url, null).then(res => {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
           this.formTeam = JSON.parse(JSON.stringify(result));
-          this.formTeam.permissionName=result.permissions;
+          this.$set(this.formTeam, "permissionName", result.permissions);
+          // this.formTeam.permissionName=result.permissions;
+          console.log(this.formTeam.permissionName);
         }
       });
       //  this.formTeam = JSON.parse(JSON.stringify(row));
@@ -290,10 +310,14 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           let data = JSON.stringify(ids);
-          let url = "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+          let url =
+            "/systemUrl/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/role";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
+              this.loading=true;
               this.getTable();
             }
           });
@@ -312,10 +336,14 @@ export default {
       handleCofirm("确定删除该信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
-          let url = "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+          let url =
+            "/systemUrl/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/role";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
+              this.loading=true;
               this.getTable();
             }
           });
@@ -339,13 +367,16 @@ export default {
               permissions: form.permissionName
             });
             let url =
-              "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+              "/systemUrl/smart/auth/" +
+              sessionStorage.getItem("userId") +
+              "/role";
             this.http
               .post(url, data)
               .then(res => {
                 if (res.code == 200) {
                   this.$message("添加成功！");
                   this.cloneTeamForm(refTeam);
+                  this.loading=true;
                   this.getTable();
                 }
               })
@@ -354,11 +385,13 @@ export default {
               });
           } else {
             var url =
-              "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/role";
+              "/systemUrl/smart/auth/" +
+              sessionStorage.getItem("userId") +
+              "/role";
             var data = JSON.stringify({
               roleName: form.roleName,
               memo: form.memo,
-              permissions: [1,2],
+              permissions: [1, 2],
               sysRoleId: form.sysRoleId
             });
             this.http
@@ -367,6 +400,7 @@ export default {
                 if (res.code == 200) {
                   this.$message("编辑成功！");
                   this.getTable();
+                  this.loading=true;
                   this.cloneTeamForm(refTeam);
                 }
               })
