@@ -345,6 +345,7 @@ export default {
         "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/user/management";
+        console.log(url)
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.data.total;

@@ -3,6 +3,8 @@ import { Message } from 'element-ui';
 // import router from '../router';
 // let localhosts = 'http://192.168.1.100:8002';   //请求的后台域名
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
+    console.log(config)
+    config.url = config.url.slice(11)
     return config
 }, error => {
     Message.error(error)

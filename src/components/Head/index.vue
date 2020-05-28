@@ -1,6 +1,6 @@
 <template>
   <div style="width:100%;margin:0 auto;height:70px">
-    <el-menu mode="horizontal" text-color="#fff" active-text-color="#fff">
+    <el-menu mode="horizontal">
       <div>
         <img src="/static/image/header_login.png" alt class="WisdomSite_title_login" />
         <div index="1" class="title-name" @click="homepage" title="返回首页">城市轨道交通智慧工地管理系统—{{tabTitle}}</div>

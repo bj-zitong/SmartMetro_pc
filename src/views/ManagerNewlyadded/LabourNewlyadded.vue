@@ -25,7 +25,6 @@
             label="资质证书"
             name="certificate"
             :disabled="qualification"
-            v-if="isCertificate"
           >
             <certificate @field="getQualification"></certificate>
           </el-tab-pane>

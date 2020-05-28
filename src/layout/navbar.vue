@@ -192,10 +192,9 @@ export default {
     .avatar-container {
       position: absolute;
       top: 23px;
-      right: 80px;
-      width: 200px;
+      right: 50px;
+      width: 240px;
       outline: none;
-
       .avatar-wrapper {
         cursor: pointer;
       }

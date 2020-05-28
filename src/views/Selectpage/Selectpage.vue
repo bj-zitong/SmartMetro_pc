@@ -22,7 +22,7 @@
             </div>
             <p href="javascript:;" class="name-text fr">{{username}}</p>
           </div>
-          <el-dropdown trigger="click" style="margin-top:4px">
+          <el-dropdown trigger="click" style="margin-top:4px;margin-right:20px">
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -83,7 +83,7 @@
                     <li>班组管理</li>
                     <li>花名册</li>
                   </ul>
-                  <ul class="af">
+                  <ul class="af"> 
                     <li>外来人员</li>
                   </ul>
                 </div>
