@@ -404,10 +404,10 @@ export default {
                     }
                 },
                 grid:{
-                    x:50,
-                    y:50,
-                    x2:50,
-                    y2:30
+                    x:'10%',
+                    y:'40%',
+                    x2:'10%',
+                    y2:'15%'
                 },
                 xAxis: {
                     name:'日期',
@@ -883,6 +883,15 @@ export default {
             let right1 = this.$echarts.init(document.getElementById("right1"));
             //  绘制图表
             let right1Option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
                 grid: {
                     top: '30%',
                     left: '15%',

@@ -39,7 +39,29 @@
                     <div id="left2" style="width: 100%; height: 100%;"></div>
                 </div>
             </div>
-            <div>3</div>
+            <div>
+                <div>
+                    <h2>报警统计（7天）</h2>
+                    <h1>1,567次</h1>
+                    <ul>
+                        <li>
+                            <span>未穿戴安全帽</span>
+                        </li>
+                        <li>
+                            <span>现场有明火</span>
+                        </li>
+                        <li>
+                            <span>未穿戴防护服</span>
+                        </li>
+                        <li>
+                            <span>进入危险区</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div id="left3" style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
         </div>
         <div class="main-con">
             <div>1</div>
@@ -52,7 +74,6 @@
     </div>
 </template>
 <script>
-import historyBar from "./charts/historyBar";
 export default {
     data() {
         return {
@@ -62,7 +83,7 @@ export default {
     activated() {
         this.drawLeft1();
         this.drawLeft2();
-        // this.drawLeft3();
+        this.drawLeft3();
     },
     methods: {
         drawLeft1() {
@@ -171,6 +192,57 @@ export default {
             window.addEventListener("resize", function () {
                 left2.resize();
             });
+        },
+        drawLeft3() {
+            //  获取echarts
+            let left3 = this.$echarts.init(document.getElementById("left3"));
+            //  绘制图表
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                series: [
+                    {
+                        name: '报警统计',
+                        type: 'pie',
+                        radius: ['50%', '90%'],
+                        center: ['50%', '50%'],
+                        label: { // 饼形图上面显示值
+                            normal: {
+                                show: true,
+                                position: 'inner',
+                                textStyle: { // 字体样式
+                                    fontWeight: 300,
+                                    fontSize:12
+                                },
+                                formatter: '{d}%' // 转换百分比
+                            }
+                        },
+                        itemStyle: {
+                            normal:{
+                                color:function(params) {
+                                    //自定义颜色 FFD44F FF6060 00A6FF 60D0FF
+                                    var colorList = [          
+                                        '#FFD44F', '#FF6060', '#00A6FF', '#60D0FF'
+                                    ];
+                                    return colorList[params.dataIndex]
+                                }
+                            }
+                        },
+                        data: [
+                            {value: 470, name: '未穿戴安全帽'},
+                            {value: 100, name: '现场有明火'},
+                            {value: 380, name: '未穿戴防护服'},
+                            {value: 210, name: '进入危险区'}
+                        ]
+                    }
+                ]
+            };
+            left3.setOption(option)
+            window.addEventListener("resize", function () {
+                left3.resize();
+            });
         }
     }
 }
@@ -180,10 +252,12 @@ export default {
         display:flex;
         flex-direction: column;
         height: 100%;
+        overflow: hidden;
         padding-bottom: 30px;
         .main-top {
             display: flex;
             flex: 1;
+            flex-direction: row;
             & > div{
                 display: flex;
                 flex: 1;
@@ -242,6 +316,27 @@ export default {
                     display: flex;
                     flex: 1;
                 }
+            }
+            // 报警统计（7天）
+            & > div:nth-child(3) {
+                h1 {
+                    flex:1;
+                    font-size:48px;
+                    font-family:Microsoft YaHei;
+                    font-weight:400;
+                    color:rgba(57,69,101,1);
+                }
+                & > div:nth-child(1) {
+                    display: flex;
+                    flex: 1;
+                }
+                & > div:nth-child(2) {
+                    display: flex;
+                    flex: .6;
+                }
+            }
+            & > div:nth-child(2), & > div:nth-child(3) {
+                
                 & > div:nth-child(1) {
                     display: flex;
                     flex-direction: column;
@@ -250,20 +345,24 @@ export default {
                         flex-direction: row;
                         flex:1;
                         padding: 20px;
+                        flex-wrap: wrap;
+                        & > li {
+                            width: 50%;
+                        }
                         & > li:nth-child(1) {
-                            flex:1;
-                            color: #4882FD;
+                            color: #60D0FF;
                         }
                         & > li:nth-child(2) {
-                            flex:.8;
-                            color: #EC9229;
+                            color: #00A6FF;
+                        }
+                        & > li:nth-child(3) {
+                            color: #FFD44F;
+                        }
+                        & > li:nth-child(4) {
+                            color: #FF6060;
                         }
                     }
                 }
-            }
-            // 报警统计（7天）
-            & > div:nth-child(3) {
-                
             }
             
         }
