@@ -916,7 +916,7 @@ export const constantRouterMap = [
             {
                 path: '/lifeArea',
                 component: () =>
-                    import('@/management/videoMonitoring/lifeArea/lifeArea1'),
+                    import('@/management/videoMonitoring/index'),
                 // alwaysShow: true,
                 meta: {
                     title: '生活区',
@@ -927,16 +927,16 @@ export const constantRouterMap = [
                 // redirect: '/roster/manager',
                 children: [{
                     path: '/lifeArea1',
-                    name: 'manager',
+                    name: 'lifeArea1',
                     component: () =>
                         import('@/management/videoMonitoring/lifeArea/lifeArea1'),
                     meta: { title: '生活区一', icon: '', enable: "Y", parent: '预览' }
                 },
                 {
-                    path: '/lifeArea2',
-                    name: 'personnel',
+                    path: '/lifeArea2aa',
+                    name: 'lifeArea2aa',
                     component: () =>
-                        import('@/management/videoMonitoring/lifeArea/lifeArea2'),
+                        import('@/management/videoMonitoring/lifeArea/lifeArea2aa'),
                     meta: { title: '生活区二', icon: '', enable: "Y", parent: '预览' }
                 }
                 ]
