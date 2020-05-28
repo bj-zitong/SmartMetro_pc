@@ -136,6 +136,7 @@ export default {
   mounted() {
     let Information = JSON.parse(sessionStorage.getItem("data"));
     if (Information != null) {
+      alert("99999")
       console.log(Information.workerType);
       if (Information.workerType == "dg") {
         alert(Information.workerType);
@@ -183,7 +184,6 @@ export default {
     handleChange() {},
     //个人基本信息
     getField(v) {
-      alert("22222")
       sessionStorage.setItem("personalPersonal", JSON.stringify(v));
       this.contractInformation = false;
       this.activeName = "third";

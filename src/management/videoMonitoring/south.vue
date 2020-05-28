@@ -1,147 +1,416 @@
 <template>
-    <div class="main">
-        <div class="min-box">
-            <div class="min-top">
-                <div class="switch-box">
-                    <div class="switch-HD">
-                        <img src="../../assets/images/videoMonitoring/HD.png" alt="">
-                    </div>
-                    <div class="switch-grid">
-                        <el-dropdown trigger="click" @command="screenChange">
-                            <span class="el-dropdown-link switch-link">
-                                <img src="../../assets/images/videoMonitoring/HD.png" width="50%" height="50%" alt="">
-                                <i class="el-icon-caret-bottom el-icon--right" style="padding-top:5px;"></i>
-                            </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item 
-                                    v-for="list in playerBtnGroup" 
-                                    :key="list.num" 
-                                    :command="list.name"
-                                >{{list.name}}</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </div>
-                    <div class="switch-layout">
-                        <el-dropdown trigger="click" @command="screenChange">
-                            <span class="el-dropdown-link switch-link">
-                                <img src="../../assets/images/videoMonitoring/HD.png" width="50%" height="50%" alt="">
-                                <i class="el-icon-caret-bottom el-icon--right" style="padding-top:5px;"></i>
-                            </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item
-                                    v-for="(item1,index1) in numOptions" 
-                                    :key="index1.id" 
-                                    :command="item1.name"
-                                >{{item1.name}}</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </div>
-                </div>
-            </div>
-            <div class="min-con">2</div>
-        </div>
+  <div>
+    <div class="row hidden-xs text-center">
+      <el-button-group class="player-btn-group">
+        <el-button
+          type="primary"
+          size="medium"
+          v-for="list in playerBtnGroup"
+          :key="list.num"
+          @click.prevent="setPlayerLength(list.num)"
+          :class="{'active' : playerLength == list.num}"
+        >{{list.name}}</el-button>
+        <el-button
+          type="button"
+          id="full-btn-medium"
+          size="medium"
+          @click.prevent="fullscreen"
+          title="全屏显示"
+        >
+          <i class="fa fa-arrows-alt"></i>
+        </el-button>
+      </el-button-group>
     </div>
+    <div class="row visible-xs text-center">
+      <el-button-group class="player-btn-group">
+        <el-button
+          type="primary"
+          size="mini"
+          v-for="list in playerBtnGroup"
+          :key="list.num"
+          @click.prevent="setPlayerLength(list.num)"
+          :class="{'active' : playerLength == list.num}"
+        >{{list.name}}</el-button>
+        <el-button
+          type="button"
+          id="full-btn-mini"
+          size="mini"
+          @click.prevent="fullscreen"
+          title="全屏显示"
+        >
+          <i class="fa fa-arrows-alt"></i>
+        </el-button>
+      </el-button-group>
+    </div>
+    <br />
+    <br class="hidden-xs" />
+    <div class="view-list row">
+      <div
+        class="video-show col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2"
+      >
+        <div>
+          <div
+            class="no-margin no-padding video"
+            v-for="(player,index) in players"
+            :key="index"
+            @mousemove="resetCloseTimer(player)"
+            @touchstart="resetCloseTimer(player)"
+            :class="{'col-sm-12': playerLength == 1,'col-sm-6': playerLength == 4,'col-sm-4': playerLength == 9,'col-sm-3': playerLength == 16}"
+          >
+            <LivePlayer
+              :videoUrl="player.url"
+              :poster="player.poster"
+              live
+              muted
+              stretch
+              v-loading="player.bLoading"
+              element-loading-text="加载中..."
+              element-loading-background="#000"
+              :loading.sync="player.bLoading"
+              @message="$message"
+            ></LivePlayer>
+            <!-- <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo(index)">关闭</div>
+            <div class="video-close" v-show="!player.url && player.bCloseShow" v-on:click="selectChannel(index,player)">选择通道</div>-->
+          </div>
+          <!-- <ScreenChannelListDlg ref="channelListDlg" @selected="play" :title="channelListDlgTitle" style="z-index:2001;"></ScreenChannelListDlg> -->
+        </div>
+      </div>
+    </div>
+    <!-- <div class="text-center" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+    <br>
+    提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
+    </div>-->
+    <br />
+  </div>
 </template>
+
 <script>
+// import ScreenChannelListDlg from "components/ScreenChannelListDlg.vue";
+import LivePlayer from "@liveqing/liveplayer";
+// import _ from 'lodash'
+// import { mapState } from "vuex";
+
 export default {
-    data() {
-        return {
-            // 切换格子分屏
-            
-            // 切换数字分屏
-            numOptions:[
-                {name:'25', id: 1},
-                {name:'36', id: 2},
-                {name:'49', id: 3},
-                {name:'64', id: 4}
-            ]
+  components: {
+    LivePlayer
+    // ScreenChannelListDlg
+  },
+  data() {
+    return {
+      players: [],
+      playerLength: 4,
+      channelListDlgTitle: "",
+      protocol: ""
+    };
+  },
+  computed: {
+    // ...mapState(["userInfo", "serverInfo"]),
+    playerBtnGroup() {
+      var list = [
+        {
+          num: 1,
+          name: "单屏"
+        },
+        {
+          num: 4,
+          name: "四分屏"
+        },
+        {
+          num: 9,
+          name: "九分屏"
+        },
+        {
+          num: 16,
+          name: "十六分屏"
         }
+      ];
+
+      return list;
+    }
+  },
+  mounted() {
+    this.setPlayerLength(this.playerLength);
+    this.protocol = this.getQueryString("protocol", "");
+  },
+  methods: {
+    getQueryString(name, defVal = "") {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) {
+        return unescape(r[2]);
+      }
+      return defVal;
     },
-    methods: {
-        playerBtnGroup() {
-            let list = [
-                {name:'1', id: 1},
-                {name:'4', id: 2},
-                {name:'1+5', id: 3},
-                {name:'3+4', id: 4},
-                {name:'1+7', id: 5},
-                {name:'9', id: 6},
-                {name:'1+12', id: 7},
-                {name:'16', id: 8},
-                {name:'2+18', id: 9}
-            ]
-        },
-        handleGridChange(command){
-            console.log("command",command);
-        },
-        handleNumChange(command){
-            console.log("command",command);
-        },
-        
-    }
-}
-</script>
-<style lang="stylus" scoped>
-
-.main {
-    width: 100%;
-    height: 100%;
-    padding: 0 30px 30px;
-
-    .min-box {
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 1);
-        box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        padding: 5px;
-
-        .min-top {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            padding: 0 25px 5px 0;
-            .switch-box {
-                display: flex;
-                flex-direction: row;
-                width:188px;
-                height:40px;
-                background:rgba(0,88,162,1);
-                opacity:1;
-                border-radius:10px;
-                padding: 0 10px;
-                
-                & > div {
-                    flex: 1;
-                    padding: 5px;
-                }
-                
-                .switch-HD {
-                    & > img {
-                        width:30px;
-                        height:30px;
-                    }
-                }
-                .switch-link {
-                    width: 100%;
-                    height: 100%;
-                    display:flex;
-                    padding-top: 3px;
-                    color: #fff;
-                }
-                
+    clearVideos() {
+      for (var idx in this.players) {
+        this.closeVideo(idx);
+      }
+    },
+    selectChannel(index) {
+      this.channelListDlgTitle = `为第 ${index + 1} 屏选择通道`;
+      this.$refs["channelListDlg"].show(index);
+    },
+    setPlayerLength(playerNum) {
+      if (playerNum == this.players.length) {
+        return;
+      }
+      this.clearVideos();
+      this.players = [];
+      this.playerLength = playerNum;
+      for (let index = 0; index < this.playerLength; index++) {
+        this.players.push({
+          url: "",
+          bLoading: false,
+          timer: 0,
+          bCloseShow: false,
+          closeTimer: 0
+        });
+      }
+    },
+    play(index, channel) {
+      var i = 0;
+      var player = null;
+      for (var _player of this.players) {
+        if (index == i) {
+          player = _player;
+          break;
+        }
+        i++;
+      }
+      if (!player) {
+        this.$message({
+          type: "error",
+          message: "当前播放窗口已被占满！"
+        });
+        return;
+      }
+      player.bLoading = true;
+      $.get("/api/v1/stream/start", {
+        serial: channel.DeviceID,
+        code: channel.ID
+      })
+        .then(stream => {
+          var videoUrl = this.isMobile() ? stream.HLS : stream.RTMP;
+          var protocol = this.isMobile() ? "HLS" : "RTMP";
+          if (this.flvSupported()) {
+            if (stream.WS_FLV && !this.isIE()) {
+              videoUrl = stream.WS_FLV;
+              protocol = "WS_FLV";
+            } else if (stream.FLV) {
+              videoUrl = stream.FLV;
+              protocol = "FLV";
             }
-        }
-
-        .min-con {
-            display: flex;
-            flex: 1;
-            flex-direction: row;
-            justify-content: flex-start;
-            background: black;
-        }
+          }
+          if (this.isIE() && i > 0) {
+            videoUrl = stream.HLS;
+            protocol = "HLS";
+          }
+          var _protocol = String(this.protocol).toUpperCase();
+          switch (_protocol) {
+            case "RTMP":
+              videoUrl = stream.RTMP || "";
+              protocol = "RTMP";
+              break;
+            case "HLS":
+              videoUrl = stream.HLS || "";
+              protocol = "HLS";
+              break;
+            case "FLV":
+              videoUrl = stream.FLV || "";
+              protocol = "FLV";
+              break;
+            case "WS_FLV":
+              videoUrl = stream.WS_FLV || "";
+              protocol = "WS_FLV";
+              break;
+            case "WS-FLV":
+              videoUrl = stream.WS_FLV || "";
+              protocol = "WS_FLV";
+              break;
+          }
+          player.protocol = protocol;
+          player.poster = protocol == "RTMP" ? "" : stream.SnapURL;
+          this.$nextTick(() => {
+            player.url = videoUrl;
+          });
+          this.resetCloseTimer(player);
+        })
+        .fail(() => {
+          player.bLoading = false;
+        });
+    },
+    closeVideo: function(idx) {
+      var player = this.players[idx];
+      if (!player) {
+        return;
+      }
+      if (player.closeTimer) {
+        clearTimeout(player.closeTimer);
+        player.closeTimer = 0;
+      }
+      player.bCloseShow = false;
+      player.bloading = false;
+      player.poster = "";
+      player.url = "";
+    },
+    fullscreen() {
+      if (this.isMobile()) {
+        this.$message({
+          type: "error",
+          message: "请在电脑浏览器上使用该功能"
+        });
+        return;
+      }
+      this.$fullscreen.enter(this.$el.querySelector(`.video-show > div`), {
+        wrap: false
+      });
+    },
+    resetCloseTimer(player) {
+      player.bCloseShow = true;
+      if (player.closeTimer) {
+        clearTimeout(player.closeTimer);
+      }
+      player.closeTimer = setTimeout(() => {
+        player.bCloseShow = false;
+      }, 2000);
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.protocol = vm.getQueryString("protocol", "");
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.clearVideos();
+    this.protocol = this.getQueryString("protocol", "");
+    next();
+  },
+  beforeDestroy() {
+    this.clearVideos();
+  },
+  beforeRouteLeave(to, from, next) {
+    this.clearVideos();
+    next();
+  }
+};
+</script>
+
+
+
+<style lang="stylus" scoped>
+// @import url(~assets/styles/variables.less);
+.view-list {
+  .video-show {
+    .video {
+      border: 1px solid #fff;
+    }
+
+    .col-sm-12 {
+      &:nth-child(1) {
+        border: 0;
+      }
+    }
+
+    .col-sm-6 {
+      &:nth-child(1), &:nth-child(2) {
+        background :red;
+        border-top-color: transparent;
+      }
+
+      &:nth-child(2), &:nth-child(4) {
+         background :red;
+        border-right-color: transparent;
+      }
+
+      &:nth-child(1), &:nth-child(3) {
+         background :red;
+        border-left-color: transparent;
+      }
+
+      &:nth-child(3), &:nth-child(4) {
+         background :red;
+        border-bottom-color: transparent;
+      }
+    }
+
+    .col-sm-4 {
+      &:nth-child(1), &:nth-child(2), &:nth-child(3) {
+         background :red;
+        border-top-color: transparent;
+      }
+
+      &:nth-child(3), &:nth-child(6), &:nth-child(9) {
+         background :red;
+        border-right-color: transparent;
+      }
+
+      &:nth-child(7), &:nth-child(8), &:nth-child(9) {
+         background :red;
+        border-bottom-color: transparent;
+      }
+
+      &:nth-child(1), &:nth-child(4), &:nth-child(7) {
+         background :red;
+        border-left-color: transparent;
+      }
+    }
+
+    .col-sm-3 {
+      &:nth-child(1), &:nth-child(2), &:nth-child(3), &:nth-child(4) {
+        border-top-color: transparent;
+         background :red;
+      }
+
+      &:nth-child(4), &:nth-child(8), &:nth-child(12), &:nth-child(16) {
+         background :red;
+        border-right-color: transparent;
+      }
+
+      &:nth-child(13), &:nth-child(14), &:nth-child(15), &:nth-child(16) {
+         background :red;
+        border-bottom-color: transparent;
+      }
+
+      &:nth-child(1), &:nth-child(5), &:nth-child(9), &:nth-child(13) {
+         background :red;
+        border-left-color: transparent;
+      }
+    }
+  }
+}
+
+.fullscreen {
+  width: 100% !important;
+}
+
+.video-close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: white;
+  font-size: 12px;
+  background-color: fade(gray, 50%);
+  padding: 2px 5px;
+  cursor: pointer;
+  border-radius: 2px;
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.player-btn-group {
+  margin: 5px 0;
+
+  .el-button--primary {
+    color: #000;
+    background: #ffffff;
+    border: 1px solid #dcdfe6 !important;
+  }
+
+  .active {
+    background-color: pink;
+    color: #ffffff;
+  }
 }
 </style>
