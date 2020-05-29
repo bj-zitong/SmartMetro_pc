@@ -13,7 +13,7 @@ module.exports = {
       '/systemUrl': {
         target: 'http://192.168.1.30:8001', //系统
         secure: false,
-        changeOrigin: false,
+        changeOrigin: true,
         pathRewrite: {
           '^/systemUrl': 'http://192.168.1.30:8001'
         }

@@ -27,7 +27,7 @@ import http from '../src/api/https'
 Vue.prototype.api = api;
 Vue.prototype.http = http;
 //管理系统
-Vue.prototype.PersonnelLocalhosts = "aaaaaa";
+Vue.prototype.PersonnelLocalhosts = "http://192.168.1.30:8001";
 //视频
 import VideoPlayer from 'vue-video-player'
 require('video.js/dist/video-js.css')

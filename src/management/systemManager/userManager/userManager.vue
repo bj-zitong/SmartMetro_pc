@@ -44,21 +44,8 @@
           <el-table-column prop="userName" label="用户名" min-width="100"></el-table-column>
           <el-table-column prop="cellPhone" label="手机号" min-width="90"></el-table-column>
           <el-table-column prop="roleName" label="角色" min-width="110"></el-table-column>
-          <el-table-column prop="status" label="用户状态" min-width="80">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.status"
-                on-color="#00A854"
-                on-text="启动"
-                on-value="0"
-                off-color="#F04134"
-                off-text="禁止"
-                off-value="1"
-                @change="changeSwitch(scope.row)"
-              ></el-switch>
-            </template>
-          </el-table-column>
           <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
+          <el-table-column prop="updateTime" label="修改时间" min-width="120"></el-table-column>
           <el-table-column label="操作" width="240" fixed="right">
             <template slot-scope="scope">
               <el-button
@@ -76,6 +63,20 @@
                 size="mini"
                 @click="getUserdetail(scope.$index, scope.row)"
               >详情</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="status" label="用户状态" min-width="80">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.status"
+                on-color="#00A854"
+                on-text="启动"
+                on-value="0"
+                off-color="#F04134"
+                off-text="禁止"
+                off-value="1"
+                @change="changeSwitch(scope.row)"
+              ></el-switch>
             </template>
           </el-table-column>
         </el-table>
@@ -172,7 +173,7 @@
           <el-col :span="10">
             <div class="grid-content bg-purple">
               角色:
-              <span>{{user.roles}}</span>
+              <span>{{rolesName}}</span>
             </div>
           </el-col>
           <el-col :span="10">
@@ -237,6 +238,7 @@ export default {
       },
       loading: true,
       user: [],
+      rolesName: [],
       formTeam: {
         //班组初始化
         sysUserId: null,
@@ -328,8 +330,8 @@ export default {
     },
     // 表格加载请求
     getTable(val) {
-      if(val==0){
-        this.loading=true;
+      if (val == 0) {
+        this.loading = true;
       }
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
@@ -337,15 +339,14 @@ export default {
         userName: this.screenForm.searchName
       });
       setTimeout(() => {
-         // console.log(this);//this对象为vue实例
-          this.loading =false
-        }, 2000);
+        // console.log(this);//this对象为vue实例
+        this.loading = false;
+      }, 1000);
       //请求
       var url =
         "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
         "/user/management";
-        console.log(url)
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.data.total;
@@ -366,6 +367,7 @@ export default {
       // 用户i
       var uid = row.sysUserId;
       this.formTeam.sysUserId = uid;
+      this.rolesName = [];
       var url =
         "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
@@ -380,6 +382,18 @@ export default {
             this.user.status = "启用";
           } else {
             this.user.status = "禁用";
+          }
+          //获得角色
+          this.getRoles();
+          var options = this.options;
+          if (this.user.roles.length > 0) {
+            for (var i = 0; i < options.length; i++) {
+              for (var j = 0; j < this.user.roles.length; j++) {
+                if (options[i].id == this.user.roles[j]) {
+                  this.rolesName.push(options[i].name);
+                }
+              }
+            }
           }
         }
       });
@@ -451,7 +465,6 @@ export default {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
-          console.log(result.roles);
           if (result.roles == null) {
             result.roles = [];
           }
@@ -478,7 +491,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
-              this.loading=true;
+              this.loading = true;
               this.getTable();
             }
           });
@@ -504,7 +517,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
-              this.loading=true;
+              this.loading = true;
               this.getTable();
             }
           });
@@ -539,7 +552,7 @@ export default {
                 if (res.code == 200) {
                   this.cloneTeamForm(refTeam);
                   this.$message("添加成功！");
-                  this.loading=true;
+                  this.loading = true;
                   this.getTable();
                 }
               })
@@ -573,7 +586,7 @@ export default {
                 if (res.code == 200) {
                   this.cloneTeamForm(refTeam);
                   this.$message("编辑成功！");
-                  this.loading=true;
+                  this.loading = true;
                   this.getTable();
                 }
               })

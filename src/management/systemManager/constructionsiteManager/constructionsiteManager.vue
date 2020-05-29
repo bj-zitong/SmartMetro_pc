@@ -1,17 +1,20 @@
 <template>
-  <div class="main-box"  v-loading="loading"
+  <div
+    class="main-box"
+    v-loading="loading"
     element-loading-text="拼命加载中"
     element-loading-spinner="el-icon-loading"
-    element-loading-background="rgba(0, 0, 0, 0.8)">
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <!-- 筛选 -->
     <el-container>
       <el-menu class="main-top-box pl30">
         <el-form :inline="true" ref="screenForm" :model="screenForm">
           <el-form-item prop="projectName" label="项目中心">
-          <el-select v-model="screenForm.projectName" placeholder="请选择" @change="selectCenters">
-            <el-option v-for="item in centers" :key="item.id" :label="item.name" :value="item.id"></el-option>
-          </el-select>
-        </el-form-item>
+            <el-select v-model="screenForm.projectName" placeholder="请选择" @change="selectCenters">
+              <el-option v-for="item in centers" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="标段/工地：" prop="section">
             <el-input v-model="screenForm.section" placeholder="请输入"></el-input>
           </el-form-item>
@@ -50,6 +53,8 @@
           <el-table-column prop="responsiblePersonName" label="项目负责人姓名" min-width="100"></el-table-column>
           <el-table-column prop="cellPhone" label="联系电话" min-width="100"></el-table-column>
           <el-table-column prop="location" label="所在位置" min-width="120"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
+          <el-table-column prop="updateTime" label="修改时间" min-width="120"></el-table-column>
           <el-table-column prop="status" label="状态">
             <template slot-scope="scope">
               <el-switch
@@ -64,7 +69,6 @@
               ></el-switch>
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
           <el-table-column label="操作" width="240" fixed="right">
             <template slot-scope="scope">
               <el-button
@@ -156,7 +160,7 @@ export default {
   data() {
     return {
       //  初始化页面
-      loading:true,
+      loading: true,
       total: 0, //总条数
       tableData: [], // 初始化表格
       gridData: [], // 查看下属表格初始化
@@ -164,23 +168,23 @@ export default {
       titleLabor: "", // 标题
       screenForm: {
         //  筛选
-        projectName: 0,
+        projectName: null,
         section: "" //标段
       },
       options: [
-        { id: 0, name: "请选择" },
+        { id: null, name: "请选择" },
         { id: 1, name: "中心一" },
         { id: 2, name: "中心二" },
         { id: 3, name: "中心三" }
       ],
       options2: [
-        { id: 0, name: "请选择" },
+        { id: null, name: "请选择" },
         { id: 1, name: "线路一" },
         { id: 2, name: "线路二" },
         { id: 3, name: "线路三" }
       ],
-      centers:[
-        { id: 0, name: "请选择" },
+      centers: [
+        { id: null, name: "请选择" },
         { id: 1, name: "中心一" },
         { id: 2, name: "中心二" },
         { id: 3, name: "中心三" }
@@ -231,7 +235,7 @@ export default {
     this.getTable();
   },
   methods: {
-     changeSwitch(val) {
+    changeSwitch(val) {
       //获得状态的值
       var data = null;
       var status = val.status;
@@ -248,7 +252,8 @@ export default {
           orgSiteId: val.orgSiteId
         });
       }
-      var url = "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/org";
+      var url =
+        "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/org";
       this.http
         .put(url, data)
         .then(res => {
@@ -276,22 +281,22 @@ export default {
       this.formLabor.line = obj.id;
     },
     //搜索的下拉选择
-    selectCenters(vid){
+    selectCenters(vid) {
       let obj = {};
       obj = this.centers.find(item => {
         return item.id == vid; // 筛选出匹配数据
       });
-      this.screenForm.projectName=obj.id;
+      this.screenForm.projectName = obj.id;
     },
     // 表格加载请求
     getTable(val) {
-       if (val == 0) {
+      if (val == 0) {
         this.loading = true;
       }
       setTimeout(() => {
         // console.log(this);//this对象为vue实例
         this.loading = false;
-      }, 2000);
+      }, 1000);
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
@@ -308,19 +313,19 @@ export default {
           var total = res.data.total;
           this.tableData = res.data.rows;
           for (var i = 0; i < this.tableData.length; i++) {
-            if(this.tableData[i].projectCenterId==1){
-               this.tableData[i].projectCenter = '中心一';
-            }else if(this.tableData[i].projectCenterId==2){
-               this.tableData[i].projectCenter = '中心二';
-            }else{
-               this.tableData[i].projectCenter = '中心三';
+            if (this.tableData[i].projectCenterId == 1) {
+              this.tableData[i].projectCenter = "中心一";
+            } else if (this.tableData[i].projectCenterId == 2) {
+              this.tableData[i].projectCenter = "中心二";
+            } else {
+              this.tableData[i].projectCenter = "中心三";
             }
-            if(this.tableData[i].lineId==1){
-               this.tableData[i].line = '线路一';
-            }else if(this.tableData[i].lineId==2){
-               this.tableData[i].line = '线路二';
-            }else{
-               this.tableData[i].line = '线路三';
+            if (this.tableData[i].lineId == 1) {
+              this.tableData[i].line = "线路一";
+            } else if (this.tableData[i].lineId == 2) {
+              this.tableData[i].line = "线路二";
+            } else {
+              this.tableData[i].line = "线路三";
             }
 
             if (this.tableData[i].status == "0") {
@@ -358,12 +363,12 @@ export default {
           if (form.orgSiteId == null) {
             //this.formLabor
             let data = JSON.stringify({
-              projectCenterId:form.projectCenter,
-              lineId:form.line,
-              siteName:form.siteName,
-              buildCorpName:form.buildCorpName,
-              responsiblePersonName:form.responsiblePersonName,
-              cellPhone:form.cellPhone,
+              projectCenterId: form.projectCenter,
+              lineId: form.line,
+              siteName: form.siteName,
+              buildCorpName: form.buildCorpName,
+              responsiblePersonName: form.responsiblePersonName,
+              cellPhone: form.cellPhone,
               location: form.location
             });
             this.http
@@ -372,7 +377,7 @@ export default {
                 if (res.code == 200) {
                   this.$message("添加成功！");
                   this.cloneLaborForm(refLabor);
-                  this.loading=true;
+                  this.loading = true;
                   this.getTable();
                 }
               })
@@ -389,7 +394,7 @@ export default {
               projectCenterId: form.projectCenter,
               lineId: form.line,
               siteName: form.siteName,
-              buildCorpName:form.buildCorpName,
+              buildCorpName: form.buildCorpName,
               responsiblePersonName: form.responsiblePersonName,
               cellPhone: form.cellPhone,
               location: form.location,
@@ -401,7 +406,7 @@ export default {
                 if (res.code == 200) {
                   this.$message("编辑成功！");
                   this.cloneLaborForm(refLabor);
-                  this.loading=true;
+                  this.loading = true;
                   this.getTable();
                 }
               })
@@ -440,8 +445,8 @@ export default {
           //渲染数据
           var result = res.data;
           this.formLabor = JSON.parse(JSON.stringify(result));
-          this.formLabor.projectCenter=result.projectCenterId;
-          this.formLabor.line=result.lineId;
+          this.formLabor.projectCenter = result.projectCenterId;
+          this.formLabor.line = result.lineId;
         }
       });
       this.dialogVisibleLabor = true;
@@ -463,7 +468,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
-              this.loading=true;
+              this.loading = true;
               this.getTable();
             }
           });
@@ -489,7 +494,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
-              this.loading=true;
+              this.loading = true;
               this.getTable();
             }
           });

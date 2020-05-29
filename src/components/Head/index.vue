@@ -23,12 +23,12 @@
               <router-link class="inlineBlock" to="/Statisticsscreen">
                 <el-dropdown-item>{{$t('navbar.switchlargeScreen')}}</el-dropdown-item>
               </router-link>
+               <router-link class="inlineBlock" to="/updatePassword">
+                <el-dropdown-item>{{$t('navbar.changePassword')}}</el-dropdown-item>
+              </router-link>
               <el-dropdown-item @click.native="logout">
                 <span style="display:block;">{{$t('navbar.logOut')}}</span>
               </el-dropdown-item>
-              <router-link class="inlineBlock" to="/updatePassword">
-                <el-dropdown-item>{{$t('navbar.changePassword')}}</el-dropdown-item>
-              </router-link>
             </el-dropdown-menu>
           </el-dropdown>
         </div>

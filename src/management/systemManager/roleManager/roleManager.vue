@@ -43,6 +43,8 @@
           ></el-table-column>
           <el-table-column prop="roleName" label="角色名称" min-width="100"></el-table-column>
           <el-table-column prop="permissionName" label="权限" min-width="90"></el-table-column>
+          <el-table-column prop="memo" label="备注" min-width="110"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
           <el-table-column prop="status" label="状态" min-width="80">
             <template slot-scope="scope">
               <el-switch
@@ -57,8 +59,6 @@
               ></el-switch>
             </template>
           </el-table-column>
-          <el-table-column prop="memo" label="备注" min-width="110"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
           <el-table-column label="操作" width="240" fixed="right">
             <template slot-scope="scope">
               <el-button
@@ -234,7 +234,7 @@ export default {
       setTimeout(() => {
         // console.log(this);//this对象为vue实例
         this.loading = false;
-      }, 2000);
+      }, 1000);
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
@@ -293,7 +293,6 @@ export default {
           this.formTeam = JSON.parse(JSON.stringify(result));
           this.$set(this.formTeam, "permissionName", result.permissions);
           // this.formTeam.permissionName=result.permissions;
-          console.log(this.formTeam.permissionName);
         }
       });
       //  this.formTeam = JSON.parse(JSON.stringify(row));
@@ -317,7 +316,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
-              this.loading=true;
+              this.loading = true;
               this.getTable();
             }
           });
@@ -343,7 +342,7 @@ export default {
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               this.$message("已删除！");
-              this.loading=true;
+              this.loading = true;
               this.getTable();
             }
           });
@@ -376,7 +375,7 @@ export default {
                 if (res.code == 200) {
                   this.$message("添加成功！");
                   this.cloneTeamForm(refTeam);
-                  this.loading=true;
+                  this.loading = true;
                   this.getTable();
                 }
               })
@@ -391,7 +390,7 @@ export default {
             var data = JSON.stringify({
               roleName: form.roleName,
               memo: form.memo,
-              permissions: [1, 2],
+              permissions:form.permissionName,
               sysRoleId: form.sysRoleId
             });
             this.http
@@ -400,7 +399,7 @@ export default {
                 if (res.code == 200) {
                   this.$message("编辑成功！");
                   this.getTable();
-                  this.loading=true;
+                  this.loading = true;
                   this.cloneTeamForm(refTeam);
                 }
               })
