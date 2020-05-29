@@ -68,9 +68,32 @@
                 <div id="left4" style="width: 100%; height: 100%;"></div>
             </div>
             <div>
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
+                <div>
+                    <div>
+                        <span>未响应</span>
+                        <p>28.26%</p>
+                    </div>
+                    <div>
+                        <span>+25.58%</span>
+                        <div id="left5" style="width: 100%; height: 100%;"></div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>响应率</span>
+                        <p>39.18%</p>
+                    </div>
+                    <div>
+                        <span>-25.58%</span>
+                        <div id="left6" style="width: 100%; height: 100%;"></div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>平均响应时间</span>
+                        <p>14时15分20秒</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -87,6 +110,8 @@ export default {
         this.drawLeft2();
         this.drawLeft3();
         this.drawLeft4();
+        this.drawLeft5();
+        this.drawLeft6();
     },
     methods: {
         drawLeft1() {
@@ -279,15 +304,15 @@ export default {
                     boundaryGap: false,
                     data: ['2020/02', '2020/03', '2020/04', '2020/05', '2020/06', '2020/07'],
                     axisTick: {
-                                    show: false  
-                                    },
+                        show: false  
+                    },
                     axisLine: {
                         show: false
                     },
                     axisLabel: {
                         show: true,
                         textStyle: {
-                            color: '##8995CB' //字体颜色
+                            color: '#8995CB' //字体颜色
                         }
                     },
                     splitLine:{
@@ -357,11 +382,89 @@ export default {
             window.addEventListener("resize", function () {
                 left4.resize();
             });
+        },
+        drawLeft5() {
+            //  获取echarts
+            let left5 = this.$echarts.init(document.getElementById("left5"));
+            //  绘制图表
+            let option = {
+                grid: {
+                    top: '10%',
+                    bottom: '10%',
+                    left: '10%',
+                    right: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    show:false,
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                yAxis: {
+                    type: 'value',
+                    show:false
+                },
+                series: [{
+                    data: [100, 120, 150, 130, 210, 310, 110],
+                    type: 'line',
+                    symbol: "none",
+                    smooth: true,
+                    itemStyle:{
+                        normal:{
+                            lineStyle:{
+                                color:'#fff'
+                            }
+                        }
+                }
+                }]
+            };
+            left5.setOption(option)
+            window.addEventListener("resize", function () {
+                left5.resize();
+            });
+        },
+        drawLeft6() {
+            //  获取echarts
+            let left6 = this.$echarts.init(document.getElementById("left6"));
+            //  绘制图表
+            let option = {
+                grid: {
+                    top: '10%',
+                    bottom: '10%',
+                    left: '10%',
+                    right: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    show:false,
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                yAxis: {
+                    type: 'value',
+                    show:false
+                },
+                series: [{
+                    data: [100, 120, 150, 130, 210, 310, 110],
+                    type: 'line',
+                    symbol: "none",
+                    smooth: true,
+                    itemStyle:{
+                        normal:{
+                            lineStyle:{
+                                color:'#fff'
+                            }
+                        }
+                }
+                }]
+            };
+            left6.setOption(option)
+            window.addEventListener("resize", function () {
+                left6.resize();
+            });
         }
     }
 }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
     .main-box {
         display:flex;
         flex-direction: column;
@@ -502,9 +605,42 @@ export default {
                 margin-left: 30px;
                 padding: 30px;
                 & > div {
-                    border-radius:10px;
+                    display:flex;
                     flex: 1;
+                    border-radius:10px;
+                    flex-direction: row;
                     padding: 20px 40px;
+                    & > div {
+                        display: flex;
+                        flex: 1;
+                        flex-direction: column;
+                    }
+                    & > div:nth-child(1) {
+                        & > span {
+                            flex: 1;
+                            font-size:20px;
+                            font-family:SourceHanSansCN-Medium;
+                            color: #fff;
+                        }
+                        & > p {
+                            flex: 1;
+                            font-size:36px;
+                            font-family:SourceHanSansCN-Medium;
+                            color: #fff;
+                        }
+                    }
+                    & > div:nth-child(2) {
+                        & > span {
+                            flex: 1;
+                            text-align: right;
+                            font-size:16px;
+                            font-family:SourceHanSansCN-Regular;
+                            color:#fff;
+                        }
+                        & > div {
+                            flex: 1.5;
+                        }
+                    }
                 }
                 & > div:nth-child(1) {
                     background:rgba(255,127,129,1);
