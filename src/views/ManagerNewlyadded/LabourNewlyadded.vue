@@ -1,5 +1,6 @@
 <template>
   <div class="LabourNewlyaddedbox">
+    <!-- <div v-if='isCertificate'>oljlln</div> -->
     <el-container class="LabourNewlyadded">
       <el-main>
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -25,6 +26,7 @@
             label="资质证书"
             name="certificate"
             :disabled="qualification"
+            v-if="isCertificate"
           >
             <certificate @field="getQualification"></certificate>
           </el-tab-pane>
@@ -54,7 +56,7 @@ import payrollRecords from "./addPersonnel/payrollRecords";
 import certificate from "./addPersonnel/certificate";
 // 评价记录
 import evaluationRecord from "./addPersonnel/evaluationRecord";
-
+import { updateVegetablesCollection } from "../../utils/utils";
 export default {
   components: {
     asource,
@@ -66,6 +68,7 @@ export default {
   },
   data() {
     return {
+      isCertificate: false,
       activeName: "second",
       allArr: [],
       form: {
@@ -84,7 +87,7 @@ export default {
       qualification: true, //资质证书
       History: true, //I历史评价记录
       SourceInformation: true, //来源地信息,
-      isCertificate: false,
+      typeWorkArr: ["dg", "dhg", "wai"],
       //日历选择器
       pickerOptions: {
         disabledDate(time) {
@@ -133,18 +136,8 @@ export default {
     }
   },
   mounted() {
-    let Information = JSON.parse(sessionStorage.getItem("data"));
-    if (Information != null) {
-      alert("99999")
-      console.log(Information.workerType);
-      if (Information.workerType == "dg") {
-        alert(Information.workerType);
-        this.isCertificate = true;
-      }
-    }
     let getArr = JSON.parse(sessionStorage.getItem("personalPersonal"));
     if (getArr != null) {
-      console.log(getArr);
       this.contractInformation = false;
       this.activeName = "third";
     }
@@ -169,28 +162,36 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event);
     },
     onSubmit() {
-      console.log("submit!");
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
     },
     handlePreview(file) {
-      console.log(file);
     },
     handleChange() {},
     //个人基本信息
     getField(v) {
+      this.isCertificate = true;
       sessionStorage.setItem("personalPersonal", JSON.stringify(v));
-      this.contractInformation = false;
       this.activeName = "third";
+      let Information = JSON.parse(sessionStorage.getItem("data"));
+      if (Information != null) {
+        updateVegetablesCollection(
+          this.typeWorkArr,
+          Information.workerType
+        ).then(res => {
+          if (res == true) {
+            this.isCertificate = true;
+          } else {
+            this.isCertificate = false;
+          }
+        });
+      }
     },
 
     //合同信息
     getContractInformation(v) {
-      alert("33333")
       sessionStorage.setItem("getContractInformation", JSON.stringify(v));
       this.payrollRecords = false;
       this.activeName = "fourth";
@@ -213,11 +214,6 @@ export default {
       this.activeName = "first";
       this.SourceInformation = false;
     }
-    // getHistory(v){
-    //    sessionStorage.setItem('qualification',JSON.stringify(v))
-    //   this.activeName='evaluate'
-    //   this.History=false
-    // }
   }
 };
 </script>
