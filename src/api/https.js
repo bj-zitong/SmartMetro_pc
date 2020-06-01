@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
+axios.defaults.baseURL = process.env.VUE_APP_URL
 // import router from '../router';
 // let localhosts = 'http://192.168.1.100:8002';   //请求的后台域名
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
+    // config.url ='http://192.168.1.30:8001'+config.url.substring(10)
+    // console.log(config)
     return config
 }, error => {
     Message.error(error)
@@ -28,6 +31,7 @@ function errorfun(res) {
         return res;
     }
 }
+// http://localhost:8001/systemUrl/smart/auth/1/role/management
 export default {
     post(url, data) {//post请求
         // return axios({

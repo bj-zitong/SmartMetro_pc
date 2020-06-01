@@ -353,7 +353,7 @@ export default {
 
 .hed_tab>.el-tabs__header .el-tabs__item:first-child {
   margin-left: 10px;
-  width: 8%;
+  // width: 9.5%;
 }
 
 .hed_tab>.el-tabs__header .el-tabs__item:last-child {
