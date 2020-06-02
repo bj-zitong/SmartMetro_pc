@@ -30,6 +30,7 @@
     </el-container>
     <div class="table-main">
       <el-main class="table-head">
+        <el-button class="T-H-B-DarkBlue">新增</el-button>
         <el-button @click="deleteAll()" class="T-H-B-Grey">删除</el-button>
         <el-button @click="poiExcel()" class="T-H-B-Cyan">导出</el-button>
 

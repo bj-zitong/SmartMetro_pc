@@ -305,7 +305,7 @@ export default {
 
 .hed_tab {
   border: none;
-  width: 95.5%;
+  width:70%;
   margin: auto 50px;
   position: relative;
   top: 10px;
@@ -325,7 +325,7 @@ export default {
 .hed_tab>.el-tabs__header .el-tabs__item {
   padding: 0 20px;
   color: #fff;
-  width: 10%;
+  width: 14%;
   text-align: center;
   height: 50px;
   line-height: 50px;
@@ -356,9 +356,9 @@ export default {
   // width: 9.5%;
 }
 
-.hed_tab>.el-tabs__header .el-tabs__item:last-child {
-  width: 11%;
-}
+// .hed_tab>.el-tabs__header .el-tabs__item:last-child {
+//   width: 11%;
+// }
 
 .hed_tab>.el-tabs__nav-wrap.is-scrollable {
   padding: 0 0;
