@@ -1,5 +1,6 @@
 <template>
   <div class="contain">
+    <div class="box-content">
     <div class="contain-title">
       <img
         src="../../../static/image/logo.png"
@@ -95,6 +96,7 @@
         <br />
         <p class="content-end1">京ICP备17067133号 京公网安备11010602006143号</p>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -248,13 +250,23 @@ export default {
   background-color: rgba(244, 244, 244, 1);
   opacity: 1; /* 不透明级别 */
 
+  .box-content {
+    width: 680px;
+    height: 720px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    margin: -300px 0 0 -340px;
+    background-color: rgba(244, 244, 244, 1);
+
+
   /* 头部 */
   .contain-title {
     height: 30px;
     width: 680px;
     position: absolute;
-    top: 126px;
-    left: 614px;
+    top: 30px;
+
 
     .register-head {
       width: 163px;
@@ -394,10 +406,9 @@ export default {
     width: 100%;
     height: 50px;
     position: absolute;
-    bottom: 80px;
-    left: 0;
+    bottom: -10px;
     text-align: center;
-    top: 75%;
+    top: 85%;
 
     p {
       height: 14px;
@@ -414,6 +425,7 @@ export default {
     width: 16px;
     height: 16px;
     margin-left: 115px;
+  }
   }
 }
 </style>

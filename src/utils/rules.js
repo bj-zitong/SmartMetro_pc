@@ -157,7 +157,7 @@ let FormValidate = (function () {
         82: "澳门",
         91: "国外 "
       };
-      // var pass = true;
+      var pass = true;
       // var msg = "验证成功";
       //验证身份证格式（6个地区编码，8位出生日期，3位顺序号，1位校验位）
       if (
@@ -166,11 +166,11 @@ let FormValidate = (function () {
           code
         )
       ) {
-        // pass = false;
+        pass = false;
         callback(new Error('身份证号格式错误'))
         // msg = "身份证号格式错误";
       } else if (!city[code.substr(0, 2)]) {
-        // pass = false;
+        pass = false;
         // msg = "身份证号地址编码错误";
         callback(new Error('身份证号地址编码错误'))
       } else {
