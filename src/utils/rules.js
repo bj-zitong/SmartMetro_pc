@@ -194,9 +194,9 @@ let FormValidate = (function () {
             callback(new Error('身份证号校验位错误'))
           }
         }
-        return pass;
+        // return pass;
       }
-      // return pass;
+      callback()
     }
     }
   }

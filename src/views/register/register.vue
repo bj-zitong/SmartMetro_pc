@@ -198,7 +198,6 @@ export default {
     },
     // 注册
     register(form) {
-      alert(123);
       // 使用
       var form = this.form;
       this.$refs["form"].validate(valid => {
@@ -216,14 +215,6 @@ export default {
             password: form.password,
             orgSite: form.orgSite
           });
-          // this.http
-          //   .post(this.PersonnelLocalhosts + "/smart/auth/regist", params)
-          //   .then(res => {
-          //     if (res.code == 200) {
-          //       this.$message("注册成功！");
-          //       this.$router.push({ path: "/login" });
-          //     }
-          //   });
           var url =
             "/systemUrl/smart/auth/regist";
           this.http.post2(url, params).then(res => {
@@ -242,7 +233,7 @@ export default {
 /* 总div */
 .contain {
   width: 100%;
-  height: 100vh;
+  height: 120vh;
   background-color: rgba(244, 244, 244, 1);
   opacity: 1; /* 不透明级别 */
 

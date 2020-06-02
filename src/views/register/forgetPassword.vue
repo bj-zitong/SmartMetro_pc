@@ -232,7 +232,7 @@ export default {
 /* 总div */
 .contain {
   width: 100%;
-  height: 100vh;
+  height: 120vh;
   background-color: rgba(244, 244, 244, 1);
   opacity: 1; /* 不透明级别 */
 
