@@ -4,6 +4,7 @@
       <el-tag
         closable
         :disable-transitions="false"
+        @click.native="tagClick(tag)"
         @close.prevent.stop="handleClose(tag)">
         {{tag.name}}
       </el-tag>
@@ -46,6 +47,7 @@ export default {
       return false
     },
     isActive(route) {
+     
       return route.path === this.$route.path || route.name === this.$route.name
     },
     handleClose(tag) {
@@ -61,6 +63,9 @@ export default {
           }
         }
       })
+    },
+    tagClick(tag){
+      this.$emit('tagName', tag)
     }
   },
   watch: {

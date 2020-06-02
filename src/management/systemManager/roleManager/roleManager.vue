@@ -1,6 +1,9 @@
 <template>
+<div>
+  <tree/>
   <div
     class="main-box"
+    style="width:85%;float:right"
     v-loading="loading"
     element-loading-text="拼命加载中"
     element-loading-spinner="el-icon-loading"
@@ -124,15 +127,19 @@
       </el-form>
     </el-dialog>
   </div>
+</div>
+
 </template>
 
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "../../../components/pagination";
+import tree from "@/components/tree";
 export default {
   name: "excelExport",
   components: {
-    Pagination
+    Pagination,
+    tree
   },
   data() {
     return {
@@ -441,6 +448,17 @@ export default {
 
 .screen-form-h {
   height: 36px;
+}
+
+.tree-container {
+  float: left;
+  width: 15%;
+  padding:20px 0 0 20px;
+  background: rgba(255, 255, 255, 1);
+}
+.el-tree{
+    height: 100vh;
+    padding:20px 0 0 20px;
 }
 </style>
 

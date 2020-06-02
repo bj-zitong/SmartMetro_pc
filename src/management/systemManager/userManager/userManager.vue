@@ -112,8 +112,14 @@
         <el-form-item prop="sysUserId">
           <el-input v-model="formTeam.sysUserId" type="text" hidden></el-input>
         </el-form-item>
-        <el-form-item prop="orgSite" label="标段/工地：">
-          <el-input v-model="formTeam.orgSite" type="text" placeholder="请输入"></el-input>
+        <!-- <el-form-item prop="orgSite" label="标段/工地：">
+            <el-input v-model="formTeam.orgSite" type="text" placeholder="请输入"></el-input>
+        </el-form-item>-->
+        <el-form-item label="标段/工地：" prop="orgSite">
+          <el-select v-model="formTeam.orgSite" placeholder="请选择">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item prop="userName" label="姓名：">
           <el-input v-model="formTeam.userName" placeholder="请输入"></el-input>
