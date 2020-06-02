@@ -47,7 +47,7 @@ export default {
       //视频监控
       videoList: [
         {
-          title: "预览",
+          title: "视频监控",
           beforeChangeimg: "../static/image/yonghumanager.png",
           afterChangeimg: "../static/image/usercheck.png"
         },
@@ -111,8 +111,8 @@ export default {
       this.tabTitle = "系统管理";
       this.num = 0;
     } else if (this.$route.query.code == 2) {
-      this.editableTabsValue = "预览";
-      this.$emit("selectNavBar", "预览");
+      this.editableTabsValue = "视频监控";
+      this.$emit("selectNavBar", "视频监控");
       this.$router.push({ path: "/south" });
       this.tabTitle = "视频监控管理";
       this.num = 0;

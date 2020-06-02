@@ -209,6 +209,72 @@ export const constantRouterMap = [
                 }
                 ]
             },
+            {
+                path: '/thereport',
+                component: () => import('@/views/wisdomAttendance/thereport/index'),
+                meta: {
+                    icon: '../static/image/attendanceReport.png',
+                    AfterIcon: '../static/image/attendanceReport.png',
+                    title: '测温记录',
+                    enable: "Y",
+                    parent: '实名认证'
+                },
+                children: [
+                    {
+                        path: '/realTimePreview',
+                        name: '/realTimePreview',
+                        component: () => import('@/views/testTemperature/realTimePreview/realTimePreview'),
+                        meta: {
+                            title: '实时预览',
+                            icon: '../static/image/yulan.png',
+                            AfterIcon: '../static/image/yulan.png',
+                            enable: "Y",
+                            parent: '实名认证'
+                        },
+                        children: []
+                    },
+                    {
+                        path: '/menu1',
+                        meta: {
+                            // icon: '../static/image/attendanceReport.png',
+                            // AfterIcon: '../static/image/attendanceReport.png',
+                            title: '预警事件',
+                            enable: "Y",
+                            parent: '实名认证'
+                        },
+
+                        component: () => import('@/views/nested/menu1/index'),
+                        children: [
+                            {
+                                path: '/highTemperature',
+                                name: 'highTemperature',
+                                component: () => import('@/views/testTemperature/warningEvent/highTemperature/highTemperature'),
+                                meta: { title: '高温预警', icon: '', enable: "Y", parent: '实名认证' },
+                                children: []
+                            },
+                            {
+                                path: '/notWearMask',
+                                name: 'notWearMask',
+                                component: () => import('@/views/testTemperature/warningEvent/notWearMask/notWearMask'),
+                                meta: { title: '未佩戴口罩', icon: '', enable: "Y", parent: '实名认证' },
+                                children: []
+                            }
+                            // {
+                            //     path: '/equipmentSpecialist',
+                            //     name: 'equipmentSpecialist',
+                            //     component: () => import('@/views/wisdomAttendance/thereport/equipmentSpecialist'),
+                            //     meta: { title: '设备专用人员', icon: '', enable: "Y", parent: '智慧考勤' }
+                            // },
+                            // {
+                            //     path: '/otherStaffs',
+                            //     name: 'otherStaffs',
+                            //     component: () => import('@/views/wisdomAttendance/thereport/otherStaffs'),
+                            //     meta: { title: '其他服务类人员', icon: '', enable: "Y", parent: '智慧考勤' }
+                            // }
+                        ]
+                    }
+                ]
+            },
             // 外来人员
             {
                 path: '/foreignpersonnel/index',
@@ -404,60 +470,60 @@ export const constantRouterMap = [
             enable: "Y",
             parent: '培训教育'
         },
-        redirect: '/skillDisclose',
+        // redirect: '/skillDisclose',
         children: [
-            {
-                path: '/skillDisclose',
-                // name: 'skillDisclose',
-                component: () => import('@/views/trainEducation/skillDisclose/skillDisclose'),
-                meta: {
-                    title: '技术交底',
-                    icon: '../static/image/technology.png',
-                    AfterIcon: '../static/image/technology.png',
-                    enable: "Y",
-                    parent: '培训教育'
-                },
-                children: []
-            },
-            {
-                path: '/securitySkillDisclose',
-                name: 'securitySkillDisclose',
-                component: () => import('@/views/trainEducation/securitySkillDisclose/securitySkillDisclose'),
-                meta: {
-                    title: '安全技术交底',
-                    icon: '../static/image/security.png',
-                    AfterIcon: '../static/image/security.png',
-                    enable: "Y",
-                    parent: '培训教育'
-                },
-                children: []
-            },
-            {
-                path: '/videoLibrary',
-                name: 'videoLibrary',
-                component: () => import('@/views/trainEducation/videoLibrary/videoLibrary'),
-                meta: {
-                    title: '视频库',
-                    icon: '../static/image/Video.png',
-                    AfterIcon: '../static/image/Video.png',
-                    enable: "Y",
-                    parent: '培训教育'
-                },
-                children: []
-            },
-            {
-                path: '/questionsLibrary',
-                name: 'questionsLibrary',
-                component: () => import('@/views/trainEducation/questionsLibrary/questionsLibrary'),
-                meta: {
-                    title: '试题库',
-                    icon: '../static/image/testQuestions.png',
-                    AfterIcon: '../static/image/testQuestions.png',
-                    enable: "Y",
-                    parent: '培训教育'
-                },
-                children: []
-            },
+            // {
+            //     path: '/skillDisclose',
+            //     // name: 'skillDisclose',
+            //     component: () => import('@/views/trainEducation/skillDisclose/skillDisclose'),
+            //     meta: {
+            //         title: '技术交底',
+            //         icon: '../static/image/technology.png',
+            //         AfterIcon: '../static/image/technology.png',
+            //         enable: "Y",
+            //         parent: '培训教育'
+            //     },
+            //     children: []
+            // },
+            // {
+            //     path: '/securitySkillDisclose',
+            //     name: 'securitySkillDisclose',
+            //     component: () => import('@/views/trainEducation/securitySkillDisclose/securitySkillDisclose'),
+            //     meta: {
+            //         title: '安全技术交底',
+            //         icon: '../static/image/security.png',
+            //         AfterIcon: '../static/image/security.png',
+            //         enable: "Y",
+            //         parent: '培训教育'
+            //     },
+            //     children: []
+            // },
+            // {
+            //     path: '/videoLibrary',
+            //     name: 'videoLibrary',
+            //     component: () => import('@/views/trainEducation/videoLibrary/videoLibrary'),
+            //     meta: {
+            //         title: '视频库',
+            //         icon: '../static/image/Video.png',
+            //         AfterIcon: '../static/image/Video.png',
+            //         enable: "Y",
+            //         parent: '培训教育'
+            //     },
+            //     children: []
+            // },
+            // {
+            //     path: '/questionsLibrary',
+            //     name: 'questionsLibrary',
+            //     component: () => import('@/views/trainEducation/questionsLibrary/questionsLibrary'),
+            //     meta: {
+            //         title: '试题库',
+            //         icon: '../static/image/testQuestions.png',
+            //         AfterIcon: '../static/image/testQuestions.png',
+            //         enable: "Y",
+            //         parent: '培训教育'
+            //     },
+            //     children: []
+            // },
             {
                 path: '/resultStatistics',
                 name: 'resultStatistics',
@@ -523,34 +589,34 @@ export const constantRouterMap = [
             enable: "Y",
             parent: '诚信管理'
         },
-        redirect: '/personageEvaluate',
+        redirect: '/blacklist',
         children: [
-            {
-                path: '/personnelEvaluate',
-                component: () => import('@/views/integrityManagement/index'),
-                alwaysShow: true,
-                meta: {
-                    title: '人员评价',
-                    icon: '../static/image/renyuanpingjia.png',
-                    AfterIcon: '../static/image/renyuanpingjia.png',
-                    enable: "Y",
-                    parent: '诚信管理'
-                },
-                children: [
-                    {
-                        path: '/personageEvaluate',
-                        name: 'personageEvaluate',
-                        component: () => import('@/views/integrityManagement/personnelEvaluate/personageEvaluate'),
-                        meta: { title: '个人评价', icon: '', enable: "Y", parent: '诚信管理' }
-                    },
-                    {
-                        path: '/teamEvaluate',
-                        name: 'teamEvaluate',
-                        component: () => import('@/views/integrityManagement/personnelEvaluate/teamEvaluate'),
-                        meta: { title: '班组评价', icon: '', enable: "Y", parent: '诚信管理' }
-                    }
-                ]
-            },
+            // {
+            //     path: '/personnelEvaluate',
+            //     component: () => import('@/views/integrityManagement/index'),
+            //     alwaysShow: true,
+            //     meta: {
+            //         title: '人员评价',
+            //         icon: '../static/image/renyuanpingjia.png',
+            //         AfterIcon: '../static/image/renyuanpingjia.png',
+            //         enable: "Y",
+            //         parent: '诚信管理'
+            //     },
+            //     children: [
+            //         {
+            //             path: '/personageEvaluate',
+            //             name: 'personageEvaluate',
+            //             component: () => import('@/views/integrityManagement/personnelEvaluate/personageEvaluate'),
+            //             meta: { title: '个人评价', icon: '', enable: "Y", parent: '诚信管理' }
+            //         },
+            //         {
+            //             path: '/teamEvaluate',
+            //             name: 'teamEvaluate',
+            //             component: () => import('@/views/integrityManagement/personnelEvaluate/teamEvaluate'),
+            //             meta: { title: '班组评价', icon: '', enable: "Y", parent: '诚信管理' }
+            //         }
+            //     ]
+            // },
             {
                 path: '/blacklist',
                 component: () => import('@/views/integrityManagement/blacklist/blacklist'),
@@ -558,6 +624,18 @@ export const constantRouterMap = [
                     icon: '../static/image/blacklist.png',
                     AfterIcon: '../static/image/blacklist.png',
                     title: '黑名单',
+                    enable: "Y",
+                    parent: '诚信管理'
+                },
+                children: []
+            },
+            {
+                path: '/badbehaviorRecord',
+                component: () => import('@/views/integrityManagement/badbehaviorRecord/badbehaviorRecord'),
+                meta: {
+                    icon: '../static/image/blacklist.png',
+                    AfterIcon: '../static/image/blacklist.png',
+                    title: '不良行为记录',
                     enable: "Y",
                     parent: '诚信管理'
                 },
@@ -884,15 +962,15 @@ export const constantRouterMap = [
             },
         ]
     },
-    // 视频监控管理-预览
+    // 视频监控管理-视频监控
     {
         path: '/south',
-        name: '预览',
+        name: '视频监控',
         // hidden: true,
         component: Layout,
         meta: {
             icon: '',
-            title: '预览',
+            title: '视频监控',
             enable: "Y",
 
         },
@@ -908,7 +986,7 @@ export const constantRouterMap = [
                     AfterIcon: '../../static/image/lwgl.png',
                     title: '南门大区',
                     enable: "Y",
-                    parent: '预览',
+                    parent: '视频监控',
                 },
                 // // redirect: 'labor_Subcontract1',
                 children: []
@@ -922,7 +1000,7 @@ export const constantRouterMap = [
                     title: '生活区',
                     icon: '../../static/image/roster.png',
                     enable: "Y",
-                    parent: '预览'
+                    parent: '视频监控'
                 },
                 // redirect: '/roster/manager',
                 children: [{
@@ -930,14 +1008,14 @@ export const constantRouterMap = [
                     name: 'lifeArea1',
                     component: () =>
                         import('@/management/videoMonitoring/lifeArea/lifeArea1'),
-                    meta: { title: '生活区一', icon: '', enable: "Y", parent: '预览' }
+                    meta: { title: '生活区一', icon: '', enable: "Y", parent: '视频监控' }
                 },
                 {
                     path: '/lifeArea2aa',
                     name: 'lifeArea2aa',
                     component: () =>
                         import('@/management/videoMonitoring/lifeArea/lifeArea2aa'),
-                    meta: { title: '生活区二', icon: '', enable: "Y", parent: '预览' }
+                    meta: { title: '生活区二', icon: '', enable: "Y", parent: '视频监控' }
                 }
                 ]
             },
@@ -952,7 +1030,7 @@ export const constantRouterMap = [
                     AfterIcon: '../../static/image/wlry.png',
                     title: '北区',
                     enable: "Y",
-                    parent: '预览'
+                    parent: '视频监控'
                 },
                 children: []
             },
@@ -967,7 +1045,7 @@ export const constantRouterMap = [
                     AfterIcon: '../../static/image/wlry.png',
                     title: '东区',
                     enable: "Y",
-                    parent: '预览'
+                    parent: '视频监控'
                 },
                 children: []
             },
@@ -982,7 +1060,112 @@ export const constantRouterMap = [
                     AfterIcon: '../../static/image/wlry.png',
                     title: '西区',
                     enable: "Y",
-                    parent: '预览'
+                    parent: '视频监控'
+                },
+                children: []
+            },
+        ]
+    },
+
+// 视频监控管理-视频监控
+    {
+        path: '/south',
+        name: '回放',
+        // hidden: true,
+        component: Layout,
+        meta: {
+            icon: '',
+            title: '回放',
+            enable: "Y",
+
+        },
+        redirect: 'south',
+        children: [
+            {
+                path: '/south',
+                component: () =>
+                    import('@/management/videoMonitoring/south'),
+                // alwaysShow: false,
+                meta: {
+                    icon: '../../static/image/lwgl.png',
+                    AfterIcon: '../../static/image/lwgl.png',
+                    title: '南门大区',
+                    enable: "Y",
+                    parent: '回放',
+                },
+                // // redirect: 'labor_Subcontract1',
+                children: []
+            },
+            {
+                path: '/lifeArea',
+                component: () =>
+                    import('@/management/videoMonitoring/index'),
+                // alwaysShow: true,
+                meta: {
+                    title: '生活区',
+                    icon: '../../static/image/roster.png',
+                    enable: "Y",
+                    parent: '回放'
+                },
+                // redirect: '/roster/manager',
+                children: [{
+                    path: '/lifeArea1',
+                    name: 'lifeArea1',
+                    component: () =>
+                        import('@/management/videoMonitoring/lifeArea/lifeArea1'),
+                    meta: { title: '生活区一', icon: '', enable: "Y", parent: '回放' }
+                },
+                {
+                    path: '/lifeArea2aa',
+                    name: 'lifeArea2aa',
+                    component: () =>
+                        import('@/management/videoMonitoring/lifeArea/lifeArea2aa'),
+                    meta: { title: '生活区二', icon: '', enable: "Y", parent: '回放' }
+                }
+                ]
+            },
+            {
+                path: '/north',
+                name: 'CustomComponent',
+                // alwaysShow: true,
+                component: () =>
+                    import('@/management/videoMonitoring/north'),
+                meta: {
+                    icon: '../../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../../static/image/wlry.png',
+                    title: '北区',
+                    enable: "Y",
+                    parent: '回放'
+                },
+                children: []
+            },
+            {
+                path: '/east',
+                name: 'CustomComponent',
+                // alwaysShow: true,
+                component: () =>
+                    import('@/management/videoMonitoring/east'),
+                meta: {
+                    icon: '../../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../../static/image/wlry.png',
+                    title: '东区',
+                    enable: "Y",
+                    parent: '回放'
+                },
+                children: []
+            },
+            {
+                path: '/Western',
+                name: 'CustomComponent',
+                // alwaysShow: true,
+                component: () =>
+                    import('@/management/videoMonitoring/Western'),
+                meta: {
+                    icon: '../../static/image/Statisticsscreen/gl_top.png',
+                    AfterIcon: '../../static/image/wlry.png',
+                    title: '西区',
+                    enable: "Y",
+                    parent: '回放'
                 },
                 children: []
             },

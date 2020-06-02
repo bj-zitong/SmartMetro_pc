@@ -2,9 +2,9 @@ import axios from 'axios';
 import { Message } from 'element-ui';
 axios.defaults.baseURL = process.env.VUE_APP_URL
 // import router from '../router';
-// let localhosts = 'http://192.168.1.100:8002';   //请求的后台域名
+// let localhosts = 'http://localhost:8001';   //请求的后台域名
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
-    // config.url ='http://192.168.1.30:8001'+config.url.substring(10)
+    // axios.defaults.baseURL = localhosts
     // console.log(config)
     return config
 }, error => {
@@ -18,11 +18,11 @@ axios.interceptors.response.use(response => {//数据拿到之后
     return Promise.reject(error.response);
 });
 function successfun(res) {//处理后台返回的非200错误
-    if (res.code === 200) {
+    if (res.code === 200) { 
         return res
-    }else{
+    } else {
         //  Message.warning(res.message);
-         return res;
+        return res;
     }
 }
 function errorfun(res) {
@@ -31,7 +31,6 @@ function errorfun(res) {
         return res;
     }
 }
-// http://localhost:8001/systemUrl/smart/auth/1/role/management
 export default {
     post(url, data) {//post请求
         // return axios({
@@ -51,50 +50,50 @@ export default {
         // }, err => {
         //     return errorfun(err);
         // })
-        return  axios({
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: sessionStorage.getItem("token")
-          },
-          url:url,
-          data: data,
-          withCredentials: true,
-          timeout: 5000 //响应时间
+        return axios({
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: sessionStorage.getItem("token")
+            },
+            url: url,
+            data: data,
+            withCredentials: true,
+            timeout: 5000 //响应时间
         }).then(
-          res => {
-            return successfun(res)
-          },
-          err => {
-            return errorfun(err);
-          }
+            res => {
+                return successfun(res)
+            },
+            err => {
+                return errorfun(err);
+            }
         );
     },
-    post2(url,data){//post请求
-      return axios({
-          method:'post',
-          headers:{
-               'Content-Type': 'application/json'
-          },
-          url:url,
-          data: data,
-          withCredentials: true,
-          timeout:5000,//响应时间,
-          responseType: "arraybuffer"
-      }).then(res => {
-          return successfun(res)
-      },err => {
-          return errorfun(err);
-      })
-  },
-    get(url,params){//get请求
+    post2(url, data) {//post请求
+        return axios({
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            url: url,
+            data: data,
+            withCredentials: true,
+            timeout: 5000,//响应时间,
+            responseType: "arraybuffer"
+        }).then(res => {
+            return successfun(res)
+        }, err => {
+            return errorfun(err);
+        })
+    },
+    get(url, params) {//get请求
         return axios({
             method: 'get',
             headers: {
                 Authorization: sessionStorage.getItem('token'),
                 'Content-Type': 'application/json',
             },
-            url:url,
+            url: url,
             params,
             withCredentials: true,
             timeout: 5000,
@@ -111,7 +110,7 @@ export default {
                 Authorization: sessionStorage.getItem('token'),
                 'Content-Type': 'application/json',
             },
-            url:url,
+            url: url,
             data: data,
             withCredentials: true,
             timeout: 5000,
@@ -128,7 +127,7 @@ export default {
                 Authorization: sessionStorage.getItem('token'),
                 'Content-Type': 'application/json',
             },
-            url:url,
+            url: url,
             data: data,
             withCredentials: true,
             timeout: 5000,//响应时间

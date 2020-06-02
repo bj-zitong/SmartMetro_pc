@@ -4,7 +4,7 @@
     <sidebar :sideBarData="sideBarData"></sidebar>
     <div :class="hideMainContainer=='首页'||hideMainContainer=='工友须知'||hideMainContainer=='开复工管理'||hideMainContainer=='工地管理'||hideMainContainer=='角色管理'||hideMainContainer=='用户管理'||hideMainContainer=='分析'||hideMainContainer=='预警'?'main-container1':'main-container'"
     >
-      <tabs-view></tabs-view>
+      <tabs-view @tagName="tagName"></tabs-view>
       <app-main></app-main>
     </div>
   </div>
@@ -33,23 +33,36 @@ export default {
   },
   methods: {
     selectNavBar(param) {
-      console.log(param);
-      // if (param == "用户管理") {
-      //   this.hideMainContainer = "用户管理";
-      //   this.sideBarData = this.obj;
-      //   this.$router.push({ name: param });
-      // } else {
         this.sideBarData = [];
         this.routers.map(x => {
           if (x.name == param) {
             this.hideMainContainer = x.name;
+            console.log(x)
             this.sideBarData = x;
             this.$router.push({ name: x.name });
             return;
           }
-        });
-      // }
-    }
+        })
+    },
+    tagName(tag){
+      //  this.sideBarData = [];
+      //  console.log(tag)
+      //   this.routers.map(x => {
+      //   this.hideMainContainer = x.name;
+      //   this.sideBarData = x;
+      //     console.log(x)
+      //     if (x.name == tag.name) {
+      //       alert("33333")
+            
+      //       console.log(x)
+            
+      //       this.$router.push({ name: x.name });
+      //       return;
+      //     }
+      //   })
+      this.hideMainContainer = tag.name;
+      this.sideBarData = tag;
+    },
   }
 };
 </script>
