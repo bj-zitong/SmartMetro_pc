@@ -619,6 +619,7 @@ export const constantRouterMap = [
             // },
             {
                 path: '/blacklist',
+                name: 'blacklist',
                 component: () => import('@/views/integrityManagement/blacklist/blacklist'),
                 meta: {
                     icon: '../static/image/blacklist.png',
@@ -631,6 +632,7 @@ export const constantRouterMap = [
             },
             {
                 path: '/badbehaviorRecord',
+                name: 'badbehaviorRecord',
                 component: () => import('@/views/integrityManagement/badbehaviorRecord/badbehaviorRecord'),
                 meta: {
                     icon: '../static/image/blacklist.png',
@@ -964,7 +966,7 @@ export const constantRouterMap = [
     },
     // 视频监控管理-视频监控
     {
-        path: '/south',
+        path: '/videoMonitoring',
         name: '视频监控',
         // hidden: true,
         component: Layout,
@@ -972,14 +974,15 @@ export const constantRouterMap = [
             icon: '',
             title: '视频监控',
             enable: "Y",
-
+            parent: '视频监控'
         },
-        redirect: 'south',
+        // redirect: '/south',
         children: [
             {
                 path: '/south',
                 component: () =>
                     import('@/management/videoMonitoring/south'),
+                    name: 'CustomComponent',
                 // alwaysShow: false,
                 meta: {
                     icon: '../../static/image/lwgl.png',

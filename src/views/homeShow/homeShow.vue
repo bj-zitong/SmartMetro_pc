@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;">
+  <div style="height:100vh;">
     <div class="home-box">
       <div class="main-left">
         <div class="h-m-l1" @click="dialogTableVisible = true">

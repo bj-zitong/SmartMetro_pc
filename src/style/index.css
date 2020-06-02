@@ -36,9 +36,7 @@ html {
 html,body {
   height: 100%;
 }
-.main-app {
-  height: 100%;
-}
+
 /* 机器数字 */
 .digital-number {
   font-family: digital;

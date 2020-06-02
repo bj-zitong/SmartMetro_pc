@@ -98,11 +98,7 @@ export default {
   },
   mounted() {
     this.list =
-      this.$route.query.code == 1
-        ? this.systemList
-        : this.$route.query.code == 2
-        ? this.videoList
-        : list;
+      this.$route.query.code == 1? this.systemList: this.$route.query.code == 2? this.videoList: this.$route.query.code == 3?list:''
     // this.editableTabsValue = this.$route.query.code == 1 ? "0" : "1";
     if (this.$route.query.code == 1) {
       this.editableTabsValue = "用户管理";
@@ -116,7 +112,7 @@ export default {
       this.$router.push({ path: "/south" });
       this.tabTitle = "视频监控管理";
       this.num = 0;
-    } else {
+    } else if(this.$route.query.code == 3) {
       this.editableTabsValue = "首页";
       this.$emit("selectNavBar", "首页");
       this.$router.push({ path: "/homeShow" });

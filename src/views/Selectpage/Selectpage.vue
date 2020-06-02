@@ -126,7 +126,9 @@ export default {
     },
     // 人员智慧管理
     adminPage() {
-      this.$router.push({ path: "/home" });
+      this.$router.push({ name: "home",query: {
+          code: "3"
+        }});
     },
     // 系统管理
     systemManager() {
@@ -258,7 +260,7 @@ ul, li {
 
 /* 主体样式 */
 .home-mian-box {
-  width: 1635px;
+  width: 90%;
   height: 625px;
   // background: red;
   position: absolute;

@@ -45,13 +45,13 @@
                     <h1>1,567次</h1>
                     <ul>
                         <li>
-                            <span>未穿戴安全帽</span>
+                            <span>未戴安全帽</span>
                         </li>
                         <li>
                             <span>现场有明火</span>
                         </li>
                         <li>
-                            <span>未穿戴防护服</span>
+                            <span>未穿防护服</span>
                         </li>
                         <li>
                             <span>进入危险区</span>
@@ -293,7 +293,7 @@ export default {
                     }
                 },
                 grid: {
-                    left: '5%',
+                    left: '0',
                     right: '5%',
                     top:'20%',
                     bottom: '5%',
@@ -493,7 +493,7 @@ export default {
                 }
                 li {
                     list-style-type: disc;
-                    font-size:19px;
+                    // font-size:19px;
                     font-family:SourceHanSansCN-Regular;
                     & > span {
                         color: #7988AD;
@@ -513,7 +513,7 @@ export default {
                         display: flex;
                         flex-direction: column;
                         flex:1;
-                        padding: 20px;
+                        // padding: 20px;
                         & > li:nth-child(1) {
                             flex:1;
                             color: #4882FD;
@@ -561,22 +561,27 @@ export default {
                         display: flex;
                         flex-direction: row;
                         flex:1;
-                        padding: 20px;
+                        // padding: 20px;
+                        margin-left:20px;
                         flex-wrap: wrap;
                         & > li {
                             width: 50%;
                         }
                         & > li:nth-child(1) {
                             color: #60D0FF;
+                           
                         }
                         & > li:nth-child(2) {
                             color: #00A6FF;
+                          
                         }
                         & > li:nth-child(3) {
                             color: #FFD44F;
+                            padding-top:8px
                         }
                         & > li:nth-child(4) {
                             color: #FF6060;
+                            padding-top:8px
                         }
                     }
                 }
@@ -655,4 +660,5 @@ export default {
             }
         }
     }
+    
 </style>
