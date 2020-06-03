@@ -46,14 +46,14 @@
                     <el-table-column prop="description" label="培训提纲"></el-table-column>
                     <el-table-column label="操作" width="240" fixed="right">
                     <template slot-scope="scope">
-                        <el-button
+                        <!-- <el-button
                         class="T-R-B-BlackishGreen"
                         size="mini"
                         @click="downRowClick(scope.$index, scope.row)"
-                        >下载</el-button>
+                        >下载</el-button> -->
                         <el-button
                         class="T-R-B-Grey"
-                        size="mini" 
+                        size="mini"
                         @click="deleteRowClick(scope.$index, scope.row)"
                         >删除</el-button>
                         <el-button

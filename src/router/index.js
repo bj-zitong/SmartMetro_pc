@@ -470,21 +470,21 @@ export const constantRouterMap = [
             enable: "Y",
             parent: '培训教育'
         },
-        // redirect: '/skillDisclose',
+        redirect: '/lineLowerTrain',
         children: [
-            // {
-            //     path: '/skillDisclose',
-            //     // name: 'skillDisclose',
-            //     component: () => import('@/views/trainEducation/skillDisclose/skillDisclose'),
-            //     meta: {
-            //         title: '技术交底',
-            //         icon: '../static/image/technology.png',
-            //         AfterIcon: '../static/image/technology.png',
-            //         enable: "Y",
-            //         parent: '培训教育'
-            //     },
-            //     children: []
-            // },
+            {
+                path: '/lineLowerTrain',
+                name: 'lineLowerTrain',
+                component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
+                meta: {
+                    title: '培训记录',
+                    icon: '../static/image/technology.png',
+                    AfterIcon: '../static/image/technology.png',
+                    enable: "Y",
+                    parent: '培训教育'
+                },
+                children: []
+            },
             // {
             //     path: '/securitySkillDisclose',
             //     name: 'securitySkillDisclose',
@@ -550,33 +550,33 @@ export const constantRouterMap = [
                     }
                 ]
             },
-            {
-                path: '/trainEducation/trainRecord',
-                // component: Layout,
-                component: () => import('@/views/trainEducation/trainRecord/index'),
-                alwaysShow: true,
-                meta: {
-                    title: '培训记录',
-                    icon: '../static/image/peixun1.png',
-                    AfterIcon: '../static/image/peixun1.png',
-                    enable: "Y",
-                    parent: '培训教育'
-                },
-                children: [
-                    {
-                        path: '/lineLowerTrain',
-                        name: 'lineLowerTrain',
-                        component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
-                        meta: { title: '线下培训记录', icon: '', enable: "Y", parent: '培训教育' }
-                    },
-                    {
-                        path: '/lineUpperTrain',
-                        name: 'lineUpperTrain',
-                        component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
-                        meta: { title: '线上视频培训记录', icon: '', enable: "Y", parent: '培训教育' }
-                    }
-                ]
-            }
+            // {
+            //     path: '/trainEducation/trainRecord',
+            //     // component: Layout,
+            //     component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
+            //     alwaysShow: true,
+            //     meta: {
+            //         title: '培训记录',
+            //         icon: '../static/image/peixun1.png',
+            //         AfterIcon: '../static/image/peixun1.png',
+            //         enable: "Y",
+            //         parent: '培训教育'
+            //     },
+            //     // children: [
+            //     //     {
+            //     //         path: '/lineLowerTrain',
+            //     //         name: 'lineLowerTrain',
+            //     //         component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
+            //     //         meta: { title: '线下培训记录', icon: '', enable: "Y", parent: '培训教育' }
+            //     //     },
+            //         // {
+            //         //     path: '/lineUpperTrain',
+            //         //     name: 'lineUpperTrain',
+            //         //     component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
+            //         //     meta: { title: '线上视频培训记录', icon: '', enable: "Y", parent: '培训教育' }
+            //         // }
+            //     // ]
+            // }
         ]
     },
     {

@@ -27,7 +27,7 @@
           :show-file-list="showFileList"
           :on-change="changeImg"
         >
-          <el-button slot="trigger" class="T-H-B-SkyBlue" type="primary">上传</el-button>
+        <el-button  class="T-H-B-Cyan">导出</el-button>
         </el-upload>
         <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
         <!-- <el-button class="T-H-B-DarkGreen" @click="downloadClick">下载</el-button> -->
@@ -54,8 +54,8 @@
         <el-table-column prop="workType" label="工种"></el-table-column>
         <el-table-column prop="trainingType" label="培训类型"></el-table-column>
         <el-table-column prop="score" label="分数"></el-table-column>
-        <el-table-column prop="examTime" label="考试时间" width="180"></el-table-column>
-        <el-table-column prop="examPath" label="试卷"></el-table-column>
+        <el-table-column prop="examTime" label="培训时间" width="180"></el-table-column>
+        <!-- <el-table-column prop="examPath" label="试卷"></el-table-column> -->
         <el-table-column label="关联闸机" fixed="right" prop="isRelationQate">
           <template slot-scope="scope">
             <el-switch
