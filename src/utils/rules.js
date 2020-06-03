@@ -105,7 +105,6 @@ let FormValidate = (function () {
 
       // 身份证的验证规则
       ID(rule, value, callback) {
-        console.log(value)
         if (!value) {
           return callback(new Error('身份证不能为空'))
         }

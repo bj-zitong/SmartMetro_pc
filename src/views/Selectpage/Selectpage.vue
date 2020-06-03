@@ -121,14 +121,23 @@ export default {
           sessionStorage.removeItem("userId");
           sessionStorage.removeItem("user");
           sessionStorage.removeItem("token");
-          this.$router.push({ path: "/login" });
+          var url = "/systemUrl/smart/auth/"+sessionStorage.getItem('userId')+"/logout";
+          this.http.get(url, null).then(res => {
+            if (res.code == 200) {
+              this.$message("退出成功！");
+              this.$router.push({ path: "/login" });
+            }
+          });
         });
     },
     // 人员智慧管理
     adminPage() {
-      this.$router.push({ name: "home",query: {
+      this.$router.push({
+        name: "home",
+        query: {
           code: "3"
-        }});
+        }
+      });
     },
     // 系统管理
     systemManager() {

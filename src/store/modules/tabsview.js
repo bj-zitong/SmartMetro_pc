@@ -7,8 +7,6 @@ const tabsview = {
   },
   mutations: {
     [SET_TABSVIEW](state, view) {
-      // console.log(view)
-      console.log(view)
       if(view.query.code==3){
         view.meta.title="人员智慧管理"
         state.visitedTabsView=[]
@@ -22,7 +20,7 @@ const tabsview = {
         state.visitedTabsView=[]
       }
       // if(view.query.code==undefined){
-      //   
+      //
       //   state.visitedTabsView.push({ name: view.meta.title, path: view.path })
       // }
       if (state.visitedTabsView.find((n) => n.path === view.path)) {
@@ -41,7 +39,7 @@ const tabsview = {
   actions: {
     // 添加一个新的tabsView
     addVisitedTabsView({ commit }, view) {
-      
+
       commit(SET_TABSVIEW, view)
     },
     // 关闭一个tabsView

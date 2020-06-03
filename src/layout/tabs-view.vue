@@ -47,7 +47,7 @@ export default {
       return false
     },
     isActive(route) {
-     
+
       return route.path === this.$route.path || route.name === this.$route.name
     },
     handleClose(tag) {
@@ -70,7 +70,7 @@ export default {
   },
   watch: {
     $route() {
-     
+
       // console.log(this.$route)
       this.addTabsView()
     }
@@ -92,9 +92,9 @@ export default {
       .el-tag
         background-color #00b4aa
         color #fff
-        .el-icon-close 
+        .el-icon-close
           color #fff
-        &:before 
+        &:before
           position relative
           content ''
           background #fff

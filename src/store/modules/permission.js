@@ -2,12 +2,10 @@ import { constantRouterMap, asyncRouterMap } from '@/router'
 /**
  * 递归过滤异步路由表，返回符合用户角色权限的路由表
  * @param asyncRouterMap
- * 
+ *
  * @param routesMap
  */
 function filterAsyncRouter(asyncRouterMap, routesMap) {
-  console.log(asyncRouterMap)
-  console.log(routesMap)
   const accessedRouters = asyncRouterMap.filter(route => {
     return routesMap.includes(route.path)
   })

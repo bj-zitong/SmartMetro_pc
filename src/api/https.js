@@ -1,55 +1,80 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 axios.defaults.baseURL = process.env.VUE_APP_URL
-// import router from '../router';
 // let localhosts = 'http://localhost:8001';   //请求的后台域名
+var that=this;
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
-    // axios.defaults.baseURL = localhosts
-    // console.log(config)
     return config
 }, error => {
-    Message.error(error)
     return Promise.reject(error);
 });
+//后台返回请求
 axios.interceptors.response.use(response => {//数据拿到之后
+    console.log(response);
     return response.data
 }, error => {
-    Message.error('Http请求失败，请联系管理员');
+    console.log(error.response.data);//unauthorized
+    console.log(error.response.status);
+    var errorMsg='服务器繁忙，请稍后重试！';
+    //unauthorized 未授权
+    if(error.response.data=='unauthorized'){
+        errorMsg='请登录';
+        window.location.href="../views/login/index.vue";
+        return;
+    }
+    const errorStatus = error.response.status;//返回状态码
+    switch (errorStatus) {
+      case 401:
+        router.push('/login');
+        sessionStorage.removeItem("userId");
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("token");//删除存储信息
+        Notification({
+          title: '请重新登录',
+          message: '登录已过期，请重新登录',
+          showIcon: true,
+          center: true,
+          type: 'error'
+        })
+        return
+      case 403:
+        errorMsg = '没有权限';
+        break
+      case 404:
+        errorMsg = '请求路径找不到';
+        // that.$router.push({path:'/login'});
+        window.location.href = "/";
+        break
+      case 500:
+        errorMsg ='请求失败，请联系管理员';
+        break
+      default:
+        errorMsg = resErrorMsg
+    }
+    Message.error(errorMsg);//对应状态返回的提示
+    // router.push('/login');//后台报错
     return Promise.reject(error.response);
 });
+//请求成功 返回请求数据
 function successfun(res) {//处理后台返回的非200错误
-    if (res.code === 200) { 
+    if (res.code === 200) {
         return res
     } else {
-        //  Message.warning(res.message);
+       console.log(res);
         return res;
     }
 }
+//失败
 function errorfun(res) {
-    if (res.code != 200) {
-        Message.error(res.message);
-        return res;
-    }
+  console.log(res);
+    // if (res.code != 200) {
+    //     this.$router.push("/login")
+    //     Message.error(res.message);
+    //     return res;
+    // }
 }
 export default {
     post(url, data) {//post请求
-        // return axios({
-        //     method: 'post',
-        //     headers: {
-        //         Authorization: sessionStorage.getItem('token'),
-        //         'Content-Type': 'application/json',
-        //     },
-        //     baseURL: ,
-        //     url,
-        //     data: data,
-        //     withCredentials: true,
-        //     timeout: 5000,//响应时间,
-        //     responseType: "arraybuffer"
-        // }).then(res => {
-        //     return successfun(res)
-        // }, err => {
-        //     return errorfun(err);
-        // })
         return axios({
             method: "post",
             headers: {

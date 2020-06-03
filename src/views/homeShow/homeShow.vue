@@ -346,10 +346,10 @@ export default {
     },
     // 近7天出勤情况
     attendanceClick(tab, event) {
-      console.log(tab, event);
+
     },
     dynamicClick(tab, event) {
-      console.log(tab, event);
+
     },
     drawLeft1() {
       //  获取echarts
@@ -1066,9 +1066,6 @@ export default {
           borderWidth: "0",
           backgroundColor: "#0058A2",
           formatter: function(params, ticket, callback) {
-            console.log(params, "params");
-            console.log(ticket, "ticket");
-            console.log(callback, "callback");
             let res = `<div><div style="background: #008EFE;">${params[0].axisValue}</div></div><div style="background: #0058A2;padding-top:10px;">人数：${params[0].data}</div></div>`;
             return res;
           }
