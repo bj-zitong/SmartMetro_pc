@@ -108,7 +108,6 @@ export default {
   },
   watch: {
     sideBarData(newV,oldV) {
-      console.log(newV)
         if(newV.name=="首页" || newV.name=="工友须知" || newV.name=="开复工管理"|| newV.name=="工地管理"|| newV.name=="角色管理"|| newV.name=="用户管理" || newV.name=="分析" || newV.name=="预警"){
            this.hideSidebar='display:none'
         }else{
@@ -117,19 +116,18 @@ export default {
     }
 },
   mounted() {
-    console.log(this.routers);
-    console.log(this.sideBarData);
+
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log("handleOpen", key, keyPath);
+
     },
     handleClose(key, keyPath) {
-      console.log("handleClose", key, keyPath);
+
     },
     //切换侧边栏图片方法
     togglePicture(title){
-      console.log(title)
+     
       this.Picture=title
     }
   }

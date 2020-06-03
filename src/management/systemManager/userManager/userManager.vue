@@ -350,10 +350,10 @@ export default {
         page: this.listQuery.currentPage,
         userName: this.screenForm.searchName
       });
-      setTimeout(() => {
-        // console.log(this);//this对象为vue实例
-        this.loading = false;
-      }, 1000);
+      // setTimeout(() => {
+      //   // console.log(this);//this对象为vue实例
+      //   this.loading = false;
+      // }, 1000);
       //请求
       var url =
         "/systemUrl/smart/auth/" +
@@ -371,6 +371,7 @@ export default {
             }
           }
           this.total = total;
+          this.loading = false;
         }
       });
     },

@@ -47,12 +47,10 @@ export default {
         document.body.scrollTop;
     },
     selectNavBar(param) {
-      console.log(param);
       this.sideBarData = [];
       this.routers.map(x => {
         if (x.name == param) {
           this.hideMainContainer = x.name;
-          console.log(x);
           this.sideBarData = x;
           this.$router.push({ name: x.name });
           return;

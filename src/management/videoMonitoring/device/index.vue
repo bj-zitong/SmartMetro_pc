@@ -241,7 +241,6 @@ export default {
                         }
                     })
                     .catch(res => {
-                        console.log("error!");
                         return false;
                     });
                     this.dialogVisibleDevice = false;
@@ -259,14 +258,12 @@ export default {
                         }
                     })
                     .catch(res => {
-                        console.log("error!");
                         return false;
                     });
                     this.dialogVisibleDevice = false;
                 }
                 this.cloneDeviceForm(refDevice);
                 } else {
-                console.log("error submit!!");
                 return false;
                 }
             });
@@ -359,7 +356,6 @@ export default {
             this.http.post(url, data)
             .then(res => {
                 if(res.code == 200) {
-                    console.log('设备详情')
                 }else {
                     this.$message({
                         type:'error',

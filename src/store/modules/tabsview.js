@@ -21,7 +21,7 @@ const tabsview = {
         state.visitedTabsView=[]
       }
       // if(view.query.code==undefined){
-      //   
+      //
       //   state.visitedTabsView.push({ name: view.meta.title, path: view.path })
       // }
       if (state.visitedTabsView.find((n) => n.path === view.path)) {
@@ -40,7 +40,7 @@ const tabsview = {
   actions: {
     // 添加一个新的tabsView
     addVisitedTabsView({ commit }, view) {
-      
+
       commit(SET_TABSVIEW, view)
     },
     // 关闭一个tabsView

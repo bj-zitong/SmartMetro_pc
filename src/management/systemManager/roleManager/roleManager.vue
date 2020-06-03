@@ -230,17 +230,16 @@ export default {
         });
     },
     handleCheckedRoleChange() {
-      console.log(this.formTeam.permissionName);
     },
     // 表格加载请求
     getTable(val) {
       if (val == 0) {
         this.loading = true;
       }
-      setTimeout(() => {
-        // console.log(this);//this对象为vue实例
-        this.loading = false;
-      }, 1000);
+      // setTimeout(() => {
+      //   // console.log(this);//this对象为vue实例
+      //   this.loading = false;
+      // }, 1000);
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
@@ -263,6 +262,7 @@ export default {
             }
           }
           this.total = total;
+          this.loading = false;
         }
       });
     },

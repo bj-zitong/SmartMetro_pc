@@ -336,7 +336,7 @@ export default {
         });
     },
     beforeRemove(){
-      
+
     },
     changeFun() {}
   }
