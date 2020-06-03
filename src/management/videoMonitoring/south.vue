@@ -14,7 +14,7 @@
       <el-col :span="20">
         <div class="grid-content_box bg-purple">
           <img src="../../../static/image/gaoqing.png" class="gaoqing" />
-          <img src="../../../static/image/layout.png" class="layoutIcon" />
+          <img :src="imgtab" class="layoutIcon" />
           <el-dropdown
             trigger="click"
             @command="singularCommand"
@@ -37,6 +37,18 @@
               </el-dropdown-item>
               <el-dropdown-item command="4">
                 <img src="../../../static/image/singular/4.png" />
+              </el-dropdown-item>
+              <el-dropdown-item command="5">
+                <img src="../../../static/image/singular/5.png" />
+              </el-dropdown-item>
+              <!-- <el-dropdown-item command="6">
+                <img src="../../../static/image/singular/6.png" />
+              </el-dropdown-item>-->
+              <el-dropdown-item command="6">
+                <img src="../../../static/image/singular/7.png" />
+              </el-dropdown-item>
+              <el-dropdown-item command="7">
+                <img src="../../../static/image/singular/8.png" />
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -75,6 +87,10 @@
             </el-button>
           </el-button-group>-->
         </div>
+        <div class="datetimebox">
+          <el-date-picker v-model="value1" type="datetime" placeholder="选择日期时间"></el-date-picker>
+          <el-button type="primary" @click="handlevideoList">搜索</el-button>
+        </div>
       </el-col>
     </el-row>
 
@@ -108,7 +124,7 @@
                           <td>无信号</td>
                         </tr>
                       </table>
-                      <div v-show="true" class="selectchannel" @click="dialogFormVisible=true">选择通道</div>
+                      <!-- <div v-show="true" class="selectchannel" @click="dialogFormVisible=true">选择通道</div> -->
                     </div>
                   </div>
                 </div>
@@ -117,17 +133,1026 @@
           </el-col>
         </el-row>
       </div>
-      <div class="footer"></div>
     </div>
-    <div class="box1">
-      <div class="box1_top"></div>
-      <div class="box1_right">
-        <div class="box1_right_c"></div>
-        <div class="box1_right_c" style="margin-top:3px"></div>
+    <div class="box1 main" v-if="box1">
+      <div class="box1_top">
+        <div class="box2_title">
+          <h6></h6>
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+        </div>
+        <span>无信号</span>
       </div>
-      <div class="box1_bottom"></div>
-      <div class="box1_bottom"></div>
-      <div class="box1_bottom"></div>
+      <div class="box1_right">
+        <div class="box1_right_c">
+          <span>无信号</span>
+        </div>
+        <div class="box1_right_c">
+          <span>无信号</span>
+        </div>
+      </div>
+      <div class="box1_bottom">
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+      </div>
+    </div>
+    <div class="box2" v-if="box2">
+      <div class="box2_box">
+        <span>无信号</span>
+      </div>
+      <div class="box2_box">
+        <span>无信号</span>
+      </div>
+      <div class="box2_box">
+        <span>无信号</span>
+      </div>
+      <div class="box2_box box2_last_box" style="background:#fff">
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+      </div>
+    </div>
+    <div class="box3" v-if="box3">
+      <div class="box3_top">
+        <span>无信号</span>
+      </div>
+      <div class="box3_right">
+        <div class="box3_right_c">
+          <span>无信号</span>
+        </div>
+        <div class="box3_right_c">
+          <span>无信号</span>
+        </div>
+        <div class="box3_right_c">
+          <span>无信号</span>
+        </div>
+      </div>
+      <div class="box3_bottom">
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+      </div>
+    </div>
+    <div class="box4" v-if="box4">
+      <div class="box4_bottom">
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+      </div>
+      <div class="box4_left">
+        <div class="box4_left_c">
+          <span>无信号</span>
+        </div>
+        <div class="box4_left_c">
+          <span>无信号</span>
+        </div>
+      </div>
+      <div class="box4_top">
+        <span>无信号</span>
+      </div>
+      <div class="box4_right">
+        <div class="box4_right_c">
+          <span>无信号</span>
+        </div>
+        <div class="box4_right_c">
+          <span>无信号</span>
+        </div>
+      </div>
+      <div class="box4_bottom">
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box5" v-if="box5">
+      <div>
+        <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+      <div>
+         <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+          <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <span>无信号</span>
+      </div>
+    </div>
+    <div class="box6" v-if="box6">
+      <div class="box6_top">
+        <div>
+          <span>无信号</span>
+        </div>
+        <div>
+          <span>无信号</span>
+        </div>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
+      <div>
+        <span>无信号</span>
+      </div>
     </div>
     <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
       这是测试
@@ -155,43 +1180,81 @@ export default {
       classtype4: "",
       items: [false, false, false, false],
       screenNum: "4",
-      mainShow: false
+      mainShow: false,
+      box1: false,
+      box2: false,
+      box3: false,
+      box4: false,
+      box5: false,
+      box6: false,
+      imgtab: "../../../static/image/layout.png",
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
+            }
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            }
+          }
+        ]
+      },
+      value1: "",
+      value2: "",
+      value3: ""
     };
   },
   created() {
     let that = this;
-    window.onresize = function() {
-      if (!that.checkFull()) {
-        //  alert(that.videoclass)
-        // 退出全屏后要执行的动作
-        console.log("退出全屏");
-        that.fullscreen = false;
-        //alert(that.fornum)
-        for (let n = 1; n <= that.fornum; n++) {
-          //alert('videoid'+n)
-          // alert(document.getElementById('videoid'+n))
-          document.getElementById("videoid" + n).style =
-            "padding-bottom: 40.25%; position: relative; margin: 0px auto;";
+    that.selecttype("classtype2", 4, 12);
+    (this.mainShow = true),
+      (window.onresize = function() {
+        if (!that.checkFull()) {
+          //  alert(that.videoclass)
+          // 退出全屏后要执行的动作
+          console.log("退出全屏");
+          that.fullscreen = false;
+          //alert(that.fornum)
+          for (let n = 1; n <= that.fornum; n++) {
+            //alert('videoid'+n)
+            // alert(document.getElementById('videoid'+n))
+            document.getElementById("videoid" + n).style =
+              "padding-bottom: 40.25%; position: relative; margin: 0px auto;";
+          }
+          // that.videoclass="padding-bottom: 43.25%; position: relative; margin: 0px auto; overflow: hidden;",
+          //document.getElementById('videoid1').style = "padding-bottom: 42.25%; position: relative; margin: 0px auto; overflow: hidden;";
+          // document.getElementById('videoid2').style = "padding-bottom: 42.25%; position: relative; margin: 0px auto; overflow: hidden;";
+          // document.getElementById('videoid3').style = "padding-bottom: 42.25%; position: relative; margin: 0px auto; overflow: hidden;";
+          //document.getElementById('videoid4').style = "padding-bottom: 42.25%; position: relative; margin: 0px auto; overflow: hidden;";
+          // that.tableclass="table-c"
+        } else {
+          for (let n = 1; n <= that.fornum; n++) {
+            // alert('videoid'+n)
+            // alert(document.getElementById('videoid'+n))
+            document.getElementById("videoid" + n).style =
+              "padding-bottom: 52.25%; position: relative; margin: 0px auto;";
+          }
+          //document.getElementById('videoid1').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
+          //document.getElementById('videoid2').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
+          //document.getElementById('videoid3').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
+          //document.getElementById('videoid4').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
         }
-        // that.videoclass="padding-bottom: 43.25%; position: relative; margin: 0px auto; overflow: hidden;",
-        //document.getElementById('videoid1').style = "padding-bottom: 42.25%; position: relative; margin: 0px auto; overflow: hidden;";
-        // document.getElementById('videoid2').style = "padding-bottom: 42.25%; position: relative; margin: 0px auto; overflow: hidden;";
-        // document.getElementById('videoid3').style = "padding-bottom: 42.25%; position: relative; margin: 0px auto; overflow: hidden;";
-        //document.getElementById('videoid4').style = "padding-bottom: 42.25%; position: relative; margin: 0px auto; overflow: hidden;";
-        // that.tableclass="table-c"
-      } else {
-        for (let n = 1; n <= that.fornum; n++) {
-          // alert('videoid'+n)
-          // alert(document.getElementById('videoid'+n))
-          document.getElementById("videoid" + n).style =
-            "padding-bottom: 52.25%; position: relative; margin: 0px auto;";
-        }
-        //document.getElementById('videoid1').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
-        //document.getElementById('videoid2').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
-        //document.getElementById('videoid3').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
-        //document.getElementById('videoid4').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
-      }
-    };
+      });
   },
   methods: {
     showselect(item1) {
@@ -237,6 +1300,7 @@ export default {
         this.classtype4 = "primary";
       }
     },
+    handlevideoList() {},
     singularCommand(cmditem) {
       if (!cmditem) {
         console.log("test");
@@ -246,19 +1310,69 @@ export default {
       switch (cmditem) {
         case "1":
           this.selecttype("classtype2", 4, 12);
-          // this.screenNum = "4"
+          this.imgtab = "../../../static/image/singular/1.png";
+          (this.mainShow = true),
+            (this.box1 = false),
+            (this.box2 = false),
+            (this.box3 = false),
+            (this.box4 = false),
+            (this.box5 = false),
+            (this.box6 = false);
           break;
         case "2":
-          this.selecttype("classtype3", 7, 12);
-          // this.screenNum = "4"
+          this.box1 = true;
+          this.imgtab = "../../../static/image/singular/2.png";
+          (this.mainShow = false),
+            (this.box2 = false),
+            (this.box3 = false),
+            (this.box4 = false),
+            (this.box5 = false),
+            (this.box6 = false);
           break;
         case "3":
-          // this.selecttype('classtype3',9,8)
-          // this.screenNum = "9"
+          this.imgtab = "../../../static/image/singular/3.png";
+          (this.mainShow = false), (this.box2 = true);
+          (this.mainShow = false), (this.box1 = false);
+          (this.box3 = false),
+            (this.box4 = false),
+            (this.box5 = false),
+            (this.box6 = false);
           break;
         case "4":
-          // this.selecttype('classtype4',16,6)
-          // this.screenNum = "16"
+          this.imgtab = "../../../static/image/singular/4.png";
+          (this.mainShow = false), (this.box2 = false);
+          this.box1 = false;
+          (this.box3 = true),
+            (this.box4 = false),
+            (this.box5 = false),
+            (this.box6 = false);
+          break;
+        case "5":
+          this.imgtab = "../../../static/image/singular/5.png";
+          (this.mainShow = false), (this.box2 = false);
+          this.box1 = false;
+          (this.box3 = false),
+            (this.box4 = true),
+            (this.box5 = false),
+            (this.box6 = false);
+          break;
+        case "6":
+          this.imgtab = "../../../static/image/singular/7.png";
+          (this.mainShow = false), (this.box2 = false);
+          this.box1 = false;
+          (this.box3 = false),
+            (this.box4 = false),
+            (this.box5 = true),
+            (this.box6 = false);
+          break;
+        case "7":
+          this.imgtab = "../../../static/image/singular/8.png";
+          (this.mainShow = false), (this.box2 = false);
+          this.box1 = false;
+          (this.box3 = false),
+            (this.box4 = false),
+            (this.box5 = false),
+            (this.box6 = true);
           break;
       }
     },
@@ -274,18 +1388,46 @@ export default {
         case "single":
           this.selecttype("classtype1", 1, 24);
           this.screenNum = "1";
+          (this.mainShow = true),
+            (this.box1 = false),
+            (this.box2 = false),
+            (this.box3 = false),
+            (this.box4 = false),
+            (this.box5 = false),
+            (this.box6 = false);
           break;
         case "fourSingle":
           this.selecttype("classtype2", 4, 12);
           this.screenNum = "4";
+          (this.mainShow = true),
+            (this.box1 = false),
+            (this.box2 = false),
+            (this.box3 = false),
+            (this.box4 = false),
+            (this.box5 = false),
+            (this.box6 = false);
           break;
         case "nineSingle":
           this.selecttype("classtype3", 9, 8);
           this.screenNum = "9";
+          (this.mainShow = true),
+            (this.box1 = false),
+            (this.box2 = false),
+            (this.box3 = false),
+            (this.box4 = false),
+            (this.box5 = false),
+            (this.box6 = false);
           break;
         case "sixteenSingle":
           this.selecttype("classtype4", 16, 6);
           this.screenNum = "16";
+          (this.mainShow = true),
+            (this.box1 = false),
+            (this.box2 = false),
+            (this.box3 = false),
+            (this.box4 = false),
+            (this.box5 = false),
+            (this.box6 = false);
           break;
       }
     },
@@ -382,6 +1524,12 @@ export default {
   .el-icon-caret-bottom {
     color: #fff;
   }
+
+  .datetimebox {
+    float: right;
+    margin-top: 12px;
+    margin-right: 30px;
+  }
 }
 
 .main {
@@ -462,11 +1610,6 @@ html, body {
   padding-bottom: 5px;
 }
 
-.footer {
-  background: #000;
-  height: 10%;
-}
-
 .selector {
   padding: 3px 6px;
   background: #fff;
@@ -483,49 +1626,27 @@ html, body {
   background: rgba(0, 88, 162, 1);
   opacity: 0.8;
   border-radius: 10px;
-
+  
   img {
     width: 16px;
     height: 16px;
   }
-}
-
-.box1 {
-  margin: 0 10px;
-}
-
-.el-row {
-  margin-bottom: 20px;
-
-  &:last-child {
-    margin-bottom: 0;
+  .el-dropdown-menu__item{
+color:#fff;
+  }
+  .el-dropdown-menu__item:hover{
+background: #ccc;
   }
 }
 
-.el-col {
-  border-radius: 4px;
-}
-
-.bg-purple-dark {
-  background: #99a9bf;
-}
-
-.bg-purple {
-  background: #d3dce6;
-}
-
-.bg-purple-light {
-  background: #e5e9f2;
-}
-
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
+.box1 span {
+  color: #fff;
+  position: relative;
+  left: 45%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .box1_top {
@@ -533,25 +1654,362 @@ html, body {
   height: 300px;
   background: #000;
   float: left;
-  margin: 0 3px;
+
+  // margin: 0 3px;
+ 
 }
 
 .box1_right {
   width: 29%;
   height: 300px;
   float: left;
+  margin-left: 10px;
 
   .box1_right_c {
     height: 150px;
     width: 100%;
-    background: red;
+    background: #000;
+  }
+
+  &>:last-child {
+    margin-top: 5px;
+    height: 145px;
   }
 }
-.box1_bottom{
-  width:33%;
-  height: 300px;
-  background: red;
-  float:left;
-  margin: 0 2px;
+
+.box1_bottom {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    width: 32.8%;
+    height: 160px;
+    background: #000;
+    margin-top: 5px;
+  }
 }
+
+.box2 {
+  padding: 10px;
+  width: auto;
+  height: 100%;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .box2_box {
+    width: 49.6%;
+    height: 223px;
+    background: #000;
+    margin-top: 5px;
+
+    span {
+      color: #fff;
+      position: relative;
+      left: 45%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .box2_last_box {
+    display: flex;
+    width: 49.6%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    div {
+      width: 49.6%;
+      height: 49%;
+      background: #000;
+    }
+
+    &>:nth-child(3) {
+      margin-top: 5px;
+    }
+
+    &>:nth-child(4) {
+      margin-top: 5px;
+    }
+  }
+}
+
+.box3 {
+  padding: 10px;
+  width: auto;
+  height: 100%;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .box3_top {
+    width: 70%;
+    height: 300px;
+    background: #000;
+    float: left;
+  }
+
+  .box3_right {
+    width: 29%;
+    height: 300px;
+    float: left;
+    margin-left: 10px;
+
+    .box3_right_c {
+      height: 100px;
+      width: 100%;
+      background: #000;
+    }
+
+    &>:last-child {
+      margin-top: 5px;
+      height: 95px;
+      // height: 145px;
+    }
+
+    &>:nth-child(2) {
+      margin-top: 5px;
+      height: 95px;
+      // height: 145px;
+    }
+  }
+
+  .box3_bottom {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      width: 24.4%;
+      height: 160px;
+      background: #000;
+      margin-top: 5px;
+    }
+  }
+
+  span {
+    color: #fff;
+    position: relative;
+    left: 45%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+.box4 {
+  padding: 10px;
+  width: auto;
+  height: 100%;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .box4_left {
+    width: 24.4%;
+    height: 230px;
+    float: left;
+    margin-top: 5px;
+
+    .box4_left_c {
+      height: 110px;
+      width: 100%;
+      background: #000;
+    }
+
+    &>:last-child {
+      margin-top: 5px;
+      height: 115px;
+      // height: 145px;
+    }
+  }
+
+  .box4_top {
+    width: 49.5%;
+    height: 230px;
+    margin-left: 9px;
+    margin-top: 5px;
+    background: #000;
+    float: left;
+  }
+
+  .box4_right {
+    width: 24.4%;
+    height: 230px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 5px;
+
+    .box4_right_c {
+      height: 110px;
+      width: 100%;
+      background: #000;
+    }
+
+    &>:last-child {
+      margin-top: 5px;
+      height: 115px;
+      // height: 145px;
+    }
+  }
+
+  .box4_bottom {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      width: 24.4%;
+      height: 110px;
+      background: #000;
+      margin-top: 5px;
+    }
+  }
+
+  span {
+    color: #fff;
+    position: relative;
+    left: 45%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+.box5 {
+  padding: 10px;
+  width: auto;
+  height: 100%;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  div {
+    width: 19.5%;
+    height: 90px;
+    // margin-left: 2px;
+    margin-top: 5px;
+    background: #000;
+    
+    // float: left;
+    .box2_title {
+    width:100%;
+    color: #fff;
+    height:20px;
+background:rgba(0,0,0,1);
+opacity:0.7;
+    h6 {
+           width: 6px;
+    height: 6px;
+    background: #4bc766;
+    border-radius: 50%;
+    opacity: 1;
+    float: left;
+    margin: 0;
+    margin: 5px;
+    }
+    p{
+      padding-top:2px;
+      font-size:8px;
+      float:left;
+      padding-left:10px
+    }
+    .el-dropdown{
+      width:10px;
+      height:10px
+      margin-top: -4px;
+    }
+    .avatar-wrapper{
+      height: 0;
+    }
+    .username-wrapper{
+        height: 0;
+    }
+  }
+  }
+
+  span {
+    color: #fff;
+    // padding-top:50px;
+    position: relative;
+    left: 40%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+.box6 {
+  padding: 10px;
+  width: auto;
+  height: 100%;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .box6_top {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    background: #fff;
+    height: 100px;
+
+    div {
+      width: 49.7%;
+      height: 100px;
+    }
+  }
+
+  div {
+    width: 19.5%;
+    height: 70px;
+    // margin-left: 2px;
+    margin-top: 5px;
+    background: #000;
+    // float: left;
+  }
+
+  span {
+    color: #fff;
+    position: relative;
+    left: 40%;
+    top: 45%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+// .avatar-wrapper{
+//   height:10px
+// }
+//  .box2_title {
+//     width:100%;
+//     color: #fff;
+//     h6 {
+//           width: 6px;
+//     height: 6px;
+//     background: #4bc766;
+//     border-radius: 50%;
+//     opacity: 1;
+//     float: left;
+//     margin: 0;
+//     margin: 20px;
+//     }
+//     p{
+//       padding-top:14px;
+//       font-size:10px
+//     }
+//   }
 </style>
