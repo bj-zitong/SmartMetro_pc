@@ -47,12 +47,10 @@ export default {
         document.body.scrollTop;
     },
     selectNavBar(param) {
-      console.log(param);
       this.sideBarData = [];
       this.routers.map(x => {
         if (x.name == param) {
           this.hideMainContainer = x.name;
-          console.log(x);
           this.sideBarData = x;
           this.$router.push({ name: x.name });
           return;
@@ -60,16 +58,11 @@ export default {
       });
     },
     tagName(tag) {
-      console.log(this.routers);
-      console.log(tag);
       // var returnedItem; //定义一个不不赋值的变量
       this.find(this.routers, tag.path);
-      console.log(this.returnedItem.meta.parent)
       this.routers.map(x => {
         if (x.name == this.returnedItem.meta.parent) {
-          console.log(x)
           this.hideMainContainer = tag.name;
-          // console.log(x);
           this.sideBarData = x;
           this.$router.push({ name: x.name });
           return;
@@ -84,12 +77,10 @@ export default {
       arr.forEach(item => {
         // cosnoe,liof(item)
         //利用foreach循环遍历
-        console.log(item);
         if (item.hasOwnProperty("meta")) {
           if (item.path == id) {
             //判断递归结束条件
             this.returnedItem = item;
-            console.log(item);
             return item;
           } else if (item.hasOwnProperty("children")) {
             if (item.children.length >0) {

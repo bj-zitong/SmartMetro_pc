@@ -125,7 +125,6 @@ export default {
       userLogout: "logout"
     }),
     handleClick(tab, event) {
-      console.log(tab, event);
       this.$emit("selectNavBar", tab.label);
       this.num = tab.index;
     },
