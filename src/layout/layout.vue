@@ -61,9 +61,9 @@ export default {
     },
     tagName(tag) {
       console.log(this.routers);
-      console.log(tag.name);
+      console.log(tag);
       // var returnedItem; //定义一个不不赋值的变量
-      this.find(this.routers, tag.name);
+      this.find(this.routers, tag.path);
       console.log(this.returnedItem.meta.parent)
       this.routers.map(x => {
         if (x.name == this.returnedItem.meta.parent) {
@@ -82,10 +82,11 @@ export default {
     },
     find(arr, id) {
       arr.forEach(item => {
+        // cosnoe,liof(item)
         //利用foreach循环遍历
         console.log(item);
         if (item.hasOwnProperty("meta")) {
-          if (item.meta.title == id) {
+          if (item.path == id) {
             //判断递归结束条件
             this.returnedItem = item;
             console.log(item);

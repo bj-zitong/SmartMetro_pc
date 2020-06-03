@@ -1,234 +1,240 @@
 <template>
-  <div
-    class="main-box"
-    v-loading="loading"
-    element-loading-text="拼命加载中"
-    element-loading-spinner="el-icon-loading"
-    element-loading-background="rgba(0, 0, 0, 0.8)"
-  >
-    <!-- 筛选 -->
-    <el-container>
-      <el-menu class="main-top-box pl30">
-        <el-form :inline="true" ref="screenForm" :model="screenForm">
-          <el-form-item label="用户名：" prop="searchName">
-            <el-input v-model="screenForm.searchName" placeholder="请输入"></el-input>
+  <div>
+    <tree />
+    <div
+      class="main-box"
+      v-loading="loading"
+      style="width:85%;float:right"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
+      <!-- 筛选 -->
+      <el-container>
+        <el-menu class="main-top-box pl30">
+          <el-form :inline="true" ref="screenForm" :model="screenForm">
+            <el-form-item label="用户名：" prop="searchName">
+              <el-input v-model="screenForm.searchName" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="getTable(0)" style="margin-left:30px;">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </el-menu>
+      </el-container>
+      <!-- 主体 -->
+      <el-container>
+        <el-menu class="main-con-box">
+          <div class="main-btn-box">
+            <el-button class="T-H-B-DarkBlue" @click="addClick()">新增</el-button>
+            <el-button class="T-H-B-Grey" @click="deleteBatchClick()">删除</el-button>
+          </div>
+          <el-table
+            ref="multipleTable"
+            :data="tableData"
+            stripe
+            :header-cell-style="headClass"
+            tooltip-effect="dark"
+            style="width: 100%;"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column
+              type="selection"
+              fixed
+              prop="sysUserId"
+              @selection-change="handleSelectionChange"
+            ></el-table-column>
+            <el-table-column prop="userName" label="用户名" min-width="100"></el-table-column>
+            <el-table-column prop="cellPhone" label="手机号" min-width="90"></el-table-column>
+            <el-table-column prop="roleName" label="角色" min-width="110"></el-table-column>
+            <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
+            <el-table-column prop="updateTime" label="修改时间" min-width="120"></el-table-column>
+            <el-table-column label="操作" width="240" fixed="right">
+              <template slot-scope="scope">
+                <el-button
+                  class="T-R-B-Green"
+                  size="mini"
+                  @click="editRowClick(scope.$index, scope.row)"
+                >编辑</el-button>
+                <el-button
+                  class="T-R-B-Grey"
+                  size="mini"
+                  @click="deleteRowClick(scope.$index, scope.row)"
+                >删除</el-button>
+                <el-button
+                  class="T-R-B-Orange"
+                  size="mini"
+                  @click="getUserdetail(scope.$index, scope.row)"
+                >详情</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column prop="status" label="用户状态" min-width="80">
+              <template slot-scope="scope">
+                <el-switch
+                  v-model="scope.row.status"
+                  on-color="#00A854"
+                  on-text="启动"
+                  on-value="0"
+                  off-color="#F04134"
+                  off-text="禁止"
+                  off-value="1"
+                  @change="changeSwitch(scope.row)"
+                ></el-switch>
+              </template>
+            </el-table-column>
+          </el-table>
+          <pagination
+            class="pagination-box"
+            v-if="total>0"
+            :total="total"
+            :page.sync="listQuery.currentPage"
+            :limit.sync="listQuery.pageSize"
+            @pagination="getTable"
+          />
+        </el-menu>
+      </el-container>
+      <!-- 创建用户 -->
+      <el-dialog
+        width="450px"
+        :title="titleLabor"
+        class="popupDialog"
+        :visible.sync="dialogVisibleTeam"
+        :center="true"
+        :show-close="false"
+        :close-on-click-modal="false"
+        :hide-required-asterisk="true"
+      >
+        <el-form
+          method="post"
+          ref="refTeam"
+          label-width="100px"
+          :rules="rulesForm"
+          :model="formTeam"
+          action
+        >
+          <el-form-item prop="sysUserId">
+            <el-input v-model="formTeam.sysUserId" type="text" hidden></el-input>
+          </el-form-item>
+          <!-- <el-form-item prop="orgSite" label="标段/工地：">
+            <el-input v-model="formTeam.orgSite" type="text" placeholder="请输入"></el-input>
+          </el-form-item>-->
+          <el-form-item label="标段/工地：" prop="orgSite">
+            <el-select v-model="formTeam.orgSite" placeholder="请选择">
+              <el-option label="区域一" value="shanghai"></el-option>
+              <el-option label="区域二" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="userName" label="姓名：">
+            <el-input v-model="formTeam.userName" placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item prop="cellPhone" label="手机号：">
+            <el-input v-model="formTeam.cellPhone" placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item prop="account" label="账号：">
+            <el-input v-model="formTeam.account" placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item prop="password" label="密码：">
+            <el-input
+              type="password"
+              v-model="formTeam.password"
+              placeholder="请输入"
+              autocomplete="new-password"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="confimPassword" label="确认密码：">
+            <el-input type="password" v-model="formTeam.confimPassword" placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item label="角色" prop="roles">
+            <el-checkbox-group v-model="formTeam.roles" @change="handleCheckedRoleChange">
+              <el-checkbox v-for="item in options" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="getTable(0)" style="margin-left:30px;">查询</el-button>
+            <el-button class="F-Grey" round @click.native="cloneTeamForm('refTeam')">取 消</el-button>
+            <el-button class="F-Blue" round @click.native="submitTeamForm('refTeam')">确 定</el-button>
           </el-form-item>
         </el-form>
-      </el-menu>
-    </el-container>
-    <!-- 主体 -->
-    <el-container>
-      <el-menu class="main-con-box">
-        <div class="main-btn-box">
-          <el-button class="T-H-B-DarkBlue" @click="addClick()">新增</el-button>
-          <el-button class="T-H-B-Grey" @click="deleteBatchClick()">删除</el-button>
-        </div>
-        <el-table
-          ref="multipleTable"
-          :data="tableData"
-          stripe
-          :header-cell-style="headClass"
-          tooltip-effect="dark"
-          style="width: 100%;"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column
-            type="selection"
-            fixed
-            prop="sysUserId"
-            @selection-change="handleSelectionChange"
-          ></el-table-column>
-          <el-table-column prop="userName" label="用户名" min-width="100"></el-table-column>
-          <el-table-column prop="cellPhone" label="手机号" min-width="90"></el-table-column>
-          <el-table-column prop="roleName" label="角色" min-width="110"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
-          <el-table-column prop="updateTime" label="修改时间" min-width="120"></el-table-column>
-          <el-table-column label="操作" width="240" fixed="right">
-            <template slot-scope="scope">
-              <el-button
-                class="T-R-B-Green"
-                size="mini"
-                @click="editRowClick(scope.$index, scope.row)"
-              >编辑</el-button>
-              <el-button
-                class="T-R-B-Grey"
-                size="mini"
-                @click="deleteRowClick(scope.$index, scope.row)"
-              >删除</el-button>
-              <el-button
-                class="T-R-B-Orange"
-                size="mini"
-                @click="getUserdetail(scope.$index, scope.row)"
-              >详情</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column prop="status" label="用户状态" min-width="80">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.status"
-                on-color="#00A854"
-                on-text="启动"
-                on-value="0"
-                off-color="#F04134"
-                off-text="禁止"
-                off-value="1"
-                @change="changeSwitch(scope.row)"
-              ></el-switch>
-            </template>
-          </el-table-column>
-        </el-table>
-        <pagination
-          class="pagination-box"
-          v-if="total>0"
-          :total="total"
-          :page.sync="listQuery.currentPage"
-          :limit.sync="listQuery.pageSize"
-          @pagination="getTable"
-        />
-      </el-menu>
-    </el-container>
-    <!-- 创建用户 -->
-    <el-dialog
-      width="450px"
-      :title="titleLabor"
-      class="popupDialog"
-      :visible.sync="dialogVisibleTeam"
-      :center="true"
-      :show-close="false"
-      :close-on-click-modal="false"
-      :hide-required-asterisk="true"
-    >
-      <el-form
-        method="post"
-        ref="refTeam"
-        label-width="100px"
-        :rules="rulesForm"
-        :model="formTeam"
-        action
+      </el-dialog>
+      <!--详情 -->
+      <el-dialog
+        title
+        :visible.sync="dialogFormVisibleDetail"
+        :close-on-click-modal="false"
+        :show-close="false"
+        width="30%"
       >
-        <el-form-item prop="sysUserId">
-          <el-input v-model="formTeam.sysUserId" type="text" hidden></el-input>
-        </el-form-item>
-        <!-- <el-form-item prop="orgSite" label="标段/工地：">
-            <el-input v-model="formTeam.orgSite" type="text" placeholder="请输入"></el-input>
-        </el-form-item>-->
-        <el-form-item label="标段/工地：" prop="orgSite">
-          <el-select v-model="formTeam.orgSite" placeholder="请选择">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item prop="userName" label="姓名：">
-          <el-input v-model="formTeam.userName" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item prop="cellPhone" label="手机号：">
-          <el-input v-model="formTeam.cellPhone" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item prop="account" label="账号：">
-          <el-input v-model="formTeam.account" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item prop="password" label="密码：">
-          <el-input
-            type="password"
-            v-model="formTeam.password"
-            placeholder="请输入"
-            autocomplete="new-password"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="confimPassword" label="确认密码：">
-          <el-input type="password" v-model="formTeam.confimPassword" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" prop="roles">
-          <el-checkbox-group v-model="formTeam.roles" @change="handleCheckedRoleChange">
-            <el-checkbox v-for="item in options" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="F-Grey" round @click.native="cloneTeamForm('refTeam')">取 消</el-button>
-          <el-button class="F-Blue" round @click.native="submitTeamForm('refTeam')">确 定</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-    <!--详情 -->
-    <el-dialog
-      title
-      :visible.sync="dialogFormVisibleDetail"
-      :close-on-click-modal="false"
-      :show-close="false"
-      width="30%"
-    >
-      <div class="AddEquipment_form">
-        <el-row :gutter="20">
-          <el-col :span="10">
-            <div class="grid-content bg-purple">
-              用户名:
-              <span>{{user.userName}}</span>
-            </div>
-          </el-col>
-          <el-col :span="10">
-            <div class="grid-content bg-purple">
-              手机号:
-              <span>{{user.cellPhone}}</span>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="10">
-            <div class="grid-content bg-purple">
-              角色:
-              <span>{{rolesName}}</span>
-            </div>
-          </el-col>
-          <el-col :span="10">
-            <div class="grid-content bg-purple">
-              用户状态:
-              <span>{{user.status}}</span>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="10">
-            <div class="grid-content bg-purple">
-              创建时间:
-              <span>{{user.createTime}}</span>
-            </div>
-          </el-col>
-          <el-col :span="10">
-            <div class="grid-content bg-purple">
-              密码:
-              <span>{{user.password}}</span>
-            </div>
-          </el-col>
-          <el-col :span="10">
-            <div class="grid-content bg-purple">
-              账号:
-              <span>{{user.account}}</span>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-      <template slot="footer" class="dialog-footer">
-        <el-button
-          type="default"
-          @click="dialogFormVisibleDetail = false"
-          round
-          class="T-R-B-Grey"
-        >取消</el-button>
-      </template>
-    </el-dialog>
+        <div class="AddEquipment_form">
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <div class="grid-content bg-purple">
+                用户名:
+                <span>{{user.userName}}</span>
+              </div>
+            </el-col>
+            <el-col :span="10">
+              <div class="grid-content bg-purple">
+                手机号:
+                <span>{{user.cellPhone}}</span>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <div class="grid-content bg-purple">
+                角色:
+                <span>{{rolesName}}</span>
+              </div>
+            </el-col>
+            <el-col :span="10">
+              <div class="grid-content bg-purple">
+                用户状态:
+                <span>{{user.status}}</span>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="10">
+              <div class="grid-content bg-purple">
+                创建时间:
+                <span>{{user.createTime}}</span>
+              </div>
+            </el-col>
+            <el-col :span="10">
+              <div class="grid-content bg-purple">
+                密码:
+                <span>{{user.password}}</span>
+              </div>
+            </el-col>
+            <el-col :span="10">
+              <div class="grid-content bg-purple">
+                账号:
+                <span>{{user.account}}</span>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <template slot="footer" class="dialog-footer">
+          <el-button
+            type="default"
+            @click="dialogFormVisibleDetail = false"
+            round
+            class="T-R-B-Grey"
+          >取消</el-button>
+        </template>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "@/components/pagination";
 import axios from "axios";
+import tree from "@/components/tree";
 export default {
   name: "main-box",
   components: {
-    Pagination
+    Pagination,
+    tree
   },
   data() {
     return {
@@ -668,6 +674,18 @@ export default {
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
+}
+
+.tree-container {
+  float: left;
+  width: 15%;
+  padding: 20px 0 0 20px;
+  background: rgba(255, 255, 255, 1);
+}
+
+.el-tree {
+  height: 100vh;
+  padding: 20px 0 0 20px;
 }
 </style>
 
