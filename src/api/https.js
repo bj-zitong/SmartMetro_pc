@@ -43,7 +43,7 @@ axios.interceptors.response.use(response => {//数据拿到之后
       case 404:
         errorMsg = '请求路径找不到';
         // that.$router.push({path:'/login'});
-        window.location.href = "/";
+        // window.location.href = "/";
         break
       case 500:
         errorMsg ='请求失败，请联系管理员';
