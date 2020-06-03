@@ -8,7 +8,6 @@ const tabsview = {
   mutations: {
     [SET_TABSVIEW](state, view) {
       // console.log(view)
-      console.log(view)
       if(view.query.code==3){
         view.meta.title="人员智慧管理"
         state.visitedTabsView=[]

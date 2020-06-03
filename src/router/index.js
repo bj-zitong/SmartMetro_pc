@@ -102,7 +102,7 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 name: 'homeShow',
                 component: () => import('@/views/homeShow/homeShow'),
-                meta: { icon: 'droplet', title: '首页', enable: "Y", parent: '首页' },
+                meta: { icon: '', title: '首页', enable: "Y", parent: '首页' },
                 children: []
             }
         ]
@@ -562,20 +562,20 @@ export const constantRouterMap = [
                     enable: "Y",
                     parent: '培训教育'
                 },
-                children: [
-                    {
-                        path: '/lineLowerTrain',
-                        name: 'lineLowerTrain',
-                        component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
-                        meta: { title: '线下培训记录', icon: '', enable: "Y", parent: '培训教育' }
-                    },
-                    {
-                        path: '/lineUpperTrain',
-                        name: 'lineUpperTrain',
-                        component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
-                        meta: { title: '线上视频培训记录', icon: '', enable: "Y", parent: '培训教育' }
-                    }
-                ]
+                // children: [
+                //     {
+                //         path: '/lineLowerTrain',
+                //         name: 'lineLowerTrain',
+                //         component: () => import('@/views/trainEducation/trainRecord/lineLowerTrain/lineLowerTrain'),
+                //         meta: { title: '线下培训记录', icon: '', enable: "Y", parent: '培训教育' }
+                //     }
+                //     // {
+                //     //     path: '/lineUpperTrain',
+                //     //     name: 'lineUpperTrain',
+                //     //     component: () => import('@/views/trainEducation/trainRecord/lineUpperTrain/lineUpperTrain'),
+                //     //     meta: { title: '线上视频培训记录', icon: '', enable: "Y", parent: '培训教育' }
+                //     // }
+                // ]
             }
         ]
     },
@@ -754,7 +754,7 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 name: 'workmateNotice',
                 component: () => import('@/views/WorkmateNotice/workmateNotice'),
-                meta: { icon: 'droplet', title: '工友须知', enable: "Y", parent: '工友须知' },
+                meta: { icon: '', title: '工友须知', enable: "Y", parent: '工友须知' },
                 children: []
             }
         ]
@@ -877,7 +877,7 @@ export const constantRouterMap = [
                 alwaysShow: true,
                 name: 'backwork',
                 component: () => import('@/views/backWork/backwork'),
-                meta: { icon: 'droplet', title: '开复工管理', enable: "Y", parent: '开复工管理' },
+                meta: { icon: '', title: '开复工管理', enable: "Y", parent: '开复工管理' },
                 children: []
             }
         ]

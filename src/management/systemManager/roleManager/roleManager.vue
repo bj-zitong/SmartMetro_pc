@@ -457,7 +457,7 @@ export default {
 }
 
 .el-tree {
-  height: 100vh;
+  // height: 100vh;
   padding: 20px 0 0 20px;
 }
 </style>
