@@ -30,7 +30,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="性别" prop="gender">
-              <el-input v-model="form.gender" placeholder="请输入性别"></el-input>
+               <el-radio v-model="form.gender" label="1">男</el-radio>
+               <el-radio v-model="form.gender" label="2">女</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="10">

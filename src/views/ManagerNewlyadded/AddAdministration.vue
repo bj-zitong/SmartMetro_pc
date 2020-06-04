@@ -17,7 +17,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="性别" prop="gender" class="el-form-item">
-              <el-input v-model="form.gender" placeholder="请输入性别"></el-input>
+               <el-radio v-model="form.gender" label="1">男</el-radio>
+               <el-radio v-model="form.gender" label="2">女</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -40,7 +41,7 @@
             <el-form-item label="部门" prop="department" class="el-form-item">
               <el-input v-model="form.department" placeholder="请输入部门"></el-input>
             </el-form-item>
-          </el-col> -->
+          </el-col>-->
           <el-col :span="8">
             <el-form-item label="承建单位" prop="buildCorpName" class="el-form-item">
               <el-input v-model="form.buildCorpName" placeholder="请输入承建单位"></el-input>
@@ -108,7 +109,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="证件编码" prop="idCardCode">
-              <el-input v-model="form.idCardCode" placeholder="请选择证件编码"></el-input>
+              <el-input v-model="form.idCardCode" placeholder="请输入证件编码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -227,7 +228,7 @@ export default {
       // 校验规则
       rules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        gender: [{ required: true, message: "请输入性别", trigger: "blur" }],
+        gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         nation: [{ required: true, message: "请输入民族", trigger: "blur" }],
         cellPhone: [{ required: true, message: "请输入电话", trigger: "blur" }],
@@ -260,7 +261,7 @@ export default {
           { required: true, message: "请选择文化程度", trigger: "blur" }
         ],
         idCardCode: [
-          { required: true, message: "请选择证件编码", trigger: "blur" }
+          { required: true, message: "请输入证件编码", trigger: "blur" }
         ],
         idCardType: [
           { required: true, message: "请选择居住证", trigger: "blur" }
@@ -312,16 +313,14 @@ export default {
       value2: ""
     };
   },
-   activated() {
-      var uid = this.$route.params.id;
-      this.id = uid;
-      if (this.id !=undefined ) {
-        
-      }else{
-       
-      }
-      console.log("id====", this.id);
-    },
+  activated() {
+    var uid = this.$route.params.id;
+    this.id = uid;
+    if (this.id != undefined) {
+    } else {
+    }
+    console.log("id====", this.id);
+  },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
@@ -352,7 +351,7 @@ export default {
           });
         });
     },
-   
+
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

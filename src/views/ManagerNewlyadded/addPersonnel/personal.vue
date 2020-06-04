@@ -17,7 +17,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="性别" prop="gender" class="el-form-item">
-              <el-input v-model="form.gender" placeholder="请输入性别"></el-input>
+               <el-radio v-model="form.gender" label="1">男</el-radio>
+               <el-radio v-model="form.gender" label="2">女</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -276,7 +277,7 @@ export default {
       // 校验规则
       rules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        gender: [{ required: true, message: "请输入性别", trigger: "blur" }],
+        gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         nation: [{ required: true, message: "请输入民族", trigger: "blur" }],
         workerType: [

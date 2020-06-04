@@ -1,17 +1,17 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
+import router from '@/router';
 axios.defaults.baseURL = process.env.VUE_APP_URL
 let localhosts = 'http://192.168.1.30:8001';   //请求的后台域名
 var that=this;
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
-    return config
+  return config
 }, error => {
-    return Promise.reject(error);
+  return Promise.reject(error);
 });
 //后台返回请求
 axios.interceptors.response.use(response => {//数据拿到之后
-    console.log(response);
-    return response.data
+  return response.data
 }, error => {
     console.log(error.response.data);//unauthorized
     console.log(error.response.status);
@@ -57,109 +57,107 @@ axios.interceptors.response.use(response => {//数据拿到之后
 });
 //请求成功 返回请求数据
 function successfun(res) {//处理后台返回的非200错误
-    if (res.code === 200) {
-        return res
-    } else {
-       console.log(res);
-        return res;
-    }
+  if (res.code === 200) {
+    return res
+  } else {
+    return res;
+  }
 }
 //失败
 function errorfun(res) {
-  console.log(res);
-    // if (res.code != 200) {
-    //     this.$router.push("/login")
-    //     Message.error(res.message);
-    //     return res;
-    // }
+  // if (res.code != 200) {
+  //     this.$router.push("/login")
+  //     Message.error(res.message);
+  //     return res;
+  // }
 }
 export default {
-    post(url, data) {//post请求
-        return axios({
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: sessionStorage.getItem("token")
-            },
-            url: url,
-            data: data,
-            withCredentials: true,
-            timeout: 5000 //响应时间
-        }).then(
-            res => {
-                return successfun(res)
-            },
-            err => {
-                return errorfun(err);
-            }
-        );
-    },
-    post2(url, data) {//post请求
-        return axios({
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            url: url,
-            data: data,
-            withCredentials: true,
-            timeout: 5000,//响应时间,
-            responseType: "arraybuffer"
-        }).then(res => {
-            return successfun(res)
-        }, err => {
-            return errorfun(err);
-        })
-    },
-    get(url, params) {//get请求
-        return axios({
-            method: 'get',
-            headers: {
-                Authorization: sessionStorage.getItem('token'),
-                'Content-Type': 'application/json',
-            },
-            url: url,
-            params,
-            withCredentials: true,
-            timeout: 5000,
-        }).then(res => {
-            return successfun(res)
-        }, err => {
-            return errorfun(err)
-        })
-    },
-    delete(url, data) {//delete请求
-        return axios({
-            method: 'delete',
-            headers: {
-                Authorization: sessionStorage.getItem('token'),
-                'Content-Type': 'application/json',
-            },
-            url: url,
-            data: data,
-            withCredentials: true,
-            timeout: 5000,
-        }).then(res => {
-            return successfun(res)
-        }, err => {
-            return errorfun(err)
-        })
-    },
-    put(url, data) {//put请求
-        return axios({
-            method: 'put',
-            headers: {
-                Authorization: sessionStorage.getItem('token'),
-                'Content-Type': 'application/json',
-            },
-            url: url,
-            data: data,
-            withCredentials: true,
-            timeout: 5000,//响应时间
-        }).then(res => {
-            return successfun(res)
-        }, err => {
-            return errorfun(err);
-        })
-    },
+  post(url, data) {//post请求
+    return axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: sessionStorage.getItem("token")
+      },
+      url: url,
+      data: data,
+      withCredentials: true,
+      timeout: 5000 //响应时间
+    }).then(
+      res => {
+        return successfun(res)
+      },
+      err => {
+        return errorfun(err);
+      }
+    );
+  },
+  post2(url, data) {//post请求
+    return axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: url,
+      data: data,
+      withCredentials: true,
+      timeout: 5000,//响应时间,
+      responseType: "arraybuffer"
+    }).then(res => {
+      return successfun(res)
+    }, err => {
+      return errorfun(err);
+    })
+  },
+  get(url, params) {//get请求
+    return axios({
+      method: 'get',
+      headers: {
+        Authorization: sessionStorage.getItem('token'),
+        'Content-Type': 'application/json',
+      },
+      url: url,
+      params,
+      withCredentials: true,
+      timeout: 5000,
+    }).then(res => {
+      return successfun(res)
+    }, err => {
+      return errorfun(err)
+    })
+  },
+  delete(url, data) {//delete请求
+    return axios({
+      method: 'delete',
+      headers: {
+        Authorization: sessionStorage.getItem('token'),
+        'Content-Type': 'application/json',
+      },
+      url: url,
+      data: data,
+      withCredentials: true,
+      timeout: 5000,
+    }).then(res => {
+      return successfun(res)
+    }, err => {
+      return errorfun(err)
+    })
+  },
+  put(url, data) {//put请求
+    return axios({
+      method: 'put',
+      headers: {
+        Authorization: sessionStorage.getItem('token'),
+        'Content-Type': 'application/json',
+      },
+      url: url,
+      data: data,
+      withCredentials: true,
+      timeout: 5000,//响应时间
+    }).then(res => {
+      return successfun(res)
+    }, err => {
+      return errorfun(err);
+    })
+  },
 }

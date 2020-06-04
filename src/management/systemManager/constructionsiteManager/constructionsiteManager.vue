@@ -16,7 +16,14 @@
             </el-select>
           </el-form-item>
           <el-form-item label="标段/工地：" prop="section">
-            <el-input v-model="screenForm.section" placeholder="请输入"></el-input>
+            <el-select v-model="screenForm.section" placeholder="请选择" @change="selectSection">
+              <el-option
+                v-for="item in sections"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="getTable(0)">查询</el-button>
@@ -126,7 +133,10 @@
           </el-select>
         </el-form-item>
         <el-form-item prop="siteName" label="标段/工地">
-          <el-input v-model="formLabor.siteName"></el-input>
+          <!-- <el-input v-model="formLabor.siteName"></el-input> -->
+          <el-select v-model="formLabor.siteName" placeholder="请选择" @change="selectSection2">
+            <el-option v-for="item in sections" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item prop="buildCorpName" label="承建单位">
           <el-input v-model="formLabor.buildCorpName"></el-input>
@@ -189,6 +199,12 @@ export default {
         { id: 2, name: "中心二" },
         { id: 3, name: "中心三" }
       ],
+      sections: [
+        { id: null, name: "请选择" },
+        { id: 1, name: "区域一" },
+        { id: 2, name: "区域二" },
+        { id: 3, name: "区域三" }
+      ],
       // 新增/编辑
       formLabor: {
         orgSiteId: null,
@@ -206,7 +222,7 @@ export default {
           { required: true, message: "请选择", trigger: "change" }
         ],
         line: [{ required: true, message: "请选择", trigger: "change" }],
-        siteName: [{ required: true, message: "请输入标段", trigger: "blur" }],
+        siteName: [{ required: true, message: "请选择标段", trigger: "blur" }],
         buildCorpName: [
           { required: true, message: "请输入承建单位", trigger: "blur" }
         ],
@@ -280,7 +296,7 @@ export default {
       });
       this.formLabor.line = obj.id;
     },
-    //搜索的下拉选择
+    //搜索的下拉选择 中心
     selectCenters(vid) {
       let obj = {};
       obj = this.centers.find(item => {
@@ -288,20 +304,35 @@ export default {
       });
       this.screenForm.projectName = obj.id;
     },
+    //工地选择
+    selectSection(vid) {
+      let obj = {};
+      obj = this.sections.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.screenForm.section = obj.id;
+    },
+    selectSection2(vid) {
+      let obj = {};
+      obj = this.sections.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.form.siteName = obj.id;
+    },
     // 表格加载请求
     getTable(val) {
       if (val == 0) {
         this.loading = true;
       }
       // setTimeout(() => {
-        // console.log(this);//this对象为vue实例
-        this.loading = false;
+      // console.log(this);//this对象为vue实例
+      this.loading = false;
       // }, 1000);
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
         projectCenterId: this.screenForm.projectName,
-        siteName: this.screenForm.section
+        siteId: this.screenForm.section
       });
       //请求
       var url =
@@ -366,7 +397,7 @@ export default {
             let data = JSON.stringify({
               projectCenterId: form.projectCenter,
               lineId: form.line,
-              siteName: form.siteName,
+              siteId: form.siteName,
               buildCorpName: form.buildCorpName,
               responsiblePersonName: form.responsiblePersonName,
               cellPhone: form.cellPhone,
@@ -394,7 +425,7 @@ export default {
             var data = JSON.stringify({
               projectCenterId: form.projectCenter,
               lineId: form.line,
-              siteName: form.siteName,
+              siteId: form.siteName,
               buildCorpName: form.buildCorpName,
               responsiblePersonName: form.responsiblePersonName,
               cellPhone: form.cellPhone,
@@ -448,6 +479,7 @@ export default {
           this.formLabor = JSON.parse(JSON.stringify(result));
           this.formLabor.projectCenter = result.projectCenterId;
           this.formLabor.line = result.lineId;
+          console.log(result);
         }
       });
       this.dialogVisibleLabor = true;
