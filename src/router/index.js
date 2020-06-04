@@ -61,6 +61,13 @@ export const constantRouterMap = [
         name: 'videomonitoring',
         component: () => import('@/views/Statisticsscreen/videomonitoring')
     },
+    // {
+    //     component: Layout,
+    //     path: '/videoParticulars',
+    //     name: 'videoParticulars',
+    //     component: () => import('@/management/videoMonitoring/videoParticulars')
+    // },
+    
     //404页面
     // {
     //   path: '/404',
@@ -655,6 +662,7 @@ export const constantRouterMap = [
             enable: "Y",
             parent: '人员定位'
         },
+        redirect: '/Positioningof',
         children: [
             {
                 path: '/personnelEvaluate',
@@ -759,7 +767,21 @@ export const constantRouterMap = [
             }
         ]
     },
-
+    //视频详情
+    {
+        path: '/videoParticulars',
+        component: Layout,
+        hidden: true,
+        meta: { icon: '', title: '视频详情' },
+        children: [
+            {
+                path: '/videoParticulars',
+                name: 'videoParticulars',
+                component: ()=>import('@/management/videoMonitoring/videoParticulars'),
+                meta: { icon: '', title: '视频详情' },
+            }
+        ]
+    },
     // ManagerNewlyadded 花名册管理人员新增 PersonnelNewlyadded
     {
         path: '/LabourNewlyadded',

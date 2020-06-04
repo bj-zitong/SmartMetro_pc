@@ -111,6 +111,7 @@
               class="player-wrapper"
               element-loading-text="加载中..."
               element-loading-background="#000"
+              @click="videoParticularsClick"
             >
               <div class="video-wrapper" :style="videoclass" :id="`videoid${n}`">
                 <div
@@ -137,52 +138,425 @@
     <div class="box1 main" v-if="box1">
       <div class="box1_top">
         <div class="box2_title">
-          <h6></h6>
           <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px;margin-top:15px"
+          >
+            <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
         <span>无信号</span>
       </div>
       <div class="box1_right">
         <div class="box1_right_c">
+          <div class="box2_title">
+            <p>南区建设工地 2020-4-29 10:26:32</p>
+            <el-dropdown
+              trigger="click"
+              @command="singularCommand"
+              style="float:right;margin-right:10px;margin-top:15px"
+            >
+              <!-- ppp -->
+              <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                  <i class="el-icon-caret-bottom"></i>
+                </div>
+              </div>
+              <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+                <el-dropdown-item command="1">
+                  <img src="../../../static/image/singular/1.png" />
+                  云台控制
+                </el-dropdown-item>
+                <el-dropdown-item command="2">
+                  <img src="../../../static/image/singular/2.png" />
+                  截图抓拍
+                </el-dropdown-item>
+                <el-dropdown-item command="3">
+                  <img src="../../../static/image/singular/3.png" />
+                  全屏展示
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <span>无信号</span>
         </div>
         <div class="box1_right_c">
+          <div class="box2_title">
+            <p>南区建设工地 2020-4-29 10:26:32</p>
+            <el-dropdown
+              trigger="click"
+              @command="singularCommand"
+              style="float:right;margin-right:10px;margin-top:15px"
+            >
+              <!-- ppp -->
+              <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                  <i class="el-icon-caret-bottom"></i>
+                </div>
+              </div>
+              <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+                <el-dropdown-item command="1">
+                  <img src="../../../static/image/singular/1.png" />
+                  云台控制
+                </el-dropdown-item>
+                <el-dropdown-item command="2">
+                  <img src="../../../static/image/singular/2.png" />
+                  截图抓拍
+                </el-dropdown-item>
+                <el-dropdown-item command="3">
+                  <img src="../../../static/image/singular/3.png" />
+                  全屏展示
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <span>无信号</span>
         </div>
       </div>
       <div class="box1_bottom">
         <div>
+          <div class="box2_title">
+            <p>南区建设工地 2020-4-29 10:26:32</p>
+            <el-dropdown
+              trigger="click"
+              @command="singularCommand"
+              style="float:right;margin-right:10px;margin-top:15px"
+            >
+              <!-- ppp -->
+              <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                  <i class="el-icon-caret-bottom"></i>
+                </div>
+              </div>
+              <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+                <el-dropdown-item command="1">
+                  <img src="../../../static/image/singular/1.png" />
+                  云台控制
+                </el-dropdown-item>
+                <el-dropdown-item command="2">
+                  <img src="../../../static/image/singular/2.png" />
+                  截图抓拍
+                </el-dropdown-item>
+                <el-dropdown-item command="3">
+                  <img src="../../../static/image/singular/3.png" />
+                  全屏展示
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <span>无信号</span>
         </div>
         <div>
+          <div class="box2_title">
+            <p>南区建设工地 2020-4-29 10:26:32</p>
+            <el-dropdown
+              trigger="click"
+              @command="singularCommand"
+              style="float:right;margin-right:10px;margin-top:15px"
+            >
+              <!-- ppp -->
+              <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                  <i class="el-icon-caret-bottom"></i>
+                </div>
+              </div>
+              <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+                <el-dropdown-item command="1">
+                  <img src="../../../static/image/singular/1.png" />
+                  云台控制
+                </el-dropdown-item>
+                <el-dropdown-item command="2">
+                  <img src="../../../static/image/singular/2.png" />
+                  截图抓拍
+                </el-dropdown-item>
+                <el-dropdown-item command="3">
+                  <img src="../../../static/image/singular/3.png" />
+                  全屏展示
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <span>无信号</span>
         </div>
         <div>
+          <div class="box2_title">
+            <p>南区建设工地 2020-4-29 10:26:32</p>
+            <el-dropdown
+              trigger="click"
+              @command="singularCommand"
+              style="float:right;margin-right:10px;margin-top:15px"
+            >
+              <!-- ppp -->
+              <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                  <i class="el-icon-caret-bottom"></i>
+                </div>
+              </div>
+              <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+                <el-dropdown-item command="1">
+                  <img src="../../../static/image/singular/1.png" />
+                  云台控制
+                </el-dropdown-item>
+                <el-dropdown-item command="2">
+                  <img src="../../../static/image/singular/2.png" />
+                  截图抓拍
+                </el-dropdown-item>
+                <el-dropdown-item command="3">
+                  <img src="../../../static/image/singular/3.png" />
+                  全屏展示
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <span>无信号</span>
         </div>
       </div>
     </div>
     <div class="box2" v-if="box2">
       <div class="box2_box">
+        <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+            <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
         <span>无信号</span>
       </div>
       <div class="box2_box">
+        <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+            <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
         <span>无信号</span>
       </div>
       <div class="box2_box">
+        <div class="box2_title">
+          <p>南区建设工地 2020-4-29 10:26:32</p>
+          <el-dropdown
+            trigger="click"
+            @command="singularCommand"
+            style="float:right;margin-right:10px"
+          >
+            <!-- ppp -->
+            <div class="avatar-wrapper">
+              <div class="username-wrapper">
+                <i class="el-icon-caret-bottom"></i>
+              </div>
+            </div>
+            <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+              <el-dropdown-item command="1">
+                <img src="../../../static/image/singular/1.png" />
+                云台控制
+              </el-dropdown-item>
+              <el-dropdown-item command="2">
+                <img src="../../../static/image/singular/2.png" />
+                截图抓拍
+              </el-dropdown-item>
+              <el-dropdown-item command="3">
+                <img src="../../../static/image/singular/3.png" />
+                全屏展示
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
         <span>无信号</span>
       </div>
       <div class="box2_box box2_last_box" style="background:#fff">
         <div>
+          <div class="box2_title">
+            <p>南区建设工地 2020-4-29 10:26:32</p>
+            <el-dropdown
+              trigger="click"
+              @command="singularCommand"
+              style="float:right;margin-right:10px"
+            >
+              <!-- ppp -->
+              <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                  <i class="el-icon-caret-bottom"></i>
+                </div>
+              </div>
+              <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+                <el-dropdown-item command="1">
+                  <img src="../../../static/image/singular/1.png" />
+                  云台控制
+                </el-dropdown-item>
+                <el-dropdown-item command="2">
+                  <img src="../../../static/image/singular/2.png" />
+                  截图抓拍
+                </el-dropdown-item>
+                <el-dropdown-item command="3">
+                  <img src="../../../static/image/singular/3.png" />
+                  全屏展示
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <span>无信号</span>
         </div>
         <div>
+          <div class="box2_title">
+            <p>南区建设工地 2020-4-29 10:26:32</p>
+            <el-dropdown
+              trigger="click"
+              @command="singularCommand"
+              style="float:right;margin-right:10px"
+            >
+              <!-- ppp -->
+              <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                  <i class="el-icon-caret-bottom"></i>
+                </div>
+              </div>
+              <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+                <el-dropdown-item command="1">
+                  <img src="../../../static/image/singular/1.png" />
+                  云台控制
+                </el-dropdown-item>
+                <el-dropdown-item command="2">
+                  <img src="../../../static/image/singular/2.png" />
+                  截图抓拍
+                </el-dropdown-item>
+                <el-dropdown-item command="3">
+                  <img src="../../../static/image/singular/3.png" />
+                  全屏展示
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <span>无信号</span>
         </div>
         <div>
+          <div class="box2_title">
+            <p>南区建设工地 2020-4-29 10:26:32</p>
+            <el-dropdown
+              trigger="click"
+              @command="singularCommand"
+              style="float:right;margin-right:10px"
+            >
+              <!-- ppp -->
+              <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                  <i class="el-icon-caret-bottom"></i>
+                </div>
+              </div>
+              <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+                <el-dropdown-item command="1">
+                  <img src="../../../static/image/singular/1.png" />
+                  云台控制
+                </el-dropdown-item>
+                <el-dropdown-item command="2">
+                  <img src="../../../static/image/singular/2.png" />
+                  截图抓拍
+                </el-dropdown-item>
+                <el-dropdown-item command="3">
+                  <img src="../../../static/image/singular/3.png" />
+                  全屏展示
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <span>无信号</span>
         </div>
         <div>
+          <div class="box2_title">
+            <p>南区建设工地 2020-4-29 10:26:32</p>
+            <el-dropdown
+              trigger="click"
+              @command="singularCommand"
+              style="float:right;margin-right:10px"
+            >
+              <!-- ppp -->
+              <div class="avatar-wrapper">
+                <div class="username-wrapper">
+                  <i class="el-icon-caret-bottom"></i>
+                </div>
+              </div>
+              <el-dropdown-menu class="singular-dropdown" slot="dropdown">
+                <el-dropdown-item command="1">
+                  <img src="../../../static/image/singular/1.png" />
+                  云台控制
+                </el-dropdown-item>
+                <el-dropdown-item command="2">
+                  <img src="../../../static/image/singular/2.png" />
+                  截图抓拍
+                </el-dropdown-item>
+                <el-dropdown-item command="3">
+                  <img src="../../../static/image/singular/3.png" />
+                  全屏展示
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <span>无信号</span>
         </div>
       </div>
@@ -276,7 +650,7 @@
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -301,14 +675,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -333,14 +707,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -365,14 +739,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -397,14 +771,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -429,14 +803,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -461,14 +835,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -493,14 +867,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -525,14 +899,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -557,14 +931,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -589,14 +963,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -621,14 +995,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -653,14 +1027,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -685,14 +1059,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -717,14 +1091,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -749,14 +1123,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -781,14 +1155,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -813,14 +1187,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -845,14 +1219,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -877,14 +1251,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -909,14 +1283,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -941,14 +1315,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -973,14 +1347,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -1005,14 +1379,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -1037,14 +1411,14 @@
         <span>无信号</span>
       </div>
       <div>
-         <div class="box2_title">
+        <div class="box2_title">
           <p>南区建设工地 2020-4-29 10:26:32</p>
           <el-dropdown
             trigger="click"
             @command="singularCommand"
             style="float:right;margin-right:10px"
           >
-          <!-- ppp -->
+            <!-- ppp -->
             <div class="avatar-wrapper">
               <div class="username-wrapper">
                 <i class="el-icon-caret-bottom"></i>
@@ -1431,6 +1805,10 @@ export default {
           break;
       }
     },
+    //点击进入详情
+    videoParticularsClick(){
+           this.$router.push({ path: "/videoParticulars" });
+    },
     checkFull() {
       //判断浏览器是否处于全屏状态 （需要考虑兼容问题）
       //火狐浏览器
@@ -1447,7 +1825,6 @@ export default {
       }
       return isFull;
     },
-
     // 全屏事件
     handleFullScreen() {
       let element = document.documentElement;
@@ -1626,37 +2003,76 @@ html, body {
   background: rgba(0, 88, 162, 1);
   opacity: 0.8;
   border-radius: 10px;
-  
+
   img {
     width: 16px;
     height: 16px;
   }
-  .el-dropdown-menu__item{
-color:#fff;
+
+  .el-dropdown-menu__item {
+    color: #fff;
   }
-  .el-dropdown-menu__item:hover{
-background: #ccc;
+
+  .el-dropdown-menu__item:hover {
+    background: #ccc;
   }
 }
-
 .box1 span {
   color: #fff;
   position: relative;
-  left: 45%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  /* top: 50%; */
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 
 .box1_top {
   width: 70%;
   height: 300px;
-  background: #000;
   float: left;
+  background: #000;
 
-  // margin: 0 3px;
- 
+  .box2_title {
+    width: 100%;
+    color: #fff;
+    height: 50px;
+    background: rgba(0, 0, 0, 1);
+    opacity: 0.7;
+    margin-top: 5px;
+
+    h6 {
+      width: 6px;
+      height: 6px;
+      background: #4bc766;
+      border-radius: 50%;
+      opacity: 1;
+      float: left;
+      margin: 0;
+      margin: 5px;
+    }
+
+    p {
+      padding-top: 2px;
+      font-size: 8px;
+      float: left;
+      padding-left: 10px;
+      line-height: 47px;
+    }
+
+    .el-dropdown {
+      width: 10px;
+      height: 10px;
+      margin-top: -4px;
+    }
+
+    .avatar-wrapper {
+      height: 0;
+    }
+
+    .username-wrapper {
+      height: 0;
+    }
+  }
 }
 
 .box1_right {
@@ -1669,6 +2085,48 @@ background: #ccc;
     height: 150px;
     width: 100%;
     background: #000;
+
+    .box2_title {
+      width: 100%;
+      color: #fff;
+      height: 50px;
+      background: rgba(0, 0, 0, 1);
+      opacity: 0.7;
+
+      // margin-top:5px;
+      h6 {
+        width: 6px;
+        height: 6px;
+        background: #4bc766;
+        border-radius: 50%;
+        opacity: 1;
+        float: left;
+        margin: 0;
+        margin: 5px;
+      }
+
+      p {
+        padding-top: 2px;
+        font-size: 8px;
+        float: left;
+        padding-left: 10px;
+        line-height: 47px;
+      }
+
+      .el-dropdown {
+        width: 10px;
+        height: 10px;
+        margin-top: -4px;
+      }
+
+      .avatar-wrapper {
+        height: 0;
+      }
+
+      .username-wrapper {
+        height: 0;
+      }
+    }
   }
 
   &>:last-child {
@@ -1684,9 +2142,51 @@ background: #ccc;
 
   div {
     width: 32.8%;
-    height: 160px;
+    height: 300px;
     background: #000;
     margin-top: 5px;
+
+    .box2_title {
+      width: 100%;
+      color: #fff;
+      height: 50px;
+      background: rgba(0, 0, 0, 1);
+      opacity: 0.7;
+
+      // margin-top:5px;
+      h6 {
+        width: 6px;
+        height: 6px;
+        background: #4bc766;
+        border-radius: 50%;
+        opacity: 1;
+        float: left;
+        margin: 0;
+        margin: 5px;
+      }
+
+      p {
+        padding-top: 2px;
+        font-size: 8px;
+        float: left;
+        padding-left: 10px;
+        line-height: 47px;
+      }
+
+      .el-dropdown {
+        width: 10px;
+        height: 10px;
+        margin-top: -4px;
+      }
+
+      .avatar-wrapper {
+        height: 0;
+      }
+
+      .username-wrapper {
+        height: 0;
+      }
+    }
   }
 }
 
@@ -1701,9 +2201,50 @@ background: #ccc;
 
   .box2_box {
     width: 49.6%;
-    height: 223px;
+    height: 300px;
     background: #000;
     margin-top: 5px;
+
+    .box2_title {
+      width: 100%;
+      color: #fff;
+      height: 50px;
+      background: rgba(0, 0, 0, 1);
+      opacity: 0.7;
+
+      h6 {
+        width: 6px;
+        height: 6px;
+        background: #4bc766;
+        border-radius: 50%;
+        opacity: 1;
+        float: left;
+        margin: 0;
+        margin: 5px;
+      }
+
+      p {
+        padding-top: 2px;
+        font-size: 8px;
+        float: left;
+        padding-left: 10px;
+        line-height: 47px;
+      }
+
+      .el-dropdown {
+        width: 10px;
+        height: 10px;
+        margin-top: 15px;
+      }
+
+      .avatar-wrapper {
+        height: 0;
+      }
+
+      .username-wrapper {
+        height: 0;
+      }
+    }
 
     span {
       color: #fff;
@@ -1721,7 +2262,7 @@ background: #ccc;
     width: 49.6%;
     flex-wrap: wrap;
     justify-content: space-between;
-
+     
     div {
       width: 49.6%;
       height: 49%;
@@ -1786,7 +2327,7 @@ background: #ccc;
 
     div {
       width: 24.4%;
-      height: 160px;
+      height: 300px;
       background: #000;
       margin-top: 5px;
     }
@@ -1814,26 +2355,26 @@ background: #ccc;
 
   .box4_left {
     width: 24.4%;
-    height: 230px;
+    height: 300px;
     float: left;
     margin-top: 5px;
 
     .box4_left_c {
-      height: 110px;
+      height: 150px;
       width: 100%;
       background: #000;
     }
 
     &>:last-child {
       margin-top: 5px;
-      height: 115px;
+      height: 145px;
       // height: 145px;
     }
   }
 
   .box4_top {
     width: 49.5%;
-    height: 230px;
+    height: 300px;
     margin-left: 9px;
     margin-top: 5px;
     background: #000;
@@ -1842,20 +2383,20 @@ background: #ccc;
 
   .box4_right {
     width: 24.4%;
-    height: 230px;
+    height: 300px;
     float: left;
     margin-left: 10px;
     margin-top: 5px;
 
     .box4_right_c {
-      height: 110px;
+      height: 150px;
       width: 100%;
       background: #000;
     }
 
     &>:last-child {
       margin-top: 5px;
-      height: 115px;
+      height: 145px;
       // height: 145px;
     }
   }
@@ -1867,7 +2408,7 @@ background: #ccc;
 
     div {
       width: 24.4%;
-      height: 110px;
+      height: 150px;
       background: #000;
       margin-top: 5px;
     }
@@ -1895,46 +2436,50 @@ background: #ccc;
 
   div {
     width: 19.5%;
-    height: 90px;
+    height: 120px;
     // margin-left: 2px;
     margin-top: 5px;
     background: #000;
-    
-    // float: left;
+
     .box2_title {
-    width:100%;
-    color: #fff;
-    height:20px;
-background:rgba(0,0,0,1);
-opacity:0.7;
-    h6 {
-           width: 6px;
-    height: 6px;
-    background: #4bc766;
-    border-radius: 50%;
-    opacity: 1;
-    float: left;
-    margin: 0;
-    margin: 5px;
-    }
-    p{
-      padding-top:2px;
-      font-size:8px;
-      float:left;
-      padding-left:10px
-    }
-    .el-dropdown{
-      width:10px;
-      height:10px
-      margin-top: -4px;
-    }
-    .avatar-wrapper{
-      height: 0;
-    }
-    .username-wrapper{
+      width: 100%;
+      color: #fff;
+      height: 20px;
+      background: rgba(0, 0, 0, 1);
+      opacity: 0.7;
+
+      h6 {
+        width: 6px;
+        height: 6px;
+        background: #4bc766;
+        border-radius: 50%;
+        opacity: 1;
+        float: left;
+        margin: 0;
+        margin: 5px;
+      }
+
+      p {
+        padding-top: 2px;
+        font-size: 8px;
+        float: left;
+        padding-left: 10px;
+      }
+
+      .el-dropdown {
+        width: 10px;
+        height: 10px;
+        margin-top: -4px;
+      }
+
+      .avatar-wrapper {
         height: 0;
+      }
+
+      .username-wrapper {
+        height: 0;
+      }
     }
-  }
   }
 
   span {
@@ -1964,17 +2509,17 @@ opacity:0.7;
     justify-content: space-between;
     margin-bottom: 5px;
     background: #fff;
-    height: 100px;
+    height: 140px;
 
     div {
       width: 49.7%;
-      height: 100px;
+      height: 140px;
     }
   }
 
   div {
     width: 19.5%;
-    height: 70px;
+    height: 90px;
     // margin-left: 2px;
     margin-top: 5px;
     background: #000;
@@ -1991,25 +2536,4 @@ opacity:0.7;
     transform: translate(-50%, -50%);
   }
 }
-// .avatar-wrapper{
-//   height:10px
-// }
-//  .box2_title {
-//     width:100%;
-//     color: #fff;
-//     h6 {
-//           width: 6px;
-//     height: 6px;
-//     background: #4bc766;
-//     border-radius: 50%;
-//     opacity: 1;
-//     float: left;
-//     margin: 0;
-//     margin: 20px;
-//     }
-//     p{
-//       padding-top:14px;
-//       font-size:10px
-//     }
-//   }
 </style>

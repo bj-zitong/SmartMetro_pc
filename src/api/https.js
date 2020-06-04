@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 axios.defaults.baseURL = process.env.VUE_APP_URL
-// let localhosts = 'http://localhost:8001';   //请求的后台域名
+let localhosts = 'http://192.168.1.30:8001';   //请求的后台域名
 var that=this;
 axios.interceptors.request.use(config => {//请求之前(可以设置token)
     return config
@@ -19,7 +19,7 @@ axios.interceptors.response.use(response => {//数据拿到之后
     //unauthorized 未授权
     if(error.response.data=='unauthorized'){
         errorMsg='请登录';
-        window.location.href="../views/login/index.vue";
+        // window.location.href="../views/login/index.vue";
         return;
     }
     const errorStatus = error.response.status;//返回状态码
