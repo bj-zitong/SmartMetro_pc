@@ -11,22 +11,18 @@ axios.interceptors.request.use(config => {//请求之前(可以设置token)
 });
 //后台返回请求
 axios.interceptors.response.use(response => {//数据拿到之后
-  console.log(response);
   return response.data
 }, error => {
-  console.log(error.response.data);//unauthorized
-  console.log(error.response.status);
   var errorMsg = '服务器繁忙，请稍后重试！';
   //unauthorized 未授权
   if (error.response.data == 'unauthorized') {
     errorMsg = '请登录';
-    window.location.href = "../views/login/index.vue";
     return;
   }
   const errorStatus = error.response.status;//返回状态码
   switch (errorStatus) {
     case 401:
-      router.push('/login');
+      // router.push('/login');
       sessionStorage.removeItem("userId");
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("token");//删除存储信息
@@ -51,7 +47,7 @@ axios.interceptors.response.use(response => {//数据拿到之后
       errorMsg = resErrorMsg
   }
   Message.error(errorMsg);//对应状态返回的提示
-  router.push('/login');//跳转页面
+  // router.push('/login');//跳转页面
   return Promise.reject(error.response);
 });
 //请求成功 返回请求数据
@@ -59,13 +55,11 @@ function successfun(res) {//处理后台返回的非200错误
   if (res.code === 200) {
     return res
   } else {
-    console.log(res);
     return res;
   }
 }
 //失败
 function errorfun(res) {
-  console.log(res);
   // if (res.code != 200) {
   //     this.$router.push("/login")
   //     Message.error(res.message);
