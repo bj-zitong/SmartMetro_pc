@@ -115,13 +115,9 @@
           <el-form-item prop="sysUserId">
             <el-input v-model="formTeam.sysUserId" type="text" hidden></el-input>
           </el-form-item>
-          <!-- <el-form-item prop="orgSite" label="标段/工地：">
-            <el-input v-model="formTeam.orgSite" type="text" placeholder="请输入"></el-input>
-          </el-form-item>-->
-          <el-form-item label="标段/工地：" prop="orgSite">
-            <el-select v-model="formTeam.orgSite" placeholder="请选择">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+          <el-form-item label="标段/工地：" prop="siteId">
+             <el-select v-model="formTeam.siteId" placeholder="请选择" @change="selectSection">
+              <el-option v-for="item in sections" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="userName" label="姓名：">
@@ -260,7 +256,7 @@ export default {
         password: "",
         confimPassword: "",
         roles: [],
-        orgSite: ""
+        siteId: null
       },
       options: [
         { id: 1, name: "项目负责人" },
@@ -286,7 +282,7 @@ export default {
       ],
       // 自定义表单验证
       rulesForm: {
-        orgSite: [
+        siteId: [
           { required: true, message: "请输入标段名称", trigger: "blur" }
         ],
         userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -303,7 +299,13 @@ export default {
         confimPassword: [
           { required: true, message: "请输入密码", trigger: "blur" }
         ]
-      }
+      },
+      sections:[
+        { id: null, name: "请选择" },
+        { id: 1, name: "区域一" },
+        { id: 2, name: "区域二" },
+        { id: 3, name: "区域三" }
+      ]
     };
   },
   activated() {
@@ -463,6 +465,14 @@ export default {
       this.getRoles();
       this.dialogVisibleTeam = true;
     },
+    //工地选择
+    selectSection(vid){
+      let obj = {};
+      obj = this.sections.find(item => {
+        return item.id == vid; // 筛选出匹配数据
+      });
+      this.formTeam.siteId=obj.id;
+    },
     //  编辑回显
     editRowClick(inedx, row) {
       this.titleLabor = "编辑";
@@ -482,6 +492,8 @@ export default {
             result.roles = [];
           }
           this.formTeam = JSON.parse(JSON.stringify(result));
+          this.formTeam.confimPassword=result.password;
+          this.formTeam.siteId=result.orgSite;
         }
       });
       this.dialogVisibleTeam = true;
