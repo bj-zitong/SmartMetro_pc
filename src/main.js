@@ -41,6 +41,7 @@ Vue.use(VideoPlayer)
 // Vue.prototype.isIE = () => {
 //   return !!videojs.browser.IE_VERSION;
 // }
+import '../src/api/videoFun'
 import BaiduMap from 'vue-baidu-map'
 Vue.use(BaiduMap, {
   ak: 'PqfHQFagf9cB9Un7y46hbLVDCKwYxzDx'

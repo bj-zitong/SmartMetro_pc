@@ -1607,8 +1607,7 @@ export default {
           for (let n = 1; n <= that.fornum; n++) {
             //alert('videoid'+n)
             // alert(document.getElementById('videoid'+n))
-            document.getElementById("videoid" + n).style =
-              "padding-bottom: 40.25%; position: relative; margin: 0px auto;";
+            // document.getElementById("videoid" + n).style ="padding-bottom: 40.25%; position: relative; margin: 0px auto;";
           }
           // that.videoclass="padding-bottom: 43.25%; position: relative; margin: 0px auto; overflow: hidden;",
           //document.getElementById('videoid1').style = "padding-bottom: 42.25%; position: relative; margin: 0px auto; overflow: hidden;";
@@ -1620,8 +1619,7 @@ export default {
           for (let n = 1; n <= that.fornum; n++) {
             // alert('videoid'+n)
             // alert(document.getElementById('videoid'+n))
-            document.getElementById("videoid" + n).style =
-              "padding-bottom: 52.25%; position: relative; margin: 0px auto;";
+            // document.getElementById("videoid" + n).style ="padding-bottom: 52.25%; position: relative; margin: 0px auto;";
           }
           //document.getElementById('videoid1').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
           //document.getElementById('videoid2').style='padding-bottom: 54.25%; position: relative; margin: 0px auto; overflow: hidden;';
