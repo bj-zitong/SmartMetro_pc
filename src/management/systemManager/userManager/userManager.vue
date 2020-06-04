@@ -116,8 +116,13 @@
             <el-input v-model="formTeam.sysUserId" type="text" hidden></el-input>
           </el-form-item>
           <el-form-item label="标段/工地：" prop="siteId">
-             <el-select v-model="formTeam.siteId" placeholder="请选择" @change="selectSection">
-              <el-option v-for="item in sections" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            <el-select v-model="formTeam.siteId" placeholder="请选择" @change="selectSection">
+              <el-option
+                v-for="item in sections"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="userName" label="姓名：">
@@ -300,7 +305,7 @@ export default {
           { required: true, message: "请输入密码", trigger: "blur" }
         ]
       },
-      sections:[
+      sections: [
         { id: null, name: "请选择" },
         { id: 1, name: "区域一" },
         { id: 2, name: "区域二" },
@@ -466,12 +471,12 @@ export default {
       this.dialogVisibleTeam = true;
     },
     //工地选择
-    selectSection(vid){
+    selectSection(vid) {
       let obj = {};
       obj = this.sections.find(item => {
         return item.id == vid; // 筛选出匹配数据
       });
-      this.formTeam.siteId=obj.id;
+      this.formTeam.siteId = obj.id;
     },
     //  编辑回显
     editRowClick(inedx, row) {
@@ -492,8 +497,8 @@ export default {
             result.roles = [];
           }
           this.formTeam = JSON.parse(JSON.stringify(result));
-          this.formTeam.confimPassword=result.password;
-          this.formTeam.siteId=result.orgSite;
+          this.formTeam.confimPassword = result.password;
+          this.formTeam.siteId = result.orgSite;
         }
       });
       this.dialogVisibleTeam = true;

@@ -291,8 +291,9 @@ export default {
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/team/" +
+        "/meeting/" +
         this.id +
-        "/meeting/upload";
+        "/upload";
       var data = new FormData();
       data.append("file", this.videoForm.getVideo[0].raw);
       this.http.get(url, data).then(res => {
@@ -441,9 +442,8 @@ export default {
       var url =
         "/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
-        "/team/" +
-        uid +
-        "/meeting";
+        "/team/meeting/" +
+        uid;
       var datas = null;
       this.http.get(url, datas).then(res => {
         if (res.code == 200) {
@@ -477,9 +477,7 @@ export default {
           var url =
             "/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
-            "/team/" +
-            form.pShiftMeetingId +
-            "/meeting";
+            "/team/meeting";
           this.http.put(url, datas).then(res => {
             if (res.code == 200) {
               this.$refs[formSpeech].resetFields();

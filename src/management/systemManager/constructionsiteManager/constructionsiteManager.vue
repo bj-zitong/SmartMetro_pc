@@ -17,7 +17,12 @@
           </el-form-item>
           <el-form-item label="标段/工地：" prop="section">
             <el-select v-model="screenForm.section" placeholder="请选择" @change="selectSection">
-              <el-option v-for="item in sections" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              <el-option
+                v-for="item in sections"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -129,9 +134,9 @@
         </el-form-item>
         <el-form-item prop="siteName" label="标段/工地">
           <!-- <el-input v-model="formLabor.siteName"></el-input> -->
-           <el-select v-model="formLabor.siteName" placeholder="请选择" @change="selectSection2">
-              <el-option v-for="item in sections" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
+          <el-select v-model="formLabor.siteName" placeholder="请选择" @change="selectSection2">
+            <el-option v-for="item in sections" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item prop="buildCorpName" label="承建单位">
           <el-input v-model="formLabor.buildCorpName"></el-input>
@@ -194,7 +199,7 @@ export default {
         { id: 2, name: "中心二" },
         { id: 3, name: "中心三" }
       ],
-      sections:[
+      sections: [
         { id: null, name: "请选择" },
         { id: 1, name: "区域一" },
         { id: 2, name: "区域二" },
@@ -300,19 +305,19 @@ export default {
       this.screenForm.projectName = obj.id;
     },
     //工地选择
-    selectSection(vid){
+    selectSection(vid) {
       let obj = {};
       obj = this.sections.find(item => {
         return item.id == vid; // 筛选出匹配数据
       });
-      this.screenForm.section=obj.id;
+      this.screenForm.section = obj.id;
     },
-    selectSection2(vid){
+    selectSection2(vid) {
       let obj = {};
       obj = this.sections.find(item => {
         return item.id == vid; // 筛选出匹配数据
       });
-      this.form.siteName=obj.id;
+      this.form.siteName = obj.id;
     },
     // 表格加载请求
     getTable(val) {
@@ -320,8 +325,8 @@ export default {
         this.loading = true;
       }
       // setTimeout(() => {
-        // console.log(this);//this对象为vue实例
-        this.loading = false;
+      // console.log(this);//this对象为vue实例
+      this.loading = false;
       // }, 1000);
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
