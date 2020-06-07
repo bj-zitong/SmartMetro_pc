@@ -97,6 +97,7 @@ export default {
     }
   },
   mounted() {
+    
     this.list =
       this.$route.query.code == 1? this.systemList: this.$route.query.code == 2? this.videoList: this.$route.query.code == 3?list:''
     // this.editableTabsValue = this.$route.query.code == 1 ? "0" : "1";

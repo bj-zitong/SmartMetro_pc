@@ -5,54 +5,47 @@
       <el-button type="primary" @click="handleUserList">搜索</el-button>
     </div>
     <div class="videoParent">
-      <video ref="video" :controls="false" controlslist="nodownload">
-        <source src="https://video-qn.ibaotu.com/19/49/09/08b888piCYxu.mp4" type="video/mp4" />
+      <video
+        ref="video"
+        :controls="false"
+        controlslist="nodownload"
+        src="../../../static/image/1591471387770648.mp4"
+      >
+        <!-- <source  type="video/mp4" /> -->
       </video>
 
       <div class="OperationLayer">
         <div class="Capture">
           <img src="../../../static/image/kz.png" />
-          <img src="../../../static/image/shou.png" @click="aa"/>
+          <img src="../../../static/image/shou.png" @click="snapshot(0)" />
           <img src="../../../static/image/xiaoping.png" ref="fullScreen" />
+          <canvas id="icanvas" style="display:none;width:600px;height:600px;"></canvas>
         </div>
         <div class="Playcollection">
           <img src="../../../static/image/qianjin.png" />
           <img :src="TogglePausePlayback" class="play" ref="isPlay" />
           <!-- <img src="../../../static/image/bofang.png" class="icon"/> -->
           <img src="../../../static/image/houtui.png" />
+          <el-dropdown @command="handleClick">
+            <span class="el-dropdown-link">
+              {{num}}
+              <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="0.5">0.5</el-dropdown-item>
+              <el-dropdown-item command="1.0">1.0</el-dropdown-item>
+              <el-dropdown-item command="1.25">1.25</el-dropdown-item>
+              <el-dropdown-item command="1.5">1.5</el-dropdown-item>
+              <el-dropdown-item command="2.0">2.0</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
-        <div id="captures"></div>
-        <!-- <el-dropdown trigger="click" @click="handleClick">
-          播放速率
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="0.5">0.5</el-dropdown-item>
-            <el-dropdown-item command="1.0">1.0</el-dropdown-item>
-            <el-dropdown-item command="1.25">1.25</el-dropdown-item>
-            <el-dropdown-item command="1.5">1.5</el-dropdown-item>
-            <el-dropdown-item command="2.0">2.0</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>-->
-        <el-dropdown split-button type="primary" @command="handleClick">
-          倍速{{num}}
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="0.5">0.5</el-dropdown-item>
-            <el-dropdown-item command="1.0">1.0</el-dropdown-item>
-            <el-dropdown-item command="1.25">1.25</el-dropdown-item>
-            <el-dropdown-item command="1.5">1.5</el-dropdown-item>
-            <el-dropdown-item command="2.0">2.0</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <!-- <el-button>停止/播放</el-button> -->
-        <!-- <el-button ref="enableMute">关闭声音</el-button>
-        <el-button ref="disableMute">打开声音</el-button>-->
-        <input type="range" ref="ran" :value="ranVal" />
-        <!-- <div ref="current"></div>
-        <div ref="buffered"></div>
-        <div ref="duration"></div>-->
-        <!-- <el-button ref="fullScreen">全屏</el-button> -->
-        <div ref="progress" style="height:10px;background:#f00;">
-          <div ref="bar" style="height:5px;background:#0f0;"></div>
-          <div ref="buffer" style="height:5px;background:#00f;"></div>
+        <div>
+          <input type="range" ref="ran" :value="ranVal" />
+          <div ref="progress" style="height:10px;background:#f00;" v-show="progressShow">
+            <div ref="bar" style="height:5px;background:#0f0;"></div>
+            <div ref="buffer" style="height:5px;background:#00f;"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -82,7 +75,7 @@ export default {
       progress: null,
       bar: null,
       buffer: null,
-      num:'1.5',
+      num: "倍速",
       TogglePausePlayback: "../../../static/image/bofang.png",
       pickerOptions: {
         shortcuts: [
@@ -112,35 +105,52 @@ export default {
       },
       value1: "",
       value2: "",
-      value3: ""
+      value3: "",
+      canvasEl: null,
+      videoEl: null,
+      imageCanvasList: [],
+      progressShow:false
     };
   },
   activated() {
-      this.init();
-      this.video.play();
-      this.TogglePausePlayback = "../../../static/image/bofang.png";
-    },
+    this.init();
+    this.video.play();
+    this.TogglePausePlayback = "../../../static/image/bofang.png";
+  },
   methods: {
-    aa(){
-      console.log(this.video.videoWidth)
-       let canvas = document.createElement('canvas');
-            canvas.width = this.video.videoWidth;
-            canvas.height = this.video.offsetHeight;
-            canvas.getContext('2d').drawImage(this.video, 0, 0, canvas.width, canvas.height);
-
-            // // 显示抓图
-            let img = document.createElement('img');
-            img.src = canvas.toDataURL('image/png');
-            document.getElementById('captures').prepend(img);
-
-            // // 下载抓图
-            // let a = document.createElement('a');
-            // let event = new MouseEvent('click');
-            // a.download = '下载图片命名'
-            // a.href = canvas.toDataURL('image/png');
-            // a.dispatchEvent(event)
+    //点击截图
+    snapshot(order) {
+      var video = document.querySelectorAll("video")[0]; //获取前台要截图的video对象，
+      var canvas = document.querySelectorAll("canvas")[0]; //获取前台的canvas对象，用于作图
+      var img = new Image(), //创建新的图片对象
+      base64 = ""; //base64
+      img.src = "../../../static/image/bofang.png";
+      var ctx = canvas.getContext("2d"); //设置canvas绘制2d图，
+      ctx.drawImage(this.video, 0, 0, canvas.width, canvas.height); //将video视频绘制到canvas中
+      var images = canvas.toDataURL("image/png"); //canvas的api中的toDataURL()保存图像
+      this.downloadImage(images);
     },
+    downloadImage(url) {
+      var timestamp = Date.parse(new Date());
+      var a = document.createElement("a");
+      a.setAttribute("href", url);
+      a.setAttribute("target", "_blank");
+      a.setAttribute("id", "vid");
+      a.setAttribute("download", "image" + +timestamp + ".png");
+      let canSupportDownload = "download" in a;
+      // 防止反复添加
+      if (document.getElementById("vid")) {
+        document.body.removeChild(document.getElementById("vid"));
+      }
 
+      if (canSupportDownload) {
+        document.body.appendChild(a);
+        a.click();
+      } else {
+        alert("不支持下载");
+        window.open(url);
+      }
+    },
     init() {
       this.video = this.$refs.video; //获取video对象
       this.isPlay = this.$refs.isPlay; //获取播放/暂停按钮对象，element-ui库需要'.$el'获取
@@ -202,7 +212,6 @@ export default {
     //播放和暂停
     playPause() {
       let classStr = this.isPlay.className;
-      console.log(classStr);
       if (this.hasClass(this.isPlay, "stop")) {
         this.TogglePausePlayback = "../../../static/image/bofang.png";
         this.video.play();
@@ -277,20 +286,12 @@ export default {
       });
     },
     handleUserList() {},
-   handleClick(cmditem) {
-        alert(typeof +cmditem);
-        console.log(this.video)
-        this.video.playbackRate = +cmditem;
-        this.num=+cmditem
-        // this.video.muted = true;
-      },
+    handleClick(cmditem) {
+      this.video.playbackRate = +cmditem;
+      this.num = +cmditem+"x";
+      // this.video.muted = true;
+    },
     handleCommand(cmditem) {
-      // if (!cmditem) {
-      //   console.log("test");
-      //   this.$message("菜单选项缺少command属性");
-      //   return;
-      // }
-      console.log(this.video)
       this.video.playbackRate = cmditem;
     }
   }
@@ -323,7 +324,7 @@ export default {
     .OperationLayer {
       height: 100px;
       width: 100%;
-      background: red;
+      background: rgba(0, 0, 0, 1);
       opacity: 0.7;
       position: absolute;
       bottom: -60px;
@@ -348,10 +349,9 @@ export default {
     }
 
     .Playcollection {
-      width: 140px;
+      width: 180px;
       height: 32px;
       float: left;
-      background: blue;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -368,4 +368,11 @@ export default {
     }
   }
 }
+ .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
 </style>

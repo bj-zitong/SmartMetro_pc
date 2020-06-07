@@ -373,7 +373,12 @@ export default {
     },
     //切换管理系统事件
     switchClick() {
-      this.$router.push({ path: "/homeShow" });
+       this.$router.push({
+        name: "home",
+        query: {
+          code: "3"
+        }
+      });
     },
     //工种分析
     jobevaluation() {
@@ -649,7 +654,6 @@ export default {
 .statisticsScreen {
   position: relative;
   width: 100%;
-  height: 100%;
   // top: 0;
   // left: 0;
   // right: 0;

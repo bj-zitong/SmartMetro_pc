@@ -102,9 +102,10 @@ export default {
   },
   mounted() {
     var getuser = JSON.parse(sessionStorage.getItem("user"));
-    console.log(getuser);
-    this.username = getuser.name;
-    this.orgSite = getuser.orgSite;
+    if (getuser != null) {
+      this.username = getuser.name;
+      this.orgSite = getuser.orgSite;
+    }
   },
   computed: {
     ...mapGetters(["name", "avatar"])
@@ -121,7 +122,10 @@ export default {
           sessionStorage.removeItem("userId");
           sessionStorage.removeItem("user");
           sessionStorage.removeItem("token");
-          var url = "/systemUrl/smart/auth/"+sessionStorage.getItem('userId')+"/logout";
+          var url =
+            "/systemUrl/smart/auth/" +
+            sessionStorage.getItem("userId") +
+            "/logout";
           this.http.get(url, null).then(res => {
             if (res.code == 200) {
               this.$message("退出成功！");

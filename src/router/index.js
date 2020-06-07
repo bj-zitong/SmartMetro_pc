@@ -767,21 +767,6 @@ export const constantRouterMap = [
             }
         ]
     },
-    //视频详情
-    {
-        path: '/videoParticulars',
-        component: Layout,
-        hidden: true,
-        meta: { icon: '', title: '视频详情' },
-        children: [
-            {
-                path: '/videoParticulars',
-                name: 'videoParticulars',
-                component: ()=>import('@/management/videoMonitoring/videoParticulars'),
-                meta: { icon: '', title: '视频详情' },
-            }
-        ]
-    },
     // ManagerNewlyadded 花名册管理人员新增 PersonnelNewlyadded
     {
         path: '/LabourNewlyadded',
@@ -959,7 +944,6 @@ export const constantRouterMap = [
             },
         ]
     },
-
     //用户管理
     {
         path: '/userManager',
@@ -986,6 +970,36 @@ export const constantRouterMap = [
             },
         ]
     },
+    //视频详情
+    {
+        path: '/videoParticulars',
+        component: Layout,
+        hidden: true,
+        meta: { icon: '', title: '视频详情' },
+        children: [
+            {
+                path: '/videoParticulars',
+                name: 'videoParticulars',
+                component: ()=>import('@/management/videoMonitoring/videoParticulars'),
+                meta: { icon: '', title: '视频详情' },
+            }
+        ]
+    },
+    //回放详情
+    {
+        path: '/playbackDetails',
+        component: Layout,
+        hidden: true,
+        meta: { icon: '', title: '回放详情' },
+        children: [
+            {
+                path: '/playbackDetails',
+                name: 'playbackDetails',
+                component: ()=>import('@/management/videoMonitoring/videoPlayback/playbackDetails/playbackDetails'),
+                meta: { icon: '', title: '回放详情' },
+            }
+        ]
+    },
     // 视频监控管理-视频监控
     {
         path: '/videoMonitoring',
@@ -998,7 +1012,7 @@ export const constantRouterMap = [
             enable: "Y",
             parent: '视频监控'
         },
-        // redirect: '/south',
+        redirect: '/south',
         children: [
             {
                 path: '/south',
@@ -1094,7 +1108,7 @@ export const constantRouterMap = [
 
 // 视频监控管理-视频监控
     {
-        path: '/south',
+        path: '/videoMonitoring',
         name: '回放',
         // hidden: true,
         component: Layout,
@@ -1102,93 +1116,93 @@ export const constantRouterMap = [
             icon: '',
             title: '回放',
             enable: "Y",
-
+            parent: '回放'
         },
-        redirect: 'south',
+        redirect: '/southPlayback',
         children: [
             {
-                path: '/south',
+                path: '/southPlayback',
                 component: () =>
-                    import('@/management/videoMonitoring/south'),
+                    import('@/management/videoMonitoring/videoPlayback/southPlayback'),
+                    name: 'southPlayback',
                 // alwaysShow: false,
                 meta: {
                     icon: '../../static/image/lwgl.png',
                     AfterIcon: '../../static/image/lwgl.png',
-                    title: '南门大区',
+                    title: '南门大区 ',
                     enable: "Y",
                     parent: '回放',
                 },
-                // // redirect: 'labor_Subcontract1',
                 children: []
             },
             {
-                path: '/lifeArea',
+                path: '/lifeArea1Playback',
                 component: () =>
-                    import('@/management/videoMonitoring/index'),
+                    import('@/management/videoMonitoring/videoPlayback/lifeAreaPlayback/index'),
                 // alwaysShow: true,
                 meta: {
-                    title: '生活区',
+                    title: '生活区 ',
                     icon: '../../static/image/roster.png',
                     enable: "Y",
                     parent: '回放'
                 },
                 // redirect: '/roster/manager',
                 children: [{
-                    path: '/lifeArea1',
-                    name: 'lifeArea1',
+                    path: '/lifeArea1Playback',
+                    name: 'lifeArea1Playback',
                     component: () =>
-                        import('@/management/videoMonitoring/lifeArea/lifeArea1'),
-                    meta: { title: '生活区一', icon: '', enable: "Y", parent: '回放' }
+                        import('@/management/videoMonitoring/videoPlayback/lifeAreaPlayback/lifeArea1Playback'),
+                    meta: { title: '生活区一 ', icon: '', enable: "Y", parent: '回放' }
                 },
                 {
-                    path: '/lifeArea2aa',
-                    name: 'lifeArea2aa',
+                    path: '/lifeArea2Playback',
+                    name: 'lifeArea2Playback',
                     component: () =>
-                        import('@/management/videoMonitoring/lifeArea/lifeArea2aa'),
-                    meta: { title: '生活区二', icon: '', enable: "Y", parent: '回放' }
+                       import('@/management/videoMonitoring/videoPlayback/lifeAreaPlayback/lifeArea2Playback'),
+                    meta: { title: '生活区二 ', icon: '', enable: "Y", parent: '回放' }
                 }
                 ]
             },
             {
-                path: '/north',
+                path: '/northPlayback',
                 name: 'CustomComponent',
                 // alwaysShow: true,
                 component: () =>
-                    import('@/management/videoMonitoring/north'),
+                import('@/management/videoMonitoring/videoPlayback/northPlayback'),
                 meta: {
                     icon: '../../static/image/Statisticsscreen/gl_top.png',
                     AfterIcon: '../../static/image/wlry.png',
-                    title: '北区',
+                    title: '北区 ',
                     enable: "Y",
                     parent: '回放'
                 },
                 children: []
             },
             {
-                path: '/east',
+                path: '/eastPlayback',
                 name: 'CustomComponent',
                 // alwaysShow: true,
                 component: () =>
-                    import('@/management/videoMonitoring/east'),
+                    import('@/management/videoMonitoring/videoPlayback/eastPlayback'),
                 meta: {
                     icon: '../../static/image/Statisticsscreen/gl_top.png',
                     AfterIcon: '../../static/image/wlry.png',
-                    title: '东区',
+                    title: '东区 ',
                     enable: "Y",
                     parent: '回放'
                 },
                 children: []
             },
             {
-                path: '/Western',
+                path: '/WesternPlayback',
                 name: 'CustomComponent',
                 // alwaysShow: true,
                 component: () =>
-                    import('@/management/videoMonitoring/Western'),
+                    import('@/management/videoMonitoring/videoPlayback/WesternPlayback'),
                 meta: {
                     icon: '../../static/image/Statisticsscreen/gl_top.png',
                     AfterIcon: '../../static/image/wlry.png',
-                    title: '西区',
+                    title: '西区 ',
                     enable: "Y",
                     parent: '回放'
                 },
