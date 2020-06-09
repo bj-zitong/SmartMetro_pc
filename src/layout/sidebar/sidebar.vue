@@ -17,7 +17,7 @@
         @close="handleClose"
         :collapse="isCollapse">
         <!-- {{$route.meta.active}} -->
-        <template v-for="(item,index) in sideBarData.children" v-if="item.meta.enable == 'Y'">
+        <template v-for="(item,index) in sideBarData.children" v-if="item.meta.enable == 'Y'" :index="index">
             <template v-if="item.children.length == 0">
                 <el-menu-item :index="item.path" :key="item.meta.title" v-if="item.meta.enable == 'Y'" @click="togglePicture(item.meta.title)">
                     <img :src="item.meta.icon" class="iconImg"/>
@@ -31,7 +31,7 @@
                         <img :src="Picture == item.meta.title?item.meta.AfterIcon:item.meta.icon" class="iconImg" />
                         <span class="title">{{item.meta.title}}</span>
                     </template>
-                    <template v-for="(itemChild, itemIndex) in item.children">
+                    <template v-for="(itemChild, itemIndex) in item.children" :index="itemIndex">
                         <template v-if="itemChild.children && itemChild.children.length > 0">
                           <el-submenu>
                             <span slot="title" class="title title_secondLevel">{{itemChild.meta.title}}</span>
@@ -40,7 +40,6 @@
                         </template>
                         <template v-else>
                           <el-menu-item :index="itemChild.path" :key="itemChild.name" v-if="itemChild.meta.enable == 'Y'" :class="$route.meta.active == itemChild.name ? 'is-active' : ''">
-                              <!-- <img :src="item.meta.icon" class="iconImg"/> -->
                               <span slot="title" class="title">{{itemChild.meta.title}}</span>
                           </el-menu-item>
                         </template>

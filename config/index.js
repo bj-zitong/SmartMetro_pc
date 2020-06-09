@@ -19,15 +19,14 @@ module.exports = {
         }
       },
       '/bashUrl': {
-        target: 'http://192.168.1.100:8001',
+        target: 'http://192.168.1.30:8002',
         secure: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/bashUrl': 'http://192.168.1.100:8001'
+          '^/bashUrl': 'http://192.168.1.30:8002'
         }
       },
     },
-
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8001, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined

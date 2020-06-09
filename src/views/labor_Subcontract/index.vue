@@ -355,7 +355,7 @@ export default {
       });
       //请求
       var url =
-        "/smart/worker/labour/" +
+        "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/company/management";
       this.http.post(url, data).then(res => {

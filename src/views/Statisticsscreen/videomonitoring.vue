@@ -145,7 +145,7 @@
       <div class="bottom_Chart">
         <!-- <div @play="onPlayerPlay($event)">66666</div> -->
         <p>>>近30天报警趋势</p>
-        <div id="alarmtrendEcharts" style="width:100%;height: 238px;"></div>
+        <div id="alarmtrendEcharts" style="width:100%;height: 256px;"></div>
       </div>
     </el-main>
   </el-container>
@@ -199,7 +199,7 @@ export default {
         loop: false, // 导致视频一结束就重新开始。
         preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
         language: "zh-CN",
-        aspectRatio: "16:8", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
         fluid: false, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [
           {
@@ -225,7 +225,7 @@ export default {
         loop: false, // 导致视频一结束就重新开始。
         preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
         language: "zh-CN",
-        aspectRatio: "16:8", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
         fluid: false, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [
           {
@@ -251,7 +251,7 @@ export default {
         loop: false, // 导致视频一结束就重新开始。
         preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
         language: "zh-CN",
-        aspectRatio: "16:8", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
         fluid: false, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [
           {
@@ -288,7 +288,7 @@ export default {
       alarmtrend.setOption({
         grid: {
           // width:315 //调整折线图的宽度
-          top: 40,
+          top: 50,
           x: 50,
           x2: 50,
           y2: 30
@@ -465,12 +465,12 @@ export default {
     },
     //切换管理系统事件
     switchClick() {
-      this.$router.push({
+       this.$router.push({
         name: "home",
         query: {
           code: "3"
         }
-      });
+      })
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -504,7 +504,7 @@ export default {
 .statisticsScreen {
   position: relative;
   width: 100%;
-  height: 100%;
+  // height: 100%;
   // top: 0;
   // left: 0;
   // right: 0;
@@ -512,7 +512,7 @@ export default {
   background: mix(#494166, #424b50) url('../../../static/image/Statisticsscreen/videomonitoring_gl.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
-
+  min-width:1980px;
   .Header {
     width: 98%;
     height: 88px;
@@ -592,8 +592,7 @@ export default {
   .dp_left {
     float: left;
     width: 260px;
-    // height: 952px;
-   height: 100%;
+    height: 952px;
     background: rgba(4, 8, 73, 1);
     border: 1px solid rgba(33, 109, 253, 1);
     opacity: 1;
@@ -626,7 +625,7 @@ export default {
   }
 
   .dp_center {
-    width: 60%;
+    width: 65%;
     float: left;
     margin-left: 1%;
     margin-right: 1%;
@@ -635,7 +634,7 @@ export default {
 
     .center_video {
       width: 100%;
-      // height: 600px;
+      height: 600px;
 
       .video_operation {
         background: red;
@@ -686,27 +685,22 @@ export default {
   .dp_right {
     width: 18.5%;
     float: left;
-    // height: 600px;
-   margin-top: 30px;
-
+    height: 600px;
+    margin-top: 30px;
     .right_video {
       width: 100%;
-      height: 125px;
-      margin-top: 16px;
-       &:first-child{
-         margin-top: 0;
-       }
+      height: 207px;
     }
   }
 
   .bottom_Chart {
-    width: 79.3%;
-    margin-top: 20px;
-    height: 248px;
+    width: 84.4%;
+    margin-top: 30px;
+    height: 290px;
     background: url('../../../static/image/Statisticsscreen/bottom_bj.png') no-repeat;
     background-size: 100% 100%;
     float: right;
-    margin-right:9px;
+    margin-right:14px;
     p {
       height: 19px;
       font-size: 14px;

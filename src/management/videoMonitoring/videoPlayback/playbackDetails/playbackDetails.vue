@@ -318,8 +318,6 @@ export default {
     height: 60px;
     text-align:right;
     margin-right:30px;
-    // float: right;
-    // margin-right: 30px;
   }
 
   .videoParent {

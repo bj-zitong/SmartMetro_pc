@@ -305,9 +305,9 @@ export default {
   margin: 0 auto;
 
   .blockTime {
-    height: 60px;
-    float: right;
-    margin-right: 30px;
+     height: 60px;
+    text-align:right;
+    margin-right:30px;
   }
 
   .videoParent {
@@ -327,7 +327,7 @@ export default {
       background: rgba(0, 0, 0, 1);
       opacity: 0.7;
       position: absolute;
-      bottom: -60px;
+      bottom:0;
       display: flex;
       justify-content: space-around;
       align-items: center;

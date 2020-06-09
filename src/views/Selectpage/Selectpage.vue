@@ -273,15 +273,14 @@ ul, li {
 
 /* 主体样式 */
 .home-mian-box {
-  width: 90%;
-  height: 625px;
-  // background: red;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
+      width: 90%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    margin-top: 200px;
 
   .top {
     width: 100%;

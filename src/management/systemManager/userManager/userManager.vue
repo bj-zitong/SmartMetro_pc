@@ -503,7 +503,6 @@ export default {
       });
       this.dialogVisibleTeam = true;
     },
-
     //  批量删除
     deleteBatchClick() {
       var ids = this.handleSelectionChange();
