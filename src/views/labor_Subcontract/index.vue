@@ -294,12 +294,13 @@ export default {
         contractType: ""
       },
       company: [
+        { id: null, name: "请选择" },
         { id: 1, name: "第一公司" },
         { id: 2, name: "第二公司" }
       ],
       // 新增/编辑 劳务人员
       formLabor: {
-        plabourCompanyId: null,
+        pLabourCompanyId: null,
         company: "",
         responsiblePersonName: "",
         responsiblePersonPhone: "",
@@ -395,40 +396,6 @@ export default {
           this.total = total;
         }
       });
-      // var result = [
-      //   {
-      //     id: 1,
-      //     company: "第一公司",
-      //     responsiblePersonName: "张三",
-      //     responsiblePersonPhone: "13888779977",
-      //     serviceCompany: "第一单位",
-      //     projectCode: "007124241",
-      //     projectName: "第一项目",
-      //     contractCode: "HT123456",
-      //     startDate: "2019-10-01",
-      //     endDate: "2020-10-07",
-      //     contractPeriodType: "固定期限合同",
-      //     corpCode: "354163831",
-      //     status: "未提交"
-      //   },
-      //   {
-      //     id: 2,
-      //     company: "第二公司",
-      //     responsiblePersonName: "李四",
-      //     responsiblePersonPhone: "13881234123",
-      //     serviceCompany: "第二单位",
-      //     projectCode: "558244568",
-      //     projectName: "第二项目",
-      //     contractCode: "HT654321",
-      //     startDate: "2019-10-01",
-      //     endDate: "2020-10-07",
-      //     contractPeriodType: "以完成一定工作为期限的合同",
-      //     corpCode: "68461684",
-      //     status: "未提交"
-      //   }
-      // ];
-      // this.tableData = result;
-      // this.total = result.length;
     },
     //获得表格前面选中的id值
     handleSelectionChange() {
@@ -463,6 +430,7 @@ export default {
                     type: "success",
                     message: "添加成功!"
                   });
+                  this.getTable();
                 }
               })
               .catch(res => {
@@ -512,6 +480,7 @@ export default {
     editRowClick(inedx, row) {
       this.titleLabor = "编辑劳务公司";
       this.formLabor = JSON.parse(JSON.stringify(row));
+      console.log(row);
       this.dialogVisibleLabor = true;
     },
 
