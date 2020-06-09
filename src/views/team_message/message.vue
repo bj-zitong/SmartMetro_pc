@@ -356,7 +356,7 @@ export default {
       });
       //请求
       var url =
-        "/smart/worker/labour/" +
+        "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/team/management";
       this.http.post(url, data).then(res => {
@@ -424,7 +424,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/team";
           this.http.delete(url, data).then(res => {
@@ -488,7 +488,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/team";
           this.http.delete(url, data).then(res => {
@@ -518,7 +518,7 @@ export default {
       this.formClass.projectName = "123";
       this.formClass.teamMasterId = uid;
       var url =
-        "/smart/worker/labour/" +
+        "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/team/" +
         uid +
@@ -554,7 +554,7 @@ export default {
             teamMasterId: form.teamMasterId
           });
           var url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/team";
           this.http.put(url, params).then(res => {
@@ -582,7 +582,7 @@ export default {
         return false;
       }
       var url =
-        "/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
+        "/bashUrl/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
       var params = JSON.stringify({ teamMasterId: id, evaluate: evaluated });
       this.http.put(url, params).then(res => {
         if (res.code == 200) {
@@ -652,7 +652,7 @@ export default {
           datas.append("workerInfo", pids);
           datas.append("pTeamMasterId", this.id);
           var url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/team/meeting";
           this.http.post(url, datas).then(res => {

@@ -13,13 +13,13 @@
             <el-input v-model="screenForm.responsiblePersonName" placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item label="合同类型：">
-            <el-select v-model="screenForm.contractPeriodType">
-              <el-option label="固定期限合同" value="0"></el-option>
-              <el-option label="以完成一定工作为期限的合同" value="1"></el-option>
+            <el-select v-model="screenForm.contractType">
+              <el-option label="劳务分包" value="1"></el-option>
+              <el-option label="专业分包" value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onScreen">查询</el-button>
+            <el-button type="primary" @click="getTable()">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -53,7 +53,7 @@
           <el-table-column
             type="selection"
             fixed
-            prop="id"
+            prop="plabourCompanyId"
             @selection-change="handleSelectionChange"
           ></el-table-column>
           <el-table-column prop="company" label="公司名称" min-width="100"></el-table-column>
@@ -69,9 +69,19 @@
               <span>{{scope.row.endDate}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="contractPeriodType" label="合同期限类型" min-width="210"></el-table-column>
+          <el-table-column prop="contractPeriodType" label="合同期限类型" min-width="210">
+            　　<template slot-scope="scope">
+　　　　　　　　　　<span v-if="scope.row.contractPeriodType==0">固定期限合同</span>
+　　　　　　　　　　<span v-if="scope.row.contractPeriodType==1">以完成一定工作为期限的合同</span>
+　　　　　　　　</template>
+          </el-table-column>
+           <el-table-column prop="contractType" label="合同期限类型" min-width="210">
+            　　<template slot-scope="scope">
+　　　　　　　　　　<span v-if="scope.row.contractType==1">劳务分包</span>
+　　　　　　　　　　<span v-if="scope.row.contractType==2">专业分包</span>
+　　　　　　　　</template>
+          </el-table-column>
           <el-table-column prop="corpCode" label="组织机构代码" min-width="120"></el-table-column>
-          <el-table-column prop="status" label="状态"></el-table-column>
           <el-table-column label="操作" width="240" fixed="right">
             <template slot-scope="scope">
               <el-button
@@ -87,7 +97,7 @@
               <el-button
                 class="T-R-B-Violet"
                 size="mini"
-                @click.native="createdTeamClick(scope.$index, scope.row)"
+                @click="createdTeamClick(scope.$index, scope.row)"
               >创建班组</el-button>
             </template>
           </el-table-column>
@@ -121,6 +131,9 @@
         label-width="80px"
         class="demo-ruleForm"
       >
+        <el-form-item prop="plabourCompanyId">
+          <el-input v-model="formLabor.plabourCompanyId" type="text" hidden></el-input>
+        </el-form-item>
         <el-form-item prop="company" label="公司名称">
           <el-input v-model="formLabor.company"></el-input>
         </el-form-item>
@@ -149,6 +162,8 @@
                 type="date"
                 :editable="false"
                 placeholder="开始日期"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
                 v-model="formLabor.startDate"
                 style="width: 100%;"
               ></el-date-picker>
@@ -161,6 +176,8 @@
                 type="date"
                 :editable="false"
                 placeholder="结束日期"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
                 v-model="formLabor.endDate"
                 style="width: 100%;"
               ></el-date-picker>
@@ -171,6 +188,12 @@
           <el-select v-model="formLabor.contractPeriodType">
             <el-option label="固定期限合同" value="0"></el-option>
             <el-option label="以完成一定工作为期限的合同" value="1"></el-option>
+          </el-select>
+        </el-form-item>
+         <el-form-item prop="contractType" label="合同类型">
+          <el-select v-model="formLabor.contractType">
+            <el-option label="劳务分包" value="1"></el-option>
+            <el-option label="专业分包" value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item prop="corpCode" label="所属企业组织机构代码" class="labelWidth">
@@ -195,8 +218,8 @@
       :hide-required-asterisk="true"
     >
       <el-form ref="refTeam" label-width="100px" :rules="rulesForm" :model="formTeam" action>
-        <el-form-item prop="pLabourCompanyId">
-          <el-input v-model="formTeam.pLabourCompanyId" type="text" hidden></el-input>
+        <el-form-item prop="plabourCompanyId">
+          <el-input v-model="formTeam.plabourCompanyId" type="text" hidden></el-input>
         </el-form-item>
         <el-form-item prop="projectName" label="工程名称：">
           <el-input v-model="formTeam.projectName" type="text" placeholder="请输入"></el-input>
@@ -240,7 +263,7 @@ export default {
   },
   data() {
     return {
-      total:'',
+      total: "",
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
@@ -251,7 +274,7 @@ export default {
       dialogVisibleTeam: false, // 班组
       formTeam: {
         //班组初始化
-        pLabourCompanyId: null,
+        plabourCompanyId: null,
         projectName: "",
         teamName: "",
         teamType: "",
@@ -268,15 +291,15 @@ export default {
         //  筛选
         company: "",
         responsiblePersonName: "",
-        contractPeriodType: ""
+        contractType: ""
       },
       company: [
-        { id: 0, name: "第一公司" },
-        { id: 1, name: "第二公司" }
+        { id: 1, name: "第一公司" },
+        { id: 2, name: "第二公司" }
       ],
       // 新增/编辑 劳务人员
       formLabor: {
-        id: null,
+        plabourCompanyId: null,
         company: "",
         responsiblePersonName: "",
         responsiblePersonPhone: "",
@@ -287,7 +310,8 @@ export default {
         startDate: "",
         endDate: "",
         contractPeriodType: "",
-        corpCode: ""
+        corpCode: "",
+        contractType:""
       },
       // 自定义表单验证
       rulesForm: {
@@ -321,6 +345,9 @@ export default {
         contractPeriodType: [
           { required: true, message: "请选择合同期限类型", trigger: "change" }
         ],
+        contractType:[
+          { required: true, message: "请选择合同类型", trigger: "change" }
+        ],
         corpCode: [
           { required: true, message: "请输入组织机构代码", trigger: "blur" }
         ],
@@ -349,7 +376,7 @@ export default {
       var data = JSON.stringify({
         company: this.screenForm.company,
         responsiblePersonName: this.screenForm.responsiblePersonName,
-        contractPeriodType: this.screenForm.contractPeriodType,
+        contractType: this.screenForm.contractType,
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage
       });
@@ -360,46 +387,48 @@ export default {
         "/company/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
+          console.log(res);
+          var total = res.data.total;
+          var rows = res.data.rows;
+          console.log(rows);
           this.tableData = rows;
           this.total = total;
         }
       });
-      var result = [
-        {
-          id: 1,
-          company: "第一公司",
-          responsiblePersonName: "张三",
-          responsiblePersonPhone: "13888779977",
-          serviceCompany: "第一单位",
-          projectCode: "007124241",
-          projectName: "第一项目",
-          contractCode: "HT123456",
-          startDate: "2019-10-01",
-          endDate: "2020-10-07",
-          contractPeriodType: "固定期限合同",
-          corpCode: "354163831",
-          status: "未提交"
-        },
-        {
-          id: 2,
-          company: "第二公司",
-          responsiblePersonName: "李四",
-          responsiblePersonPhone: "13881234123",
-          serviceCompany: "第二单位",
-          projectCode: "558244568",
-          projectName: "第二项目",
-          contractCode: "HT654321",
-          startDate: "2019-10-01",
-          endDate: "2020-10-07",
-          contractPeriodType: "以完成一定工作为期限的合同",
-          corpCode: "68461684",
-          status: "未提交"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
+      // var result = [
+      //   {
+      //     id: 1,
+      //     company: "第一公司",
+      //     responsiblePersonName: "张三",
+      //     responsiblePersonPhone: "13888779977",
+      //     serviceCompany: "第一单位",
+      //     projectCode: "007124241",
+      //     projectName: "第一项目",
+      //     contractCode: "HT123456",
+      //     startDate: "2019-10-01",
+      //     endDate: "2020-10-07",
+      //     contractPeriodType: "固定期限合同",
+      //     corpCode: "354163831",
+      //     status: "未提交"
+      //   },
+      //   {
+      //     id: 2,
+      //     company: "第二公司",
+      //     responsiblePersonName: "李四",
+      //     responsiblePersonPhone: "13881234123",
+      //     serviceCompany: "第二单位",
+      //     projectCode: "558244568",
+      //     projectName: "第二项目",
+      //     contractCode: "HT654321",
+      //     startDate: "2019-10-01",
+      //     endDate: "2020-10-07",
+      //     contractPeriodType: "以完成一定工作为期限的合同",
+      //     corpCode: "68461684",
+      //     status: "未提交"
+      //   }
+      // ];
+      // this.tableData = result;
+      // this.total = result.length;
     },
     //获得表格前面选中的id值
     handleSelectionChange() {
@@ -407,21 +436,10 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].id;
+        var id = arrays[i].plabourCompanyId;
         ids.push(id);
       }
       return ids;
-    },
-    // 查询
-    onScreen() {
-      let data = JSON.stringify(this.screenForm);
-      let url =
-        "/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/company/management";
-      this.http.post(url, data).then(res => {
-        console.log(res);
-      });
     },
 
     //  添加/编辑 提交
@@ -431,11 +449,11 @@ export default {
         if (valid) {
           let form = this.$refs[refLabor].model;
           // 判断id是否为空
-          if (form.id == null) {
+          if (form.plabourCompanyId == null) {
             let url =
-              "/smart/worker/labour/" +
+              "/bashUrl/smart/worker/labour/" +
               sessionStorage.getItem("userId") +
-              "/company/management";
+              "/company";
             let data = JSON.stringify(this.formLabor);
             this.http
               .post(url, data)
@@ -448,15 +466,14 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleLabor = false;
           } else {
             let url =
-              "/smart/worker/labour/" +
+              "/bashUrl/smart/worker/labour/" +
               sessionStorage.getItem("userId") +
-              "/company/management";
+              "/company";
             let data = JSON.stringify(this.formLabor);
             this.http
               .put(url, data)
@@ -469,14 +486,12 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleLabor = false;
           }
           this.cloneLaborForm(refLabor);
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -511,15 +526,12 @@ export default {
         .then(res => {
           let data = JSON.stringify(ids);
           let url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/company";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              let total = res.total;
-              let rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+              this.getTable();
               this.$message({
                 type: "success",
                 message: "删除成功!"
@@ -538,17 +550,17 @@ export default {
     exportBatchClick() {
       let company = this.screenForm.company;
       let responsiblePersonName = this.screenForm.responsiblePersonName;
-      let contractPeriodType = this.screenForm.contractPeriodType;
+      let contractType = this.screenForm.contractType;
       let _this = this;
       let data = JSON.stringify({
         company: company,
         responsiblePersonName: responsiblePersonName,
-        contractPeriodType: contractPeriodType,
+        contractType: contractType,
         pageSize: _this.listQuery.pageSize,
         page: _this.listQuery.currentPage
       });
       let url =
-        "/smart/worker/labour/" +
+        "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/company/management/export";
       this.http.post(url, data).then(res => {
@@ -565,6 +577,7 @@ export default {
         let blob = new Blob([res.data], {
           type: "application/vnd.ms-excel"
         });
+        let link = document.createElement('a');
         let objectUrl = URL.createObjectURL(blob); // 创建URL
         link.href = objectUrl;
         link.download = excelName; // 自定义文件名
@@ -575,7 +588,7 @@ export default {
     //  导入
     importBatchClick() {
       let url =
-        "/smart/worker/labour/" +
+        "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/company/management/import";
       let params = new FormData();
@@ -589,25 +602,21 @@ export default {
     //  删除
     deleteRowClick(index, row) {
       let ids = [];
-      ids.push(row.id);
-
+      ids.push(row.plabourCompanyId);
       handleCofirm("确定删除该员工信息吗？")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/company";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
               this.$message({
                 type: "success",
                 message: "删除成功!"
               });
+              this.getTable();
             }
           });
         })
@@ -620,7 +629,8 @@ export default {
     },
     //  班组
     createdTeamClick(index, row) {
-      this.formTeam.pLabourCompanyId = JSON.parse(JSON.stringify(row.id));
+      console.log(row);
+      this.formTeam.plabourCompanyId = JSON.parse(JSON.stringify(row.plabourCompanyId));
       this.dialogVisibleTeam = true;
     },
     // 班组提交
@@ -630,7 +640,7 @@ export default {
           let form = this.$refs[refTeam].model;
           let data = JSON.stringify(this.formTeam);
           let url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/team";
           this.http
@@ -644,12 +654,10 @@ export default {
               }
             })
             .catch(res => {
-              console.log("error!");
               return false;
             });
           this.dialogVisibleTeam = false;
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
