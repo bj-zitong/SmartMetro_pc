@@ -44,7 +44,7 @@
           </el-form-item>
           <!-- 查询按钮 -->
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button type="primary" @click="getDataFun()">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -368,11 +368,11 @@ export default {
       csvVisible: false
     };
   },
-  mounted() {},
+  activated() {
+    this.getDataFun()
+  },
   methods: {
-    onSubmit() {
-      console.log("submit!");
-    },
+
     handleClick(row) {
       console.log(row);
     },
@@ -388,17 +388,17 @@ export default {
       let _this = this;
       var data = JSON.stringify({
         company: _this.formInline.company,
-        name: _this.formInline.name,
+        name: _this.formInline.id,
         jobNum: _this.formInline.jobNum,
         workerType: _this.formInline.workerType,
         pageSize: _this.listQuery.pageSize,
         page: _this.listQuery.currentPage
       });
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/labour/management";
-      this.http.delete(url, data).then(res => {
+      this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.total;
           var rows = res.rows;

@@ -91,10 +91,21 @@ ul, ol, li{
 .main-con-box {
     width: 100%;
     padding: 30px;
+
 }
 .main-btn-box{
     padding-left: 30px;
     margin-bottom: 30px;
+  
+
+}
+.main-btn-box>.el-button{
+  float: left;
+}
+.main-btn-box::after{
+  display: block;
+  content: "";
+  clear: both;
 }
 .upload{
     display:inline-block;

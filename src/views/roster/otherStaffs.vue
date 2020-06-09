@@ -48,7 +48,6 @@
             <el-table-column prop="workerType" label="工人类别"></el-table-column>
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
             <el-table-column prop="politicsType" label="政治面貌"></el-table-column>
-
             <el-table-column label="操作" fixed="right" width="240">
               <template slot-scope="scope">
                 <el-button class="T-R-B-Green" size="mini" @click="editRowClick(scope.row)">编辑</el-button>
@@ -150,7 +149,7 @@ export default {
         workerType: major
       });
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/other/management";
       this.http.post(url, data).then(res => {

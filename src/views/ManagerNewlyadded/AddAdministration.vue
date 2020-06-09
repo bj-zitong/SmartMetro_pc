@@ -37,11 +37,6 @@
               <el-input v-model="form.cellPhone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="8">
-            <el-form-item label="部门" prop="department" class="el-form-item">
-              <el-input v-model="form.department" placeholder="请输入部门"></el-input>
-            </el-form-item>
-          </el-col>-->
           <el-col :span="8">
             <el-form-item label="承建单位" prop="buildCorpName" class="el-form-item">
               <el-input v-model="form.buildCorpName" placeholder="请输入承建单位"></el-input>
@@ -50,8 +45,8 @@
           <el-col :span="8">
             <el-form-item label="岗位/职责" prop="jobType" class="el-form-item">
               <el-select v-model="form.jobType" placeholder="请选择岗位/职责">
-                <el-option label="区域一" value="区域一"></el-option>
-                <el-option label="区域二" value="区域二"></el-option>
+                <el-option label="区域一" value="0"></el-option>
+                <el-option label="区域二" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -78,10 +73,10 @@
           <el-col :span="8">
             <el-form-item label="婚姻状况" prop="maritalStatus">
               <el-select v-model="form.maritalStatus" placeholder="请选择婚姻状况">
-                <el-option label="已婚" value="已婚"></el-option>
-                <el-option label="未婚" value="未婚"></el-option>
-                <el-option label="离异" value="离异"></el-option>
-                <el-option label="丧偶" value="丧偶"></el-option>
+                <el-option label="已婚" value="0"></el-option>
+                <el-option label="未婚" value="1"></el-option>
+                <el-option label="离异" value="2"></el-option>
+                <el-option label="丧偶" value="3"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -96,14 +91,14 @@
           <el-col :span="8">
             <el-form-item label="文化程度" prop="cultureLevelType">
               <el-select v-model="form.cultureLevelType" placeholder="请选择文化程度">
-                <el-option label="大专" value="大专"></el-option>
-                <el-option label="小学" value="小学"></el-option>
-                <el-option label="初中" value="初中"></el-option>
-                <el-option label="高中" value="高中"></el-option>
-                <el-option label="本科" value="本科"></el-option>
-                <el-option label="研究生" value="研究生"></el-option>
-                <el-option label="博士" value="博士"></el-option>
-                <el-option label="硕士" value="硕士"></el-option>
+                <el-option label="大专" value="0"></el-option>
+                <el-option label="小学" value="1"></el-option>
+                <el-option label="初中" value="2"></el-option>
+                <el-option label="高中" value="3"></el-option>
+                <el-option label="本科" value="4"></el-option>
+                <el-option label="研究生" value="5"></el-option>
+                <el-option label="博士" value="6"></el-option>
+                <el-option label="硕士" value="7"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -115,14 +110,14 @@
           <el-col :span="8">
             <el-form-item label="居住证" prop="idCardType">
               <el-select v-model="form.idCardType" placeholder="持证上岗">
-                <el-option label="是" value="是"></el-option>
-                <el-option label="否" value="否"></el-option>
+                <el-option label="是" value="0"></el-option>
+                <el-option label="否" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="居住证办理日期" prop="residencePermitDate">
-              <!-- <el-date-picker v-model="form.residencePermitDate" type="date" placeholder="请选择日期"></el-date-picker> -->
+             
               <el-date-picker
                 v-model="form.residencePermitDate"
                 type="datetime"
@@ -135,16 +130,16 @@
           <el-col :span="8">
             <el-form-item label="人员类型" prop="workerType">
               <el-select v-model="form.workerType" placeholder="请选择人员类型">
-                <el-option label="企业自有职工" value="企业自有职工"></el-option>
-                <el-option label="劳务派遣人员" value="劳务派遣人员"></el-option>
+                <el-option label="企业自有职工" value="0"></el-option>
+                <el-option label="劳务派遣人员" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="政治面貌" prop="politicsType">
               <el-select v-model="form.politicsType" placeholder="请选择政治面貌">
-                <el-option label="企业自有职工" value="企业自有职工"></el-option>
-                <el-option label="劳务派遣人员" value="劳务派遣人员"></el-option>
+                <el-option label="企业自有职工" value="1"></el-option>
+                <el-option label="劳务派遣人员" value="0"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -220,7 +215,6 @@ export default {
         residencePermitDate: "",
         workerType: "",
         politicsType: "",
-        // roleIds: [],
         photo: ""
       },
       getImgCodeResults: "",
@@ -357,23 +351,42 @@ export default {
         if (valid) {
           var form = this.$refs["form"].model;
           handleCofirm("确认添加吗？", "warning").then(res => {
+            let formData = new FormData();
+            formData.append("name", form.name);
+            formData.append("gender", form.gender);
+            formData.append("age", form.age);
+            formData.append("nation", form.nation);
+            formData.append("cellPhone", form.cellPhone);
+            formData.append("department", form.department);
+            formData.append("buildCorpName", form.buildCorpName);
+            formData.append("jobType", form.jobType);
+            formData.append("urgentLinkMan", form.urgentLinkMan);
+            formData.append("urgentLinkManPhone", form.urgentLinkManPhone);
+            formData.append("address", form.address);
+            formData.append("birthPlace", form.birthPlace);
+            formData.append("degree",form.degree);
+            formData.append("cultureLevelType", form.cultureLevelType);
+            formData.append("idCardCode", form.idCardCode);
+            formData.append("residencePermitDate", form.residencePermitDate);
+            formData.append("workerType", form.workerType);
+            formData.append("politicsType", form.politicsType);
+            formData.append("photo", form.photo[0].raw);
+            console.log(form.photo[0].raw)
             var params = JSON.stringify(this.form);
-
             var url =
-              "/smart/worker/roster/" +
+              "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/manager";
-            this.http.post(url, params).then(res => {
+            this.http.post(url, formData).then(res => {
               if (res.code == 200) {
                 this.$message({
                   type: "success",
                   message: "添加成功!"
                 });
-                this.$router.push({ path: "/roster/manager" });
+                // this.$router.push({ path: "/roster/manager" });
               }
             });
-          });
-          console.log(params).catch(err => {
+          }).catch(err => {
             this.$message({
               type: "info",
               message: "已取消添加"

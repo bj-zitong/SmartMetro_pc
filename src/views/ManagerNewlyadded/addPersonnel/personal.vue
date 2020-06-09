@@ -409,21 +409,23 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          handleCofirm("确认保存吗", "warning")
-            .then(res => {
+          // handleCofirm("确认保存吗", "warning")
+            // .then(res => {
+              this.form.photo1 = this.form.photo[0].raw
+              console.log(this.form)
               sessionStorage.setItem("data", JSON.stringify(this.form));
               this.$emit("field", this.field);
               this.$message({
                 type: "success",
                 message: "保存成功!"
               });
-            })
-            .catch(err => {
-              this.$message({
-                type: "info",
-                message: "已取消保存"
-              });
-            });
+            // })
+            // .catch(err => {
+            //   this.$message({
+            //     type: "info",
+            //     message: "已取消保存"
+            //   });
+            // });
         } else {
           console.log("error submit!!");
           return false;

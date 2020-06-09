@@ -252,37 +252,37 @@ export default {
     };
   },
   mounted() {
-    if (localStorage.getItem("source") != null) {
-      this.form = JSON.parse(localStorage.getItem("source"));
+    if (sessionStorage.getItem("source") != null) {
+      this.form = JSON.parse(sessionStorage.getItem("source"));
     }
   },
   methods: {
     submitForm(formName) {
-      console.log(formName);
-      this.$refs[formName].validate(valid => {
-        if (valid) {
+    //   console.log(formName);
+    //   this.$refs[formName].validate(valid => {
+    //     if (valid) {
 
           
           //历史评价记录
-          var History = localStorage.getItem("History");
+          var History = sessionStorage.getItem("History");
           //来源地消息
-          var History = localStorage.getItem("source");
-
+          var History = sessionStorage.getItem("source");
+          
           //个人基本信息
-          var data = localStorage.getItem("data");
+          var data = JSON.parse(sessionStorage.getItem("data"))
+          
           var dataUrl =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour/basic";
            this.http.post(dataUrl, data).then(res => {
             if (res.code == 200) {
             }
           });
-          
            //合同信息
-          var contractInformation = localStorage.getItem("contractInformation");
+          var contractInformation = sessionStorage.getItem("contractInformation");
           var contractUrl =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour/contract";
           this.http.post(contractUrl, contractInformation).then(res => {
@@ -291,9 +291,9 @@ export default {
           });
 
            //工资记录
-          var payrollRecords1 = localStorage.getItem("payrollRecords1");
+          var payrollRecords1 = sessionStorage.getItem("payrollRecords1");
            var payrollUrl =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour/salary";
           this.http.post(payrollUrl, payrollRecords1).then(res => {
@@ -302,9 +302,9 @@ export default {
           });
           
           //资质证书
-          var certificate = localStorage.getItem("certificate");
+          var certificate = sessionStorage.getItem("certificate");
            var certificateUrl =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour/credential";
           this.http.post(certificateUrl, certificate).then(res => {
@@ -313,26 +313,27 @@ export default {
           });
 
           //历史评价记录
-         var History = localStorage.getItem("source");
+         var History = sessionStorage.getItem("source");
          var HistoryUrl=
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour/evaluate";
           this.http.post(HistoryUrl, History).then(res => {
             if (res.code == 200) {
             }
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+          })
+          // });
+      //   } else {
+      //     console.log("error submit!!");
+      //     return false;
+      //   }
+      // });
     },
     //保存
     preservationClick() {
       handleCofirm("确认保存吗", "warning")
         .then(res => {
-          localStorage.setItem("source", JSON.stringify(this.form));
+          sessionStorage.setItem("source", JSON.stringify(this.form));
           this.$emit("field", this.field);
           this.$message({
             type: "success",
