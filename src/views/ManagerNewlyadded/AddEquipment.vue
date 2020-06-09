@@ -200,6 +200,7 @@ export default {
         if (valid) {
           var form = this.$refs["form"].model;
           if (this.id == 0) {
+            alert("创建")
             var params = JSON.stringify({
               company: form.corporateName,
               age: form.age,
@@ -215,7 +216,7 @@ export default {
               professional: form.professional
             });
             var url =
-              "/smart/worker/roster/" +
+              "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/equipment";
             this.http.post(url, params).then(res => {
@@ -224,6 +225,7 @@ export default {
               }
             });
           } else {
+            alert("修改")
             var params = JSON.stringify({
               company: form.corporateName,
               age: form.age,

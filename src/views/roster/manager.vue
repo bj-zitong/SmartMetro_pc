@@ -26,11 +26,25 @@
           <el-button class="T-H-B-DarkBlue" @click="AddEditClick('add')">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
-          <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
+          <div class="uploading">
+           <el-upload
+                class="upload-demo"
+                v-model="form.photo"
+                action
+                :on-change="handleChange"
+                :file-list="fileList"
+                :auto-upload="false"
+                :limit="1"
+                :show-file-list="false"
+              >
+              <!-- <i class="el-icon-upload"></i> -->
+             <el-button size="small" type="primary">导入</el-button>
+            </el-upload>
+          </div>
+          <!-- <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button> -->
         </div>
         <div class="tableView">
           <el-table
-            
             ref="multipleTable"
             :data="tableData"
             stripe
@@ -92,7 +106,7 @@
       <div>
         <el-form ref="file" label-width="120px">
           <el-form-item label="文件导入：" prop="uploadFile">
-            <el-upload
+            <!-- <el-upload
               class="upload-demo"
               v-model="file.uploadFile"
               action
@@ -100,7 +114,7 @@
               :file-list="fileList"
               :auto-upload="false"
               :limit="1"
-              :show-file-list="true"
+              :show-file-list="false"
             >
               <i class="el-icon-upload"></i>
               <div class="el-upload__text">
@@ -108,13 +122,27 @@
                 <em>点击上传</em>
               </div>
               <div class="el-upload__tip" slot="tip">上传csv文件</div>
-            </el-upload>
+            </el-upload> -->
           </el-form-item>
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="csvVisible = false">取消</el-button>
-        <el-button type="primary" @click="importCsv()">导入</el-button>
+        <!-- <el-button type="primary" @click="importCsv()">导入</el-button> -->
+        <!-- <el-upload
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-remove="beforeRemove"
+          multiple
+          :limit="3"
+          :on-exceed="handleExceed"
+          :file-list="fileList"
+        >
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>-->
       </span>
     </el-dialog>
   </div>
@@ -132,6 +160,18 @@ export default {
   data() {
     return {
       csvVisible: false,
+      fileList: [
+        {
+          name: "food.jpeg",
+          url:
+            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+        },
+        {
+          name: "food2.jpeg",
+          url:
+            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+        }
+      ],
       formInline: {
         name: "",
         workerType: ""
@@ -142,110 +182,20 @@ export default {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
-      file: {
-        uploadFile: ""
+      form: {
+        photo: ""
       },
       fileList: [],
       loading: true,
-      tableData: [
-        {
-          pInfoId: 0,
-          buildCorpName: "北京公司",
-          jobType: "司机",
-          workerType: "司机",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "河北省张家口",
-          idNum: "6932589565555747888",
-          age: 0,
-          cellPhone: "1234568793",
-          address: "河北省张家口",
-          politicsType: "群众"
-        },
-        {
-          pInfoId: 1,
-          buildCorpName: "北京公司",
-          jobType: "司机",
-          workerType: "司机",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "河北省张家口",
-          idNum: "6932589565555747888",
-          age: 0,
-          cellPhone: "1234568793",
-          address: "河北省张家口",
-          politicsType: "群众"
-        },
-        {
-          pInfoId: 2,
-          buildCorpName: "北京公司",
-          jobType: "司机",
-          workerType: "司机",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "河北省张家口",
-          idNum: "6932589565555747888",
-          age: 0,
-          cellPhone: "1234568793",
-          address: "河北省张家口",
-          politicsType: "群众"
-        },
-        {
-          pInfoId: 3,
-          buildCorpName: "北京公司",
-          jobType: "司机",
-          workerType: "司机",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "河北省张家口",
-          idNum: "6932589565555747888",
-          age: 0,
-          cellPhone: "1234568793",
-          address: "河北省张家口",
-          politicsType: "群众"
-        },
-        {
-          pInfoId: 4,
-          buildCorpName: "北京公司",
-          jobType: "司机",
-          workerType: "司机",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "河北省张家口",
-          idNum: "6932589565555747888",
-          age: 0,
-          cellPhone: "1234568793",
-          address: "河北省张家口",
-          politicsType: "群众"
-        },
-        {
-          pInfoId: 5,
-          buildCorpName: "北京公司",
-          jobType: "司机",
-          workerType: "司机",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "河北省张家口",
-          idNum: "6932589565555747888",
-          age: 0,
-          cellPhone: "1234568793",
-          address: "河北省张家口",
-          politicsType: "群众"
-        }
-      ]
+      tableData: []
     };
   },
-  mounted() {
-    // alert("98888")
-    // this.pageTotal = {
-    //   total: 10,
-    //   page:2,
-    //   pageNum: 8
-    // };
+  activated() {
+    this.getDatalist();
   },
   methods: {
     onSubmit() {
-      this.getDatalist()
+      this.getDatalist();
     },
     handleClick(row) {
       console.log(row);
@@ -253,9 +203,22 @@ export default {
     addStaffClick() {
       this.$router.push({ path: "/AddAdministration" });
     },
-    // queryClick(){
-    //    this.getDatalist()
-    // },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
     //列表请求
     getDatalist() {
       var name = this.formInline.name;
@@ -268,11 +231,12 @@ export default {
         workerType: workerType
       });
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/manager/management";
       this.http.post(url, params).then(res => {
         if (res.code == 200) {
+          this.tableData = res.data.rows;
         }
       });
     },
@@ -284,17 +248,18 @@ export default {
           //   type: "success",
           //   message: "导出成功!"
           // });
-          var uname = this.formInline.searchNum;
-          var unum = this.formInline.searchUname;
+          var name = this.formInline.name;
+          var workerType = this.formInline.workerType;
+          console.log(name, workerType);
           let _this = this;
           var data = JSON.stringify({
-            name: uname,
-            company: unum,
-            pageSize: _this.pageSize,
-            page: _this.page
+            name: name,
+            company: workerType,
+            pageSize: this.listQuery.pageSize,
+            page: this.listQuery.currentPage
           });
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/manager/export";
           this.http.post(url, data).then(res => {
@@ -319,6 +284,7 @@ export default {
               type: "application/vnd.ms-excel"
             });
             let objectUrl = URL.createObjectURL(blob); // 创建URL
+            let link = document.createElement("a");
             link.href = objectUrl;
             link.download = excelName; // 自定义文件名
             link.click(); // 下载文件
@@ -339,13 +305,13 @@ export default {
     },
     //  导入
     importCsv() {
-      // console.log(this.file.uploadFile[0].raw);
+      console.log(this.file.uploadFile);
       var url =
         "/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/other/import";
       var data = new FormData();
-      data.append("file", this.file.uploadFile[0].raw);
+      // data.append("file", this.file.uploadFile[0].raw);
       this.http.get(url, data).then(res => {
         if (res.code == 200) {
           // this.getOtherStaffs();
@@ -420,15 +386,15 @@ export default {
         });
     },
     //删除
-    deleteRowClick(row) {
-      var uid = row.id;
+    deleteRowClick(rowIndex, row) {
+      var uid = row.pinfoId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除吗？", "warning")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/manager";
           this.http.delete(url, data).then(res => {
@@ -448,8 +414,19 @@ export default {
         });
     },
     handleChange(file, fileList) {
-      this.$refs.file.clearValidate();
-      this.file.uploadFile = fileList;
+      // this.$refs.file.clearValidate();
+      // this.file.uploadFile = fileList;
+       console.log(file.raw[0]);
+      var url =
+        "/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/equipment/import";
+      var data = new FormData();
+      data.append("file", this.file.uploadFile[0].raw);
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+        }
+      });
     },
     detailsRowClick() {
       let _this = this;
@@ -540,5 +517,9 @@ body > .el-container {
     margin-top: 30px;
     margin-bottom: 15px;
   }
+}
+.uploading{
+  float:left;
+  margin-left:10px;
 }
 </style>

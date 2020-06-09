@@ -175,6 +175,7 @@ export default {
       this.isCertificate = true;
       sessionStorage.setItem("personalPersonal", JSON.stringify(v));
       this.activeName = "third";
+      this.contractInformation=false
       let Information = JSON.parse(sessionStorage.getItem("data"));
       if (Information != null) {
         updateVegetablesCollection(
@@ -208,7 +209,7 @@ export default {
       this.activeName = "evaluate";
       this.History = false;
     },
-
+    
     getHistory(v) {
       sessionStorage.setItem("HistoryRecord", JSON.stringify(v));
       this.activeName = "first";

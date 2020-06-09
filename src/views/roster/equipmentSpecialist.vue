@@ -169,7 +169,7 @@ export default {
         professional: major
       });
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/equipment/management";
       this.http.post(url, data).then(res => {
@@ -296,7 +296,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/equipment";
           this.http.delete(url, data).then(res => {
@@ -355,7 +355,7 @@ export default {
       var id = row.pInfoId;
       ////smart/worker/roster/{userId}/equipment/{id}
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/equipment/" +
         id;

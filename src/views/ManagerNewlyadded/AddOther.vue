@@ -67,40 +67,40 @@
           <el-col :span="8">
             <el-form-item label="婚姻状况" prop="maritalStatus">
               <el-select v-model="form.maritalStatus" placeholder="请选择婚姻状况">
-                <el-option label="已婚" value="已婚"></el-option>
-                <el-option label="未婚" value="未婚"></el-option>
-                <el-option label="离异" value="离异"></el-option>
-                <el-option label="丧偶" value="丧偶"></el-option>
+                <el-option label="已婚" value="1"></el-option>
+                <el-option label="未婚" value="2"></el-option>
+                <el-option label="离异" value="3"></el-option>
+                <el-option label="丧偶" value="4"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="学位" prop="degree">
               <el-select v-model="form.degree" placeholder="请选择学位">
-                <el-option label="身份证" value="身份证"></el-option>
-                <el-option label="护照" value="护照"></el-option>
+                <el-option label="身份证" value="0"></el-option>
+                <el-option label="护照" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="文化程度" prop="cultureLevelType">
               <el-select v-model="form.cultureLevelType" placeholder="请选择文化程度">
-                <el-option label="大专" value="大专"></el-option>
-                <el-option label="小学" value="小学"></el-option>
-                <el-option label="初中" value="初中"></el-option>
-                <el-option label="高中" value="高中"></el-option>
-                <el-option label="本科" value="本科"></el-option>
-                <el-option label="研究生" value="研究生"></el-option>
-                <el-option label="博士" value="博士"></el-option>
-                <el-option label="硕士" value="硕士"></el-option>
+                <el-option label="大专" value="0"></el-option>
+                <el-option label="小学" value="1"></el-option>
+                <el-option label="初中" value="2"></el-option>
+                <el-option label="高中" value="3"></el-option>
+                <el-option label="本科" value="4"></el-option>
+                <el-option label="研究生" value="5"></el-option>
+                <el-option label="博士" value="6"></el-option>
+                <el-option label="硕士" value="7"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="证件类型" prop="idCardType">
               <el-select v-model="form.idCardType" placeholder="请选择证件类型">
-                <el-option label="身份证" value="1"></el-option>
-                <el-option label="护照" value="2"></el-option>
+                <el-option label="身份证" value="0"></el-option>
+                <el-option label="护照" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -112,24 +112,24 @@
           <el-col :span="8">
             <el-form-item label="工人类型" prop="workerType">
               <el-select v-model="form.workerType" placeholder="请选择工人类型">
-                <el-option label="厨师" value="shanghai"></el-option>
-                <el-option label="保安" value="beijing"></el-option>
+                <el-option label="厨师" value="0"></el-option>
+                <el-option label="保安" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="持证上岗" prop="isRelatedCertificates">
               <el-select v-model="form.isRelatedCertificates" placeholder="请选择持证上岗">
-                <el-option label="是" value="是"></el-option>
-                <el-option label="否" value="否"></el-option>
+                <el-option label="是" value="0"></el-option>
+                <el-option label="否" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="居住证" prop="isResidencePermit">
               <el-select v-model="form.isResidencePermit" placeholder="请选择居住证">
-                <el-option label="是" value="是"></el-option>
-                <el-option label="否" value="否"></el-option>
+                <el-option label="是" value="0"></el-option>
+                <el-option label="否" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -377,9 +377,8 @@ export default {
             data.append("workerType", form.workerType);
             data.append("photo", form.photo[0].raw);
             //文件
-            console.log(form.photo[0].raw);
             var url =
-              "/smart/worker/roster/" +
+              "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/other";
             this.http.post(url, data).then(res => {
@@ -388,28 +387,6 @@ export default {
               }
             });
           } else {
-            // var params = JSON.stringify({
-            //   name: form.name,
-            //   gender: form.gender,
-            //   age: form.age,
-            //   nation: form.nation,
-            //   cellPhone: form.cellPhone,
-            //   politicsType: form.politicsType,
-            //   urgentLinkMan: form.urgentLinkMan,
-            //   urgentLinkManPhone: form.urgentLinkManPhone,
-            //   address: form.address,
-            //   birthPlace: form.birthPlace,
-            //   maritalStatus: form.maritalStatus,
-            //   degree: form.degree,
-            //   cultureLevelType: form.cultureLevelType,
-            //   idCardType: form.idCardType,
-            //   idCardCode: form.idCardCode,
-            //   isResidencePermit: form.isResidencePermit,
-            //   isRelatedCertificates: form.isRelatedCertificates,
-            //   residencePermitDate: form.residencePermitDate,
-            //   workerType: form.workerType,
-            //   photo: form.photo
-            // });
             var data = new FormData();
             data.append("name", form.name);
             data.append("gender", form.gender);
@@ -432,7 +409,7 @@ export default {
             data.append("workerType", form.workerType);
              data.append("photo", form.photo[0].raw);
             var url =
-              "/smart/worker/roster/" +
+              "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/other/" +
               this.id;
