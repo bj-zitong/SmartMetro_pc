@@ -313,7 +313,7 @@ export default {
       var id = row.pOutlanderId;
       this.form.pOutlanderId = id;
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/outlander/" +
         id;
@@ -362,7 +362,7 @@ export default {
               visitTime: form.intervieweeDate
             });
             var url =
-              "/smart/worker/roster/" +
+              "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/outlander";
             this.http.post(url, params).then(res => {
@@ -384,7 +384,7 @@ export default {
               visitTime: this.form.intervieweeDate
             });
             var url =
-              "/smart/worker/roster/" +
+              "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/outlander/" +
               form.pOutlanderId;
@@ -418,7 +418,7 @@ export default {
         company: unum
       });
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/outlander/management";
       this.http.post(url, data).then(res => {
@@ -466,7 +466,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/outlander";
           this.http.delete(url, data).then(res => {
@@ -492,7 +492,7 @@ export default {
       var uid = row.pOutlanderId;
       this.form.pOutlanderId = uid;
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/outlander/" +
         uid;
@@ -518,7 +518,7 @@ export default {
         page: _this.page
       });
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/outlander/export";
       this.http.post(url, data).then(res => {
@@ -572,7 +572,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/outlander";
           this.http.delete(url, data).then(res => {

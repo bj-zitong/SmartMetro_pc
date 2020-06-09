@@ -288,7 +288,7 @@ export default {
     impotVideo() {
       // console.log(this.videoForm.getVideo[0].raw);
       var url =
-        "/smart/worker/labour/" +
+        "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/team/" +
         "/meeting/" +
@@ -311,7 +311,7 @@ export default {
         company: this.form.laborCompany
       });
       var url =
-        "/smart/worker/labour/" +
+        "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/team/meeting/management";
       this.http.post(url, data).then(res => {
@@ -355,7 +355,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/team/meeting";
           this.http.delete(url, data).then(res => {
@@ -385,7 +385,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/team/meeting";
           this.http.delete(url, data).then(res => {
@@ -440,7 +440,7 @@ export default {
       this.formSpeech = row;
       //获得详情
       var url =
-        "/smart/worker/labour/" +
+        "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/team/meeting/" +
         uid;
@@ -475,7 +475,7 @@ export default {
           datas.append("workerInfo", this.selectedPersonIds);
           datas.append("pShiftMeetingId", form.pShiftMeetingId);
           var url =
-            "/smart/worker/labour/" +
+            "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
             "/team/meeting";
           this.http.put(url, datas).then(res => {

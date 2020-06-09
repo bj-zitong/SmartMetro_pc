@@ -397,7 +397,8 @@ export default {
             let data = JSON.stringify({
               projectCenterId: form.projectCenter,
               lineId: form.line,
-              siteId: form.siteName,
+              // siteId: form.siteName,
+              siteName: form.siteName,
               buildCorpName: form.buildCorpName,
               responsiblePersonName: form.responsiblePersonName,
               cellPhone: form.cellPhone,
@@ -425,7 +426,8 @@ export default {
             var data = JSON.stringify({
               projectCenterId: form.projectCenter,
               lineId: form.line,
-              siteId: form.siteName,
+              // siteId: form.siteName,
+              siteName:form.siteName,
               buildCorpName: form.buildCorpName,
               responsiblePersonName: form.responsiblePersonName,
               cellPhone: form.cellPhone,

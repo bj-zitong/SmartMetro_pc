@@ -387,7 +387,7 @@ export default {
       // 用户i
       var uid = row.sysUserId;
       this.formTeam.sysUserId = uid;
-      this.rolesName = [];
+      this.rolesName =row.roleName;
       var url =
         "/systemUrl/smart/auth/" +
         sessionStorage.getItem("userId") +
@@ -406,15 +406,15 @@ export default {
           //获得角色
           this.getRoles();
           var options = this.options;
-          if (this.user.roles.length > 0) {
-            for (var i = 0; i < options.length; i++) {
-              for (var j = 0; j < this.user.roles.length; j++) {
-                if (options[i].id == this.user.roles[j]) {
-                  this.rolesName.push(options[i].name);
-                }
-              }
-            }
-          }
+          // if (this.user.roles.length > 0) {
+          //   for (var i = 0; i < options.length; i++) {
+          //     for (var j = 0; j < this.user.roles.length; j++) {
+          //       if (options[i].id == this.user.roles[j]) {
+          //         this.rolesName.push(options[i].name);
+          //       }
+          //     }
+          //   }
+          // }
         }
       });
       this.dialogFormVisibleDetail = true;
@@ -564,7 +564,16 @@ export default {
         if (valid) {
           let form = this.$refs[refTeam].model;
           if (form.sysUserId == null) {
-            let data = JSON.stringify(this.formTeam);
+            // let data = JSON.stringify(this.formTeam);
+             var data = JSON.stringify({
+              orgSite: form.siteId,
+              userName: form.userName,
+              cellPhone: form.cellPhone,
+              account: form.cellPhone,
+              password: form.password,
+              roles: form.roles,
+              sysUserId: form.sysUserId
+            });
             if (form.password != form.confimPassword) {
               this.$message({
                 message: "密码不一致!"
@@ -599,16 +608,16 @@ export default {
               "/systemUrl/smart/auth/" +
               sessionStorage.getItem("userId") +
               "/user";
-            // var data = JSON.stringify({
-            //   orgSite: form.orgSite,
-            //   userName: form.userName,
-            //   cellPhone: form.cellPhone,
-            //   account: form.cellPhone,
-            //   password: form.password,
-            //   roles: form.roles,
-            //   sysUserId: form.sysUserId
-            // });
-            let data = JSON.stringify(this.formTeam);
+            var data = JSON.stringify({
+              orgSite: form.siteId,
+              userName: form.userName,
+              cellPhone: form.cellPhone,
+              account: form.cellPhone,
+              password: form.password,
+              roles: form.roles,
+              sysUserId: form.sysUserId
+            });
+            // let data = JSON.stringify(this.formTeam);
             this.http
               .put(url, data)
               .then(res => {
