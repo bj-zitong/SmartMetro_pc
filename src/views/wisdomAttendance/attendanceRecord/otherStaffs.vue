@@ -14,7 +14,7 @@
           <el-form-item label="时间" class="region" prop="date">
             <el-date-picker
               v-model="formInline.date"
-              type="date"
+              type="datetime"
               placeholder="时间"
               value-format="yyyy-MM-dd HH:mm:ss"
             ></el-date-picker>
@@ -28,7 +28,7 @@
     <div class="table-main">
       <el-main class="table-head">
         <el-button class="T-H-B-DarkBlue">新增</el-button>
-        <el-button @click="deleteAll()" class="T-H-B-Grey">删除</el-button>
+        <!-- <el-button @click="deleteAll()" class="T-H-B-Grey">删除</el-button> -->
         <el-button @click="poiExcel()" class="T-H-B-Cyan">导出</el-button>
         <div class="table-content">
           <el-table
@@ -155,45 +155,17 @@ export default {
         workerType: workerType
       });
       var url =
-        "/smart/worker/attendance/" +
+        "/bashUrl/smart/worker/attendance/" +
         sessionStorage.getItem("userId") +
         "/other/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           var total = res.total;
           var rows = res.rows;
-          this.tableData = rows;
+          this.tableData = res.data.rows;
           this.total = total;
         }
       });
-      var result = [
-        {
-          pAttendanceId: 1,
-          name: "地铁安保部",
-          idNum: "210234567898765876",
-          duty: "安保部一",
-          jobNum: "部门一",
-          WorkerType: "123",
-          date: "2020-4-12",
-          firstTime: "2020-4-12",
-          endTime: "2020-4-12",
-          attendanceTime: "2020-4-12"
-        },
-        {
-          pAttendanceId: 2,
-          name: "22222222",
-          idNum: "210234567898765789",
-          duty: "44444",
-          jobNum: "44444",
-          WorkerType: "1111",
-          date: "2020-4-12",
-          firstTime: "2020-4-12",
-          endTime: "2020-4-12",
-          attendanceTime: "2020-4-12"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     // poi导出
     poiExcel() {
@@ -255,39 +227,39 @@ export default {
       return ids;
     },
     // 批量删除
-    deleteAll() {
-      var ids = this.changeFun();
-      if (ids.length <= 0) {
-        this.$message("请选择删除的数据！");
-        return;
-      }
-      handleCofirm("确认删除吗？", "warning")
-        .then(res => {
-          var data = JSON.stringify(ids);
-          var url =
-            "/smart/worker/attendance/" +
-            sessionStorage.getItem("userId") +
-            "/other";
-          this.http.delete(url, data).then(res => {
-            if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-            }
-          });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    }
+    // deleteAll() {
+    //   var ids = this.changeFun();
+    //   if (ids.length <= 0) {
+    //     this.$message("请选择删除的数据！");
+    //     return;
+    //   }
+    //   handleCofirm("确认删除吗？", "warning")
+    //     .then(res => {
+    //       var data = JSON.stringify(ids);
+    //       var url =
+    //         "/smart/worker/attendance/" +
+    //         sessionStorage.getItem("userId") +
+    //         "/other";
+    //       this.http.delete(url, data).then(res => {
+    //         if (res.code == 200) {
+    //           var total = res.total;
+    //           var rows = res.rows;
+    //           this.tableData = rows;
+    //           this.total = total;
+    //           this.$message({
+    //             type: "success",
+    //             message: "删除成功!"
+    //           });
+    //         }
+    //       });
+    //     })
+    //     .catch(err => {
+    //       this.$message({
+    //         type: "info",
+    //         message: "已取消删除"
+    //       });
+    //     });
+    // }
   }
 };
 </script>

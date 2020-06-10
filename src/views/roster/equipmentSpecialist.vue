@@ -32,7 +32,7 @@
             stripe
             :header-cell-style="headClass"
             tooltip-effect="dark"
-            style="width: 97%;"
+            style="width: 100%;"
             @selection-change="handleSelectionChange"
           >
             <el-table-column
