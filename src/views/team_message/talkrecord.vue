@@ -42,7 +42,7 @@
               prop="pShiftMeetingId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="uuid" label="编号" width="150"></el-table-column>
+            <el-table-column prop="uid" label="编号" width="150"></el-table-column>
             <el-table-column prop="createTime" label="创建日期" width="120"></el-table-column>
             <el-table-column prop="homeworkPart" label="作业部位" width="120"></el-table-column>
             <el-table-column prop="homeworkNumber" label="作业人数" width="120"></el-table-column>
@@ -204,6 +204,7 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "../../components/pagination";
+import axios from "axios";
 export default {
   name: "container",
   components: {
@@ -283,10 +284,13 @@ export default {
     },
     handleChange(file, fileList) {
       this.$refs.file.clearValidate();
-      this.file.uploadFile = fileList;
+      // this.file.uploadFile = fileList;
+      this.videoForm.getVideo=file.raw
+      console.log(this.videoForm.getVideo);
+      console.log(file);
     },
     impotVideo() {
-      // console.log(this.videoForm.getVideo[0].raw);
+      console.log(this.videoForm);
       var url =
         "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -295,13 +299,32 @@ export default {
         this.id +
         "/upload";
       var data = new FormData();
-      data.append("file", this.videoForm.getVideo[0].raw);
-      this.http.get(url, data).then(res => {
-        if (res.code == 200) {
-          this.getOtherStaffs();
-        }
-      });
-      this.videoForm.getVideo = false;
+      data.append("file", this.videoForm.getVideo);
+      // this.http.get(url, data).then(res => {
+      //   if (res.code == 200) {
+      //     this.getOtherStaffs();
+      //   }
+      // });
+         axios({
+            method: "get",
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: sessionStorage.getItem("token")
+            },
+            url:url,
+            data: data,
+            timeout: 5000 //响应时间
+          }).then(
+            res => {
+              if (res.code == 200) {
+                 this.getOtherStaffs();
+                 this.videoForm.getVideo = false;
+              }
+            },
+            err => {
+              return errorfun(err);
+            }
+          );
     },
     handlePreview(row, file) {},
     getTalks() {

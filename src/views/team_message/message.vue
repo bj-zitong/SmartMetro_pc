@@ -35,13 +35,19 @@
           stripe
           :header-cell-style="headClass"
         >
-          <el-table-column type="selection" prop="teamMasterId" @selection-change="changeFun"></el-table-column>
+          <el-table-column type="selection" prop="pteamMasterId" @selection-change="changeFun"></el-table-column>
           <el-table-column prop="projectName" label="工程名称" width="150"></el-table-column>
           <el-table-column prop="teamName" label="班组名称" width="150"></el-table-column>
-          <el-table-column prop="teamType" label="班组类型" width="100"></el-table-column>
+          <el-table-column prop="teamType" label="班组类型" width="120">
+            <template slot-scope="scope">
+              <span v-if="scope.row.teamType==1">班组1</span>
+              <span v-if="scope.row.teamType==2">班组2</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="teamLeaderName" label="班组长" width="100"></el-table-column>
           <el-table-column prop="teamLeaderPhone" label="手机号" width="120"></el-table-column>
-          <el-table-column prop="createTime" label="创建日期" width="150"></el-table-column>
+          <el-table-column prop="createTime" label="创建日期" width="200"></el-table-column>
+          <el-table-column prop="updateTime" label="修改日期" width="200"></el-table-column>
           <el-table-column label="操作" width="400" fixed="right">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
@@ -79,8 +85,8 @@
         label-width="80px"
         action="http://192.168.1.164:8001/auth/user/baseUser"
       >
-        <el-form-item prop="teamMasterId">
-          <el-input v-model="formClass.teamMasterId" type="text" hidden></el-input>
+        <el-form-item prop="pteamMasterId">
+          <el-input v-model="formClass.pteamMasterId" type="text" hidden></el-input>
         </el-form-item>
         <el-form-item prop="projectName" label="工程名称">
           <el-input v-model="formClass.projectName" type="text" placeholder="工程名称"></el-input>
@@ -256,14 +262,14 @@ export default {
       dialogVisible: false, //评价
       outerVisible: false, //新增讲话
       innerVisible: false, //二层
-      loading:true,
+      loading: true,
       formClass: {
         projectName: "",
         groupName: "",
         phone: "",
         groupLeader: "",
         profession: "",
-        teamMasterId: null
+        pteamMasterId: null
       },
       formRules: {
         projectName: [
@@ -289,9 +295,8 @@ export default {
       options: [
         // 来访部门
         { id: undefined, name: "请选择班组类型" },
-        { id: "1", name: "类型一" },
-        { id: "2", name: "类型二" },
-        { id: "3", name: "类型三" }
+        { id: "1", name: "班组1" },
+        { id: "2", name: "班组2" }
       ],
       evaluatLevel: [
         { id: 1, name: "优" },
@@ -361,34 +366,12 @@ export default {
         "/team/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
+          var total = res.data.total;
+          var rows = res.data.rows;
           this.tableData = rows;
           this.total = total;
         }
       });
-      var result = [
-        {
-          teamMasterId: 1,
-          projectName: "工程1",
-          teamName: "班组一",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236985369",
-          createTime: "2020-4-12"
-        },
-        {
-          teamMasterId: 2,
-          projectName: "工程2",
-          teamName: "班组二",
-          teamType: "工地",
-          teamLeaderName: "XXX",
-          teamLeaderPhone: "15236984469",
-          createTime: "2020-4-15"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -396,7 +379,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].teamMasterId;
+        var id = arrays[i].pteamMasterId;
         ids.push(id);
       }
       return ids;
@@ -437,6 +420,7 @@ export default {
                 type: "success",
                 message: "删除成功!"
               });
+              this.getTalks();
             }
           });
         })
@@ -481,7 +465,7 @@ export default {
     // 删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.teamMasterId;
+      var uid = row.pteamMasterId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除", "warning")
@@ -510,13 +494,12 @@ export default {
     },
     //编辑
     handleEdit(row) {
-      var uid = row.teamMasterId;
+      var uid = row.pteamMasterId;
       this.id = uid;
-      this.formClass = row;
+      // this.formClass = row;
       //获得详情
       var params = null;
-      this.formClass.projectName = "123";
-      this.formClass.teamMasterId = uid;
+      this.formClass.pteamMasterId = uid;
       var url =
         "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -533,17 +516,17 @@ export default {
             (form.phone = result.teamLeaderPhone),
             (form.groupLeader = result.teamLeaderName),
             (form.profession = result.teamType),
-            (form.teamMasterId = result.teamMasterId);
+            (form.pteamMasterId = result.pteamMasterId);
         }
       });
       this.dialogFormVisible = true;
+      this.getTalks();
     },
-    //新增
+    //编辑
     addClass(formClass) {
       this.$refs[formClass].validate(valid => {
         //校验
         if (valid) {
-          //新增 id为空
           var form = this.$refs[formClass].model;
           var params = JSON.stringify({
             projectName: form.projectName,
@@ -551,7 +534,7 @@ export default {
             teamType: form.profession,
             teamLeaderName: form.groupLeader,
             teamLeaderPhone: form.phone,
-            teamMasterId: form.teamMasterId
+            pteamMasterId: form.pteamMasterId
           });
           var url =
             "/bashUrl/smart/worker/labour/" +
@@ -559,8 +542,14 @@ export default {
             "/team";
           this.http.put(url, params).then(res => {
             if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "编辑成功!"
+              });
               this.dialogFormVisible = false;
               this.$refs[formClass].resetFields();
+
+              this.getTalks();
             }
           });
         } else {
@@ -582,12 +571,18 @@ export default {
         return false;
       }
       var url =
-        "/bashUrl/smart/worker/labour/" + sessionStorage.getItem("userId") + "/team";
-      var params = JSON.stringify({ teamMasterId: id, evaluate: evaluated });
+        "/bashUrl/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/team";
+      var params = JSON.stringify({ pteamMasterId: id, evaluate: evaluated });
       this.http.put(url, params).then(res => {
         if (res.code == 200) {
           this.dialogVisible = false;
           this.evaluated = null;
+          this.$message({
+            type: "success",
+            message: "评价成功!"
+          });
           this.getTalks();
         }
       });
@@ -599,21 +594,21 @@ export default {
     },
     //添加评价
     addEvalte(row) {
-      var uid = row.teamMasterId;
+      var uid = row.pteamMasterId;
       this.dialogVisible = true;
       //设置全局变量
       this.id = uid;
     },
     //选中的值
-     toggleSelection(rows) {
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.multipleTable2.toggleRowSelection(row);
-          });
-        } else {
-          this.$refs.multipleTable2.clearSelection();
-        }
-      },
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable2.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.multipleTable2.clearSelection();
+      }
+    },
     //选择人员赋值
     selectPerson() {
       console.log(this.selectedPersonIds);
@@ -636,21 +631,30 @@ export default {
     //讲话
     addSpeech(row) {
       this.outerVisible = true;
-      this.id = row.teamMasterId;
+      this.id = row.pteamMasterId;
     },
     addFormSpeech(formSpeech) {
       this.$refs[formSpeech].validate(valid => {
         if (valid) {
           var form = this.$refs["formSpeech"].model;
-          var datas = new FormData();
+          // var datas = new FormData();
           var pids = this.changeFunPerson();
-          datas.append("homeworkPart", form.jobsite);
-          datas.append("homeworkNumber", form.jobNum);
-          datas.append("isSafety", form.protective);
-          datas.append("jobContent", form.speachContent);
-          datas.append("meetingContent", form.classContent);
-          datas.append("workerInfo", pids);
-          datas.append("pTeamMasterId", this.id);
+          // datas.append("homeworkPart", form.jobsite);
+          // datas.append("homeworkNumber", form.jobNum);
+          // datas.append("isSafety", form.protective);
+          // datas.append("jobContent", form.speachContent);
+          // datas.append("meetingContent", form.classContent);
+          // datas.append("workerInfo", pids);
+          // datas.append("pteamMasterId", this.id);
+          var datas=JSON.stringify({
+            homeworkPart:form.jobsite,
+            homeworkNumber:form.jobNum,
+            isSafety:form.protective,
+            jobContent:form.speachContent,
+            meetingContent:form.classContent,
+            workerInfoIds:pids.toString(),
+            pteamMasterId:this.id
+          });
           var url =
             "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
@@ -659,6 +663,7 @@ export default {
             if (res.code == 200) {
               this.outerVisible = false;
               this.$refs[formSpeech].resetFields();
+              this.getTalks();
             }
           });
         } else {
