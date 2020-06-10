@@ -82,7 +82,7 @@
               >
                 <el-date-picker v-model="item.value1" type="datetime" placeholder="请选择发证日期"></el-date-picker>
               </el-form-item>
-            </el-col> -->
+            </el-col>-->
             <el-col>
               <el-form-item
                 label="第一次发证时间"

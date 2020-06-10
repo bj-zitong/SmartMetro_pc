@@ -258,76 +258,118 @@ export default {
   },
   methods: {
     submitForm(formName) {
-    //   console.log(formName);
-    //   this.$refs[formName].validate(valid => {
-    //     if (valid) {
+      //   console.log(formName);
+      //   this.$refs[formName].validate(valid => {
+      //     if (valid) {
 
-          
-          //历史评价记录
-          var History = sessionStorage.getItem("History");
-          //来源地消息
-          var History = sessionStorage.getItem("source");
-          
-          //个人基本信息
-          var data = JSON.parse(sessionStorage.getItem("data"))
-          
-          var dataUrl =
-            "/bashUrl/smart/worker/roster/" +
-            sessionStorage.getItem("userId") +
-            "/labour/basic";
-           this.http.post(dataUrl, data).then(res => {
-            if (res.code == 200) {
-            }
-          });
-           //合同信息
-          var contractInformation = sessionStorage.getItem("contractInformation");
-          var contractUrl =
-            "/bashUrl/smart/worker/roster/" +
-            sessionStorage.getItem("userId") +
-            "/labour/contract";
-          this.http.post(contractUrl, contractInformation).then(res => {
-            if (res.code == 200) {
-            }
-          });
+      //历史评价记录
+      var History = sessionStorage.getItem("History");
+      //来源地消息
+      var History = sessionStorage.getItem("source");
 
-           //工资记录
-          var payrollRecords1 = sessionStorage.getItem("payrollRecords1");
-           var payrollUrl =
-            "/bashUrl/smart/worker/roster/" +
-            sessionStorage.getItem("userId") +
-            "/labour/salary";
-          this.http.post(payrollUrl, payrollRecords1).then(res => {
-            if (res.code == 200) {
-            }
-          });
-          
-          //资质证书
-          var certificate = sessionStorage.getItem("certificate");
-           var certificateUrl =
-            "/bashUrl/smart/worker/roster/" +
-            sessionStorage.getItem("userId") +
-            "/labour/credential";
-          this.http.post(certificateUrl, certificate).then(res => {
-            if (res.code == 200) {
-            }
-          });
+      //个人基本信息
+      var data = JSON.parse(sessionStorage.getItem("data"));
+      console.log(data.photo.raw.uid)
+      var formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("gender", data.gender);
+      formData.append("age", data.age);
+      formData.append("nation", data.nation);
+      formData.append("cellPhone", data.cellPhone);
+      formData.append("buildCorpName ", data.buildCorpName);
+      formData.append("department", data.department);
+      formData.append("workerType", data.workerType);
+      formData.append("urgentLinkMan", data.urgentLinkMan);
+      formData.append("urgentLinkManPhone", data.urgentLinkManPhone);
+      formData.append("address", data.address);
+      formData.append("birthPlace", data.birthPlace);
+      formData.append("maritalStatus", data.maritalStatus);
+      formData.append("degree", data.degree);
+      formData.append("cultureLevelType", data.cultureLevelType);
+      formData.append("idCardType", data.idCardType);
+      formData.append("registrationType", data.registrationType);
+      formData.append("idCardCode", data.idCardCode);
+      formData.append("isRelatedCertificates", data.isRelatedCertificates);
+      formData.append("isResidencePermit", data.isResidencePermit);
+      formData.append(
+        "isSpecialWorkTypeCheckups",
+        data.isSpecialWorkTypeCheckups
+      );
+      formData.append("teamId ", data.teamId);
+      formData.append("residencePermitDate", data.residencePermitDate);
+      formData.append("isTeamLeader", data.isTeamLeader);
+      formData.append("isProjectTrain", data.isProjectTrain);
+      formData.append("politicsType", data.politicsType);
+      // formData.append("isProjectTrain", form.isProjectTrain);
+      formData.append("photo", data.photo.raw);
+      var dataUrl =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/basic";
+      this.http.post(dataUrl, formData).then(res => {
+        if (res.code == 200) {
+        }
+      });
+      //合同信息
+      var contractInformation = sessionStorage.getItem("contractInformation");
+      var contractUrl =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/contract";
+      this.http.post(contractUrl, contractInformation).then(res => {
+        if (res.code == 200) {
+        }
+      });
 
-          //历史评价记录
-         var History = sessionStorage.getItem("source");
-         var HistoryUrl=
-            "/bashUrl/smart/worker/roster/" +
-            sessionStorage.getItem("userId") +
-            "/labour/evaluate";
-          this.http.post(HistoryUrl, History).then(res => {
+      //工资记录
+      var payrollRecords1 = sessionStorage.getItem("payrollRecords1");
+      var payrollUrl =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/salary";
+      this.http.post(payrollUrl, payrollRecords1).then(res => {
+        if (res.code == 200) {
+        }
+      });
+
+      //资质证书
+      var certificate = JSON.parse(sessionStorage.getItem("certificate"));
+      for (var i = 0; i < certificate.productGroup.length; i++) {
+         var certificateFormdata = new FormData();
+      certificateFormdata.append("grantCompany", certificate.productGroup[i].grantCompany);
+      certificateFormdata.append("certificationName ", certificate.productGroup[i].certificationName);
+      certificateFormdata.append("grantOrg",certificate.productGroup[i].grantOrg);
+      certificateFormdata.append("certificationType", certificate.productGroup[i].certificationType);
+      certificateFormdata.append("certificationCode", certificate.productGroup[i].certificationCode);
+      certificateFormdata.append("credentialLevelType", certificate.productGroup[i].credentialLevelType);
+      certificateFormdata.append("firstBeginDate", certificate.productGroup[i].firstBeginDate);
+      certificateFormdata.append("validBeginDate",certificate.productGroup[i].validBeginDate);
+      certificateFormdata.append("validEndDate", certificate.productGroup[i].validEndDate);
+      certificateFormdata.append("certificationStatus", certificate.productGroup[i].certificationStatus);
+      certificateFormdata.append("accessory ", certificate.productGroup[i].accessory );
+        var certificateUrl =
+          "/bashUrl/smart/worker/roster/" +
+          sessionStorage.getItem("userId") +
+          "/labour/credential";
+        this.http
+          .post(certificateUrl, certificateFormdata)
+          .then(res => {
             if (res.code == 200) {
             }
-          })
-          // });
-      //   } else {
-      //     console.log("error submit!!");
-      //     return false;
-      //   }
-      // });
+          });
+      }
+
+      //历史评价记录
+      var History = sessionStorage.getItem("History");
+      console.log(History);
+      var HistoryUrl =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/evaluate";
+      this.http.post(HistoryUrl, History).then(res => {
+        if (res.code == 200) {
+        }
+      });
     },
     //保存
     preservationClick() {

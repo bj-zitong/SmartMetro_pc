@@ -206,15 +206,12 @@
             <el-form-item label="一寸照片" prop="photo">
               <el-upload
                 class="upload-demo"
-                :limit="1"
                 v-model="form.photo"
-                :auto-upload="false"
                 action
                 :on-change="handleChange"
                 :file-list="fileList"
-                :on-exceed="gobeyondExceed"
-                :on-error="imgUploadError"
-                :before-upload="beforeAvatarUpload"
+                :auto-upload="false"
+                :limit="1"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
@@ -265,6 +262,7 @@ export default {
         Personneltype: "",
         politicsType: "",
         photo: "",
+        photo1:'',
         registrationType: "",
         isTeamLeader: "",
         isProjectTrain: "",
@@ -388,9 +386,9 @@ export default {
   mounted() {
     if (sessionStorage.getItem("data") != null) {
       this.form = JSON.parse(sessionStorage.getItem("data"));
-      let name = JSON.parse(sessionStorage.getItem("data")).photo[0].name;
+      let name = JSON.parse(sessionStorage.getItem("data")).photo.name;
+      console.log(name)
       this.fileList.push({ name });
-      // console.log(this.form.photo)
     }
   },
   methods: {
@@ -411,8 +409,8 @@ export default {
         if (valid) {
           // handleCofirm("确认保存吗", "warning")
             // .then(res => {
-              this.form.photo1 = this.form.photo[0].raw
               console.log(this.form)
+              // console.log(this.form)
               sessionStorage.setItem("data", JSON.stringify(this.form));
               this.$emit("field", this.field);
               this.$message({
@@ -438,11 +436,10 @@ export default {
     //保存
     preservationClick() {},
     handleChange(file, fileList) {
-      if (JSON.parse(sessionStorage.getItem("data")) != null) {
-        let name = JSON.parse(sessionStorage.getItem("data")).photo[0].name;
-      }
+      console.log(file, fileList)
       this.$refs.form.clearValidate();
-      this.form.photo = fileList;
+      this.form.photo = file;
+      this.form.photo1 = fileList;
     },
     beforeAvatarUpload(file) {
       return new Promise(resolve => {

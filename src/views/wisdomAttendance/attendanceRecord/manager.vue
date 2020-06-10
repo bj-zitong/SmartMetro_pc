@@ -9,7 +9,7 @@
           <el-form-item label="时间" class="region" prop="searchNum">
             <el-date-picker
               v-model="formInline.searchNum"
-              type="date"
+              type="datetime"
               value-format="yyyy-MM-dd HH:mm:ss"
               placeholder="时间"
             ></el-date-picker>
@@ -23,7 +23,7 @@
     <div class="table-main">
       <el-main class="table-head">
         <el-button class="T-H-B-DarkBlue">新增</el-button>
-        <el-button @click="deleteAll()" class="T-H-B-Grey">删除</el-button>
+        <!-- <el-button @click="deleteAll()" class="T-H-B-Grey">删除</el-button> -->
         <el-button @click="poiExcel()" class="T-H-B-Cyan" style="margin-left:30px;">导出</el-button>
         <div class="table-content">
           <el-table
@@ -32,7 +32,7 @@
             @selection-change="changeFun"
             stripe
             :header-cell-style="headClass"
-            style="width: 97%"
+            style="width: 98%"
           >
             <el-table-column
               type="selection"
@@ -51,19 +51,15 @@
             <el-table-column prop="attendanceTime" label="出勤时长"></el-table-column>
           </el-table>
         </div>
-        <el-pagination
-          class="page-end"
-          @size-change="handleSizeChange"
-          :current-page="page"
-           :page-sizes="[10, 50,100]"
-           layout="total, sizes,prev, pager,next,jumper"
-          :page-size="pageSize"
-          @prev-click="pre"
-          @next-click="next"
-          @current-change="handleCurrentChange"
+
+        <pagination
+          class="pagination-box"
+          v-if="total>10"
           :total="total"
-          background
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="handleUserList"
+        />
       </el-main>
     </div>
   </div>
@@ -71,16 +67,23 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
+import Pagination from "@/components/pagination";
 export default {
+  name: "container",
+  components: {
+    Pagination
+  },
   data() {
     return {
       headClass: headClass,
       token: null, // token
       // 动态数据
       tableData: [],
-      page: 1, // 初始页
-      pageSize: 8, //    每页的数据
-      total: 100, //总条数
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      },
+      total:20,//总条数
       ids: null, //选中的id
       formInline: {
         searchUname: null, // 搜索
@@ -123,51 +126,22 @@ export default {
       //   // 获得当前用户的id
       // var  uid = sessionStorage.getItem('uid')
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         name: uname,
         date: unum
       });
       var url =
-        "/smart/worker/attendance/" +
+        "/bashUrl/smart/worker/attendance/" +
         sessionStorage.getItem("userId") +
         "/manager/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
           var rows = res.rows;
-          this.tableData = rows;
-          this.total = total;
+          this.tableData = res.data.rows;
+          this.total = 20;
         }
       });
-      var result = [
-        {
-          pAttendanceId: 1,
-          name: "地铁安保部",
-          idNum: "210234567898765876",
-          gender: "男",
-          jobNum: "安保部一",
-          jobType: "部门一",
-          date: "2020-4-12",
-          firstTime: "2020-4-12",
-          endTime: "2020-4-12",
-          attendanceTime: "2020 - 4 - 12"
-        },
-        {
-          pAttendanceId: 2,
-          name: "22222222",
-          idNum: "210234567898765789",
-          gender: "男",
-          jobNum: "44444",
-          jobType: "44444",
-          date: "2020-4-12",
-          firstTime: "2020-4-12",
-          endTime: "2020-4-12",
-          attendanceTime: "2020 - 4 - 12"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     // poi导出
     poiExcel() {
@@ -225,40 +199,6 @@ export default {
         // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-    },
-    // 批量删除
-    deleteAll() {
-      var ids = this.changeFun();
-      if (ids.length <= 0) {
-        this.$message("请选择删除的数据！");
-        return;
-      }
-      handleCofirm("确认删除")
-        .then(res => {
-          var data = JSON.stringify(ids);
-          var url =
-            "/smart/worker/attendance/" +
-            sessionStorage.getItem("userId") +
-            "/manager";
-          this.http.delete(url, data).then(res => {
-            if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-            }
-          });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
     }
   }
 };

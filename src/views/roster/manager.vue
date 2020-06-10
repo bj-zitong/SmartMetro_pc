@@ -9,8 +9,8 @@
           </el-form-item>
           <el-form-item label="人员类型" class="region">
             <el-select v-model="formInline.workerType" placeholder="请选择人员类型">
-              <el-option label="企业自有职工" value="企业自有职工"></el-option>
-              <el-option label="劳务派遣人员" value="劳务派遣人员"></el-option>
+              <el-option label="企业自有职工" value="0"></el-option>
+              <el-option label="劳务派遣人员" value="1"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -27,21 +27,16 @@
           <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
           <div class="uploading">
-           <el-upload
-                class="upload-demo"
-                v-model="form.photo"
-                action
-                :on-change="handleChange"
-                :file-list="fileList"
-                :auto-upload="false"
-                :limit="1"
-                :show-file-list="false"
-              >
-              <!-- <i class="el-icon-upload"></i> -->
-             <el-button size="small" type="primary">导入</el-button>
+            <el-upload
+              class="avatar-uploader"
+              action="string"
+              :show-file-list="false"
+              :http-request="uploadImage"
+              :before-upload="beforeAvatarUpload"
+            >
+              <el-button class="T-H-B-Cyan" type="primary">导入</el-button>
             </el-upload>
           </div>
-          <!-- <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button> -->
         </div>
         <div class="tableView">
           <el-table
@@ -50,7 +45,7 @@
             stripe
             :header-cell-style="headClass"
             tooltip-effect="dark"
-            style="width: 97%;"
+            style="width: 100%;"
             @selection-change="handleSelectionChange"
           >
             <el-table-column
@@ -102,55 +97,13 @@
       </el-menu>
     </el-container>
     <managerDialog v-if="changOrder" ref="turnOrder" />
-    <el-dialog :visible.sync="csvVisible" width="50%">
-      <div>
-        <el-form ref="file" label-width="120px">
-          <el-form-item label="文件导入：" prop="uploadFile">
-            <!-- <el-upload
-              class="upload-demo"
-              v-model="file.uploadFile"
-              action
-              :on-change="handleChange"
-              :file-list="fileList"
-              :auto-upload="false"
-              :limit="1"
-              :show-file-list="false"
-            >
-              <i class="el-icon-upload"></i>
-              <div class="el-upload__text">
-                将文件拖到此处，或
-                <em>点击上传</em>
-              </div>
-              <div class="el-upload__tip" slot="tip">上传csv文件</div>
-            </el-upload> -->
-          </el-form-item>
-        </el-form>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="csvVisible = false">取消</el-button>
-        <!-- <el-button type="primary" @click="importCsv()">导入</el-button> -->
-        <!-- <el-upload
-          class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          multiple
-          :limit="3"
-          :on-exceed="handleExceed"
-          :file-list="fileList"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>-->
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import managerDialog from "./dialog/managerdialog";
 import Pagination from "@/components/pagination";
+import axios from "axios";
 export default {
   name: "roster",
   components: {
@@ -160,18 +113,6 @@ export default {
   data() {
     return {
       csvVisible: false,
-      fileList: [
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        },
-        {
-          name: "food2.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
       formInline: {
         name: "",
         workerType: ""
@@ -219,6 +160,29 @@ export default {
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
+    // 上传前校验
+    beforeAvatarUpload(file) {
+      console.log(file)
+       let fileName = file.name
+        let pos = fileName.lastIndexOf('.')
+        let lastName = fileName.substring(pos, fileName.length)
+        if (lastName.toLowerCase() !== '.xlsx' &&lastName.toLowerCase() !== '.xls'&&lastName.toLowerCase() !== '.docx' &&lastName.toLowerCase() !== '.doc') {
+            this.$message.error('上传失败 文件必须为.xlsx或者.xls类型或者.docx类型或者.doc类型')
+            return
+        }
+    },
+    // 上传图片方法
+    uploadImage(param) {
+      const formData = new FormData();
+      formData.append("file", param.file);
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/manager/import";
+      this.http.get(url, formData).then(res => {
+         console.log(res)
+      });
+    },
     //列表请求
     getDatalist() {
       var name = this.formInline.name;
@@ -242,66 +206,33 @@ export default {
     },
     //  导出
     exportStaffClick() {
-      handleCofirm("确认导出")
-        .then(res => {
-          // this.$message({
-          //   type: "success",
-          //   message: "导出成功!"
-          // });
-          var name = this.formInline.name;
-          var workerType = this.formInline.workerType;
-          console.log(name, workerType);
-          let _this = this;
-          var data = JSON.stringify({
-            name: name,
-            company: workerType,
-            pageSize: this.listQuery.pageSize,
-            page: this.listQuery.currentPage
-          });
-          var url =
-            "/bashUrl/smart/worker/roster/" +
-            sessionStorage.getItem("userId") +
-            "/manager/export";
-          this.http.post(url, data).then(res => {
-            // // 创建Blob对象，设置文件类型
-            // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
-            // let objectUrl = URL.createObjectURL(blob) // 创建URL
-            // location.href = objectUrl;
-            // URL.revokeObjectURL(objectUrl); // 释放内存
-            // 创建Blob对象，设置文件类型
-            // 自定义文件下载名称  Subway-User-20191223114607
-            var d = new Date();
-            var month = d.getMonth() + 1;
-            var excelName =
-              "Subway-User-" +
-              d.getFullYear() +
-              month +
-              d.getDate() +
-              d.getHours() +
-              d.getMinutes() +
-              d.getSeconds();
-            let blob = new Blob([res.data], {
-              type: "application/vnd.ms-excel"
-            });
-            let objectUrl = URL.createObjectURL(blob); // 创建URL
-            let link = document.createElement("a");
-            link.href = objectUrl;
-            link.download = excelName; // 自定义文件名
-            link.click(); // 下载文件
-            URL.revokeObjectURL(objectUrl); // 释放内存
-            // alert("调用导出！");
-          });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消导出"
-          });
-        });
-    },
-    //  导入
-    importStaffClick() {
-      this.csvVisible = true;
+      var name = this.formInline.name;
+      var workerType = this.formInline.workerType;
+      var data = JSON.stringify({
+        name: name,
+        company: workerType,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage
+      });
+
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/manager/export";
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          Authorization: sessionStorage.getItem("token")
+        },
+        url: url,
+        responseType: "arraybuffer",
+        data: data,
+        timeout: 5000 //响应时间
+      }).then(
+        res => {},
+        err => {}
+      );
     },
     //  导入
     importCsv() {
@@ -416,17 +347,17 @@ export default {
     handleChange(file, fileList) {
       // this.$refs.file.clearValidate();
       // this.file.uploadFile = fileList;
-       console.log(file.raw[0]);
-      var url =
-        "/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/equipment/import";
-      var data = new FormData();
-      data.append("file", this.file.uploadFile[0].raw);
-      this.http.post(url, data).then(res => {
-        if (res.code == 200) {
-        }
-      });
+      // console.log(file.raw[0]);
+      // var url =
+      //   "/smart/worker/roster/" +
+      //   sessionStorage.getItem("userId") +
+      //   "/equipment/import";
+      // var data = new FormData();
+      // data.append("file", this.file.uploadFile[0].raw);
+      // this.http.post(url, data).then(res => {
+      //   if (res.code == 200) {
+      //   }
+      // });
     },
     detailsRowClick() {
       let _this = this;
@@ -518,8 +449,10 @@ body > .el-container {
     margin-bottom: 15px;
   }
 }
-.uploading{
-  float:left;
-  margin-left:10px;
+
+.uploading {
+  float: left;
+  margin-left: 10px;
+  
 }
 </style>
