@@ -11,19 +11,23 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/systemUrl': {
-        target: 'http://192.168.1.30:8001', //系统
+        // target: 'http://192.168.1.30:8001', //系统
+        target: 'http://192.168.1.108:8001', //系统
         secure: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/systemUrl': 'http://192.168.1.30:8001'
+          // '^/systemUrl': 'http://192.168.1.30:8001'
+          '^/systemUrl': 'http://192.168.1.108:8001'
         }
       },
       '/bashUrl': {
-        target: 'http://192.168.1.30:8002',
+        // target: 'http://192.168.1.30:8002',
+        target: 'http://192.168.1.108:8002',
         secure: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/bashUrl': 'http://192.168.1.30:8002'
+          // '^/bashUrl': 'http://192.168.1.30:8002'
+          '^/bashUrl': 'http://192.168.1.108:8002'
         }
       },
     },
