@@ -138,14 +138,12 @@
               >
                 <el-upload
                   class="upload-demo"
-                  v-model="item.accessory"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :on-preview="handlePreview"
-                  :on-remove="handleRemove"
-                  :on-change="handleChange"
-                  multiple
-                  :limit="1"
-                  :file-list="fileList"
+                v-model="form.accessory"
+                action
+                :on-change="handleChange"
+                :file-list="fileList"
+                :auto-upload="false"
+                :limit="1"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
                 </el-upload>
@@ -308,6 +306,7 @@ export default {
         if (valid) {
           handleCofirm("确认保存吗", "warning")
             .then(res => {
+           this.$global_msg.photoArr=this.form.productGroup
               sessionStorage.setItem("certificate", JSON.stringify(this.form));
               this.$emit("field", this.field);
               this.$message({

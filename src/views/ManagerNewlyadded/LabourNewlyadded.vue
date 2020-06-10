@@ -136,6 +136,19 @@ export default {
     }
   },
   mounted() {
+    //进入新增页面判断是否特殊工种 如果是显示资质证书
+    let Information = JSON.parse(sessionStorage.getItem("data"));
+    if (Information != null) {
+      updateVegetablesCollection(this.typeWorkArr, Information.workerType).then(
+        res => {
+          if (res == true) {
+            this.isCertificate = true;
+          } else {
+            this.isCertificate = false;
+          }
+        }
+      );
+    }
     let getArr = JSON.parse(sessionStorage.getItem("personalPersonal"));
     if (getArr != null) {
       this.contractInformation = false;
@@ -161,21 +174,17 @@ export default {
     }
   },
   methods: {
-    handleClick(tab, event) {
-    },
-    onSubmit() {
-    },
-    handleRemove(file, fileList) {
-    },
-    handlePreview(file) {
-    },
+    handleClick(tab, event) {},
+    onSubmit() {},
+    handleRemove(file, fileList) {},
+    handlePreview(file) {},
     handleChange() {},
     //个人基本信息
     getField(v) {
       this.isCertificate = true;
       sessionStorage.setItem("personalPersonal", JSON.stringify(v));
       this.activeName = "third";
-      this.contractInformation=false
+      this.contractInformation = false;
       let Information = JSON.parse(sessionStorage.getItem("data"));
       if (Information != null) {
         updateVegetablesCollection(
@@ -209,7 +218,7 @@ export default {
       this.activeName = "evaluate";
       this.History = false;
     },
-    
+
     getHistory(v) {
       sessionStorage.setItem("HistoryRecord", JSON.stringify(v));
       this.activeName = "first";

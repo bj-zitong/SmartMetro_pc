@@ -116,7 +116,7 @@
         </el-col>
         <el-col :span="15">
           <p>
-            风险程度：
+            风险程度：{{msg}}
             <br />疫情高风险地区：
             县、市、区、
             <br />旗累计确诊病例超过
@@ -154,6 +154,7 @@ export default {
   data() {
     return {
       labelPosition: "left",
+      msg:this.$global_msg.photo,
       form: {
         post: "",
         returnto: "",
@@ -261,7 +262,7 @@ export default {
       //   console.log(formName);
       //   this.$refs[formName].validate(valid => {
       //     if (valid) {
-
+     console.log(this.$global_msg.photo.raw)
       //历史评价记录
       var History = sessionStorage.getItem("History");
       //来源地消息
@@ -301,7 +302,7 @@ export default {
       formData.append("isProjectTrain", data.isProjectTrain);
       formData.append("politicsType", data.politicsType);
       // formData.append("isProjectTrain", form.isProjectTrain);
-      formData.append("photo", data.photo.raw);
+      formData.append("photo", this.$global_msg.photo.raw);
       var dataUrl =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
@@ -334,7 +335,9 @@ export default {
 
       //资质证书
       var certificate = JSON.parse(sessionStorage.getItem("certificate"));
+      console.log(certificate.productGroup)
       for (var i = 0; i < certificate.productGroup.length; i++) {
+        for(var i=0;i<this.$global_msg.photoArr.length;i++){
          var certificateFormdata = new FormData();
       certificateFormdata.append("grantCompany", certificate.productGroup[i].grantCompany);
       certificateFormdata.append("certificationName ", certificate.productGroup[i].certificationName);
@@ -346,7 +349,11 @@ export default {
       certificateFormdata.append("validBeginDate",certificate.productGroup[i].validBeginDate);
       certificateFormdata.append("validEndDate", certificate.productGroup[i].validEndDate);
       certificateFormdata.append("certificationStatus", certificate.productGroup[i].certificationStatus);
-      certificateFormdata.append("accessory ", certificate.productGroup[i].accessory );
+      certificateFormdata.append("accessory ", this.$global_msg.photoArr[i].accessory[0].raw);
+      // for(var i=0;i<=this.$global_msg.photoArr.length;i++){
+     
+      //   certificateFormdata.append("accessory ", this.$global_msg.photoArr[i].accessory[0].raw);
+      // }
         var certificateUrl =
           "/bashUrl/smart/worker/roster/" +
           sessionStorage.getItem("userId") +
@@ -358,7 +365,7 @@ export default {
             }
           });
       }
-
+    }
       //历史评价记录
       var History = sessionStorage.getItem("History");
       console.log(History);

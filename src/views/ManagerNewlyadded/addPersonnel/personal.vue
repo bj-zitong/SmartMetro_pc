@@ -262,7 +262,6 @@ export default {
         Personneltype: "",
         politicsType: "",
         photo: "",
-        photo1:'',
         registrationType: "",
         isTeamLeader: "",
         isProjectTrain: "",
@@ -409,7 +408,7 @@ export default {
         if (valid) {
           // handleCofirm("确认保存吗", "warning")
             // .then(res => {
-              console.log(this.form)
+             this.$global_msg.photo=this.form.photo
               // console.log(this.form)
               sessionStorage.setItem("data", JSON.stringify(this.form));
               this.$emit("field", this.field);
@@ -439,7 +438,7 @@ export default {
       console.log(file, fileList)
       this.$refs.form.clearValidate();
       this.form.photo = file;
-      this.form.photo1 = fileList;
+      // this.form.photo1 = fileList;
     },
     beforeAvatarUpload(file) {
       return new Promise(resolve => {
