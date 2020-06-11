@@ -59,11 +59,6 @@
               <el-input v-model="form.buildCorpName" placeholder="请输入承建单位"></el-input>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="8">
-            <el-form-item label="部门" prop="department" class="el-form-item">
-              <el-input v-model="form.department" placeholder="请输入部门"></el-input>
-            </el-form-item>
-          </el-col>-->
           <el-col :span="8">
             <el-form-item label="紧急联系人" prop="urgentLinkMan" class="el-form-item">
               <el-input v-model="form.urgentLinkMan" placeholder="请输入紧急联系人"></el-input>
@@ -80,8 +75,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="籍贯" prop="birthPlace" class="el-form-item">
-              <el-input v-model="form.birthPlace" placeholder="请输入籍贯"></el-input>
+            <el-form-item label="籍贯" prop="birthPlaceCode" class="el-form-item">
+              <el-input v-model="form.birthPlaceCode" placeholder="请输入籍贯"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -127,8 +122,8 @@
           <el-col :span="8">
             <el-form-item label="户口类型" prop="registrationType" class="el-form-item">
               <el-select v-model="form.registrationType" placeholder="请选择户口类型">
-                <el-option label="城市户口" value="2"></el-option>
                 <el-option label="农村户口" value="1"></el-option>
+                <el-option label="城市户口" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -139,7 +134,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="班组长" prop="isTeamLeader">
-              <el-select v-model="form.isTeamLeader" placeholder="请选择班组长">
+              <el-select v-model="form.isTeamLeader" placeholder="请选择">
                 <el-option label="是" value="0"></el-option>
                 <el-option label="否" value="1"></el-option>
               </el-select>
@@ -173,7 +168,9 @@
             <el-form-item label="居住证办理日期" prop="residencePermitDate">
               <el-date-picker
                 v-model="form.residencePermitDate"
-                type="datetime"
+                type="date"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
                 placeholder="请选择居住证日期"
               ></el-date-picker>
             </el-form-item>
@@ -189,16 +186,16 @@
           <el-col :span="8">
             <el-form-item label="班组" prop="teamId">
               <el-select v-model="form.teamId" placeholder="请选择班组">
-                <el-option label="已通过" value="0"></el-option>
-                <el-option label="未通过" value="1"></el-option>
+                <el-option label="班组1" value="1"></el-option>
+                <el-option label="班组2" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="政治面貌" prop="politicsType">
               <el-select v-model="form.politicsType" placeholder="请选择政治面貌">
-                <el-option label="企业自有职工" value="1"></el-option>
-                <el-option label="劳务派遣人员" value="2"></el-option>
+                <el-option label="党员" value="1"></el-option>
+                <el-option label="团员" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -251,7 +248,7 @@ export default {
         urgentLinkMan: "",
         urgentLinkManPhone: "",
         address: "",
-        birthPlace: "",
+        birthPlaceCode: "",
         cultureLevelType: "",
         maritalStatus: "",
         degree: "",
@@ -297,7 +294,7 @@ export default {
         address: [
           { required: true, message: "请输入现居住地", trigger: "blur" }
         ],
-        birthPlace: [
+        birthPlaceCode: [
           { required: true, message: "请输入籍贯", trigger: "blur" }
         ],
         maritalStatus: [
@@ -346,36 +343,6 @@ export default {
           { required: true, message: "请选择特殊工种体检情况", trigger: "blur" }
         ]
       },
-      //日历选择器
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [
-          {
-            text: "今天",
-            onClick(picker) {
-              picker.$emit("pick", new Date());
-            }
-          },
-          {
-            text: "昨天",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            }
-          },
-          {
-            text: "一周前",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            }
-          }
-        ]
-      },
       //图片上传
       fileList: [],
       value1: "",
@@ -408,9 +375,10 @@ export default {
         if (valid) {
           // handleCofirm("确认保存吗", "warning")
             // .then(res => {
-             this.$global_msg.photo=this.form.photo
-              // console.log(this.form)
+              this.$global_msg.photo=this.form.photo
               sessionStorage.setItem("data", JSON.stringify(this.form));
+              console.log(sessionStorage.getItem("data"));
+              console.log(JSON.stringify(this.form));
               this.$emit("field", this.field);
               this.$message({
                 type: "success",

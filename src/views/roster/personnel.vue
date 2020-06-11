@@ -280,10 +280,7 @@ export default {
         conversionDelete: "删除",
         evaluateVonversion: "评价"
       },
-      screenCompany: [
-        { id: 0, name: "第一公司" },
-        { id: 1, name: "第二公司" }
-      ],
+      screenCompany: [],
       headClass: headClass,
       centerDialogVisible: false,
       evaluatDialogVisible: false,
@@ -369,10 +366,30 @@ export default {
     };
   },
   activated() {
-    this.getDataFun()
+    this.getDataFun();
+    this.screenCompany = [];
+    var data = JSON.stringify({
+      pageSize: 100,
+      page: 1
+    });
+    //请求
+    var url =
+      "/bashUrl/smart/worker/labour/" +
+      sessionStorage.getItem("userId") +
+      "/company/management";
+    this.http.post(url, data).then(res => {
+      if (res.code == 200) {
+        var rows = res.data.rows;
+        for (var i = 0; i < rows.length; i++) {
+          this.screenCompany.push({
+            id: rows[i].pLabourCompanyId,
+            name: rows[i].company
+          });
+        }
+      }
+    });
   },
   methods: {
-
     handleClick(row) {
       console.log(row);
     },

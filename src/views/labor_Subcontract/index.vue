@@ -12,7 +12,12 @@
         <el-form :inline="true" ref="screenForm" :model="screenForm">
           <el-form-item label="劳务公司：">
             <el-select v-model="screenForm.company">
-              <el-option v-for="item in company" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              <el-option
+                v-for="item in company"
+                :key="item.id"
+                :label="item.name"
+                :value="item.name"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="负责人：">
@@ -262,8 +267,8 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "@/components/pagination";
-import axios from 'axios';
- // 引入导出Excel表格依赖
+import axios from "axios";
+// 引入导出Excel表格依赖
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
 export default {
@@ -323,7 +328,7 @@ export default {
         endDate: "",
         contractPeriodType: "",
         corpCode: "",
-        contractType:""
+        contractType: ""
       },
       // 自定义表单验证
       rulesForm: {
@@ -335,7 +340,7 @@ export default {
         ],
         responsiblePersonPhone: [
           { required: true, message: "请输入联系方式", trigger: "blur" },
-            {
+          {
             pattern: /^1[34578]\d{9}$/,
             message: "目前只支持中国大陆的手机号码"
           }
@@ -361,7 +366,7 @@ export default {
         contractPeriodType: [
           { required: true, message: "请选择合同期限类型", trigger: "change" }
         ],
-        contractType:[
+        contractType: [
           { required: true, message: "请选择合同类型", trigger: "change" }
         ],
         corpCode: [
@@ -378,7 +383,7 @@ export default {
         ],
         teamLeaderPhone: [
           { required: true, message: "请输入手机号", trigger: "blur" },
-            {
+          {
             pattern: /^1[34578]\d{9}$/,
             message: "目前只支持中国大陆的手机号码"
           }
@@ -389,25 +394,28 @@ export default {
   activated() {
     // 页面加载时获取信息
     this.getTable();
-    this.company=[];
-       var data = JSON.stringify({
-        pageSize: 100,
-        page: 1
-      });
-      //请求
-      var url =
-        "/bashUrl/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/company/management";
-      this.http.post(url, data).then(res => {
-        if (res.code == 200) {      
-          var rows = res.data.rows;
-            this.company.push({id:null,name:''});
-           for(var i=0;i<rows.length;i++){
-             this.company.push({id:rows[i].pLabourCompanyId,name:rows[i].company});
+    this.company = [];
+    var data = JSON.stringify({
+      pageSize: 100,
+      page: 1
+    });
+    //请求
+    var url =
+      "/bashUrl/smart/worker/labour/" +
+      sessionStorage.getItem("userId") +
+      "/company/management";
+    this.http.post(url, data).then(res => {
+      if (res.code == 200) {
+        var rows = res.data.rows;
+        this.company.push({ id: null, name: "" });
+        for (var i = 0; i < rows.length; i++) {
+          this.company.push({
+            id: rows[i].pLabourCompanyId,
+            name: rows[i].company
+          });
         }
-        }
-      });
+      }
+    });
   },
   methods: {
     // 表格加载请求
@@ -415,7 +423,7 @@ export default {
       if (val == 0) {
         this.loading = true;
       }
-       var data = JSON.stringify({
+      var data = JSON.stringify({
         company: this.screenForm.company,
         responsiblePersonName: this.screenForm.responsiblePersonName,
         contractType: this.screenForm.contractType,
@@ -491,7 +499,7 @@ export default {
                     type: "success",
                     message: "修改成功!"
                   });
-                   this.getTable();
+                  this.getTable();
                 }
               })
               .catch(res => {
@@ -556,105 +564,106 @@ export default {
         });
     },
     formatJson(filterVal, jsonData) {
-    return jsonData.map(v => filterVal.map(j => v[j]))
-},
+      return jsonData.map(v => filterVal.map(j => v[j]));
+    },
     //  导出
     exportBatchClick() {
-       /* 从表生成工作簿对象 */
-        // var wb = XLSX.utils.table_to_book(document.querySelector("#out-table"));
-        /* 获取二进制字符串作为输出 */
-        // var wbout = XLSX.write(wb, {
-        //     bookType: "xlsx",
-        //     bookSST: true,
-        //     type: "array"
-        // });
-        // try {
-        //     FileSaver.saveAs(
-        //     //Blob 对象表示一个不可变、原始数据的类文件对象。
-        //     //Blob 表示的不一定是JavaScript原生格式的数据。
-        //     //File 接口基于Blob，继承了 blob 的功能并将其扩展使其支持用户系统上的文件。
-        //     //返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
-        //     new Blob([wbout], { type: "application/octet-stream" }),
-        //     //设置导出文件名称
-        //     "sheetjs.xlsx"
-        //     );
-        // } catch (e) {
-        //     if (typeof console !== "undefined") console.log(e, wbout);
-        // }
-        // return wbout;
+      /* 从表生成工作簿对象 */
+      // var wb = XLSX.utils.table_to_book(document.querySelector("#out-table"));
+      /* 获取二进制字符串作为输出 */
+      // var wbout = XLSX.write(wb, {
+      //     bookType: "xlsx",
+      //     bookSST: true,
+      //     type: "array"
+      // });
+      // try {
+      //     FileSaver.saveAs(
+      //     //Blob 对象表示一个不可变、原始数据的类文件对象。
+      //     //Blob 表示的不一定是JavaScript原生格式的数据。
+      //     //File 接口基于Blob，继承了 blob 的功能并将其扩展使其支持用户系统上的文件。
+      //     //返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
+      //     new Blob([wbout], { type: "application/octet-stream" }),
+      //     //设置导出文件名称
+      //     "sheetjs.xlsx"
+      //     );
+      // } catch (e) {
+      //     if (typeof console !== "undefined") console.log(e, wbout);
+      // }
+      // return wbout;
 
-
-    axios({
-        url: "/bashUrl/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/company/management/export",//获取文件流的接口路径
-        method: 'post',
+      axios({
+        url:
+          "/bashUrl/smart/worker/labour/" +
+          sessionStorage.getItem("userId") +
+          "/company/management/export", //获取文件流的接口路径
+        method: "post",
         headers: {
           Authorization: sessionStorage.getItem("token"),
-          'Content-Type':'application/json',
+          "Content-Type": "application/json"
         },
         data: JSON.stringify({
-        company: this.screenForm.company,
-        responsiblePersonName:  this.screenForm.responsiblePersonName,
-        contractType: this.screenForm.contractType,
-        pageSize: this.listQuery.pageSize,
-        page: this.listQuery.currentPage
-      }),
-      responseType: 'blob' // 表明返回服务器返回的数据类型 很重要！！  arraybuffer
-    }).then((res) => {
-      // var res=[{name:1,age:1}];
-        // require.ensure([], () => {
-        // const { export_json_to_excel } = require('../../../src/excel/Export2Excel')
-        // const tHeader = ['公司名称','负责人','联系方式','服务单位','项目编号','项目名称','合同编号','合同期限类型','合同类型','组织机构代码']
-      //   const filterVal = ['company', 'responsiblePersonName','responsiblePersonPhone','serviceCompany','projectCode','projectName','contractCode','contractPeriodType','contractType','corpCode']
-      //   const list = this.tableData
-      //   console.log(list.contractPeriodType)
-      //    console.log(list)
-      //  for(var i=0;i<list.length;i++){
-      //     if(list[i].contractPeriodType=='0'){
-      //       list[i].contractPeriodType='固定期限合同'
-      //   }else{
-      //     list[i].contractPeriodType='以完成一定工作为期限的合同'
-      //   }
-      //   if(list[i].contractType=='1'){
-      //       list[i].contractType='劳务分包'
-      //   }else{
-      //     list[i].contractType='专业分包'
-      //   }
-      //  }
-        // const data = this.formatJson(filterVal, list)
-        // export_json_to_excel(tHeader, res, '导出列表名称')
-    // })
-debugger;
+          company: this.screenForm.company,
+          responsiblePersonName: this.screenForm.responsiblePersonName,
+          contractType: this.screenForm.contractType,
+          pageSize: this.listQuery.pageSize,
+          page: this.listQuery.currentPage
+        }),
+        responseType: "blob" // 表明返回服务器返回的数据类型 很重要！！  arraybuffer
+      })
+        .then(res => {
+          // var res=[{name:1,age:1}];
+          // require.ensure([], () => {
+          // const { export_json_to_excel } = require('../../../src/excel/Export2Excel')
+          // const tHeader = ['公司名称','负责人','联系方式','服务单位','项目编号','项目名称','合同编号','合同期限类型','合同类型','组织机构代码']
+          //   const filterVal = ['company', 'responsiblePersonName','responsiblePersonPhone','serviceCompany','projectCode','projectName','contractCode','contractPeriodType','contractType','corpCode']
+          //   const list = this.tableData
+          //   console.log(list.contractPeriodType)
+          //    console.log(list)
+          //  for(var i=0;i<list.length;i++){
+          //     if(list[i].contractPeriodType=='0'){
+          //       list[i].contractPeriodType='固定期限合同'
+          //   }else{
+          //     list[i].contractPeriodType='以完成一定工作为期限的合同'
+          //   }
+          //   if(list[i].contractType=='1'){
+          //       list[i].contractType='劳务分包'
+          //   }else{
+          //     list[i].contractType='专业分包'
+          //   }
+          //  }
+          // const data = this.formatJson(filterVal, list)
+          // export_json_to_excel(tHeader, res, '导出列表名称')
+          // })
+          debugger;
 
-        // //将文件流转成blob形式
-        const blob = new Blob([res],{type: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});//application/vnd.ms-excel
-        //创建一个超链接，将文件流赋进去，然后实现这个超链接的单击事件
-        const elink = document.createElement('a');
-        elink.download = "1.xls"// 重命名文件
-        elink.style.display = 'none';
-        let url = URL.createObjectURL(blob);
-        elink.href = url;
-        // const fileName = decodeURI(res.headers['filename']);
-        // elink.setAttribute('download', fileName);
-        // document.body.appendChild(elink);
-        document.body.appendChild(elink);
-        elink.click();
-        // URL.revokeObjectURL(url); // 释放URL 对象
-        document.body.removeChild(elink);
+          // //将文件流转成blob形式
+          const blob = new Blob([res], {
+            type:
+              "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          }); //application/vnd.ms-excel
+          //创建一个超链接，将文件流赋进去，然后实现这个超链接的单击事件
+          const elink = document.createElement("a");
+          elink.download = "1.xls"; // 重命名文件
+          elink.style.display = "none";
+          let url = URL.createObjectURL(blob);
+          elink.href = url;
+          // const fileName = decodeURI(res.headers['filename']);
+          // elink.setAttribute('download', fileName);
+          // document.body.appendChild(elink);
+          document.body.appendChild(elink);
+          elink.click();
+          // URL.revokeObjectURL(url); // 释放URL 对象
+          document.body.removeChild(elink);
+        })
+        .catch(error => {
+          this.$message.error("导出失败");
+          // console.log(error)
+        });
 
-    }).catch(error => {
-        this.$message.error('导出失败');
-        // console.log(error)
-
-    })
-
-
-  //       // link.href = objectUrl;
-  //       // link.download = excelName; // 自定义文件名
-  //       // link.click(); // 下载文件
-  //       // URL.revokeObjectURL(objectUrl); // 释放内存
-
+      //       // link.href = objectUrl;
+      //       // link.download = excelName; // 自定义文件名
+      //       // link.click(); // 下载文件
+      //       // URL.revokeObjectURL(objectUrl); // 释放内存
 
       // let company = this.screenForm.company;
       // let responsiblePersonName = this.screenForm.responsiblePersonName;
@@ -673,48 +682,44 @@ debugger;
       //   sessionStorage.getItem("userId") +
       //   "/company/management/export";
 
+      //     this.http.post(url, data).then(res => {
+      //       let d = new Date();
+      //       let month = d.getMonth() + 1;
+      //       let excelName =
+      //         "劳务公司人员-" +
+      //         d.getFullYear() +
+      //         month +
+      //         d.getDate() +
+      //         d.getHours() +
+      //         d.getMinutes() +
+      //         d.getSeconds();
+      //       // let blob = new Blob([res]);
+      //       // let link = document.createElement("a");
+      //       // let objectUrl = URL.createObjectURL(blob); // 创建URL
+      //       // link.href = objectUrl;
+      //       // link.download = excelName; // 自定义文件名
+      //       // link.click(); // 下载文件
+      //       // URL.revokeObjectURL(objectUrl); // 释放内存
+      //  const content = res
 
-  //     this.http.post(url, data).then(res => {
-  //       let d = new Date();
-  //       let month = d.getMonth() + 1;
-  //       let excelName =
-  //         "劳务公司人员-" +
-  //         d.getFullYear() +
-  //         month +
-  //         d.getDate() +
-  //         d.getHours() +
-  //         d.getMinutes() +
-  //         d.getSeconds();
-  //       // let blob = new Blob([res]);
-  //       // let link = document.createElement("a");
-  //       // let objectUrl = URL.createObjectURL(blob); // 创建URL
-  //       // link.href = objectUrl;
-  //       // link.download = excelName; // 自定义文件名
-  //       // link.click(); // 下载文件
-  //       // URL.revokeObjectURL(objectUrl); // 释放内存
-  //  const content = res
-
-  //   let blob = new Blob([res.data], {
-  //         type: "application/vnd.ms-excel"
-  //       });
-  //   const fileName = 'a';
-  //   if ('download' in document.createElement('a')) { // 非IE下载
-  //     const elink = document.createElement('a')
-  //     elink.download = fileName
-  //     elink.style.display = 'none'
-  //     elink.href = URL.createObjectURL(blob)
-  //     document.body.appendChild(elink)
-  //     elink.click()
-  //     URL.revokeObjectURL(elink.href) // 释放URL 对象
-  //     document.body.removeChild(elink)
-  //   } else { // IE10+下载
-  //     navigator.msSaveBlob(blob, fileName)
-  //   }
-  //     });
-
-
-
-  },
+      //   let blob = new Blob([res.data], {
+      //         type: "application/vnd.ms-excel"
+      //       });
+      //   const fileName = 'a';
+      //   if ('download' in document.createElement('a')) { // 非IE下载
+      //     const elink = document.createElement('a')
+      //     elink.download = fileName
+      //     elink.style.display = 'none'
+      //     elink.href = URL.createObjectURL(blob)
+      //     document.body.appendChild(elink)
+      //     elink.click()
+      //     URL.revokeObjectURL(elink.href) // 释放URL 对象
+      //     document.body.removeChild(elink)
+      //   } else { // IE10+下载
+      //     navigator.msSaveBlob(blob, fileName)
+      //   }
+      //     });
+    },
     //  导入
     importBatchClick() {
       let url =
@@ -759,7 +764,9 @@ debugger;
     },
     //  班组
     createdTeamClick(index, row) {
-      this.formTeam.pLabourCompanyId = JSON.parse(JSON.stringify(row.pLabourCompanyId));
+      this.formTeam.pLabourCompanyId = JSON.parse(
+        JSON.stringify(row.pLabourCompanyId)
+      );
       this.dialogVisibleTeam = true;
     },
     // 班组提交

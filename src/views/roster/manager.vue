@@ -54,17 +54,31 @@
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
-            <!-- <el-table-column prop="department" label="部门"></el-table-column> -->
-            <el-table-column prop="jobType" label="岗位/职责"></el-table-column>
-            <el-table-column prop="workerType" label="人员类型"></el-table-column>
+            <el-table-column prop="jobType" label="岗位/职责">
+              <template slot-scope="scope">
+                <span v-if="scope.row.jobType==0">xxxx1</span>
+                <span v-if="scope.row.jobType==1">xxxx2</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="workerType" label="人员类型">
+              <template slot-scope="scope">
+                <span v-if="scope.row.workerType==0">企业自有职工</span>
+                <span v-if="scope.row.workerType==1">劳务派遣人员</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="gender" label="性别"></el-table-column>
             <el-table-column prop="birthPlace" label="籍贯"></el-table-column>
-            <el-table-column prop="idNum" label="身份证号"></el-table-column>
+            <el-table-column prop="idCardCode" label="证件编号"></el-table-column>
             <el-table-column prop="age" label="年龄"></el-table-column>
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
             <el-table-column prop="address" label="住址"></el-table-column>
-            <el-table-column prop="politicsType" label="政治面貌"></el-table-column>
+            <el-table-column prop="politicsType" label="政治面貌">
+              <template slot-scope="scope">
+                <span v-if="scope.row.politicsType==0">党员</span>
+                <span v-if="scope.row.politicsType==1">团员</span>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="270">
               <template slot-scope="scope">
                 <el-button
@@ -162,14 +176,21 @@ export default {
     },
     // 上传前校验
     beforeAvatarUpload(file) {
-      console.log(file)
-       let fileName = file.name
-        let pos = fileName.lastIndexOf('.')
-        let lastName = fileName.substring(pos, fileName.length)
-        if (lastName.toLowerCase() !== '.xlsx' &&lastName.toLowerCase() !== '.xls'&&lastName.toLowerCase() !== '.docx' &&lastName.toLowerCase() !== '.doc') {
-            this.$message.error('上传失败 文件必须为.xlsx或者.xls类型或者.docx类型或者.doc类型')
-            return
-        }
+      console.log(file);
+      let fileName = file.name;
+      let pos = fileName.lastIndexOf(".");
+      let lastName = fileName.substring(pos, fileName.length);
+      if (
+        lastName.toLowerCase() !== ".xlsx" &&
+        lastName.toLowerCase() !== ".xls" &&
+        lastName.toLowerCase() !== ".docx" &&
+        lastName.toLowerCase() !== ".doc"
+      ) {
+        this.$message.error(
+          "上传失败 文件必须为.xlsx或者.xls类型或者.docx类型或者.doc类型"
+        );
+        return;
+      }
     },
     // 上传图片方法
     uploadImage(param) {
@@ -180,7 +201,7 @@ export default {
         sessionStorage.getItem("userId") +
         "/manager/import";
       this.http.get(url, formData).then(res => {
-         console.log(res)
+        console.log(res);
       });
     },
     //列表请求
@@ -201,6 +222,7 @@ export default {
       this.http.post(url, params).then(res => {
         if (res.code == 200) {
           this.tableData = res.data.rows;
+          this.total = res.data.total;
         }
       });
     },
@@ -298,14 +320,11 @@ export default {
             "/manager";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              // var total = res.total;
-              // var rows = res.rows;
-              // this.tableData = rows;
-              // this.total = total;
               this.$message({
                 type: "success",
                 message: "删除成功!"
               });
+              this.getDatalist();
             }
           });
         })
@@ -334,6 +353,7 @@ export default {
                 type: "success",
                 message: "删除成功!"
               });
+              this.getDatalist();
             }
           });
         })
@@ -453,6 +473,5 @@ body > .el-container {
 .uploading {
   float: left;
   margin-left: 10px;
-  
 }
 </style>

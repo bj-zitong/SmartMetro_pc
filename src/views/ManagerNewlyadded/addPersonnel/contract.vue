@@ -26,13 +26,15 @@
         <el-col>
           <el-form-item label="合同开始时间" prop="startDate">
             <!-- <el-input v-model="contract.startDate"></el-input> -->
-            <el-date-picker v-model="contract.startDate" type="datetime" placeholder="请选择合同开始时间"></el-date-picker>
+            <el-date-picker v-model="contract.startDate" type="date"   format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"  placeholder="请选择合同开始时间"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col>
           <el-form-item label="合同结束时间" prop="enddate">
             <!-- <el-input v-model="contract.startDate"></el-input> -->
-            <el-date-picker v-model="contract.enddate" type="datetime" placeholder="请选择合同结束时间"></el-date-picker>
+            <el-date-picker v-model="contract.enddate" type="date"   format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd" placeholder="请选择合同结束时间"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col>
@@ -45,10 +47,10 @@
         </el-col>
         <el-col>
           <el-form-item label="结算方式" prop="clearingType">
-            <!-- <el-input v-model="contract.clearingType"></el-input> -->
             <el-select v-model="contract.clearingType" placeholder="请选择结算方式">
-              <el-option label="1" value="0"></el-option>
-              <el-option label="2" value="1"></el-option>
+              <el-option label="银行卡" value="0"></el-option>
+              <el-option label="支付宝" value="1"></el-option>
+             <el-option label="微信" value="2"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -57,11 +59,6 @@
             <el-input v-model="contract.corpCode" placeholder="请选择所属企业组织机构代码"></el-input>
           </el-form-item>
         </el-col>
-        <!-- <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
-          <el-form-item style="float:right">
-            <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button>
-          </el-form-item>
-        </el-col>-->
         <el-col :span="24">
           <el-form-item style="float:right;position:relative;bottom:6px;">
             <el-button type="primary" round class="cancel-style">取消</el-button>
@@ -107,7 +104,7 @@ export default {
           { required: true, message: "请输入合同结束时间", trigger: "blur" }
         ],
         contractPeriodType: [
-          { required: true, message: "请选择合同期限", trigger: "blur" }
+          { required: true, message: "请选择合同期限", trigger: "change" }
         ],
         ProfessionalCode: [
           { required: true, message: "请输入结算方式", trigger: "blur" }
@@ -116,7 +113,7 @@ export default {
           { required: true, message: "请输入所属企业组织机构代码", trigger: "blur" }
         ],
         clearingType: [
-          { required: true, message: "请选择结算方式", trigger: "blur" }
+          { required: true, message: "请选择结算方式", trigger: "change" }
         ]
       }
     };

@@ -48,8 +48,8 @@
                 :rules="rules.certificationType"
               >
                 <el-select v-model="item.certificationType" placeholder="请输入证书类型">
-                  <el-option label="类型一" value="type1"></el-option>
-                  <el-option label="类型二" value="type2"></el-option>
+                  <el-option label="类型一" value="1"></el-option>
+                  <el-option label="类型二" value="2"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -91,7 +91,9 @@
               >
                 <el-date-picker
                   v-model="item.firstBeginDate"
-                  type="datetime"
+                  type="date"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
                   placeholder="请选择第一次发证时间"
                 ></el-date-picker>
               </el-form-item>
@@ -104,7 +106,9 @@
               >
                 <el-date-picker
                   v-model="item.validBeginDate"
-                  type="datetime"
+                  type="date"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
                   placeholder="请选择合同起始时间"
                 ></el-date-picker>
               </el-form-item>
@@ -115,7 +119,8 @@
                 :prop="`productGroup.${index}.validEndDate`"
                 :rules="rules.validEndDate"
               >
-                <el-date-picker v-model="item.validEndDate" type="datetime" placeholder="请选择合同结束时间"></el-date-picker>
+                <el-date-picker v-model="item.validEndDate" type="date" format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"  placeholder="请选择合同结束时间"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col>
@@ -237,36 +242,6 @@ export default {
         ],
         accessory: [
           { required: true, message: "请选择附件上传", trigger: "change" }
-        ]
-      },
-      //日历选择器
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [
-          {
-            text: "今天",
-            onClick(picker) {
-              picker.$emit("pick", new Date());
-            }
-          },
-          {
-            text: "昨天",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            }
-          },
-          {
-            text: "一周前",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            }
-          }
         ]
       },
       //图片上传
