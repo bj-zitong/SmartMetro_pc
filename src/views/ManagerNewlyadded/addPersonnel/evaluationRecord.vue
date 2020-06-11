@@ -55,6 +55,7 @@ export default {
            handleCofirm("确认保存吗", "warning")
         .then(res => {
           sessionStorage.setItem("History", JSON.stringify(this.form));
+          console.log(this.form);
           this.$emit("field", this.field);
           this.$message({
             type: "success",

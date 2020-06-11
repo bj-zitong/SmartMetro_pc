@@ -11,16 +11,17 @@
         <el-col :span="8">
           <el-form-item label="职务" prop="post">
             <el-select v-model="form.post" placeholder="请选择职务">
-              <el-option label="劳务人员" value="laowu"></el-option>
-              <el-option label="管理人员" value="guanli"></el-option>
-              <el-option label="监理人员" value="jianli"></el-option>
-              <el-option label="其他类人员" value="qita"></el-option>
+              <el-option label="劳务人员" value="1"></el-option>
+              <el-option label="管理人员" value="2"></el-option>
+              <el-option label="监理人员" value="3"></el-option>
+              <el-option label="其他类人员" value="4"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="到京时间" prop="value1">
-            <el-date-picker v-model="form.value1" type="date" placeholder="请选择到京时间"></el-date-picker>
+            <el-date-picker v-model="form.value1" type="date" format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"  placeholder="请选择到京时间"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -100,7 +101,8 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="返场时间" prop="value2">
-            <el-date-picker v-model="form.value2" type="datetime" placeholder="请选择返场时间"></el-date-picker>
+            <el-date-picker v-model="form.value2" type="date" format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd" placeholder="请选择返场时间"></el-date-picker>
             <!-- <el-date-picker v-model="form.value2" type="date" placeholder="返场时间"></el-date-picker> -->
           </el-form-item>
         </el-col>
@@ -225,31 +227,7 @@ export default {
             trigger: "blur"
           }
         ]
-      },
-      shortcuts: [
-        {
-          text: "今天",
-          onClick(picker) {
-            picker.$emit("pick", new Date());
-          }
-        },
-        {
-          text: "昨天",
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24);
-            picker.$emit("pick", date);
-          }
-        },
-        {
-          text: "一周前",
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit("pick", date);
-          }
-        }
-      ]
+      }
     };
   },
   mounted() {
@@ -278,12 +256,11 @@ export default {
       formData.append("nation", data.nation);
       formData.append("cellPhone", data.cellPhone);
       formData.append("buildCorpName ", data.buildCorpName);
-      formData.append("department", data.department);
       formData.append("workerType", data.workerType);
       formData.append("urgentLinkMan", data.urgentLinkMan);
       formData.append("urgentLinkManPhone", data.urgentLinkManPhone);
       formData.append("address", data.address);
-      formData.append("birthPlace", data.birthPlace);
+      formData.append("birthPlaceCode", data.birthPlace);
       formData.append("maritalStatus", data.maritalStatus);
       formData.append("degree", data.degree);
       formData.append("cultureLevelType", data.cultureLevelType);
@@ -351,7 +328,7 @@ export default {
       certificateFormdata.append("certificationStatus", certificate.productGroup[i].certificationStatus);
       certificateFormdata.append("accessory ", this.$global_msg.photoArr[i].accessory[0].raw);
       // for(var i=0;i<=this.$global_msg.photoArr.length;i++){
-     
+
       //   certificateFormdata.append("accessory ", this.$global_msg.photoArr[i].accessory[0].raw);
       // }
         var certificateUrl =

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div style="padding:30px;">
       <el-container>
         <el-menu class="main-top-box pl30">
@@ -50,6 +50,7 @@
             <el-table-column prop="meetingContent" label="班前讲话内容" width="150"></el-table-column>
             <el-table-column prop="workerInfoIds" label="参加活动作业人员名单" width="200"></el-table-column>
             <el-table-column prop="createTime" label="创建日期" width="150"></el-table-column>
+            <el-table-column prop="updateTime" label="修改日期" width="150"></el-table-column>
             <!-- accessoryPath 路径-->
             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope">
@@ -67,15 +68,15 @@
               </template>
             </el-table-column>
           </el-table>
+          <pagination
+            class="pagination-box"
+            v-if="total>0"
+            :total="total"
+            :page.sync="listQuery.currentPage"
+            :limit.sync="listQuery.pageSize"
+            @pagination="getTalks"
+          />
         </div>
-        <pagination
-          class="pagination-box"
-          v-if="total>0"
-          :total="total"
-          :page.sync="listQuery.currentPage"
-          :limit.sync="listQuery.pageSize"
-          @pagination="getTalks"
-        />
       </el-main>
     </div>
     <!--编辑讲话-->
@@ -96,18 +97,18 @@
         :rules="formSpeechRules"
         :model="formSpeech"
         label-width="80px"
-        action=""
+        action
       >
-        <el-form-item prop="pShiftMeetingId">
-          <el-input v-model="formSpeech.pShiftMeetingId" type="text" hidden></el-input>
+        <el-form-item prop="pshiftMeetingId">
+          <el-input v-model="formSpeech.pshiftMeetingId" type="text" hidden></el-input>
         </el-form-item>
-        <el-form-item prop="jobsite" label="作业部位:">
+        <el-form-item prop="homeworkPart" label="作业部位:">
           <el-input v-model="formSpeech.homeworkPart" placeholder="作业部位"></el-input>
         </el-form-item>
-        <el-form-item prop="jobNum" label="作业人数：">
+        <el-form-item prop="homeworkNumber" label="作业人数：">
           <el-input v-model="formSpeech.homeworkNumber" placeholder="作业人数"></el-input>
         </el-form-item>
-        <el-form-item label="安全防护用品配套使用：" prop="protective">
+        <el-form-item label="安全防护用品配套使用：" prop="isSafety">
           <el-select v-model="formSpeech.isSafety" placeholder="请选择" @change="selectProtective">
             <el-option
               v-for="item in protectives"
@@ -117,10 +118,10 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="作业内容:" prop="speachContent">
+        <el-form-item label="作业内容:" prop="jobContent">
           <el-input type="textarea" :rows="6" placeholder="作业内容" v-model="formSpeech.jobContent"></el-input>
         </el-form-item>
-        <el-form-item label="班前讲话内容:" prop="classContent">
+        <el-form-item label="班前讲话内容:" prop="meetingContent">
           <el-input type="textarea" :rows="6" placeholder="内容" v-model="formSpeech.meetingContent"></el-input>
         </el-form-item>
         <el-form-item label="参加活动人员名单:">
@@ -273,25 +274,28 @@ export default {
   },
   activated: function() {
     this.getTalks();
-    this.companys=[];
-       var data = JSON.stringify({
-        pageSize: 100,
-        page: 1
-      });
-      //请求
-      var url =
-        "/bashUrl/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/company/management";
-      this.http.post(url, data).then(res => {
-        if (res.code == 200) {      
-          var rows = res.data.rows;
-          this.companys.push({id:0,name:'请选择'});
-           for(var i=0;i<rows.length;i++){
-             this.companys.push({id:rows[i].pLabourCompanyId,name:rows[i].company});
+    this.companys = [];
+    var data = JSON.stringify({
+      pageSize: 100,
+      page: 1
+    });
+    //请求
+    var url =
+      "/bashUrl/smart/worker/labour/" +
+      sessionStorage.getItem("userId") +
+      "/company/management";
+    this.http.post(url, data).then(res => {
+      if (res.code == 200) {
+        var rows = res.data.rows;
+        this.companys.push({ id: 0, name: "请选择" });
+        for (var i = 0; i < rows.length; i++) {
+          this.companys.push({
+            id: rows[i].pLabourCompanyId,
+            name: rows[i].company
+          });
         }
-        }
-      });
+      }
+    });
   },
   methods: {
     headClass() {
@@ -300,12 +304,9 @@ export default {
     handleChange(file, fileList) {
       this.$refs.file.clearValidate();
       // this.file.uploadFile = fileList;
-      this.videoForm.getVideo=file.raw
-      console.log(this.videoForm.getVideo);
-      console.log(file);
+      this.videoForm.getVideo = file.raw;
     },
     impotVideo() {
-      console.log(this.videoForm);
       var url =
         "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -320,32 +321,35 @@ export default {
       //     this.getOtherStaffs();
       //   }
       // });
-         axios({
-            method: "post",
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: sessionStorage.getItem("token")
-            },
-            url:url,
-            data: data,
-            timeout: 5000 //响应时间
-          }).then(
-            res => {
-              if (res.code == 200) {
-                 this.getOtherStaffs();
-                 this.csvVisible = false;
-              }
-            },
-            err => {
-            }
-          );
-        // axios.post(url, data, {headers: {'Content-Type': 'multipart/form-data',Authorization: sessionStorage.getItem("token")}}).then(res => {
-        //   if (res.code == 200) {
-           
-        //   }
-        // }).catch(error => {
-        //   alert('更新用户数据失败' + error)
-        // })
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: sessionStorage.getItem("token")
+        },
+        url: url,
+        data: data,
+        timeout: 5000 //响应时间
+      }).then(
+        res => {
+          if (res.code == 200) {
+            this.getOtherStaffs();
+            this.csvVisible = false;
+            this.$message({
+              type: "success",
+              message: "上传成功!"
+            });
+          }
+        },
+        err => {}
+      );
+      // axios.post(url, data, {headers: {'Content-Type': 'multipart/form-data',Authorization: sessionStorage.getItem("token")}}).then(res => {
+      //   if (res.code == 200) {
+
+      //   }
+      // }).catch(error => {
+      //   alert('更新用户数据失败' + error)
+      // })
     },
     handlePreview(row, file) {},
     getTalks() {
@@ -360,7 +364,7 @@ export default {
         "/team/meeting/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
+          var total = res.data.total;
           var rows = res.rows;
           this.tableData = res.data.rows;
           this.total = total;
@@ -373,7 +377,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pShiftMeetingId;
+        var id = arrays[i].pshiftMeetingId;
         ids.push(id);
       }
       return ids;
@@ -404,10 +408,11 @@ export default {
             "/team/meeting";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.getTalks();
             }
           });
         })
@@ -421,7 +426,7 @@ export default {
     // 删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.pTeamMasterId;
+      var uid = row.pshiftMeetingId;
       var ids = [];
       ids.push(uid);
       var data = JSON.stringify(ids);
@@ -434,10 +439,11 @@ export default {
             "/team/meeting";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.getTalks();
             }
           });
           this.getTalks();
@@ -451,8 +457,6 @@ export default {
     },
     uploadVideo(row) {
       var uid = row.pshiftMeetingId;
-      console.log(row);
-      console.log(uid);
       this.id = uid;
       this.csvVisible = true;
     },
@@ -471,19 +475,19 @@ export default {
         { personId: 2, jobNumber: "2222", personName: "b5bbbb" },
         { personId: 3, jobNumber: "3333", personName: "cc999ccc" }
       ];
-      if (this.selectedPersonIds != undefined) {
-        for (var i = 0; i < this.selectedPersonIds.length; i++) {
-          if (this.persons[i].containSpace == 1) {
-            //这是默认选中上的
-            this.$refs.multipleTable2.toggleRowSelection(this.persons[i], true);
-          }
-        }
-      }
+      // if (this.selectedPersonIds != undefined) {
+      //   for (var i = 0; i < this.selectedPersonIds.length; i++) {
+      //     if (this.persons[i].containSpace == 1) {
+      //       //这是默认选中上的
+      //       this.$refs.multipleTable2.toggleRowSelection(this.persons[i], true);
+      //     }
+      //   }
+      // }
     },
     //编辑讲话
     handleEdit(row) {
       var uid = row.pshiftMeetingId;
-      this.formSpeech = row;
+      // this.formSpeech = row;
       //获得详情
       var url =
         "/bashUrl/smart/worker/labour/" +
@@ -494,14 +498,15 @@ export default {
       this.http.get(url, datas).then(res => {
         if (res.code == 200) {
           //回显
-          // this.formSpeech = res.data;
-          this.formSpeech.jobsite = result.homeworkPart;
-          this.formSpeech.jobNum = result.homeworkNumber;
-          this.formSpeech.protective = result.isSafety;
-          this.formSpeech.speachContent = result.jobContent;
-          this.formSpeech.classContent = result.meetingContent;
-          this.formSpeech.checkIds = result.workerInfo;
-          this.formSpeech.pShiftMeetingId = result.pShiftMeetingId;
+          this.formSpeech = res.data;
+          this.selectedPersonIds = res.data.workerInfoIds;
+          // this.formSpeech.jobsite = result.homeworkPart;
+          // this.formSpeech.jobNum = result.homeworkNumber;
+          // this.formSpeech.protective = result.isSafety;
+          // this.formSpeech.speachContent = result.jobContent;
+          // this.formSpeech.classContent = result.meetingContent;
+          // this.formSpeech.checkIds = result.workerInfo;
+          // this.formSpeech.pShiftMeetingId = result.pShiftMeetingId;
         }
       });
       this.formSpeech.pShiftMeetingId = uid;
@@ -509,18 +514,12 @@ export default {
     },
     //修改讲话
     editFormSpeech(formSpeech) {
-       var form = this.$refs[formSpeech].model;
-      console.log(form);
       this.$refs[formSpeech].validate(valid => {
-        if (valid) {         
-          var datas = new FormData();
-          datas.append("homeworkPart", form.jobsite);
-          datas.append("homeworkNumber", form.jobNum);
-          datas.append("isSafety", form.protective);
-          datas.append("jobContent", form.speachContent);
-          datas.append("meetingContent", form.classContent);
-          datas.append("workerInfo", this.selectedPersonIds);
-          datas.append("pShiftMeetingId", form.pShiftMeetingId);
+        if (valid) {
+          var form = this.$refs[formSpeech].model;
+          var ids = this.changeFunPerson().toString();
+          form.workerInfoIds = ids;
+          var datas = JSON.stringify(form);
           var url =
             "/bashUrl/smart/worker/labour/" +
             sessionStorage.getItem("userId") +
@@ -529,6 +528,11 @@ export default {
             if (res.code == 200) {
               this.$refs[formSpeech].resetFields();
               this.outerVisible = false;
+              this.$message({
+                type: "success",
+                message: "编辑成功!"
+              });
+              this.getTalks();
             }
           });
         } else {

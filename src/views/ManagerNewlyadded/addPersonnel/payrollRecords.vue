@@ -20,8 +20,8 @@
         </el-col>
         <el-col>
           <el-form-item label="发放日期" prop="balanceDate">
-            <el-date-picker v-model="form.balanceDate" type="datetime" placeholder="请选择日期"></el-date-picker>
-            <!-- <el-date-picker v-model="form.value1" type="date" placeholder="请选择日期"></el-date-picker> -->
+            <el-date-picker v-model="form.balanceDate" type="date"   format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd" placeholder="请选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -48,11 +48,6 @@
             <el-input v-model="form.bankCardNo" placeholder="请输入银行卡号"></el-input>
           </el-form-item>
         </el-col>
-        <!-- <el-col :span="24" style="float:right;height:40px;position:relative;bottom:10px;">
-          <el-form-item style="float:right">
-            <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button>
-          </el-form-item>
-        </el-col>-->
         <el-col :span="24">
           <el-form-item style="float:right;position:relative;bottom:6px;">
             <el-button type="primary" round class="cancel-style">取消</el-button>
@@ -72,13 +67,11 @@ export default {
       form: {
         payRollCode: "",
         totalPayAmount: "",
-        value1: "",
         distributionMethod: "",
         Bank: "",
         bankCardNo: ""
       },
       field: "payrollRecords",
-      value1: "",
       rules: {
         payRollCode: [
           { required: true, message: "请输入工资单编号", trigger: "blur" }
@@ -88,37 +81,13 @@ export default {
         ],
         balanceDate: [{ required: true, message: "请输入日期 ", trigger: "blur" }],
         provideType: [
-          { required: true, message: "请选择发放方式 ", trigger: "blur" }
+          { required: true, message: "请选择发放方式 ", trigger: "change" }
         ],
-        provideBank: [{ required: true, message: "请选择发放银行", trigger: "blur" }],
+        provideBank: [{ required: true, message: "请选择发放银行", trigger: "change" }],
         bankCardNo: [
           { required: true, message: "请填写银行卡号", trigger: "blur" }
         ]
-      },
-      shortcuts: [
-        {
-          text: "今天",
-          onClick(picker) {
-            picker.$emit("pick", new Date());
-          }
-        },
-        {
-          text: "昨天",
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24);
-            picker.$emit("pick", date);
-          }
-        },
-        {
-          text: "一周前",
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit("pick", date);
-          }
-        }
-      ]
+      }
     };
   },
   mounted() {
@@ -138,6 +107,7 @@ export default {
                 "payrollRecords1",
                 JSON.stringify(this.form)
               );
+              console.log(this.form);
               this.$emit("field", this.field);
               this.$message({
                 type: "success",

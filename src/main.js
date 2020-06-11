@@ -27,7 +27,12 @@ import http from '../src/api/https'
 Vue.prototype.api = api;
 Vue.prototype.http = http;
 //管理系统
-Vue.prototype.PersonnelLocalhosts = "http://192.168.1.100:8001";
+// Vue.prototype.PersonnelLocalhosts = "http://192.168.1.30:8001";
+// Vue.prototype.PersonnelLocalhosts = "http://192.168.1.108:8001";
+Vue.prototype.PersonnelLocalhosts = "http://192.168.1.105:8003";
+//全局文件
+import global_msg from "../src/common/global"
+Vue.prototype.$global_msg = global_msg;
 //视频
 import VideoPlayer from 'vue-video-player'
 require('video.js/dist/video-js.css')

@@ -21,11 +21,13 @@ module.exports = {
         }
       },
       '/bashUrl': {
+         target: 'http://192.168.1.105:8002',
         // target: 'http://192.168.1.30:8002',
         target: 'http://192.168.1.100:8002',
         secure: false,
         changeOrigin: true,
         pathRewrite: {
+          '^/bashUrl': 'http://192.168.1.105:8002',
           // '^/bashUrl': 'http://192.168.1.30:8002'
           '^/bashUrl': 'http://192.168.1.100:8002'
         }

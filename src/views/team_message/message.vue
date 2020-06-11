@@ -349,24 +349,27 @@ export default {
   },
   activated: function() {
     this.getTalks();
-    this.company=[];
-       var data = JSON.stringify({
-        pageSize: 100,
-        page: 1
-      });
-      //请求
-      var url =
-        "/bashUrl/smart/worker/labour/" +
-        sessionStorage.getItem("userId") +
-        "/company/management";
-      this.http.post(url, data).then(res => {
-        if (res.code == 200) {      
-          var rows = res.data.rows;
-           for(var i=0;i<rows.length;i++){
-             this.companys.push({id:rows[i].pLabourCompanyId,name:rows[i].company});
+    this.company = [];
+    var data = JSON.stringify({
+      pageSize: 100,
+      page: 1
+    });
+    //请求
+    var url =
+      "/bashUrl/smart/worker/labour/" +
+      sessionStorage.getItem("userId") +
+      "/company/management";
+    this.http.post(url, data).then(res => {
+      if (res.code == 200) {
+        var rows = res.data.rows;
+        for (var i = 0; i < rows.length; i++) {
+          this.companys.push({
+            id: rows[i].pLabourCompanyId,
+            name: rows[i].company
+          });
         }
-        }
-      });
+      }
+    });
   },
   methods: {
     headClass() {
@@ -412,7 +415,6 @@ export default {
       }
       this.selectedPersonIds = ids;
       this.multipleSelection = val;
-      console.log(val);
       return ids;
     },
     // 批量删除
@@ -630,7 +632,6 @@ export default {
     },
     //选择人员赋值
     selectPerson() {
-      console.log(this.selectedPersonIds);
       this.innerVisible = true;
       this.persons = [
         { personId: 1, jobNumber: "1111", personName: "aaaaa" },
@@ -665,14 +666,14 @@ export default {
           // datas.append("meetingContent", form.classContent);
           // datas.append("workerInfo", pids);
           // datas.append("pteamMasterId", this.id);
-          var datas=JSON.stringify({
-            homeworkPart:form.jobsite,
-            homeworkNumber:form.jobNum,
-            isSafety:form.protective,
-            jobContent:form.speachContent,
-            meetingContent:form.classContent,
-            workerInfoIds:pids.toString(),
-            pteamMasterId:this.id
+          var datas = JSON.stringify({
+            homeworkPart: form.jobsite,
+            homeworkNumber: form.jobNum,
+            isSafety: form.protective,
+            jobContent: form.speachContent,
+            meetingContent: form.classContent,
+            workerInfoIds: pids.toString(),
+            pteamMasterId: this.id
           });
           var url =
             "/bashUrl/smart/worker/labour/" +
@@ -680,10 +681,10 @@ export default {
             "/team/meeting";
           this.http.post(url, datas).then(res => {
             if (res.code == 200) {
-               this.$message({
-                  type: "success",
-                  message: "添加成功!"
-               });
+              this.$message({
+                type: "success",
+                message: "添加成功!"
+              });
               this.outerVisible = false;
               this.$refs[formSpeech].resetFields();
               this.getTalks();

@@ -17,8 +17,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="性别" prop="gender" class="el-form-item">
-               <el-radio v-model="form.gender" label="1">男</el-radio>
-               <el-radio v-model="form.gender" label="2">女</el-radio>
+              <el-radio v-model="form.gender" label="1">男</el-radio>
+              <el-radio v-model="form.gender" label="2">女</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -45,8 +45,8 @@
           <el-col :span="8">
             <el-form-item label="岗位/职责" prop="jobType" class="el-form-item">
               <el-select v-model="form.jobType" placeholder="请选择岗位/职责">
-                <el-option label="区域一" value="0"></el-option>
-                <el-option label="区域二" value="1"></el-option>
+                <el-option label="xxxx1" value="0"></el-option>
+                <el-option label="xxxx2" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -66,8 +66,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="籍贯" prop="birthPlace" class="el-form-item">
-              <el-input v-model="form.birthPlace" placeholder="请输入籍贯"></el-input>
+            <el-form-item label="籍贯" prop="birthPlaceCode" class="el-form-item">
+              <el-input v-model="form.birthPlaceCode" placeholder="请输入籍贯"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -83,8 +83,16 @@
           <el-col :span="8">
             <el-form-item label="学位" prop="degree">
               <el-select v-model="form.degree" placeholder="请选择学位">
-                <el-option label="身份证" value="身份证"></el-option>
-                <el-option label="护照" value="护照"></el-option>
+                <el-option label="身份证" value="1"></el-option>
+                <el-option label="护照" value="2"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="证件类型" prop="idCardType">
+              <el-select v-model="form.idCardType" placeholder="请选择学位">
+                <el-option label="身份证" value="1"></el-option>
+                <el-option label="护照" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -103,13 +111,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件编码" prop="idCardCode">
-              <el-input v-model="form.idCardCode" placeholder="请输入证件编码"></el-input>
+            <el-form-item label="证件编号" prop="idCardCode">
+              <el-input v-model="form.idCardCode" placeholder="请输入证件编号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="居住证" prop="idCardType">
-              <el-select v-model="form.idCardType" placeholder="持证上岗">
+            <el-form-item label="居住证" prop="isResidencePermit">
+              <el-select v-model="form.isResidencePermit" placeholder="持证上岗">
                 <el-option label="是" value="0"></el-option>
                 <el-option label="否" value="1"></el-option>
               </el-select>
@@ -117,7 +125,6 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="居住证办理日期" prop="residencePermitDate">
-             
               <el-date-picker
                 v-model="form.residencePermitDate"
                 type="datetime"
@@ -138,8 +145,8 @@
           <el-col :span="8">
             <el-form-item label="政治面貌" prop="politicsType">
               <el-select v-model="form.politicsType" placeholder="请选择政治面貌">
-                <el-option label="企业自有职工" value="1"></el-option>
-                <el-option label="劳务派遣人员" value="0"></el-option>
+                <el-option label="党员" value="0"></el-option>
+                <el-option label="团员" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -201,20 +208,22 @@ export default {
         gender: "",
         age: "",
         nation: "",
+        politicsType: "",
         cellPhone: "",
-        department: "",
-        buildCorpName: "",
-        jobType: "",
         urgentLinkMan: "",
         urgentLinkManPhone: "",
         address: "",
-        birthPlace: "",
+        birthPlaceCode: "",
+        buildCorpName: "",
+        maritalStatus: "",
         degree: "",
         cultureLevelType: "",
+        idCardType: "",
         idCardCode: "",
+        isResidencePermit: "",
         residencePermitDate: "",
+        jobType: "",
         workerType: "",
-        politicsType: "",
         photo: ""
       },
       getImgCodeResults: "",
@@ -222,18 +231,15 @@ export default {
       // 校验规则
       rules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
+        gender: [{ required: true, message: "请选择性别", trigger: "change" }],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         nation: [{ required: true, message: "请输入民族", trigger: "blur" }],
         cellPhone: [{ required: true, message: "请输入电话", trigger: "blur" }],
-        // department: [
-        //   { required: true, message: "请输入部门", trigger: "blur" }
-        // ],
         buildCorpName: [
           { required: true, message: "请输入承建单位", trigger: "blur" }
         ],
         jobType: [
-          { required: true, message: "请选择岗位/职责", trigger: "blur" }
+          { required: true, message: "请选择岗位/职责", trigger: "change" }
         ],
         urgentLinkMan: [
           { required: true, message: "请输入紧急联系人", trigger: "blur" }
@@ -244,30 +250,33 @@ export default {
         address: [
           { required: true, message: "请输入现居住地", trigger: "blur" }
         ],
-        birthPlace: [
+        birthPlaceCode: [
           { required: true, message: "请输入籍贯", trigger: "blur" }
         ],
         maritalStatus: [
-          { required: true, message: "请选择婚姻状况", trigger: "blur" }
-        ],
-        degree: [{ required: true, message: "请选择学位", trigger: "blur" }],
-        cultureLevelType: [
-          { required: true, message: "请选择文化程度", trigger: "blur" }
-        ],
-        idCardCode: [
-          { required: true, message: "请输入证件编码", trigger: "blur" }
+          { required: true, message: "请选择婚姻状况", trigger: "change" }
         ],
         idCardType: [
-          { required: true, message: "请选择居住证", trigger: "blur" }
+          { required: true, message: "请选择证件类型", trigger: "change" }
+        ],
+        degree: [{ required: true, message: "请选择学位", trigger: "change" }],
+        cultureLevelType: [
+          { required: true, message: "请选择文化程度", trigger: "change" }
+        ],
+        idCardCode: [
+          { required: true, message: "请输入证件编号", trigger: "blur" }
+        ],
+        isResidencePermit: [
+          { required: true, message: "请选择居住证", trigger: "change" }
         ],
         residencePermitDate: [
           { required: true, message: "请选择居住证办理日期", trigger: "blur" }
         ],
         workerType: [
-          { required: true, message: "请选择人员类型", trigger: "blur" }
+          { required: true, message: "请选择人员类型", trigger: "change" }
         ],
         politicsType: [
-          { required: true, message: "请选择政治面貌", trigger: "blur" }
+          { required: true, message: "请选择政治面貌", trigger: "change" }
         ],
         photo: [{ required: true, message: "请上传照片", trigger: "change" }]
       },
@@ -350,48 +359,51 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           var form = this.$refs["form"].model;
-          handleCofirm("确认添加吗？", "warning").then(res => {
-            let formData = new FormData();
-            formData.append("name", form.name);
-            formData.append("gender", form.gender);
-            formData.append("age", form.age);
-            formData.append("nation", form.nation);
-            formData.append("cellPhone", form.cellPhone);
-            formData.append("department", form.department);
-            formData.append("buildCorpName", form.buildCorpName);
-            formData.append("jobType", form.jobType);
-            formData.append("urgentLinkMan", form.urgentLinkMan);
-            formData.append("urgentLinkManPhone", form.urgentLinkManPhone);
-            formData.append("address", form.address);
-            formData.append("birthPlace", form.birthPlace);
-            formData.append("degree",form.degree);
-            formData.append("cultureLevelType", form.cultureLevelType);
-            formData.append("idCardCode", form.idCardCode);
-            formData.append("residencePermitDate", form.residencePermitDate);
-            formData.append("workerType", form.workerType);
-            formData.append("politicsType", form.politicsType);
-            formData.append("photo", form.photo[0].raw);
-            console.log(form.photo[0].raw)
-            var params = JSON.stringify(this.form);
-            var url =
-              "/bashUrl/smart/worker/roster/" +
-              sessionStorage.getItem("userId") +
-              "/manager";
-            this.http.post(url, formData).then(res => {
-              if (res.code == 200) {
-                this.$message({
-                  type: "success",
-                  message: "添加成功!"
-                });
-                // this.$router.push({ path: "/roster/manager" });
-              }
+          handleCofirm("确认添加吗？", "warning")
+            .then(res => {
+              let formData = new FormData();
+              formData.append("name", form.name);
+              formData.append("gender", form.gender);
+              formData.append("age", form.age);
+              formData.append("nation", form.nation);
+              formData.append("politicsType", form.politicsType);
+              formData.append("cellPhone", form.cellPhone);
+              formData.append("buildCorpName", form.buildCorpName);
+              formData.append("urgentLinkMan", form.urgentLinkMan);
+              formData.append("urgentLinkManPhone", form.urgentLinkManPhone);
+              formData.append("address", form.address);
+              formData.append("birthPlaceCode", form.birthPlaceCode);
+              formData.append("jobType", form.jobType);
+              formData.append("maritalStatus", form.maritalStatus);
+              formData.append("degree", form.degree);
+              formData.append("cultureLevelType", form.cultureLevelType);
+              formData.append("idCardType", form.idCardType);
+              formData.append("idCardCode", form.idCardCode);
+              formData.append("isResidencePermit", form.isResidencePermit);
+              formData.append("residencePermitDate", form.residencePermitDate);
+              formData.append("workerType", form.workerType);
+              formData.append("photo", form.photo[0].raw);
+              console.log(form.photo[0].raw);
+              var url =
+                "/bashUrl/smart/worker/roster/" +
+                sessionStorage.getItem("userId") +
+                "/manager";
+              this.http.post(url, formData).then(res => {
+                if (res.code == 200) {
+                  this.$message({
+                    type: "success",
+                    message: "添加成功!"
+                  });
+                  // this.$router.push({ path: "/roster/manager" });
+                }
+              });
+            })
+            .catch(err => {
+              this.$message({
+                type: "info",
+                message: "已取消添加"
+              });
             });
-          }).catch(err => {
-            this.$message({
-              type: "info",
-              message: "已取消添加"
-            });
-          });
         } else {
           console.log("error submit!!");
           return false;
