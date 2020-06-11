@@ -12,7 +12,7 @@
         <el-form :inline="true" ref="screenForm" :model="screenForm">
           <el-form-item label="劳务公司：">
             <el-select v-model="screenForm.company">
-              <el-option v-for="item in company" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              <el-option v-for="item in company" :key="item.id" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="负责人：">
@@ -305,9 +305,9 @@ export default {
         contractType: ""
       },
       company: [
-        { id: null, name: "请选择" },
-        { id: 1, name: "第一公司" },
-        { id: 2, name: "第二公司" }
+        // { id: null, name: "" },
+        // { id: 1, name: "第一公司" },
+        // { id: 2, name: "第二公司" }
       ],
       // 新增/编辑 劳务人员
       formLabor: {
@@ -389,6 +389,25 @@ export default {
   activated() {
     // 页面加载时获取信息
     this.getTable();
+    this.company=[];
+       var data = JSON.stringify({
+        pageSize: 100,
+        page: 1
+      });
+      //请求
+      var url =
+        "/bashUrl/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/company/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {      
+          var rows = res.data.rows;
+            this.company.push({id:null,name:''});
+           for(var i=0;i<rows.length;i++){
+             this.company.push({id:rows[i].pLabourCompanyId,name:rows[i].company});
+        }
+        }
+      });
   },
   methods: {
     // 表格加载请求
@@ -396,7 +415,7 @@ export default {
       if (val == 0) {
         this.loading = true;
       }
-      var data = JSON.stringify({
+       var data = JSON.stringify({
         company: this.screenForm.company,
         responsiblePersonName: this.screenForm.responsiblePersonName,
         contractType: this.screenForm.contractType,
@@ -609,15 +628,15 @@ export default {
 debugger;
 
         // //将文件流转成blob形式
-        const blob = new Blob([res],{type: 'application/vnd.ms-excel'});
+        const blob = new Blob([res],{type: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});//application/vnd.ms-excel
         //创建一个超链接，将文件流赋进去，然后实现这个超链接的单击事件
         const elink = document.createElement('a');
+        elink.download = "1.xls"// 重命名文件
+        elink.style.display = 'none';
         let url = URL.createObjectURL(blob);
         elink.href = url;
-        elink.download = "1"// 重命名文件
         // const fileName = decodeURI(res.headers['filename']);
         // elink.setAttribute('download', fileName);
-        // elink.style.display = 'none';
         // document.body.appendChild(elink);
         document.body.appendChild(elink);
         elink.click();

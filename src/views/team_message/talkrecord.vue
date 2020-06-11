@@ -42,14 +42,14 @@
               prop="pShiftMeetingId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="uid" label="编号" width="150"></el-table-column>
-            <el-table-column prop="createTime" label="创建日期" width="120"></el-table-column>
-            <el-table-column prop="homeworkPart" label="作业部位" width="120"></el-table-column>
-            <el-table-column prop="homeworkNumber" label="作业人数" width="120"></el-table-column>
+            <el-table-column prop="uid" label="编号" width="50"></el-table-column>
+            <el-table-column prop="homeworkPart" label="作业部位" width="100"></el-table-column>
+            <el-table-column prop="homeworkNumber" label="作业人数" width="80"></el-table-column>
             <el-table-column prop="jobContent" label="作业内容" width="200"></el-table-column>
-            <el-table-column prop="isSafety" label="安全防护用品配套使用" width="120"></el-table-column>
-            <el-table-column prop="meetingContent" label="班前讲话内容" width="100"></el-table-column>
+            <el-table-column prop="isSafety" label="安全防护用品配套使用" width="100"></el-table-column>
+            <el-table-column prop="meetingContent" label="班前讲话内容" width="150"></el-table-column>
             <el-table-column prop="workerInfoIds" label="参加活动作业人员名单" width="200"></el-table-column>
+            <el-table-column prop="createTime" label="创建日期" width="150"></el-table-column>
             <!-- accessoryPath 路径-->
             <el-table-column label="视频附件" width="100" fixed="right">
               <template slot-scope="scope">
@@ -96,7 +96,7 @@
         :rules="formSpeechRules"
         :model="formSpeech"
         label-width="80px"
-        action="http://192.168.1.164:8001/auth/user/baseUser"
+        action=""
       >
         <el-form-item prop="pShiftMeetingId">
           <el-input v-model="formSpeech.pShiftMeetingId" type="text" hidden></el-input>
@@ -243,7 +243,7 @@ export default {
         jobNum: [
           { required: true, message: "请输入作业人数", trigger: "blur" }
         ],
-        protective: [{ required: true, message: "请选择", trigger: "blur" }],
+        protective: [{ required: true, message: "请选择", trigger: "change" }],
         speachContent: [
           { required: true, message: "请输入作业内容", trigger: "blur" }
         ],
@@ -264,11 +264,7 @@ export default {
       form: {
         laborCompany: ""
       },
-      companys: [
-        { id: 1, name: "劳务公司一" },
-        { id: 2, name: "劳务公司二" },
-        { id: 3, name: "劳务公司三" }
-      ],
+      companys: [],
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
@@ -277,6 +273,25 @@ export default {
   },
   activated: function() {
     this.getTalks();
+    this.companys=[];
+       var data = JSON.stringify({
+        pageSize: 100,
+        page: 1
+      });
+      //请求
+      var url =
+        "/bashUrl/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/company/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {      
+          var rows = res.data.rows;
+          this.companys.push({id:0,name:'请选择'});
+           for(var i=0;i<rows.length;i++){
+             this.companys.push({id:rows[i].pLabourCompanyId,name:rows[i].company});
+        }
+        }
+      });
   },
   methods: {
     headClass() {
@@ -300,15 +315,15 @@ export default {
         "/upload";
       var data = new FormData();
       data.append("file", this.videoForm.getVideo);
-      // this.http.get(url, data).then(res => {
+      // this.http.post(url, data).then(res => {
       //   if (res.code == 200) {
       //     this.getOtherStaffs();
       //   }
       // });
          axios({
-            method: "get",
+            method: "post",
             headers: {
-              "Content-Type": "multipart/form-data",
+              'Content-Type': 'multipart/form-data',
               Authorization: sessionStorage.getItem("token")
             },
             url:url,
@@ -318,20 +333,26 @@ export default {
             res => {
               if (res.code == 200) {
                  this.getOtherStaffs();
-                 this.videoForm.getVideo = false;
+                 this.csvVisible = false;
               }
             },
             err => {
-              return errorfun(err);
             }
           );
+        // axios.post(url, data, {headers: {'Content-Type': 'multipart/form-data',Authorization: sessionStorage.getItem("token")}}).then(res => {
+        //   if (res.code == 200) {
+           
+        //   }
+        // }).catch(error => {
+        //   alert('更新用户数据失败' + error)
+        // })
     },
     handlePreview(row, file) {},
     getTalks() {
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
-        company: this.form.laborCompany
+        pLabourCompanyId: this.form.laborCompany
       });
       var url =
         "/bashUrl/smart/worker/labour/" +
@@ -429,7 +450,9 @@ export default {
         });
     },
     uploadVideo(row) {
-      var uid = row.pShiftMeetingId;
+      var uid = row.pshiftMeetingId;
+      console.log(row);
+      console.log(uid);
       this.id = uid;
       this.csvVisible = true;
     },
@@ -459,7 +482,7 @@ export default {
     },
     //编辑讲话
     handleEdit(row) {
-      var uid = row.pTeamMasterId;
+      var uid = row.pshiftMeetingId;
       this.formSpeech = row;
       //获得详情
       var url =
@@ -471,14 +494,14 @@ export default {
       this.http.get(url, datas).then(res => {
         if (res.code == 200) {
           //回显
-          this.formSpeech = res.data;
-          // this.formSpeech.jobsite = result.homeworkPart;
-          // this.formSpeech.jobNum = result.homeworkNumber;
-          // this.formSpeech.protective = result.isSafety;
-          // this.formSpeech.speachContent = result.jobContent;
-          // this.formSpeech.classContent = result.meetingContent;
-          // this.formSpeech.checkIds = result.workerInfo;
-          // this.formSpeech.pShiftMeetingId = result.pShiftMeetingId;
+          // this.formSpeech = res.data;
+          this.formSpeech.jobsite = result.homeworkPart;
+          this.formSpeech.jobNum = result.homeworkNumber;
+          this.formSpeech.protective = result.isSafety;
+          this.formSpeech.speachContent = result.jobContent;
+          this.formSpeech.classContent = result.meetingContent;
+          this.formSpeech.checkIds = result.workerInfo;
+          this.formSpeech.pShiftMeetingId = result.pShiftMeetingId;
         }
       });
       this.formSpeech.pShiftMeetingId = uid;
@@ -486,9 +509,10 @@ export default {
     },
     //修改讲话
     editFormSpeech(formSpeech) {
+       var form = this.$refs[formSpeech].model;
+      console.log(form);
       this.$refs[formSpeech].validate(valid => {
-        if (valid) {
-          var form = this.$refs["formSpeech"].model;
+        if (valid) {         
           var datas = new FormData();
           datas.append("homeworkPart", form.jobsite);
           datas.append("homeworkNumber", form.jobNum);

@@ -304,9 +304,10 @@ export default {
         { id: 3, name: "差" }
       ],
       companys: [
-        { id: 1, name: "劳务公司一" },
-        { id: 2, name: "劳务公司二" },
-        { id: 3, name: "劳务公司三" }
+        { id: 0, name: "请选择" }
+        // { id: 1, name: "劳务公司一" },
+        // { id: 2, name: "劳务公司二" },
+        // { id: 3, name: "劳务公司三" }
       ],
       evaluated: null, //选中的评价等级
       formSpeech: {
@@ -348,6 +349,24 @@ export default {
   },
   activated: function() {
     this.getTalks();
+    this.company=[];
+       var data = JSON.stringify({
+        pageSize: 100,
+        page: 1
+      });
+      //请求
+      var url =
+        "/bashUrl/smart/worker/labour/" +
+        sessionStorage.getItem("userId") +
+        "/company/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {      
+          var rows = res.data.rows;
+           for(var i=0;i<rows.length;i++){
+             this.companys.push({id:rows[i].pLabourCompanyId,name:rows[i].company});
+        }
+        }
+      });
   },
   methods: {
     headClass() {
@@ -357,7 +376,7 @@ export default {
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage,
-        company: this.form.laborCompany
+        pLabourCompanyId: this.form.laborCompany
       });
       //请求
       var url =
@@ -661,6 +680,10 @@ export default {
             "/team/meeting";
           this.http.post(url, datas).then(res => {
             if (res.code == 200) {
+               this.$message({
+                  type: "success",
+                  message: "添加成功!"
+               });
               this.outerVisible = false;
               this.$refs[formSpeech].resetFields();
               this.getTalks();
