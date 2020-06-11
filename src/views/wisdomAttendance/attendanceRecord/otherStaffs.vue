@@ -61,19 +61,14 @@
                      :page-sizes="[5, 10, 20, 40]" 下拉选择
                      layout="total, sizes, prev, pager, next, jumper"
         -->
-        <el-pagination
-          class="page-end"
-          @size-change="handleSizeChange"
-          :current-page="page"
-          :page-sizes="[10, 50,100]"
-          layout="total, sizes,prev, pager,next,jumper"
-          :page-size="pageSize"
-          @prev-click="pre"
-          @next-click="next"
-          @current-change="handleCurrentChange"
+        <pagination
+          class="pagination-box"
+          v-if="total>0"
           :total="total"
-          background
-        ></el-pagination>
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="handleUserList"
+        />
       </el-main>
     </div>
   </div>
@@ -81,16 +76,22 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
+import Pagination from "@/components/pagination";
 export default {
+  components: {
+    Pagination
+  },
   data() {
     return {
       headClass: headClass,
       token: null, // token
       // 动态数据
       tableData: [],
-      page: 1, // 初始页
-      pageSize: 8, //    每页的数据
-      total: 100, //总条数
+       listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      },
+      total:5, //总条数
       ids: null, //选中的id
       formInline: {
         name: null, // 搜索
@@ -98,7 +99,7 @@ export default {
         date: null
       },
         options: [
-        { id: "", name: "请选择" },
+        { id: 0, name: "请选择" },
         { id: 1, name: "工长" },
         { id: 2, name: "石工" },
         { id: 3, name: "绿化工" }
@@ -148,8 +149,8 @@ export default {
       //   // 获得当前用户的id
       // var  uid = sessionStorage.getItem('uid')
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
         name: uname,
         date: date,
         workerType: workerType
@@ -160,10 +161,8 @@ export default {
         "/other/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
           this.tableData = res.data.rows;
-          this.total = total;
+          this.total =  res.data.total;
         }
       });
     },

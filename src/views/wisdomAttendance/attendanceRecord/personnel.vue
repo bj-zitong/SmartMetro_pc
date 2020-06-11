@@ -50,7 +50,7 @@
               @selection-change="changeFun"
             ></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="idNum" label="身份证号"></el-table-column>
+            <el-table-column prop="idNum" label="身份证号" width="180"></el-table-column>
             <el-table-column prop="gender" label="性别"></el-table-column>
             <el-table-column prop="jobNum" label="工号"></el-table-column>
             <el-table-column prop="team" label="所在班组"></el-table-column>
@@ -67,7 +67,7 @@
                      :page-sizes="[5, 10, 20, 40]" 下拉选择
                      layout="total, sizes, prev, pager, next, jumper"
         -->
-         <pagination
+        <pagination
           class="pagination-box"
           v-if="total>10"
           :total="total"
@@ -81,10 +81,11 @@
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
-import { headClass } from "@/utils";
+import { timePresupposed } from "@/utils/utils";
+import { headClass} from "@/utils";
 import Pagination from "@/components/pagination";
 export default {
-   name: "container",
+  name: "container",
   components: {
     Pagination
   },
@@ -98,7 +99,7 @@ export default {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
-      total: 20, //总条数
+      total: 5, //总条数
       ids: null, //选中的id
       options: [
         { id: "", name: "请选择" },
@@ -118,36 +119,6 @@ export default {
     this.handleUserList();
   },
   methods: {
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size;
-      // this.handleUserList()
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      this.handleUserList();
-      // console.log(this.page); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      // console.log("cpage" + cpage);
-      // this.handleUserList()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      // console.log("下一页" + cpage);
-      // this.handleUserList()
-    },
-    // 下拉框获得值
-    selectProfession(vid) {
-      let obj = {};
-      obj = this.options.find(item => {
-        return item.id == vid; // 筛选出匹配数据
-      });
-      this.formInline.jobType = obj.id;
-    },
     // 列表请求
     handleUserList() {
       // 获得搜索的内容
@@ -158,7 +129,7 @@ export default {
       //   // 获得当前用户的id
       var data = JSON.stringify({
         pageSize: this.listQuery.pageSize,
-        page: this.listQuery.page,
+        page: this.listQuery.currentPage,
         name: uname,
         date: date,
         jobNum: idnum,
@@ -170,10 +141,13 @@ export default {
         "/labour/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = 20;
+          for (var i = 0; i < res.data.rows.length; i++) {
+            console.log(res.data.rows[i])
+            console.log(timePresupposed(endTime,firstTime))
+          }
           var rows = res.rows;
           this.tableData = res.data.rows;
-          this.total = total;
+          this.total = res.data.total;
         }
       });
     },

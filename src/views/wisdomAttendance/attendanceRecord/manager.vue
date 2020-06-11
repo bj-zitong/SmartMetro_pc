@@ -41,7 +41,7 @@
               @selection-change="changeFun"
             ></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="idNum" label="身份证号"></el-table-column>
+            <el-table-column prop="idNum" label="身份证号" width="180"></el-table-column>
             <el-table-column prop="gender" label="性别"></el-table-column>
             <el-table-column prop="jobNum" label="工号"></el-table-column>
             <el-table-column prop="jobType" label="岗位/职责"></el-table-column>
@@ -54,7 +54,7 @@
 
         <pagination
           class="pagination-box"
-          v-if="total>10"
+          v-if="total>0"
           :total="total"
           :page.sync="listQuery.currentPage"
           :limit.sync="listQuery.pageSize"
@@ -83,7 +83,7 @@ export default {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
-      total:20,//总条数
+      total: 0, //总条数
       ids: null, //选中的id
       formInline: {
         searchUname: null, // 搜索
@@ -96,28 +96,6 @@ export default {
     this.handleUserList();
   },
   methods: {
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size;
-      // this.handleUserList()
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      this.handleUserList();
-      // console.log(this.page); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      // console.log("cpage" + cpage);
-      // this.handleUserList()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      // console.log("下一页" + cpage);
-      // this.handleUserList()
-    },
     // 列表请求
     handleUserList() {
       // 获得搜索的内容
@@ -139,7 +117,7 @@ export default {
         if (res.code == 200) {
           var rows = res.rows;
           this.tableData = res.data.rows;
-          this.total = 20;
+          this.total = res.data.total;
         }
       });
     },

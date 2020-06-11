@@ -1,5 +1,9 @@
 let options = [
     {
+        value: '',
+        label: '请选择'
+    },
+    {
         value: 'dg',
         label: '电工'
     },

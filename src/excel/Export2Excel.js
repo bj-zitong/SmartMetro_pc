@@ -49,7 +49,6 @@ function datenum(v, date1904) {
     var epoch = Date.parse(v);
     return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
 }
-
 function sheet_from_array_of_arrays(data, opts) {
     var ws = {};
     var range = { s: { c: 10000000, r: 10000000 }, e: { c: 0, r: 0 } };

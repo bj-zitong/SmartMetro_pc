@@ -162,14 +162,21 @@ export default {
     },
     // 上传前校验
     beforeAvatarUpload(file) {
-      console.log(file)
-       let fileName = file.name
-        let pos = fileName.lastIndexOf('.')
-        let lastName = fileName.substring(pos, fileName.length)
-        if (lastName.toLowerCase() !== '.xlsx' &&lastName.toLowerCase() !== '.xls'&&lastName.toLowerCase() !== '.docx' &&lastName.toLowerCase() !== '.doc') {
-            this.$message.error('上传失败 文件必须为.xlsx或者.xls类型或者.docx类型或者.doc类型')
-            return
-        }
+      console.log(file);
+      let fileName = file.name;
+      let pos = fileName.lastIndexOf(".");
+      let lastName = fileName.substring(pos, fileName.length);
+      if (
+        lastName.toLowerCase() !== ".xlsx" &&
+        lastName.toLowerCase() !== ".xls" &&
+        lastName.toLowerCase() !== ".docx" &&
+        lastName.toLowerCase() !== ".doc"
+      ) {
+        this.$message.error(
+          "上传失败 文件必须为.xlsx或者.xls类型或者.docx类型或者.doc类型"
+        );
+        return;
+      }
     },
     // 上传图片方法
     uploadImage(param) {
@@ -180,7 +187,7 @@ export default {
         sessionStorage.getItem("userId") +
         "/manager/import";
       this.http.get(url, formData).then(res => {
-         console.log(res)
+        console.log(res);
       });
     },
     //列表请求
@@ -219,20 +226,20 @@ export default {
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/manager/export";
-      axios({
-        method: "post",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-          Authorization: sessionStorage.getItem("token")
-        },
-        url: url,
-        responseType: "arraybuffer",
-        data: data,
-        timeout: 5000 //响应时间
-      }).then(
-        res => {},
-        err => {}
-      );
+      this.http.post(url, data).then(res => {
+        // if (res.code == 200) {
+          const blob = new Blob([res]); //new Blob([res])中不加data就会返回下图中[objece objece]内容（少取一层）
+          const fileName = "统计.xlsx"; //下载文件名称
+          const elink = document.createElement("a");
+          elink.download = fileName;
+          elink.style.display = "none";
+          elink.href = URL.createObjectURL(blob);
+          document.body.appendChild(elink);
+          elink.click();
+          URL.revokeObjectURL(elink.href); // 释放URL 对象
+          document.body.removeChild(elink);
+        // }
+      });
     },
     //  导入
     importCsv() {
@@ -453,6 +460,5 @@ body > .el-container {
 .uploading {
   float: left;
   margin-left: 10px;
-  
 }
 </style>
