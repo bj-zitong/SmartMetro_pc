@@ -119,7 +119,7 @@ export default {
         page: this.listQuery.currentPage
       });
       var url =
-        "/smart/worker/announcement/" +
+        "/bashUrl/smart/worker/announcement/" +
         sessionStorage.getItem("userId") +
         "/management";
       this.http.post(url, data).then(res => {
@@ -171,7 +171,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/announcement/" + sessionStorage.getItem("userId");
+            "/bashUrl/smart/worker/announcement/" + sessionStorage.getItem("userId");
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;

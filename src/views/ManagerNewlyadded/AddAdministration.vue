@@ -159,6 +159,7 @@
                 :on-change="handleChange"
                 :file-list="fileList"
                 :auto-upload="false"
+                :limit="1"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
@@ -322,7 +323,6 @@ export default {
     if (this.id != undefined) {
     } else {
     }
-    console.log("id====", this.id);
   },
   methods: {
     handleClick(tab, event) {
@@ -411,8 +411,15 @@ export default {
       });
     },
     handleChange(file, fileList) {
-      this.$refs.form.clearValidate();
-      this.form.photo = fileList;
+      // console.log(file, fileList,this.fileList)
+      // if(fileList.length!=0){
+      //     this.form.photo = []
+      //     this.form.photo = fileList;
+      // }else{
+      //      this.$refs.form.clearValidate();
+      //      this.form.photo = fileList;
+      // }
+     
     }
   }
 };
