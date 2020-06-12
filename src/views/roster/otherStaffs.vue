@@ -40,8 +40,7 @@
               prop="pinfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
-            <el-table-column prop="name" label="姓名"></el-table-column>
-            <!-- <el-table-column prop="jobNum" label="工号"></el-table-column> -->
+            <el-table-column prop="name" label="姓名"></el-table-column>            
             <el-table-column prop="gender" label="性别">
                 <template slot-scope="scope">
                   <span v-if="scope.row.gender==0">男</span>
@@ -52,8 +51,9 @@
             <el-table-column prop="age" label="年龄"></el-table-column>
             <el-table-column prop="workerType" label="工人类别">
               <template slot-scope="scope">
-                  <span v-if="scope.row.workerType==0">厨师</span>
-                  <span v-if="scope.row.workerType==1">保安</span>
+                  <span v-if="scope.row.workerType==1">厨师</span>
+                  <span v-if="scope.row.workerType==2">保安</span>
+                  <span v-if="scope.row.workerType==3">其他</span>
                </template>
             </el-table-column>
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
@@ -209,6 +209,7 @@ export default {
         }
       });
     },
+    
     //批量删除
     deleteAllClick() {
       var ids = this.handleSelectionChange();

@@ -10,8 +10,8 @@
           :rules="rules"
           ref="form"
         >
-          <el-form-item prop="pInfoId">
-            <el-input v-model="form.pInfoId" type="text" hidden></el-input>
+          <el-form-item prop="pinfoId">
+            <el-input v-model="form.pinfoId" type="text" hidden></el-input>
           </el-form-item>
           <el-col :span="8">
             <el-form-item label="姓名" prop="name" class="el-form-item">
@@ -20,8 +20,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="性别" prop="gender">
-              <el-radio v-model="form.gender" label="1">男</el-radio>
-              <el-radio v-model="form.gender" label="2">女</el-radio>
+              <el-radio v-model="form.gender" label="0">男</el-radio>
+              <el-radio v-model="form.gender" label="1">女</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -41,7 +41,11 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="政治面貌" prop="politicsType ">
-              <el-input v-model="form.politicsType " placeholder="请输入政治面貌"></el-input>
+              <!-- <el-input v-model="form.politicsType " placeholder="请输入政治面貌"></el-input> -->
+              <el-select v-model="form.politicsType" placeholder="请选择政治面貌">
+                <el-option label="党员" value="0"></el-option>
+                <el-option label="团员" value="1"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -112,8 +116,9 @@
           <el-col :span="8">
             <el-form-item label="工人类型" prop="workerType">
               <el-select v-model="form.workerType" placeholder="请选择工人类型">
-                <el-option label="厨师" value="0"></el-option>
-                <el-option label="保安" value="1"></el-option>
+                <el-option label="厨师" value="1"></el-option>
+                <el-option label="保安" value="2"></el-option>
+                <el-option label="其他" value="3"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -164,9 +169,9 @@
                 type="primary"
                 round
                 style="background:#ccc;border:1px solid #ccc"
-                @click="cancel()"
+                @click.native="cancel('form')"
               >取消</el-button>
-              <el-button type="primary" round @click="submitForm('form')">提交</el-button>
+              <el-button type="primary" round @click.native="submitForm('form')">提交</el-button>
             </div>
           </div>
         </el-form>
@@ -201,7 +206,7 @@ export default {
         residencePermitDate: "",
         workerType: "",
         photo: "",
-        pInfoId: null
+        pinfoId: null
       },
       rules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -269,9 +274,8 @@ export default {
   methods: {
     //获得详情
     getDeatli(id) {
-      this.form.name = "1111";
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/other/" +
         this.id;
@@ -300,7 +304,7 @@ export default {
           form.residencePermitDate = result.residencePermitDate;
           form.workerType = result.workerType;
           form.photo = result.photoPath;
-          form.pInfoId = this.id;
+          form.pinfoId = this.id;
         }
       });
     },
@@ -316,7 +320,9 @@ export default {
     handlePreview(file) {
 
     },
-    cancel() {
+    cancel(form) {
+      this.$refs[form].resetFields();
+      Object.assign(this.$data.form, this.$options.data().form); // 初始化data
       this.$router.push({ path: "/roster/otherStaffs" });
     },
     submitForm(form) {
@@ -352,7 +358,12 @@ export default {
               "/other";
             this.http.post(url, data).then(res => {
               if (res.code == 200) {
-                this.$router.push({ path: "/roster/otherStaffs" });
+                // this.$router.push({ path: "/roster/otherStaffs" });
+                 this.$message({
+                type: "success",
+                message: "添加成功!"
+              });
+                this.cancel(form);
               }
             });
           } else {
@@ -376,7 +387,8 @@ export default {
             data.append("isRelatedCertificates", form.isRelatedCertificates);
             data.append("residencePermitDate", form.residencePermitDate);
             data.append("workerType", form.workerType);
-             data.append("photo", form.photo[0].raw);
+            data.append("photo", form.photo[0].raw);
+            data.append("pinfoId", this.id); 
             var url =
               "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
@@ -384,7 +396,11 @@ export default {
               this.id;
             this.http.put(url, data).then(res => {
               if (res.code == 200) {
-                this.$router.push({ path: "/roster/otherStaffs" });
+                 this.$message({
+                type: "success",
+                message: "编辑成功!"
+              });
+                this.cancel(form);
               }
             });
           }
