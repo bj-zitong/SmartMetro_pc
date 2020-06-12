@@ -23,7 +23,7 @@
     <el-container>
       <el-menu class="main-con-box">
         <div class="main-btn-box">
-          <el-button class="T-H-B-DarkBlue" @click="AddEditClick('add')">新增</el-button>
+          <el-button class="T-H-B-DarkBlue" @click="AddEditClick(0,'add')">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
           <div class="uploading">
@@ -50,7 +50,7 @@
           >
             <el-table-column
               type="selection"
-              prop="pInfoId"
+              prop="pinfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
@@ -68,7 +68,7 @@
             </el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="gender" label="性别"></el-table-column>
-            <el-table-column prop="birthPlace" label="籍贯"></el-table-column>
+            <el-table-column prop="birthPlaceCode" label="籍贯"></el-table-column>
             <el-table-column prop="idCardCode" label="证件编号"></el-table-column>
             <el-table-column prop="age" label="年龄"></el-table-column>
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
@@ -274,8 +274,8 @@ export default {
     },
     //  编辑+新增通过传参判断
     AddEditClick(row, par) {
-      console.log(row.pInfoId, par);
-      if (par != undefined) {
+      console.log(row.pinfoId, par);
+      if (par == 'add') {
         this.$router.push({
           name: "AddAdministration",
           params: {
@@ -286,7 +286,7 @@ export default {
         this.$router.push({
           name: "AddAdministration",
           params: {
-            id: row.pInfoId
+            id: row.pinfoId
           }
         });
       }
@@ -300,7 +300,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pInfoId;
+        var id = arrays[i].pinfoId;
         ids.push(id);
       }
       return ids;
@@ -385,12 +385,12 @@ export default {
       ///smart/worker/roster/{userId}/manager/{id}
       let _this = this;
       _this.changOrder = true;
-      _this.$nextTick(() => {
-        _this.$refs.turnOrder.init();
-      });
-      this.getDetail();
+      // _this.$nextTick(() => {
+      //   _this.$refs.turnOrder.init();
+      // });
+      this.getDetail(row);
     },
-    getDetail(){
+    getDetail(row){
        let _this = this;
       _this.changOrder = true;
       var url =

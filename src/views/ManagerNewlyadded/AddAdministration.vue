@@ -127,10 +127,10 @@
             <el-form-item label="居住证办理日期" prop="residencePermitDate">
               <el-date-picker
                 v-model="form.residencePermitDate"
-                type="datetime"
+                type="date"
                 placeholder="请选择居住证办理日期"
                 default-time="12:00:00"
-                value-format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
           </el-col>
@@ -281,36 +281,6 @@ export default {
         ],
         photo: [{ required: true, message: "请上传照片", trigger: "change" }]
       },
-      //日历选择器
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [
-          {
-            text: "今天",
-            onClick(picker) {
-              picker.$emit("pick", new Date());
-            }
-          },
-          {
-            text: "昨天",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            }
-          },
-          {
-            text: "一周前",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            }
-          }
-        ]
-      },
       //图片上传
       fileList: [],
       value1: "",
@@ -320,8 +290,11 @@ export default {
   activated() {
     var uid = this.$route.params.id;
     this.id = uid;
-    if (this.id != undefined) {
+    console.log('uid------'+uid);
+    if (uid=="0") {
+      console.log(新增);
     } else {
+      console.log(修改);
     }
   },
   methods: {
@@ -394,7 +367,7 @@ export default {
                     type: "success",
                     message: "添加成功!"
                   });
-                  // this.$router.push({ path: "/roster/manager" });
+                  this.$router.push({ path: "/roster/manager" });
                 }
               });
             })
@@ -411,6 +384,8 @@ export default {
       });
     },
     handleChange(file, fileList) {
+      this.$refs.form.clearValidate();
+      this.form.photo = fileList;
       // console.log(file, fileList,this.fileList)
       // if(fileList.length!=0){
       //     this.form.photo = []
@@ -419,7 +394,7 @@ export default {
       //      this.$refs.form.clearValidate();
       //      this.form.photo = fileList;
       // }
-     
+
     }
   }
 };
