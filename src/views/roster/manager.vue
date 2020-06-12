@@ -110,7 +110,7 @@
         />
       </el-menu>
     </el-container>
-    <managerDialog v-if="changOrder" ref="turnOrder"/>
+    <managerDialog v-if="changOrder" ref="changOrder"/>
   </div>
 </template>
 <script>
@@ -385,21 +385,22 @@ export default {
       // console.log(row.pinfoId);
       ///smart/worker/roster/{userId}/manager/{id}
       // this.bindData=[];
-      var url =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/manager/"+row.pinfoId;
-      this.http.get(url, null).then(res => {
-        if (res.code == 200) {
-          this.bindData=res.data;
-          console.log(this.bindData);
-          // return this.bindData;
-        }
-      });
       let _this =this
+      // var url =
+      //   "/bashUrl/smart/worker/roster/" +
+      //   sessionStorage.getItem("userId") +
+      //   "/manager/"+row.pinfoId;
+      // this.http.get(url, null).then(res => {
+      //   if (res.code == 200) {
+      //     this.bindData=res.data;
+      //     console.log(this.bindData);
+      //     // return this.bindData;
+      //   }
+      // });
+      
       _this.changOrder = true;
       // _this.$nextTick(() => {
-        _this.$refs.turnOrder.init();
+      //   _this.$refs.turnOrder.init();
       // });
       // _this.$nextTick(() => {
       //   _this.$refs.turnOrder.init();
