@@ -384,8 +384,6 @@ export default {
     detailsRowClick(index,row) {
       // console.log(row.pinfoId);
       ///smart/worker/roster/{userId}/manager/{id}
-<<<<<<< HEAD
-=======
       // this.bindData=[];
       var url =
         "/bashUrl/smart/worker/roster/" +
@@ -398,7 +396,6 @@ export default {
           // return this.bindData;
         }
       });
->>>>>>> 0ae8389cd5f1965152443d70cfe5bb1f24d1786c
       let _this =this
       _this.changOrder = true;
       // _this.$nextTick(() => {
