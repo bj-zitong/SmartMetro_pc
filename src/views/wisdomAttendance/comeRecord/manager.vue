@@ -20,7 +20,6 @@
     <el-container>
       <el-menu class="main-con-box">
         <div class="main-btn-box">
-          <!-- <el-button @click="deleteBatchClick" class="T-H-B-Grey">删除</el-button> -->
           <el-button @click="poiExcel" class="T-H-B-Cyan">导出</el-button>
         </div>
         <el-table
@@ -74,12 +73,12 @@
       :show-close="true"
       :hide-required-asterisk="true"
     >
-      <el-row>
+     <el-row>
         <el-col :span="8">
           <span>作业区域：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ workingArea }}</span>
+          <span class="colorB">{{ details.enterArea }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -87,7 +86,7 @@
           <span>作业设备：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ equipmentNo }}</span>
+          <span class="colorB">{{ details.enterNo }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -95,7 +94,7 @@
           <span>打卡时间：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorR">{{ date }} {{ direction }}</span>
+          <span class="colorR">{{ details.enterDate}}</span>
         </el-col>
       </el-row>
       <br />
@@ -105,7 +104,7 @@
           <span>作业区域：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ workingArea }}</span>
+          <span class="colorB">{{ details.workingArea }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -113,7 +112,7 @@
           <span>作业设备：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ equipmentNo }}</span>
+          <span class="colorB">{{ details.exitNo }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -121,7 +120,7 @@
           <span>打卡时间：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorG">{{ date }} {{ direction }}</span>
+          <span class="colorG">{{ details.exitDate}}</span>
         </el-col>
       </el-row>
     </el-dialog>
@@ -150,10 +149,15 @@ export default {
         name: ""
       },
       total: 0,
-      workingArea: "昌平三班南段",
-      equipmentNo: "西南侧挖掘机设备一台",
-      date: "2020-4-30 14:22",
-      direction: "出"
+      details: {
+        workingArea: "",
+        enterArea: "",
+        equipmentNo: "",
+        enterDate: "",
+        exit: "",
+        exitNo: "",
+        exitDate: ""
+      }
     };
   },
   activated: function() {
@@ -211,54 +215,20 @@ export default {
         console.log(res);
       });
     },
-    //  批量删除
-    deleteBatchClick() {
-      var ids = this.handleSelectionChange();
-      if (ids.length <= 0) {
-        this.$message("请选择删除的数据！");
-        return;
-      }
-      handleCofirm("确定删除吗？")
-        .then(res => {
-          let data = JSON.stringify(ids);
-          let url =
-            "/smart/worker/access/" +
-            sessionStorage.getItem("userId") +
-            "/manager";
-          this.http.delete(url, data).then(res => {
-            if (res.code == 200) {
-              let total = res.total;
-              let rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-            }
-          });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
     //详情
     personnelDetailClick(index, row) {
       this.dialogFormVisible = true;
       let url =
-        "/smart/worker/access/" +
+        "/bashUrl/smart/worker/access/" +
         sessionStorage.getItem("userId") +
         "/common/" +
-        row.id +
+        row.ids +
         "/detail";
       this.http
-        .post(url, data)
+        .post(url, {})
         .then(res => {
           if (res.code == 200) {
-            console.log(res);
+            this.details = res.data;
           }
         })
         .catch(err => {

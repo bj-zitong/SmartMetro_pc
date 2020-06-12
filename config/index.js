@@ -12,24 +12,40 @@ module.exports = {
     proxyTable: {
       '/systemUrl': {
         // target: 'http://192.168.1.30:8001', //系统
+<<<<<<< HEAD
         target: 'http://192.168.1.105:8003', //系统
+=======
+        target: 'http://192.168.1.108:8001', //系统
+>>>>>>> f473eec4de9c8b3646fe781f7a6cb0ab0ce059c2
         secure: false,
         changeOrigin: true,
         pathRewrite: {
           // '^/systemUrl': 'http://192.168.1.30:8001'
+<<<<<<< HEAD
           '^/systemUrl': 'http://192.168.1.105:8003'
+=======
+          '^/systemUrl': 'http://192.168.1.180:8001'
+>>>>>>> f473eec4de9c8b3646fe781f7a6cb0ab0ce059c2
         }
       },
       '/bashUrl': {
-         target: 'http://192.168.1.105:8002',
+        //  target: 'http://192.168.1.105:8002',
         // target: 'http://192.168.1.30:8002',
+<<<<<<< HEAD
         // target: 'http://192.168.1.100:8002',
+=======
+        target: 'http://192.168.1.108:8002',
+>>>>>>> f473eec4de9c8b3646fe781f7a6cb0ab0ce059c2
         secure: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/bashUrl': 'http://192.168.1.105:8002',
+          // '^/bashUrl': 'http://192.168.1.105:8002',
           // '^/bashUrl': 'http://192.168.1.30:8002'
+<<<<<<< HEAD
           // '^/bashUrl': 'http://192.168.1.100:8002'
+=======
+          '^/bashUrl': 'http://192.168.1.108:8002'
+>>>>>>> f473eec4de9c8b3646fe781f7a6cb0ab0ce059c2
         }
       },
     },

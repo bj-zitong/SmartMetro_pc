@@ -24,7 +24,7 @@
       <el-main class="table-head">
         <el-button class="T-H-B-DarkBlue">新增</el-button>
         <!-- <el-button @click="deleteAll()" class="T-H-B-Grey">删除</el-button> -->
-        <el-button @click="poiExcel()" class="T-H-B-Cyan">导出</el-button>
+        <!-- <el-button @click="poiExcel()" class="T-H-B-Cyan">导出</el-button> -->
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -73,6 +73,7 @@
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
 import Pagination from "@/components/pagination";
+import { countDown } from "@/utils/utils";
 export default {
   components: {
     Pagination
@@ -106,36 +107,6 @@ export default {
     this.handleUserList();
   },
   methods: {
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size;
-      // this.handleUserList()
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      // this.handleUserList();
-      // console.log(this.page); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      // console.log("cpage" + cpage);
-      // this.handleUserList()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      // console.log("下一页" + cpage);
-      // this.handleUserList()
-    },
-    // 下拉框获得值
-    selectProfession(vid) {
-      let obj = {};
-      obj = this.options.find(item => {
-        return item.id == vid; // 筛选出匹配数据
-      });
-      this.formInline.profession = obj.id;
-    },
     // 列表请求
     handleUserList() {
       // 获得搜索的内容
@@ -156,56 +127,12 @@ export default {
         "/equipment/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
+            for (var i = 0; i < res.data.rows.length; i++) {
+            res.data.rows[i].attendanceTime =countDown(res.data.rows[i].endTime,res.data.rows[i].firstTime)
+          }
           this.tableData = res.data.rows;
           this.total = res.data.total;
         }
-      });
-    },
-    // poi导出
-    poiExcel() {
-       // 获得搜索的内容
-      var uname = this.formInline.searchUname;
-      var profession = this.formInline.profession;
-      var date=this.formInline.date;
-      // var  uid = sessionStorage.getItem('uid')
-      var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page,
-        professional: profession,
-        name: uname,
-        date:date
-      });
-        var url =
-        "/smart/worker/attendance/" +
-        sessionStorage.getItem("userId") +
-        "/equipment/management/export";
-        this.http.post(url, data).then(res => {
-        // // 创建Blob对象，设置文件类型
-        // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"})
-        // let objectUrl = URL.createObjectURL(blob) // 创建URL
-        // location.href = objectUrl;
-        // URL.revokeObjectURL(objectUrl); // 释放内存
-        // 创建Blob对象，设置文件类型
-        // 自定义文件下载名称  Subway-User-20191223114607
-        var d = new Date();
-        var month = d.getMonth() + 1;
-        var excelName =
-          "Subway-User-" +
-          d.getFullYear() +
-          month +
-          d.getDate() +
-          d.getHours() +
-          d.getMinutes() +
-          d.getSeconds();
-        let blob = new Blob([res.data], {
-          type: "application/vnd.ms-excel"
-        });
-        let objectUrl = URL.createObjectURL(blob); // 创建URL
-        link.href = objectUrl;
-        link.download = excelName; // 自定义文件名
-        link.click(); // 下载文件
-        URL.revokeObjectURL(objectUrl); // 释放内存
-        // alert("调用导出！");
       });
     },
     //获得表格前面选中的id值
@@ -219,41 +146,7 @@ export default {
         // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-    },
-    // 批量删除
-    // deleteAll() {
-    //   var ids = this.changeFun();
-    //   if (ids.length <= 0) {
-    //     this.$message("请选择删除的数据！");
-    //     return;
-    //   }
-    //   handleCofirm("确认删除吗？", "warning")
-    //     .then(res => {
-    //       var data = JSON.stringify(ids);
-    //       var url =
-    //         "/smart/worker/attendance/" +
-    //         sessionStorage.getItem("userId") +
-    //         "/equipment";
-    //       this.http.delete(url, data).then(res => {
-    //         if (res.code == 200) {
-    //           var total = res.total;
-    //           var rows = res.rows;
-    //           this.tableData = rows;
-    //           this.total = total;
-    //           this.$message({
-    //             type: "success",
-    //             message: "删除成功!"
-    //           });
-    //         }
-    //       });
-    //     })
-    //     .catch(err => {
-    //       this.$message({
-    //         type: "info",
-    //         message: "已取消删除"
-    //       });
-    //     });
-    // }
+    }
   }
 };
 </script>

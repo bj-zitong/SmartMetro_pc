@@ -35,15 +35,22 @@ function SecondToDate(msd) {
     return time;
 }
 //开始时间减去结束时间
-function timePresupposed(startTime, endTime) {
-    var str = startTime; // 日期字符串
-    str = str.replace(/-/g, '/'); // 将-替换成/，因为下面这个构造函数只支持/分隔的日期字符串
-    var date = new Date(str).getTime();
+function countDown(startTime, endTime) {
+    // 开始时间
+    var s = 0;
+    var hour = startTime.split(':')[0];
+    var min = startTime.split(':')[1];
+    var sec = startTime.split(':')[2];
+    s = Number(hour * 3600) + Number(min * 60) + Number(sec);
+    //结束时间
+    var j = 0;
+    var hour = endTime.split(':')[0];
+    var min = endTime.split(':')[1];
+    var sec = endTime.split(':')[2];
+    j = Number(hour * 3600) + Number(min * 60) + Number(sec);
+    
+    return SecondToDate(s-j)
+    // return s;
 
-    var str1 = endTime; // 日期字符串
-    str1 = str1.replace(/-/g, '/'); // 将-替换成/，因为下面这个构造函数只支持/分隔的日期字符串
-    var date1 = new Date(str1).getTime();
-    console.log(date1 - date)
-    return date1 - date
 }
-export { updateVegetablesCollection, SecondToDate,timePresupposed};
+export { updateVegetablesCollection, SecondToDate,countDown};

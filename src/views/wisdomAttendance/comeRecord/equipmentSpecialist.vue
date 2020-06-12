@@ -8,10 +8,7 @@
             <el-input v-model="screenForm.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item label="专业">
-            <el-select
-              v-model="screenForm.workerType"
-              placeholder="请选择专业"
-            >
+            <el-select v-model="screenForm.workerType" placeholder="请选择专业">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -84,12 +81,12 @@
       :show-close="true"
       :hide-required-asterisk="true"
     >
-      <el-row>
+     <el-row>
         <el-col :span="8">
           <span>作业区域：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ workingArea }}</span>
+          <span class="colorB">{{ details.enterArea }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -97,7 +94,7 @@
           <span>作业设备：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ equipmentNo }}</span>
+          <span class="colorB">{{ details.enterNo }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -105,7 +102,7 @@
           <span>打卡时间：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorR">{{ date }} {{ direction }}</span>
+          <span class="colorR">{{ details.enterDate}}</span>
         </el-col>
       </el-row>
       <br />
@@ -115,7 +112,7 @@
           <span>作业区域：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ workingArea }}</span>
+          <span class="colorB">{{ details.workingArea }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -123,7 +120,7 @@
           <span>作业设备：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ equipmentNo }}</span>
+          <span class="colorB">{{ details.exitNo }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -131,7 +128,7 @@
           <span>打卡时间：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorG">{{ date }} {{ direction }}</span>
+          <span class="colorG">{{ details.exitDate}}</span>
         </el-col>
       </el-row>
     </el-dialog>
@@ -159,12 +156,18 @@ export default {
       screenForm: {
         // 筛选
         name: "",
-        workerType: ""
+        workerType: "",
+        
       },
-      workingArea: "昌平三班南段",
-      equipmentNo: "西南侧挖掘机设备一台",
-      date: "2020-4-30 14:22",
-      direction: "出"
+      details: {
+          workingArea: "",
+          enterArea: "",
+          equipmentNo: "",
+          enterDate: "",
+          exit: "",
+          exitNo: "",
+          exitDate: ""
+        }
     };
   },
   activated: function() {
@@ -178,7 +181,7 @@ export default {
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
-           name: this.screenForm.name,
+        name: this.screenForm.name,
         workType: this.screenForm.workerType,
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage
@@ -226,16 +229,16 @@ export default {
     personnelDetailClick(index, row) {
       this.dialogFormVisible = true;
       let url =
-        "/smart/worker/access/" +
+        "/bashUrl/smart/worker/access/" +
         sessionStorage.getItem("userId") +
         "/common/" +
         row.id +
         "/detail";
       this.http
-        .post(url, data)
+        .post(url, {})
         .then(res => {
           if (res.code == 200) {
-            console.log(res);
+            this.details = res.data;
           }
         })
         .catch(err => {

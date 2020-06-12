@@ -15,19 +15,15 @@
     <div class="table-main">
       <el-main class="table-head">
         <!-- <el-button class="T-H-B-SkyBlue">上传</el-button> -->
-        <el-upload
+        <!-- <el-upload
           class="upload-demo"
           action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
           :before-remove="beforeRemove"
           multiple
           :limit="1"
-          :on-exceed="handleExceed"
-          :file-list="fileList"
-        >
-          <el-button class="T-H-B-SkyBlue">上传</el-button>
-        </el-upload>
+        >-->
+        <el-button class="T-H-B-SkyBlue">上传</el-button>
+        <!-- </el-upload> -->
         <div class="table-content">
           <el-table
             :data="tableData"
@@ -43,7 +39,7 @@
               prop="userId"
               @selection-change="changeFun"
             ></el-table-column>
-            <el-table-column prop="labourCompany" label="所属单位"></el-table-column>
+            <el-table-column prop="company" label="所属单位"></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="workType" label="工种"></el-table-column>
             <el-table-column prop="blackReason" label="拉黑原因"></el-table-column>
@@ -120,28 +116,7 @@ export default {
     return {
       dialogFormVisible: false,
       // 动态数据
-      tableData: [
-        {
-          uuid: 0,
-          labourCompany: "安保公司",
-          name: "张三",
-          workType: "木工",
-          blackReason: "嗯嗯",
-          provePath: "111",
-          evaluate: "好好",
-          status: "2"
-        },
-        {
-          uuid: 1,
-          labourCompany: "安保公司",
-          name: "张三",
-          workType: "木工",
-          blackReason: "嗯嗯",
-          provePath: "111",
-          evaluate: "好好",
-          status: "2"
-        }
-      ],
+      tableData: [],
       total: 50,
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
@@ -152,7 +127,7 @@ export default {
       }
     };
   },
-  mounted() {
+  activated() {
     this.getDateList();
   },
   methods: {
@@ -161,45 +136,25 @@ export default {
     },
     // 列表请求
     getDateList() {
+      alert("99999")
       // 获得搜索的内容
       var data = JSON.stringify({
         name: this.formInline.name,
+        status:"3",
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage
       });
-      // /smart/worker/integrity/{userId}/black/management
       var url =
-        "/smart/worker/integrity/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
-        "/black/management";
+        "/labour/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
+          console.log(res.data.rows)
           var rows = res.rows;
-          this.tableData = rows;
+          this.tableData = res.data.rows;
           this.total = res.total;
         }
-        var result = [
-          {
-            uuid: 0,
-            name: "张三",
-            jobNum: "663366",
-            teamName: "安保公司",
-            buildCorpName: "安保部一",
-            workType: "木工",
-            personEvaluate: "好好"
-          },
-          {
-            uuid: 0,
-            name: "张三",
-            jobNum: "663366",
-            teamName: "安保公司",
-            buildCorpName: "安保部一",
-            workType: "木工",
-            personEvaluate: "好好"
-          }
-        ];
-        this.tableData = result;
-        this.total = result.length;
       });
     },
     //取消
@@ -208,14 +163,15 @@ export default {
       var ids = [];
       ids.push(uid);
       console.log(ids);
-      // /smart/worker/integrity/{userId}/black/change/{status}
+      //       /smart/worker/roster/{userId}/labour/management
+      // query labour management
       handleCofirm("确认取消")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/integrity/" +
+            "/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
-            "/black/change/1";
+            "/labour/management";
           this.http.post(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
@@ -335,9 +291,7 @@ export default {
           });
         });
     },
-    beforeRemove(){
-
-    },
+    beforeRemove() {},
     changeFun() {}
   }
 };
