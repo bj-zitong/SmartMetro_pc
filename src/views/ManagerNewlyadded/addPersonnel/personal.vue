@@ -17,8 +17,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="性别" prop="gender" class="el-form-item">
-               <el-radio v-model="form.gender" label="1">男</el-radio>
-               <el-radio v-model="form.gender" label="2">女</el-radio>
+              <el-radio v-model="form.gender" label="1">男</el-radio>
+              <el-radio v-model="form.gender" label="2">女</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -33,13 +33,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="工种" class="region" prop="workerType">
-              <el-select
-                v-model="form.workerType"
-                placeholder="请选择工种"
-                filterable
-                clearable
-                @change="handleButton"
-              >
+              <el-select v-model="form.workerType" placeholder="请选择工种" filterable clearable>
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -92,8 +86,8 @@
           <el-col :span="8">
             <el-form-item label="学位" prop="degree">
               <el-select v-model="form.degree" placeholder="请选择学位">
-                <el-option label="身份证" value="sfz"></el-option>
-                <el-option label="护照" value="hz"></el-option>
+                <el-option label="学位1" value="1"></el-option>
+                <el-option label="学位2" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -209,6 +203,7 @@
                 :file-list="fileList"
                 :auto-upload="false"
                 :limit="1"
+                :show-file-list="true"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
@@ -253,10 +248,9 @@ export default {
         maritalStatus: "",
         degree: "",
         idCardCode: "",
-        residencePermit: "",
+        isResidencePermit: "",
         residencePermitDate: "",
         idCardType: "",
-        Personneltype: "",
         politicsType: "",
         photo: "",
         registrationType: "",
@@ -316,9 +310,7 @@ export default {
         idCardType: [
           { required: true, message: "请选择证件类型", trigger: "blur" }
         ],
-        teamId: [
-          { required: true, message: "请选择班组", trigger: "blur" }
-        ],
+        teamId: [{ required: true, message: "请选择班组", trigger: "blur" }],
         politicsType: [
           { required: true, message: "请选择政治面貌", trigger: "blur" }
         ],
@@ -353,46 +345,31 @@ export default {
     if (sessionStorage.getItem("data") != null) {
       this.form = JSON.parse(sessionStorage.getItem("data"));
       let name = JSON.parse(sessionStorage.getItem("data")).photo.name;
-      console.log(name)
       this.fileList.push({ name });
     }
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event);
     },
     onSubmit() {
-      console.log("submit!");
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
     },
     handlePreview(file) {
-      console.log(file);
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // handleCofirm("确认保存吗", "warning")
-            // .then(res => {
-              this.$global_msg.photo=this.form.photo
-              sessionStorage.setItem("data", JSON.stringify(this.form));
-              console.log(sessionStorage.getItem("data"));
-              console.log(JSON.stringify(this.form));
-              this.$emit("field", this.field);
-              this.$message({
-                type: "success",
-                message: "保存成功!"
-              });
-            // })
-            // .catch(err => {
-            //   this.$message({
-            //     type: "info",
-            //     message: "已取消保存"
-            //   });
-            // });
+          // .then(res => {
+          this.$global_msg.photo = this.form.photo;
+          sessionStorage.setItem("data", JSON.stringify(this.form));
+          this.$emit("field", this.field);
+          this.$message({
+            type: "success",
+            message: "保存成功!"
+          });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -403,14 +380,12 @@ export default {
     //保存
     preservationClick() {},
     handleChange(file, fileList) {
-      console.log(file, fileList)
       this.$refs.form.clearValidate();
       this.form.photo = file;
       // this.form.photo1 = fileList;
     },
     beforeAvatarUpload(file) {
       return new Promise(resolve => {
-        console.log(resolve);
       });
     },
     //图片上传失败调用

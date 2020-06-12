@@ -58,8 +58,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="籍贯" prop="nativePlace">
-              <el-input v-model="form.nativePlace" placeholder="请输入籍贯"></el-input>
+            <el-form-item label="籍贯" prop="birthPlaceCode">
+              <el-input v-model="form.birthPlaceCode" placeholder="请输入籍贯"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -111,7 +111,7 @@ export default {
         documentType: "",
         politicalOutlook: "",
         certificateCode: "",
-        nativePlace: "",
+        birthPlaceCode: "",
         post: "",
         contractName: "",
         professional: ""
@@ -140,7 +140,7 @@ export default {
         certificateCode: [
           { required: true, message: "请输入证件编码", trigger: "blur" }
         ],
-        nativePlace: [
+        birthPlaceCode: [
           { required: true, message: "请输入籍贯", trigger: "blur" }
         ],
         post: [{ required: true, message: "请选择职务", trigger: "blur" }],
@@ -192,6 +192,7 @@ export default {
           form.certificateCode = result.idCardCode;
           form.professional = result.professional;
           form.post = result.duty;
+          form.birthPlaceCode=result.birthPlaceCode
         }
       });
     },
@@ -206,7 +207,7 @@ export default {
               age: form.age,
               cellPhone: form.phoneNumber,
               politicsType: form.politicalOutlook,
-              birthPlace: form.nativePlace,
+              birthPlaceCode: form.birthPlaceCode,
               name: form.name,
               duty: form.post,
               gender: form.gender,
@@ -233,7 +234,7 @@ export default {
               name: form.name,
               gender: form.gender,
               politicsType: form.politicalOutlook,
-              birthPlace: form.nativePlace,
+              birthPlaceCode: form.birthPlaceCode,
               duty: form.post,
               idCardType: form.documentType,
               idCardCode: form.certificateCode,

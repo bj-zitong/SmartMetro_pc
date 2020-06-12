@@ -60,8 +60,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="籍贯" prop="birthPlace" class="el-form-item">
-              <el-input v-model="form.birthPlace" placeholder="请输入籍贯"></el-input>
+            <el-form-item label="籍贯" prop="birthPlaceCode" class="el-form-item">
+              <el-input v-model="form.birthPlaceCode" placeholder="请输入籍贯"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -190,7 +190,7 @@ export default {
         urgentLinkMan: "",
         urgentLinkManPhone: "",
         address: "",
-        birthPlace: "",
+        birthPlaceCode: "",
         maritalStatus: "",
         degree: "",
         cultureLevelType: "",
@@ -223,7 +223,7 @@ export default {
         address: [
           { required: true, message: "请输入现居住地", trigger: "blur" }
         ],
-        birthPlace: [
+        birthPlaceCode: [
           { required: true, message: "请输入籍贯", trigger: "blur" }
         ],
         maritalStatus: [
@@ -265,7 +265,6 @@ export default {
     if (!this.id==0) {
       this.getDeatli(this.id);
     }
-    console.log(this.id);
   },
   methods: {
     //获得详情
@@ -290,7 +289,7 @@ export default {
           form.urgentLinkMan = result.urgentLinkMan;
           form.urgentLinkManPhone = result.urgentLinkManPhone;
           form.address = result.address;
-          form.birthPlace = result.birthPlace;
+          form.birthPlaceCode = result.birthPlaceCode;
           form.maritalStatus = result.maritalStatus;
           form.degree = result.degree;
           form.cultureLevelType = result.cultureLevelType;
@@ -306,16 +305,16 @@ export default {
       });
     },
     handleClick(tab, event) {
-      console.log(tab, event);
+
     },
     onSubmit() {
-      console.log("submit!");
+
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+
     },
     handlePreview(file) {
-      console.log(file);
+
     },
     cancel() {
       this.$router.push({ path: "/roster/otherStaffs" });
@@ -335,7 +334,7 @@ export default {
             data.append("urgentLinkMan", form.urgentLinkMan);
             data.append("urgentLinkManPhone", form.urgentLinkManPhone);
             data.append("address", form.address);
-            data.append("birthPlace", form.birthPlace);
+            data.append("birthPlaceCode", form.birthPlaceCode);
             data.append("maritalStatus", form.maritalStatus);
             data.append("degree", form.degree);
             data.append("cultureLevelType", form.cultureLevelType);
@@ -367,7 +366,7 @@ export default {
             data.append("urgentLinkMan", form.urgentLinkMan);
             data.append("urgentLinkManPhone", form.urgentLinkManPhone);
             data.append("address", form.address);
-            data.append("birthPlace", form.birthPlace);
+            data.append("birthPlaceCode", form.birthPlaceCode);
             data.append("maritalStatus", form.maritalStatus);
             data.append("degree", form.degree);
             data.append("cultureLevelType", form.cultureLevelType);

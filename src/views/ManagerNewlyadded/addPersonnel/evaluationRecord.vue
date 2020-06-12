@@ -15,7 +15,7 @@
           <el-form-item style="float:right">
             <el-button type="primary" round style="text-aligin:center" @click="preservationClick">保存</el-button>
           </el-form-item>
-        </el-col> -->
+        </el-col>-->
         <el-col :span="24">
           <el-form-item style="float:right;position:relative;bottom:0;">
             <el-button type="primary" round class="cancel-style">取消</el-button>
@@ -38,7 +38,9 @@ export default {
       },
       value1: "",
       rules: {
-        evaluate: [{ required: true, message: "请输入评价记录", trigger: "blur" }]
+        evaluate: [
+          { required: true, message: "请输入评价记录", trigger: "blur" }
+        ]
       }
     };
   },
@@ -49,27 +51,24 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      console.log(formName);
       this.$refs[formName].validate(valid => {
         if (valid) {
-           handleCofirm("确认保存吗", "warning")
-        .then(res => {
-          sessionStorage.setItem("History", JSON.stringify(this.form));
-          console.log(this.form);
-          this.$emit("field", this.field);
-          this.$message({
-            type: "success",
-            message: "保存成功!"
-          });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消保存"
-          });
-        });
+          handleCofirm("确认保存吗", "warning")
+            .then(res => {
+              sessionStorage.setItem("History", this.form.evaluate);
+              this.$emit("field", this.field);
+              this.$message({
+                type: "success",
+                message: "保存成功!"
+              });
+            })
+            .catch(err => {
+              this.$message({
+                type: "info",
+                message: "已取消保存"
+              });
+            });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
