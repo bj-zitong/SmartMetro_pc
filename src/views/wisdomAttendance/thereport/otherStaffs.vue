@@ -37,7 +37,7 @@
             <el-table-column prop="jobNum" label="工号"></el-table-column>
             <el-table-column prop="duty" label="职务"></el-table-column>
             <el-table-column prop="workerType" label="工人类别"></el-table-column>
-             <el-table-column prop="attendanceHoursByYear" label="出勤天数/工时（年）"></el-table-column>
+            <el-table-column prop="attendanceHoursByYear" label="出勤天数/工时（年）"></el-table-column>
             <el-table-column prop="attendanceHoursByQuarter" label="出勤天数/工时（季度）"></el-table-column>
             <el-table-column prop="attendanceHoursByMonth" label="出勤天数/工时（月）"></el-table-column>
             <el-table-column prop="attendanceHoursByWeek" label="出勤天数/工时（周）"></el-table-column>
@@ -50,18 +50,14 @@
                      layout="total, sizes, prev, pager, next, jumper"
 
         -->
-         <div class="block">
-          <el-pagination
-            class="pagination-box"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[10, 50, 100]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="4"
-          ></el-pagination>
-        </div>
+        <pagination
+          class="pagination-box"
+          v-if="total>0"
+          :total="total"
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getDatafun"
+        />
       </el-main>
     </div>
   </div>
@@ -69,40 +65,38 @@
 <script>
 import { headClass } from "@/utils";
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "@/components/pagination";
 export default {
+  components: {
+    Pagination
+  },
   data() {
     return {
-      headClass:headClass,
+      headClass: headClass,
       dialogFormVisible: false,
       // 动态数据
       tableData: [],
-    formInline: {
+      formInline: {
         jobNum: "", // 搜索
         name: ""
       },
-      page: {
-        page: 1, // 初始页
-        pageSize: 10, // 默认每页数据量
-        total: 0 //总条数
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
       },
-      //当前页
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      total: 10, //总条数
     };
   },
   created: function() {
     this.getDatafun();
   },
   methods: {
-     getDatafun() {
+    getDatafun() {
       var _this = this;
       var data = JSON.stringify({
         name: _this.formInline.name,
-        jobNum: _this.formInline.jobNum,
-        pageSize: _this.page.pageSize,
-        page: _this.page.page
+        pageSize: this.listQuery.pageSize,
+          page: this.listQuery.currentPage
       });
       var url =
         "/smart/worker/reports/" +
@@ -123,7 +117,7 @@ export default {
           name: "张三",
           jobNum: "12346956",
           duty: "劳务一组",
-          workerType:"矿工",
+          workerType: "矿工",
           attendanceHoursByYear: "10",
           attendanceHoursByQuarter: "10",
           attendanceHoursByMonth: "10",
@@ -135,7 +129,7 @@ export default {
           name: "张三",
           jobNum: "12346956",
           duty: "劳务一组",
-          workerType:"矿工",
+          workerType: "矿工",
           attendanceHoursByYear: "10",
           attendanceHoursByQuarter: "10",
           attendanceHoursByMonth: "10",
@@ -147,7 +141,7 @@ export default {
           name: "张三",
           jobNum: "12346956",
           duty: "劳务一组",
-          workerType:"矿工",
+          workerType: "矿工",
           attendanceHoursByYear: "10",
           attendanceHoursByQuarter: "10",
           attendanceHoursByMonth: "10",
@@ -165,7 +159,7 @@ export default {
           attendanceHoursByMonth: "10",
           attendanceHoursByWeek: "10"
         },
-         {
+        {
           pReportsId: 4,
           pInfoId: 4,
           name: "张三",
@@ -181,7 +175,7 @@ export default {
       this.tableData = result;
       this.total = result.length;
     },
-        //导出
+    //导出
     exportExcelClick() {
       handleCofirm("确认导出吗", "warning").then(res => {
         let _this = this;
@@ -225,12 +219,12 @@ export default {
         });
       });
     },
-     searchClick() {this.getDatafun()},
+    searchClick() {
+      this.getDatafun();
+    },
     handleSizeChange(val) {},
     handleCurrentChange(val) {},
-    changeFun(){
-
-    }
+    changeFun() {}
   }
 };
 </script>
@@ -368,15 +362,15 @@ export default {
     margin-top: 30px;
   }
 }
-.addUser-content{
-  height :300px;
-  p{
-    text-align :center;
-    width :100%;
-    border-bottom:1px solid #000;
-     padding-bottom:20px
-    // padding-top:20px
+
+.addUser-content {
+  height: 300px;
+
+  p {
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
   }
 }
-
 </style>

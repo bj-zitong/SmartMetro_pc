@@ -6,9 +6,6 @@
           <el-form-item label="姓名">
             <el-input v-model="formInline.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
-          <el-form-item label="工号" class="region">
-            <el-input v-model="formInline.jobNum" placeholder="请输入工号"></el-input>
-          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchClick">搜索</el-button>
           </el-form-item>
@@ -34,7 +31,7 @@
               @selection-change="changeFun"
             ></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="jobNum" label="工号"></el-table-column>
+            <!-- <el-table-column prop="jobNum" label="工号"></el-table-column> -->
             <el-table-column prop="company" label="所在班组"></el-table-column>
             <el-table-column prop="workerType" label="工种"></el-table-column>
             <el-table-column prop="attendanceHoursByYear" label="出勤天数/工时（年）"></el-table-column>
@@ -50,18 +47,14 @@
                      layout="total, sizes, prev, pager, next, jumper"
 
         -->
-        <div class="block">
-          <el-pagination
-            class="pagination-box"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[10, 50, 100]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="4"
-          ></el-pagination>
-        </div>
+        <pagination
+          class="pagination-box"
+          v-if="total>0"
+          :total="total"
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getDatafun"
+        />
       </el-main>
     </div>
   </div>
@@ -70,28 +63,24 @@
 import options from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
+import Pagination from "@/components/pagination";
 export default {
+  components: {
+    Pagination
+  },
   data() {
     return {
       //当前页
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
       // 动态数据
       tableData: [],
-      page: 1, // 初始页
-      pageSize: 10, //    每页的数据
-      total: 100, //总条数
+      listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
+      },
+      total: 10, //总条数
       headClass: headClass,
       formInline: {
-        jobNum: "", // 搜索
-        name: ""
-      },
-      page: {
-        page: 1, // 初始页
-        pageSize: 10, // 默认每页数据量
-        total: 0 //总条数
+        name: null
       }
     };
   },
@@ -105,9 +94,8 @@ export default {
         let _this = this;
         var data = JSON.stringify({
           name: _this.formInline.name,
-          jobNum: _this.formInline.jobNum,
-          pageSize: _this.page.pageSize,
-          page: _this.page.page
+          pageSize: this.listQuery.pageSize,
+          page: this.listQuery.currentPage
         });
         var url =
           "/smart/worker/reports/" +
@@ -148,12 +136,11 @@ export default {
       var _this =this
       var data = JSON.stringify({
         name: _this.formInline.name,
-        jobNum: _this.formInline.jobNum,
-        pageSize: _this.page.pageSize,
-        page: _this.page.page
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage,
       });
       var url =
-        "/smart/worker/reports/" +
+        "/bashUrl/smart/worker/reports/" +
         sessionStorage.getItem("userId") +
         "/management/2";
       this.http.post(url, data).then(res => {
@@ -164,58 +151,6 @@ export default {
           this.total = total;
         }
       });
-      var result = [
-        {
-           pReportsId:0,
-          pInfoId:0,
-          name: "张三",
-          jobNum: "12346956",
-          company: "劳务一组",
-          workerType: "矿工", // 单位
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-          pReportsId:1,
-          pInfoId:1,
-          name: "张三",
-          jobNum: "12346956",
-          company: "劳务一组",
-          workerType: "矿工", // 单位
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-           pReportsId:2,
-          pInfoId:2,
-          name: "张三",
-          jobNum: "12346956",
-          company: "劳务一组",
-          workerType: "矿工", // 单位
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-           pReportsId:3,
-          pInfoId:3,
-          name: "张三",
-          jobNum: "12346956",
-          company: "劳务一组",
-          workerType: "矿工", // 单位
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     searchClick() {this.getDatafun()},
     handleSizeChange(val) {},

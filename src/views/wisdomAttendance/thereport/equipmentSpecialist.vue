@@ -6,9 +6,9 @@
           <el-form-item label="姓名">
             <el-input v-model="formInline.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
-          <el-form-item label="工号" class="region">
+          <!-- <el-form-item label="工号" class="region">
             <el-input v-model="formInline.jobNum" placeholder="请输入工号"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
             <el-button type="primary" @click="searchClick">搜索</el-button>
           </el-form-item>
@@ -50,18 +50,14 @@
                      layout="total, sizes, prev, pager, next, jumper"
 
         -->
-        <div class="block">
-          <el-pagination
-            class="pagination-box"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[10, 50, 100]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="4"
-          ></el-pagination>
-        </div>
+         <pagination
+          class="pagination-box"
+          v-if="total>0"
+          :total="total"
+          :page.sync="listQuery.currentPage"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getDatafun"
+        />
       </el-main>
     </div>
   </div>
@@ -69,7 +65,11 @@
 <script>
 import { headClass } from "@/utils";
 import { handleCofirm } from "@/utils/confirm";
+import Pagination from "@/components/pagination";
 export default {
+   components: {
+    Pagination
+  },
   data() {
     return {
       headClass: headClass,
@@ -79,16 +79,11 @@ export default {
         jobNum: "", // 搜索
         name: ""
       },
-      page: {
-        page: 1, // 初始页
-        pageSize: 10, // 默认每页数据量
-        total: 0 //总条数
+       listQuery: {
+        currentPage: 1, //与后台定义好的分页参数
+        pageSize: 10
       },
-      //当前页
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      total: 10, //总条数
     };
   },
   created: function() {this.getDatafun()},
@@ -98,8 +93,8 @@ export default {
       var data = JSON.stringify({
         name: _this.formInline.name,
         jobNum: _this.formInline.jobNum,
-        pageSize: _this.page.pageSize,
-        page: _this.page.page
+        pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage
       });
       var url =
         "/smart/worker/reports/" +
