@@ -39,10 +39,17 @@
             <el-table-column prop="idNum" label="身份证号" width="150"></el-table-column>
             <el-table-column prop="phone" label="电话" width="150"></el-table-column>
             <el-table-column prop="company" label="来访单位" width="150"></el-table-column>
-            <el-table-column prop="intervieweeDepartment" label="被访部门" width="100"></el-table-column>
+            <el-table-column prop="intervieweeDepartmentId" label="被访部门" width="100">
+               <template slot-scope="scope">
+                  <span v-if="scope.row.intervieweeDepartmentId==1">部门一</span>
+                  <span v-if="scope.row.intervieweeDepartmentId==2">部门二</span>
+                  <span v-if="scope.row.intervieweeDepartmentId==3">部门三</span>
+               </template>
+            </el-table-column>
             <el-table-column prop="interviewee" label="被访人姓名" width="100"></el-table-column>
             <el-table-column prop="visitReason" label="来访事由" width="120"></el-table-column>
             <el-table-column prop="visitTime" label="来访时间" width="200"></el-table-column>
+            <el-table-column prop="updateTime" label="修改时间" width="200"></el-table-column>
             <el-table-column label="操作" width="300" fixed="right">
               <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
@@ -87,8 +94,8 @@
             <el-form-item prop="id">
               <el-input v-model="form.id" type="text" hidden></el-input>
             </el-form-item>
-            <el-form-item prop="userName" label="用户名">
-              <el-input v-model="form.userName" type="text" placeholder="用户名"></el-input>
+            <el-form-item prop="name" label="用户名">
+              <el-input v-model="form.name" type="text" placeholder="用户名"></el-input>
             </el-form-item>
             <el-form-item prop="idNum" label="身份证号">
               <el-input v-model="form.idNum" placeholder="身份证号"></el-input>
@@ -99,12 +106,12 @@
             <el-form-item prop="company" label="单位">
               <el-input v-model="form.company" placeholder="单位"></el-input>
             </el-form-item>
-            <el-form-item prop="carNum" label="车牌号">
-              <el-input v-model="form.carNum" placeholder="车牌号"></el-input>
+            <el-form-item prop="busNum" label="车牌号">
+              <el-input v-model="form.busNum" placeholder="车牌号"></el-input>
             </el-form-item>
-            <el-form-item label="被访人部门" prop="profession">
+            <el-form-item label="被访人部门" prop="intervieweeDepartmentId">
               <el-select
-                v-model="form.profession"
+                v-model="form.intervieweeDepartmentId"
                 placeholder="请选择被访人部门"
                 @change="selectProfession"
               >
@@ -120,13 +127,13 @@
               <el-input v-model="form.interviewee" placeholder="被访人姓名"></el-input>
             </el-form-item>
             <br />
-            <el-form-item prop="intervieweeReason" label="来访事由">
-              <el-input v-model="form.intervieweeReason" placeholder="来访事由"></el-input>
+            <el-form-item prop="visitReason" label="来访事由">
+              <el-input v-model="form.visitReason" placeholder="来访事由"></el-input>
             </el-form-item>
             <br />
-            <el-form-item prop="intervieweeDate" label="日期">
+            <el-form-item prop="visitTime" label="日期">
               <el-date-picker
-                v-model="form.intervieweeDate"
+                v-model="form.visitTime"
                 type="datetime"
                 placeholder="选择日期时间"
                 default-time="12:00:00"
@@ -160,13 +167,13 @@
           <el-col :span="10">
             <div class="grid-content bg-purple">
               姓名:
-              <span>9996666</span>
+              <span>{{form.name}}</span>
             </div>
           </el-col>
           <el-col :span="10">
             <div class="grid-content bg-purple">
               身份证号:
-              <span>9996666</span>
+              <span>{{form.idNum}}</span>
             </div>
           </el-col>
         </el-row>
@@ -174,13 +181,15 @@
           <el-col :span="10">
             <div class="grid-content bg-purple">
               来访单位:
-              <span>9996666666666</span>
+              <span>{{form.company}}</span>
             </div>
           </el-col>
           <el-col :span="10">
             <div class="grid-content bg-purple">
               被访部门:
-              <span>9996666666666</span>
+              <span v-if="form.intervieweeDepartmentId==1">部门一</span>
+              <span v-if="form.intervieweeDepartmentId==2">部门二</span>
+              <span v-if="form.intervieweeDepartmentId==3">部门三</span>
             </div>
           </el-col>
         </el-row>
@@ -188,21 +197,27 @@
           <el-col :span="10">
             <div class="grid-content bg-purple">
               被访人姓名:
-              <span>9996666666666</span>
+              <span>{{form.interviewee}}</span>
             </div>
           </el-col>
           <el-col :span="10">
             <div class="grid-content bg-purple">
               来访事由:
-              <span>9996666666666</span>
+              <span>{{form.visitReason}}</span>
             </div>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :span="10">
+            <div class="grid-content bg-purple">
+              电话:
+              <span>{{form.phone}}</span>
+            </div>
+          </el-col>
+           <el-col :span="10">
             <div class="grid-content bg-purple">
               来访时间:
-              <span>9996666666666</span>
+              <span>{{form.visitTime}}</span>
             </div>
           </el-col>
         </el-row>
@@ -253,20 +268,20 @@ export default {
         searchNum: null
       },
       form: {
-        userName: "",
+        name: "",
         idNum: "",
         phone: null,
         company: null, // 单位
-        carNum: "", // 车牌号
-        profession: "", // 被访部门
+        busNum: "", // 车牌号
+        intervieweeDepartmentId: "", // 被访部门
         interviewee: "", // 被访姓名
-        intervieweeReason: "", // 被访来由
-        intervieweeDate: "", // 来访时间
+        visitReason: "", // 被访来由
+        visitTime: "", // 来访时间
         dialogFormVisible: false,
         poutlanderId: null
       },
       formRules: {
-        userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         phone: [
           { required: true, message: "请输入手机号", trigger: "blur" },
           {
@@ -282,17 +297,17 @@ export default {
           }
         ],
         company: [{ required: true, message: "请输入单位", trigger: "blur" }],
-        carNum: [{ required: true, message: "请输入车牌号", trigger: "blur" }],
-        profession: [
+        busNum: [{ required: true, message: "请输入车牌号", trigger: "blur" }],
+        intervieweeDepartmentId: [
           { required: true, message: "请选择被访部门", trigger: "change" }
         ],
         interviewee: [
           { required: true, message: "请输入被访人姓名", trigger: "blur" }
         ],
-        intervieweeReason: [
+        visitReason: [
           { required: true, message: "请输入被访事由", trigger: "blur" }
         ],
-        intervieweeDate: [
+        visitTime: [
           { required: true, message: "请选择被访时间", trigger: "change" }
         ]
       },
@@ -342,7 +357,7 @@ export default {
       obj = this.options.find(item => {
         return item.id == vid; // 筛选出匹配数据
       });
-      this.form.profession = obj.id;
+      this.form.intervieweeDepartmentId = obj.id;
     },
     addUser(form) {
       //获得所选的form表单
@@ -351,15 +366,15 @@ export default {
           var form = this.$refs["form"].model;
           if (form.poutlanderId == null) {
             var params = JSON.stringify({
-              name: form.userName,
+              name: form.name,
               phone: form.phone,
               idNum: form.idNum,
               company: form.company,
-              intervieweeDepartmentId: form.profession,
-              busNum: form.carNum,
+              intervieweeDepartmentId: form.intervieweeDepartmentId,
+              busNum: form.busNum,
               interviewee: form.interviewee,
-              visitReason: form.intervieweeReason,
-              visitTime: form.intervieweeDate
+              visitReason: form.visitReason,
+              visitTime: form.visitTime
             });
             var url =
               "/bashUrl/smart/worker/roster/" +
@@ -379,21 +394,21 @@ export default {
             this.dialogFormVisible = false;
           } else {
             var params = JSON.stringify({
-              name: form.userName,
+              name: form.name,
               phone: form.phone,
               idNum: form.idNum,
               company: this.form.company,
-              intervieweeDepartmentId: this.form.profession,
-              busNum: this.form.carNum,
+              intervieweeDepartmentId: this.form.intervieweeDepartmentId,
+              busNum: this.form.busNum,
               interviewee: this.form.interviewee,
-              visitReason: this.form.intervieweeReason,
-              visitTime: this.form.intervieweeDate
+              visitReason: this.form.visitReason,
+              visitTime: this.form.visitTime,
+              poutlanderId:form.poutlanderId
             });
             var url =
               "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
-              "/outlander/" +
-              form.poutlanderId;
+              "/outlander";
             this.http.put(url, params).then(res => {
               if (res.code == 200) {
                 this.dialogFormVisible = false;
@@ -402,9 +417,9 @@ export default {
                   message: "修改成功!"
               });
               this.handleUserList();
+               this.cancel();
               }
             });
-            this.cancel();
           }
         } else {
           return false;
@@ -485,6 +500,7 @@ export default {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
+          this.form=result;
         }
       });
       this.dialogFormVisible = true;

@@ -110,7 +110,7 @@
         />
       </el-menu>
     </el-container>
-    <managerDialog v-if="changOrder" ref="turnOrder" />
+    <managerDialog v-if="changOrder" ref="turnOrder"  :formParams="getDetail()"/>
   </div>
 </template>
 <script>
@@ -140,6 +140,7 @@ export default {
       form: {
         photo: ""
       },
+      formParams:null,
       fileList: [],
       loading: true,
       tableData: []
@@ -379,11 +380,26 @@ export default {
       //   }
       // });
     },
-    detailsRowClick() {
+    detailsRowClick(index,row) {
+      console.log(row.pinfoId);
+      ///smart/worker/roster/{userId}/manager/{id}
       let _this = this;
       _this.changOrder = true;
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
+      });
+    },
+    getDetail(){
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/manager/"+row.pinfoId;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          console.log(res);
+          this.formParams=res.data;
+          return this.formParams;
+        }
       });
     },
     seeSubRowClick() {},

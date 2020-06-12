@@ -174,8 +174,8 @@ export default {
         "/equipment/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
+          var total = res.data.total;
+          var rows = res.data.rows;
           this.tableData = rows;
           this.total = total;
         }
@@ -480,5 +480,11 @@ body > .el-container {
     margin-top: 30px;
     margin-bottom: 30px;
   }
+
+
+
 }
+
+
+
 </style>

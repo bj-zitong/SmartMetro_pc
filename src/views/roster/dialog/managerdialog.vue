@@ -8,7 +8,7 @@
      width="80%"
   >
     <div class="AddEquipment_form">
-      
+
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content bg-purple">姓名:<span>9996666</span></div>
@@ -87,10 +87,13 @@
     </template>
   </el-dialog>
 </template>
- 
+
 <script>
 export default {
   name: "turntorepairorder",
+  props:{
+    formParams:formParams
+  },
   data() {
     return {
       changOrder: false
@@ -100,6 +103,7 @@ export default {
     //页面初始化时加载的事件
     init() {
       this.changOrder = true;
+      console.log(formParams);
     }, //关闭页面
 
     handleClose() {
@@ -115,7 +119,7 @@ export default {
   }
 };
 </script>
- 
+
 <style scoped lang="stylus">
 .el-row {
     margin-bottom: 20px;
