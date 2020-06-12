@@ -388,8 +388,11 @@ export default {
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
       });
+      this.getDetail();
     },
     getDetail(){
+       let _this = this;
+      _this.changOrder = true;
       var url =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
