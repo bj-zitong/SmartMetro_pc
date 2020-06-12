@@ -17,7 +17,7 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           // '^/systemUrl': 'http://192.168.1.30:8001'
-          '^/systemUrl': 'http://192.168.1.180:8001'
+          '^/systemUrl': 'http://192.168.1.108:8001'
         }
       },
       '/bashUrl': {

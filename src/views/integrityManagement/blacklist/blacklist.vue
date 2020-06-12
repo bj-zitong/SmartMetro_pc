@@ -7,7 +7,7 @@
             <el-input v-model="formInline.name" placeholder="姓名"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleUserList">搜索</el-button>
+            <el-button type="primary" @click="getDateList()">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-main>
@@ -55,12 +55,6 @@
                   type="warning"
                   @click="cancelClick(scope.row)"
                 >取消</el-button>
-                <el-button
-                  class="T-R-B-Grey"
-                  size="mini"
-                  type="warning"
-                  @click="detailClick(scope.row)"
-                >删除</el-button>
                 <el-button
                   class="T-R-B-BlackishGreen btn"
                   size="mini"
@@ -117,7 +111,7 @@ export default {
       dialogFormVisible: false,
       // 动态数据
       tableData: [],
-      total: 50,
+      total: 10,
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
@@ -131,12 +125,8 @@ export default {
     this.getDateList();
   },
   methods: {
-    handleUserList() {
-      this.getDateList();
-    },
     // 列表请求
     getDateList() {
-      alert("99999")
       // 获得搜索的内容
       var data = JSON.stringify({
         name: this.formInline.name,
@@ -150,10 +140,8 @@ export default {
         "/labour/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          console.log(res.data.rows)
-          var rows = res.rows;
           this.tableData = res.data.rows;
-          this.total = res.total;
+          this.total = res.data.total;
         }
       });
     },
@@ -194,7 +182,8 @@ export default {
     },
     //通过
     throughClick(row) {
-      var uid = row.uuid;
+      console.log(row)
+      var uid = row.pLabourCompanyId;
       var ids = [];
       ids.push(uid);
       console.log(ids);
@@ -203,7 +192,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/integrity/" +
+            "/bashUrl/smart/worker/integrity/" +
             sessionStorage.getItem("userId") +
             "/black/change/2";
           this.http.post(url, data).then(res => {
@@ -257,37 +246,6 @@ export default {
           this.$message({
             type: "info",
             message: "已取消驳回"
-          });
-        });
-    },
-    detailClick(row) {
-      var uid = row.uuid;
-      var ids = [];
-      ids.push(uid);
-      handleCofirm("确认删除")
-        .then(res => {
-          var data = JSON.stringify(ids);
-          var url =
-            "/smart/worker/integrity/" +
-            sessionStorage.getItem("userId") +
-            "/black";
-          this.http.post(url, data).then(res => {
-            if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-            }
-          });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
           });
         });
     },
