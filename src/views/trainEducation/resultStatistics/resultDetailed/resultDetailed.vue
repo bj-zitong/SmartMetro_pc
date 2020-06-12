@@ -73,11 +73,6 @@
               size="mini"
               @click="fillinScoreClick(scope.$index, scope.row)"
             >填写分数</el-button>
-            <el-button
-              class="T-R-B-Grey"
-              size="mini"
-              @click="downloadClick(scope.$index, scope.row)"
-            >下载试卷</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -187,7 +182,7 @@ export default {
       fileList: []
     };
   },
-  mounted() {
+  activated() {
     this.getDatelist();
   },
   methods: {
@@ -199,11 +194,8 @@ export default {
         name: this.name
       });
       // ​/smart​/worker​/train​/{userId}​/score​/management
-      var url =
-        "​/smart​/worker​/train​/" +
-        sessionStorage.getItem("userId") +
-        "/score​/management";
-      this.http.post(url, params).then(res => {
+      var url222 = "/bashUrl/smart​/worker​/train​/"+sessionStorage.getItem("userId")+"/score​/management";
+      this.http.post(url222, params).then(res => {
         if (res.code == 200) {
           var rows = res.rows;
           this.tableData = rows;
@@ -243,34 +235,6 @@ export default {
       this.file.uploadFile = fileList;
       console.log(this.file.uploadFile);
       console.log(this.file.uploadFile[0].raw);
-    },
-
-
-    //下载试卷
-    downloadClick(index,row) {
-      handleCofirm("确认下载吗")
-        .then(res => {
-          // var data = JSON.stringify(ids);
-          var url =
-            "/smart/worker/train/" +
-            sessionStorage.getItem("userId") +
-            "/common/"+row.pScoreId+"/download";
-            // /smart/worker/train/{userId}/common/{resourcePoolId}/download
-          this.http.get(url, {}).then(res => {
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: "下载成功!"
-              });
-            }
-          });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消下载"
-          });
-        });
     },
     //查询
     queryClick() {

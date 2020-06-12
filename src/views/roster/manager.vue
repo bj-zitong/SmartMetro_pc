@@ -23,7 +23,7 @@
     <el-container>
       <el-menu class="main-con-box">
         <div class="main-btn-box">
-          <el-button class="T-H-B-DarkBlue" @click="AddEditClick(0,'add')">新增</el-button>
+          <el-button class="T-H-B-DarkBlue" @click="AddEditClick('add')">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportStaffClick">导出</el-button>
           <div class="uploading">
@@ -50,7 +50,7 @@
           >
             <el-table-column
               type="selection"
-              prop="pinfoId"
+              prop="pInfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
@@ -68,7 +68,7 @@
             </el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="gender" label="性别"></el-table-column>
-            <el-table-column prop="birthPlaceCode" label="籍贯"></el-table-column>
+            <el-table-column prop="birthPlace" label="籍贯"></el-table-column>
             <el-table-column prop="idCardCode" label="证件编号"></el-table-column>
             <el-table-column prop="age" label="年龄"></el-table-column>
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
@@ -110,7 +110,7 @@
         />
       </el-menu>
     </el-container>
-    <managerDialog v-if="changOrder" ref="turnOrder" :data="bindData"/>
+    <managerDialog v-if="changOrder" ref="turnOrder"/>
   </div>
 </template>
 <script>
@@ -144,7 +144,7 @@ export default {
       fileList: [],
       loading: true,
       tableData: [],
-      bindData:[],
+      bindData:"999999999"
     };
   },
   activated() {
@@ -275,8 +275,8 @@ export default {
     },
     //  编辑+新增通过传参判断
     AddEditClick(row, par) {
-      console.log(row.pinfoId, par);
-      if (par == 'add') {
+      console.log(row.pInfoId, par);
+      if (par != undefined) {
         this.$router.push({
           name: "AddAdministration",
           params: {
@@ -287,7 +287,7 @@ export default {
         this.$router.push({
           name: "AddAdministration",
           params: {
-            id: row.pinfoId
+            id: row.pInfoId
           }
         });
       }
@@ -301,7 +301,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pinfoId;
+        var id = arrays[i].pInfoId;
         ids.push(id);
       }
       return ids;
@@ -384,17 +384,6 @@ export default {
     detailsRowClick(index,row) {
       // console.log(row.pinfoId);
       ///smart/worker/roster/{userId}/manager/{id}
-      var url =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/manager/"+row.pinfoId;
-      this.http.get(url, null).then(res => {
-        if (res.code == 200) {
-          this.bindData.push(res.data);
-          console.log(res.data);
-          // return this.bindData;
-        }
-      });
       let _this =this
       _this.changOrder = true;
       _this.$nextTick(() => {
@@ -404,7 +393,21 @@ export default {
       //   _this.$refs.turnOrder.init();
       // });
       // this.getDetail(row);
-
+    },
+    getDetail(row){
+       let _this = this;
+      _this.changOrder = true;
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/manager/"+row.pinfoId;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          console.log(res);
+          this.formParams=res.data;
+          return this.formParams;
+        }
+      });
     },
     seeSubRowClick() {},
     headClass() {

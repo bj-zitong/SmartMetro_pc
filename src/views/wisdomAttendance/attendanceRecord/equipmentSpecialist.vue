@@ -7,7 +7,7 @@
             <el-input v-model="formInline.searchUname" placeholder="姓名"></el-input>
           </el-form-item>
           <el-form-item label="专业" prop="profession">
-            <el-select v-model="formInline.profession" placeholder="请选择专业" @change="selectProfession">
+            <el-select v-model="formInline.profession" placeholder="请选择专业">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
