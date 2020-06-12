@@ -28,7 +28,6 @@
     <div class="table-main">
       <el-main class="table-head">
         <el-button class="T-H-B-DarkBlue">新增</el-button>
-        <!-- <el-button @click="deleteAll()" class="T-H-B-Grey">删除</el-button> -->
         <el-button @click="poiExcel()" class="T-H-B-Cyan">导出</el-button>
         <div class="table-content">
           <el-table
@@ -76,6 +75,7 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
+import { countDown } from "@/utils/utils";
 import Pagination from "@/components/pagination";
 export default {
   components: {
@@ -110,28 +110,6 @@ export default {
     this.handleUserList();
   },
   methods: {
-    // 初始页Page、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
-      this.pageSize = size;
-      // this.handleUserList()
-      // console.log(this.pageSize)  //每页下拉显示数据
-    },
-    handleCurrentChange: function(page) {
-      this.page = page;
-      this.handleUserList();
-      // console.log(this.page); //点击第几页
-    },
-    pre(cpage) {
-      this.page = cpage;
-      // console.log("cpage" + cpage);
-      // this.handleUserList()
-    },
-    //下一页
-    next(cpage) {
-      this.page = cpage;
-      // console.log("下一页" + cpage);
-      // this.handleUserList()
-    },
     // 下拉框获得值
     selectProfession(vid) {
       let obj = {};
@@ -161,6 +139,9 @@ export default {
         "/other/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
+           for (var i = 0; i < res.data.rows.length; i++) {
+            res.data.rows[i].attendanceTime =countDown(res.data.rows[i].endTime,res.data.rows[i].firstTime)
+          }
           this.tableData = res.data.rows;
           this.total =  res.data.total;
         }
@@ -224,41 +205,7 @@ export default {
         // console.log("获得id"+arrays[i].userId);
       }
       return ids;
-    },
-    // 批量删除
-    // deleteAll() {
-    //   var ids = this.changeFun();
-    //   if (ids.length <= 0) {
-    //     this.$message("请选择删除的数据！");
-    //     return;
-    //   }
-    //   handleCofirm("确认删除吗？", "warning")
-    //     .then(res => {
-    //       var data = JSON.stringify(ids);
-    //       var url =
-    //         "/smart/worker/attendance/" +
-    //         sessionStorage.getItem("userId") +
-    //         "/other";
-    //       this.http.delete(url, data).then(res => {
-    //         if (res.code == 200) {
-    //           var total = res.total;
-    //           var rows = res.rows;
-    //           this.tableData = rows;
-    //           this.total = total;
-    //           this.$message({
-    //             type: "success",
-    //             message: "删除成功!"
-    //           });
-    //         }
-    //       });
-    //     })
-    //     .catch(err => {
-    //       this.$message({
-    //         type: "info",
-    //         message: "已取消删除"
-    //       });
-    //     });
-    // }
+    }
   }
 };
 </script>

@@ -68,6 +68,7 @@
 import { handleCofirm } from "@/utils/confirm";
 import { headClass } from "@/utils";
 import Pagination from "@/components/pagination";
+import { countDown } from "@/utils/utils";
 export default {
   name: "container",
   components: {
@@ -115,6 +116,9 @@ export default {
         "/manager/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
+           for (var i = 0; i < res.data.rows.length; i++) {
+            res.data.rows[i].attendanceTime =countDown(res.data.rows[i].endTime,res.data.rows[i].firstTime)
+          }
           var rows = res.rows;
           this.tableData = res.data.rows;
           this.total = res.data.total;

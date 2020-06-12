@@ -10,7 +10,7 @@
             <el-input v-model="formInline.idNum" placeholder="请输入工号"></el-input>
           </el-form-item>
           <el-form-item label="工种" prop="jobType">
-            <el-select v-model="formInline.jobType" placeholder="请选择工种" @change="selectProfession">
+            <el-select v-model="formInline.jobType" placeholder="请选择工种">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
@@ -81,7 +81,7 @@
 </template>
 <script>
 import { handleCofirm } from "@/utils/confirm";
-import { timePresupposed } from "@/utils/utils";
+import { countDown } from "@/utils/utils";
 import { headClass} from "@/utils";
 import Pagination from "@/components/pagination";
 export default {
@@ -142,8 +142,7 @@ export default {
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           for (var i = 0; i < res.data.rows.length; i++) {
-            console.log(res.data.rows[i])
-            console.log(timePresupposed(endTime,firstTime))
+            res.data.rows[i].attendanceTime =countDown(res.data.rows[i].endTime,res.data.rows[i].firstTime)
           }
           var rows = res.rows;
           this.tableData = res.data.rows;
@@ -210,40 +209,6 @@ export default {
       }
       return ids;
     }
-    // 批量删除
-    // deleteAll() {
-    //   var ids = this.changeFun();
-    //   if (ids.length <= 0) {
-    //     this.$message("请选择删除的数据！");
-    //     return;
-    //   }
-    //   handleCofirm("确认删除吗？", "warning")
-    //     .then(res => {
-    //       var data = JSON.stringify(ids);
-    //       var url =
-    //         "/smart/worker/attendance/" +
-    //         sessionStorage.getItem("userId") +
-    //         "/labour";
-    //       this.http.delete(url, data).then(res => {
-    //         if (res.code == 200) {
-    //           var total = res.total;
-    //           var rows = res.rows;
-    //           this.tableData = rows;
-    //           this.total = total;
-    //           this.$message({
-    //             type: "success",
-    //             message: "删除成功!"
-    //           });
-    //         }
-    //       });
-    //     })
-    //     .catch(err => {
-    //       this.$message({
-    //         type: "info",
-    //         message: "已取消删除"
-    //       });
-    //     });
-    // }
   }
 };
 </script>
