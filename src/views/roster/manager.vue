@@ -143,7 +143,7 @@ export default {
       fileList: [],
       loading: true,
       tableData: [],
-      bindData:"666666"
+      bindData:"9999999999"
     };
   },
   activated() {
