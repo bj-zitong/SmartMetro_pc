@@ -77,7 +77,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">政治面貌:<span>{{formParams}}</span></div>
+          <div class="grid-content bg-purple">政治面貌:<span>{{data}}</span></div>
         </el-col>
       </el-row>
     </div>
@@ -91,7 +91,7 @@
 <script>
 export default {
   name: "turntorepairorder",
-  props:['formParams'],
+  props:['data'],
   data() {
     return {
       changOrder: false

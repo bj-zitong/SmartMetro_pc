@@ -110,7 +110,7 @@
         />
       </el-menu>
     </el-container>
-    <managerDialog v-if="changOrder" ref="turnOrder"  :formParams="getDetail()"/>
+    <managerDialog v-if="changOrder" ref="turnOrder" :data="bindData"/>
   </div>
 </template>
 <script>
@@ -143,7 +143,8 @@ export default {
       formParams:null,
       fileList: [],
       loading: true,
-      tableData: []
+      tableData: [],
+      bindData:"99999dzfgdsgfdsg9999"
     };
   },
   activated() {
@@ -381,14 +382,17 @@ export default {
       // });
     },
     detailsRowClick(index,row) {
-      console.log(row.pinfoId);
+      // console.log(row.pinfoId);
       ///smart/worker/roster/{userId}/manager/{id}
-      let _this = this;
+      let _this =this
       _this.changOrder = true;
+      _this.$nextTick(() => {
+        _this.$refs.turnOrder.init();
+      });
       // _this.$nextTick(() => {
       //   _this.$refs.turnOrder.init();
       // });
-      this.getDetail(row);
+      // this.getDetail(row);
     },
     getDetail(row){
        let _this = this;

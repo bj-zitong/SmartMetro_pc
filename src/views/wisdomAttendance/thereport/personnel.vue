@@ -95,7 +95,7 @@ export default {
       }
     };
   },
-  created: function() {
+  activated: function() {
     this.getDatafun()
   },
   methods: {
