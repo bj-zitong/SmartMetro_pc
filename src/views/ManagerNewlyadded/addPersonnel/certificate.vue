@@ -119,8 +119,13 @@
                 :prop="`productGroup.${index}.validEndDate`"
                 :rules="rules.validEndDate"
               >
-                <el-date-picker v-model="item.validEndDate" type="date" format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"  placeholder="请选择合同结束时间"></el-date-picker>
+                <el-date-picker
+                  v-model="item.validEndDate"
+                  type="date"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  placeholder="请选择合同结束时间"
+                ></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col>
@@ -143,12 +148,12 @@
               >
                 <el-upload
                   class="upload-demo"
-                v-model="form.accessory"
-                action
-                :on-change="handleChange"
-                :file-list="fileList"
-                :auto-upload="false"
-                :limit="1"
+                  v-model="form.accessory"
+                  action
+                  :on-change="handleChange"
+                  :file-list="fileList"
+                  :auto-upload="false"
+                  :limit="1"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
                 </el-upload>
@@ -256,7 +261,6 @@ export default {
 
       JSON.parse(sessionStorage.getItem("certificate")).productGroup.filter(
         (item, index, arr) => {
-          console.log(item);
           // return item.hot == true;
         }
       );
@@ -265,23 +269,23 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event);
+
     },
     onSubmit() {
-      console.log("submit!");
+
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+
     },
     handlePreview(file) {
-      console.log(file);
+
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           handleCofirm("确认保存吗", "warning")
             .then(res => {
-           this.$global_msg.photoArr=this.form.productGroup
+              this.$global_msg.photoArr = this.form.productGroup;
               sessionStorage.setItem("certificate", JSON.stringify(this.form));
               this.$emit("field", this.field);
               this.$message({
@@ -296,7 +300,6 @@ export default {
               });
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -323,19 +326,18 @@ export default {
       }
     },
     getFile(file, fileList) {
-      console.log(file.file);
-      console.log(file, fileList);
+
     },
     getsuccessFile(response, file, fileList) {
-      console.log(response, file, fileList);
+
     },
     uploadFile() {},
     handleChange(file, fileList) {
       this.$refs.form.clearValidate();
-      console.log(fileList);
+
       this.form.productGroup[0].accessory = fileList;
       this.form.productGroup.forEach((item, index, array) => {
-        console.log(item);
+
         item.accessory = fileList;
         // item[index]=fileList
         //执行代码

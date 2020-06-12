@@ -20,8 +20,13 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="到京时间" prop="value1">
-            <el-date-picker v-model="form.value1" type="date" format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"  placeholder="请选择到京时间"></el-date-picker>
+            <el-date-picker
+              v-model="form.value1"
+              type="date"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              placeholder="请选择到京时间"
+            ></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -101,8 +106,13 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="返场时间" prop="value2">
-            <el-date-picker v-model="form.value2" type="date" format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd" placeholder="请选择返场时间"></el-date-picker>
+            <el-date-picker
+              v-model="form.value2"
+              type="date"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              placeholder="请选择返场时间"
+            ></el-date-picker>
             <!-- <el-date-picker v-model="form.value2" type="date" placeholder="返场时间"></el-date-picker> -->
           </el-form-item>
         </el-col>
@@ -156,7 +166,8 @@ export default {
   data() {
     return {
       labelPosition: "left",
-      msg:this.$global_msg.photo,
+      msg: this.$global_msg.photo,
+      pInfoId: null, //添加人员返回id
       form: {
         post: "",
         returnto: "",
@@ -237,48 +248,43 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      //   console.log(formName);
       //   this.$refs[formName].validate(valid => {
       //     if (valid) {
-     console.log(this.$global_msg.photo.raw)
       //历史评价记录
       var History = sessionStorage.getItem("History");
       //来源地消息
       var History = sessionStorage.getItem("source");
-
       //个人基本信息
       var data = JSON.parse(sessionStorage.getItem("data"));
-      console.log(data.photo.raw.uid)
       var formData = new FormData();
       formData.append("name", data.name);
       formData.append("gender", data.gender);
       formData.append("age", data.age);
       formData.append("nation", data.nation);
+      formData.append("workerType", data.workerType);
       formData.append("cellPhone", data.cellPhone);
       formData.append("buildCorpName ", data.buildCorpName);
-      formData.append("workerType", data.workerType);
       formData.append("urgentLinkMan", data.urgentLinkMan);
       formData.append("urgentLinkManPhone", data.urgentLinkManPhone);
       formData.append("address", data.address);
-      formData.append("birthPlaceCode", data.birthPlace);
+      formData.append("birthPlaceCode", data.birthPlaceCode);
+      formData.append("cultureLevelType", data.cultureLevelType);
       formData.append("maritalStatus", data.maritalStatus);
       formData.append("degree", data.degree);
-      formData.append("cultureLevelType", data.cultureLevelType);
-      formData.append("idCardType", data.idCardType);
-      formData.append("registrationType", data.registrationType);
       formData.append("idCardCode", data.idCardCode);
-      formData.append("isRelatedCertificates", data.isRelatedCertificates);
       formData.append("isResidencePermit", data.isResidencePermit);
+      formData.append("residencePermitDate", data.residencePermitDate);
+      formData.append("registrationType", data.registrationType);
+      formData.append("idCardType", data.idCardType);
+      formData.append("politicsType", data.politicsType);
+      formData.append("isRelatedCertificates", data.isRelatedCertificates);
       formData.append(
         "isSpecialWorkTypeCheckups",
         data.isSpecialWorkTypeCheckups
       );
       formData.append("teamId ", data.teamId);
-      formData.append("residencePermitDate", data.residencePermitDate);
       formData.append("isTeamLeader", data.isTeamLeader);
       formData.append("isProjectTrain", data.isProjectTrain);
-      formData.append("politicsType", data.politicsType);
-      // formData.append("isProjectTrain", form.isProjectTrain);
       formData.append("photo", this.$global_msg.photo.raw);
       var dataUrl =
         "/bashUrl/smart/worker/roster/" +
@@ -286,10 +292,17 @@ export default {
         "/labour/basic";
       this.http.post(dataUrl, formData).then(res => {
         if (res.code == 200) {
+          //获得新增的id
+          var id = res.data.pInfoId;
+          this.pInfoId = id;
         }
       });
       //合同信息
       var contractInformation = sessionStorage.getItem("contractInformation");
+      // contractInformation.push({pInfoId:this.pInfoId});
+      // contractInformation.pInfoId=this.pInfoId
+      console.log(contractInformation);
+      console.log(contractInformation[0].pInfoId);
       var contractUrl =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
@@ -312,45 +325,78 @@ export default {
 
       //资质证书
       var certificate = JSON.parse(sessionStorage.getItem("certificate"));
-      console.log(certificate.productGroup)
       for (var i = 0; i < certificate.productGroup.length; i++) {
-        for(var i=0;i<this.$global_msg.photoArr.length;i++){
-         var certificateFormdata = new FormData();
-      certificateFormdata.append("grantCompany", certificate.productGroup[i].grantCompany);
-      certificateFormdata.append("certificationName ", certificate.productGroup[i].certificationName);
-      certificateFormdata.append("grantOrg",certificate.productGroup[i].grantOrg);
-      certificateFormdata.append("certificationType", certificate.productGroup[i].certificationType);
-      certificateFormdata.append("certificationCode", certificate.productGroup[i].certificationCode);
-      certificateFormdata.append("credentialLevelType", certificate.productGroup[i].credentialLevelType);
-      certificateFormdata.append("firstBeginDate", certificate.productGroup[i].firstBeginDate);
-      certificateFormdata.append("validBeginDate",certificate.productGroup[i].validBeginDate);
-      certificateFormdata.append("validEndDate", certificate.productGroup[i].validEndDate);
-      certificateFormdata.append("certificationStatus", certificate.productGroup[i].certificationStatus);
-      certificateFormdata.append("accessory ", this.$global_msg.photoArr[i].accessory[0].raw);
-      // for(var i=0;i<=this.$global_msg.photoArr.length;i++){
+        for (var i = 0; i < this.$global_msg.photoArr.length; i++) {
+          var certificateFormdata = new FormData();
+          certificateFormdata.append(
+            "grantCompany",
+            certificate.productGroup[i].grantCompany
+          );
+          certificateFormdata.append(
+            "certificationName ",
+            certificate.productGroup[i].certificationName
+          );
+          certificateFormdata.append(
+            "grantOrg",
+            certificate.productGroup[i].grantOrg
+          );
+          certificateFormdata.append(
+            "certificationType",
+            certificate.productGroup[i].certificationType
+          );
+          certificateFormdata.append(
+            "certificationCode",
+            certificate.productGroup[i].certificationCode
+          );
+          certificateFormdata.append(
+            "credentialLevelType",
+            certificate.productGroup[i].credentialLevelType
+          );
+          certificateFormdata.append(
+            "firstBeginDate",
+            certificate.productGroup[i].firstBeginDate
+          );
+          certificateFormdata.append(
+            "validBeginDate",
+            certificate.productGroup[i].validBeginDate
+          );
+          certificateFormdata.append(
+            "validEndDate",
+            certificate.productGroup[i].validEndDate
+          );
+          certificateFormdata.append(
+            "certificationStatus",
+            certificate.productGroup[i].certificationStatus
+          );
+          certificateFormdata.append(
+            "accessory ",
+            this.$global_msg.photoArr[i].accessory[0].raw
+          );
+          // for(var i=0;i<=this.$global_msg.photoArr.length;i++){
 
-      //   certificateFormdata.append("accessory ", this.$global_msg.photoArr[i].accessory[0].raw);
-      // }
-        var certificateUrl =
-          "/bashUrl/smart/worker/roster/" +
-          sessionStorage.getItem("userId") +
-          "/labour/credential";
-        this.http
-          .post(certificateUrl, certificateFormdata)
-          .then(res => {
+          //   certificateFormdata.append("accessory ", this.$global_msg.photoArr[i].accessory[0].raw);
+          // }
+          var certificateUrl =
+            "/bashUrl/smart/worker/roster/" +
+            sessionStorage.getItem("userId") +
+            "/labour/credential";
+          this.http.post(certificateUrl, certificateFormdata).then(res => {
             if (res.code == 200) {
             }
           });
+        }
       }
-    }
       //历史评价记录
       var History = sessionStorage.getItem("History");
-      console.log(History);
+      var paramEval = JSON.stringify({
+        pInfoId: this.pInfoId,
+        evaluate: History
+      });
       var HistoryUrl =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/labour/evaluate";
-      this.http.post(HistoryUrl, History).then(res => {
+      this.http.post(HistoryUrl, paramEval).then(res => {
         if (res.code == 200) {
         }
       });

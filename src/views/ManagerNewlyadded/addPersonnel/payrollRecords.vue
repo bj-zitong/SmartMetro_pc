@@ -20,8 +20,13 @@
         </el-col>
         <el-col>
           <el-form-item label="发放日期" prop="balanceDate">
-            <el-date-picker v-model="form.balanceDate" type="date"   format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd" placeholder="请选择日期"></el-date-picker>
+            <el-date-picker
+              v-model="form.balanceDate"
+              type="date"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              placeholder="请选择日期"
+            ></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -44,8 +49,8 @@
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="银行卡号" prop="bankCardNo">
-            <el-input v-model="form.bankCardNo" placeholder="请输入银行卡号"></el-input>
+          <el-form-item label="银行卡号" prop="payRollBankCardNumber">
+            <el-input v-model="form.payRollBankCardNumber" placeholder="请输入银行卡号"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -68,8 +73,7 @@ export default {
         payRollCode: "",
         totalPayAmount: "",
         distributionMethod: "",
-        Bank: "",
-        bankCardNo: ""
+        payRollBankCardNumber: ""
       },
       field: "payrollRecords",
       rules: {
@@ -79,12 +83,16 @@ export default {
         totalPayAmount: [
           { required: true, message: "请输入发放金额 ", trigger: "blur" }
         ],
-        balanceDate: [{ required: true, message: "请输入日期 ", trigger: "blur" }],
+        balanceDate: [
+          { required: true, message: "请输入日期 ", trigger: "blur" }
+        ],
         provideType: [
           { required: true, message: "请选择发放方式 ", trigger: "change" }
         ],
-        provideBank: [{ required: true, message: "请选择发放银行", trigger: "change" }],
-        bankCardNo: [
+        provideBank: [
+          { required: true, message: "请选择发放银行", trigger: "change" }
+        ],
+        payRollBankCardNumber: [
           { required: true, message: "请填写银行卡号", trigger: "blur" }
         ]
       }
@@ -97,7 +105,6 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      console.log(formName);
       this.$refs[formName].validate(valid => {
         // localStorage.setItem('payrollRecords',JSON.stringify(this.form))
         if (valid) {
@@ -107,7 +114,6 @@ export default {
                 "payrollRecords1",
                 JSON.stringify(this.form)
               );
-              console.log(this.form);
               this.$emit("field", this.field);
               this.$message({
                 type: "success",
@@ -121,7 +127,6 @@ export default {
               });
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

@@ -26,15 +26,25 @@
         <el-col>
           <el-form-item label="合同开始时间" prop="startDate">
             <!-- <el-input v-model="contract.startDate"></el-input> -->
-            <el-date-picker v-model="contract.startDate" type="date"   format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"  placeholder="请选择合同开始时间"></el-date-picker>
+            <el-date-picker
+              v-model="contract.startDate"
+              type="date"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              placeholder="请选择合同开始时间"
+            ></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col>
           <el-form-item label="合同结束时间" prop="enddate">
             <!-- <el-input v-model="contract.startDate"></el-input> -->
-            <el-date-picker v-model="contract.enddate" type="date"   format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd" placeholder="请选择合同结束时间"></el-date-picker>
+            <el-date-picker
+              v-model="contract.enddate"
+              type="date"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              placeholder="请选择合同结束时间"
+            ></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col>
@@ -50,7 +60,7 @@
             <el-select v-model="contract.clearingType" placeholder="请选择结算方式">
               <el-option label="银行卡" value="0"></el-option>
               <el-option label="支付宝" value="1"></el-option>
-             <el-option label="微信" value="2"></el-option>
+              <el-option label="微信" value="2"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -81,11 +91,11 @@ export default {
         projectName: "",
         contractCode: "",
         startDate: "",
-        enddate:'',
+        enddate: "",
         contractPeriodType: "",
-        ProfessionalCode:'',
         clearingType: "",
-        corpCode: ""
+        corpCode: "",
+        pInfoId:null
       },
       rules: {
         projectCode: [
@@ -106,11 +116,12 @@ export default {
         contractPeriodType: [
           { required: true, message: "请选择合同期限", trigger: "change" }
         ],
-        ProfessionalCode: [
-          { required: true, message: "请输入结算方式", trigger: "blur" }
-        ],
         corpCode: [
-          { required: true, message: "请输入所属企业组织机构代码", trigger: "blur" }
+          {
+            required: true,
+            message: "请输入所属企业组织机构代码",
+            trigger: "blur"
+          }
         ],
         clearingType: [
           { required: true, message: "请选择结算方式", trigger: "change" }
@@ -129,10 +140,10 @@ export default {
         if (valid) {
           handleCofirm("确认保存吗", "warning")
             .then(res => {
-              console.log(JSON.stringify(this.contract));
               sessionStorage.setItem(
                 "contractInformation",
-                JSON.stringify(this.contract)
+                // JSON.stringify(this.contract)
+                this.contract
               );
               this.$emit("field", this.field);
               this.$message({
@@ -147,7 +158,6 @@ export default {
               });
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
