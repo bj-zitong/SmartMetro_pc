@@ -416,8 +416,8 @@ export default {
       //     this.form.photo = []
       //     this.form.photo = fileList;
       // }else{
-      //      this.$refs.form.clearValidate();
-      //      this.form.photo = fileList;
+           this.$refs.form.clearValidate();
+           this.form.photo = fileList;
       // }
      
     }
