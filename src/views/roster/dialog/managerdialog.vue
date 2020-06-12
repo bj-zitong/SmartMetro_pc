@@ -5,13 +5,15 @@
     :before-close="handleClose"
     :close-on-click-modal="false"
     :show-close="false"
-     width="80%"
+    width="80%"
   >
     <div class="AddEquipment_form">
-
       <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">姓名:<span>9996666</span></div>
+          <div class="grid-content bg-purple">
+            姓名:
+            <span>9996666</span>
+          </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">性别</div>
@@ -20,9 +22,12 @@
           <div class="grid-content bg-purple">年龄</div>
         </el-col>
       </el-row>
-       <el-row :gutter="20">
+      <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">民族:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">
+            民族:
+            <span>9996666666666</span>
+          </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">电话</div>
@@ -30,10 +35,13 @@
         <el-col :span="8">
           <div class="grid-content bg-purple">部门</div>
         </el-col>
-       </el-row>
-       <el-row :gutter="20">
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">承建单位:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">
+            承建单位:
+            <span>9996666666666</span>
+          </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">岗位/职责</div>
@@ -42,9 +50,12 @@
           <div class="grid-content bg-purple">紧急联系人</div>
         </el-col>
       </el-row>
-       <el-row :gutter="20">
+      <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">电话:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">
+            电话:
+            <span>9996666666666</span>
+          </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">籍贯</div>
@@ -55,7 +66,10 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">学位:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">
+            学位:
+            <span>9996666666666</span>
+          </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">文化程度</div>
@@ -66,7 +80,10 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">居住证:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">
+            居住证:
+            <span>9996666666666</span>
+          </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">居住证办理日期</div>
@@ -77,7 +94,10 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">政治面貌:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">
+            政治面貌:
+            <span>{{data}}</span>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -91,19 +111,20 @@
 <script>
 export default {
   name: "turntorepairorder",
-  props:{
-    formParams:formParams
-  },
+  props: ['data'],
   data() {
     return {
       changOrder: false
     };
   },
+  activated(){
+    console.log(data);
+  },
   methods: {
     //页面初始化时加载的事件
     init() {
       this.changOrder = true;
-      console.log(formParams);
+      
     }, //关闭页面
 
     handleClose() {
@@ -122,33 +143,41 @@ export default {
 
 <style scoped lang="stylus">
 .el-row {
-    margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
   }
-  .el-col {
-    border-radius: 4px;
+}
+
+.el-col {
+  border-radius: 4px;
+}
+
+.bg-purple-dark {
+  // background: #99a9bf;
+}
+
+.bg-purple {
+  // background: #d3dce6;
+}
+
+.bg-purple-light {
+  // background: #e5e9f2;
+}
+
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+  font-size: 14px;
+
+  span {
+    color: rgba(0, 88, 162, 1);
   }
-  .bg-purple-dark {
-    // background: #99a9bf;
-  }
-  .bg-purple {
-    // background: #d3dce6;
-  }
-  .bg-purple-light {
-    // background: #e5e9f2;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-    font-size:14px;
-    span{
-       color:rgba(0,88,162,1);
-    }
-  }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
-  }
+}
+
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
 </style>

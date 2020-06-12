@@ -110,7 +110,7 @@
         />
       </el-menu>
     </el-container>
-    <managerDialog v-if="changOrder" ref="turnOrder"  :formParams="getDetail()"/>
+    <managerDialog v-if="changOrder" ref="turnOrder" :data="bindData"/>
   </div>
 </template>
 <script>
@@ -140,10 +140,10 @@ export default {
       form: {
         photo: ""
       },
-      formParams:null,
       fileList: [],
       loading: true,
-      tableData: []
+      tableData: [],
+      bindData:"666666"
     };
   },
   activated() {
@@ -389,19 +389,19 @@ export default {
         _this.$refs.turnOrder.init();
       });
     },
-    getDetail(){
-      var url =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/manager/"+row.pinfoId;
-      this.http.get(url, null).then(res => {
-        if (res.code == 200) {
-          console.log(res);
-          this.formParams=res.data;
-          return this.formParams;
-        }
-      });
-    },
+    // getDetail(){
+    //   var url =
+    //     "/bashUrl/smart/worker/roster/" +
+    //     sessionStorage.getItem("userId") +
+    //     "/manager/"+row.pinfoId;
+    //   this.http.get(url, null).then(res => {
+    //     if (res.code == 200) {
+    //       console.log(res);
+    //       this.formParams=res.data;
+    //       return this.formParams;
+    //     }
+    //   });
+    // },
     seeSubRowClick() {},
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";
