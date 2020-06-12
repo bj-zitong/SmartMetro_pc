@@ -30,8 +30,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="性别" prop="gender">
-               <el-radio v-model="form.gender" label="1">男</el-radio>
-               <el-radio v-model="form.gender" label="2">女</el-radio>
+               <el-radio v-model="form.gender" label="0">男</el-radio>
+               <el-radio v-model="form.gender" label="1">女</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -171,7 +171,7 @@ export default {
     getDeatli(id) {
       this.form.corporateName = "1111";
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/equipment/" +
         this.id;
@@ -201,7 +201,6 @@ export default {
         if (valid) {
           var form = this.$refs["form"].model;
           if (this.id == 0) {
-            alert("创建")
             var params = JSON.stringify({
               company: form.corporateName,
               age: form.age,
@@ -222,11 +221,15 @@ export default {
               "/equipment";
             this.http.post(url, params).then(res => {
               if (res.code == 200) {
-                this.$router.push({ path: "/equipmentSpecialist" });
+              this.$message({
+                type: "success",
+                message: "添加成功!"
+              });
+                this.$router.push({ path: "/roster/equipmentSpecialist" });
+                this.cancel(form);
               }
             });
           } else {
-            alert("修改")
             var params = JSON.stringify({
               company: form.corporateName,
               age: form.age,
@@ -243,17 +246,21 @@ export default {
               professional: form.professional
             });
             var url =
-              "/smart/worker/roster/" +
+              "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
               "/equipment/" +
               this.id;
             this.http.put(url, params).then(res => {
               if (res.code == 200) {
-                this.$router.push({ path: "/equipmentSpecialist" });
+                  this.$message({
+                    type: "success",
+                    message: "编辑成功!"
+                  });
+                this.$router.push({ path: "/roster/equipmentSpecialist" });
+                this.cancel(form);
               }
             });
           }
-          this.cancel();
         } else {
           return false;
         }

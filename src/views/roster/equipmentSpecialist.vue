@@ -44,7 +44,7 @@
             <el-table-column prop="company" label="公司名称"></el-table-column>
             <el-table-column prop="contractName" label="合同名称"></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="jobNum" label="工号"></el-table-column>
+            <!-- <el-table-column prop="jobNum" label="工号"></el-table-column> -->
             <el-table-column prop="gender" label="性别">
               <template slot-scope="scope">
                 <span v-if="scope.row.gender==0">男</span>
@@ -76,7 +76,7 @@
         />
       </el-menu>
     </el-container>
-    <equipmentdialog v-if="changOrder" ref="turnOrder" />
+    <equipmentdialog v-if="changOrder" ref="turnOrder" :data="bindData"/>
     <el-dialog :visible.sync="csvVisible" width="50%">
       <div>
         <el-form ref="file" label-width="120px">
@@ -122,6 +122,7 @@ export default {
   },
   data() {
     return {
+      bindData:[],
       headClass: headClass,
       tableData: [],
       total: null, //总条数
@@ -326,7 +327,7 @@ export default {
     detailsRowClick(row) {
       let _this = this;
       var id = row.pinfoId;
-      ////smart/worker/roster/{userId}/equipment/{id}
+      this.bindData=[];
       var url =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
@@ -335,26 +336,16 @@ export default {
       this.http.get(url, null).then(res => {
         if (res.code == 200) {
           //渲染数据
+          // console.log(res.data)
           var result = res.data;
-          var form = this.form;
-          form.name = result.name;
-          form.age = result.age;
-          form.corporateName = result.company;
-          form.contractName = result.contractName;
-          form.gender = result.gender;
-          form.phoneNumber = result.cellPhone;
-          form.major = result.professional;
-          form.documentType = result.idCardType;
-          form.politicalOutlook = result.politicsType;
-          form.certificateCode = result.idCardCode;
-          form.professional = result.professional;
-          form.post = result.duty;
+          this.bindData.push(result)
+           _this.changOrder = true;
+      // _this.$nextTick(() => {
+        _this.$refs.turnOrder.init();
+      // });
         }
       });
-      _this.changOrder = true;
-      _this.$nextTick(() => {
-        _this.$refs.turnOrder.init();
-      });
+
     },
     //导入
     importCsv() {
