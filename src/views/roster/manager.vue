@@ -144,7 +144,7 @@ export default {
       fileList: [],
       loading: true,
       tableData: [],
-      bindData:"99999dzfgdsgfdsg9999"
+      bindData:[],
     };
   },
   activated() {
@@ -384,6 +384,17 @@ export default {
     detailsRowClick(index,row) {
       // console.log(row.pinfoId);
       ///smart/worker/roster/{userId}/manager/{id}
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/manager/"+row.pinfoId;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          this.bindData.push(res.data);
+          console.log(res.data);
+          // return this.bindData;
+        }
+      });
       let _this =this
       _this.changOrder = true;
       _this.$nextTick(() => {
@@ -393,21 +404,7 @@ export default {
       //   _this.$refs.turnOrder.init();
       // });
       // this.getDetail(row);
-    },
-    getDetail(row){
-       let _this = this;
-      _this.changOrder = true;
-      var url =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/manager/"+row.pinfoId;
-      this.http.get(url, null).then(res => {
-        if (res.code == 200) {
-          console.log(res);
-          this.formParams=res.data;
-          return this.formParams;
-        }
-      });
+
     },
     seeSubRowClick() {},
     headClass() {

@@ -77,7 +77,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">政治面貌:<span>{{data}}</span></div>
+          <div class="grid-content bg-purple">政治面貌:<span>{{bindData}}</span></div>
         </el-col>
       </el-row>
     </div>
@@ -91,17 +91,20 @@
 <script>
 export default {
   name: "turntorepairorder",
-  props:['data'],
+  props:['bindData'],
   data() {
     return {
       changOrder: false
     };
+  },mounted(){
+    console.log(this.bindData)
   },
   methods: {
     //页面初始化时加载的事件
     init() {
       this.changOrder = true;
-      console.log(formParams);
+      console.log(11111111);
+      // console.log(bindData);
     }, //关闭页面
 
     handleClose() {
