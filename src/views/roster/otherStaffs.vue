@@ -41,7 +41,7 @@
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="jobNum" label="工号"></el-table-column>
+            <!-- <el-table-column prop="jobNum" label="工号"></el-table-column> -->
             <el-table-column prop="gender" label="性别">
                 <template slot-scope="scope">
                   <span v-if="scope.row.gender==0">男</span>

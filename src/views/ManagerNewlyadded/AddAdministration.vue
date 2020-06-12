@@ -183,8 +183,8 @@
             </el-form-item>
           </el-col>-->
           <el-form-item style="float:right">
-            <el-button type="primary" round class="cancel-style" @click="cancelClick()">取消</el-button>
-            <el-button type="primary" round @click="submitForm('form')">确认</el-button>
+            <el-button type="primary" round class="cancel-style" @click.native="cancel('form')">取消</el-button>
+            <el-button type="primary" round @click.native="submitForm('form')">确认</el-button>
           </el-form-item>
         </el-form>
         <!-- <el-form-item>
@@ -225,7 +225,8 @@ export default {
         residencePermitDate: "",
         jobType: "",
         workerType: "",
-        photo: ""
+        photo: "",
+        pinfoId:null
       },
       getImgCodeResults: "",
       keyResults: "",
@@ -292,12 +293,19 @@ export default {
     this.id = uid;
     console.log('uid------'+uid);
     if (uid=="0") {
-      console.log(新增);
+      console.log('新增');
     } else {
-      console.log(修改);
+     //调用展示数据方法
+     this.form.pinfoId=uid;
+     this.getDetail();
     }
   },
   methods: {
+    cancel(form) {
+      this.$refs[form].resetFields();
+      Object.assign(this.$data.form, this.$options.data().form); //数据初始化
+      this.$router.push({ path: "/roster/manager" });
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
@@ -310,28 +318,23 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    //取消
-    cancelClick() {
-      handleCofirm("确认取消吗？", "warning")
-        .then(res => {
-          this.$message({
-            type: "success",
-            message: "取消成功!"
-          });
-          this.$router.push({ path: "/roster/manager" });
-        })
-        .catch(err => {
-          this.$message({
-            type: "info",
-            message: "已取消"
-          });
-        });
+    getDetail(){
+       var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/manager/"+this.form.pinfoId;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+         this.form=res.data;
+        }
+      });
     },
 
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          var form = this.$refs["form"].model;
+          if(this.form.pinfoId==null){
+              var form = this.$refs["form"].model;
           handleCofirm("确认添加吗？", "warning")
             .then(res => {
               let formData = new FormData();
@@ -368,6 +371,7 @@ export default {
                     message: "添加成功!"
                   });
                   this.$router.push({ path: "/roster/manager" });
+                  this.cancel(formName);
                 }
               });
             })
@@ -377,6 +381,58 @@ export default {
                 message: "已取消添加"
               });
             });
+          }else{
+        var form = this.$refs["form"].model;
+          handleCofirm("确认编辑吗？", "warning")
+            .then(res => {
+              let formData = new FormData();
+              formData.append("name", form.name);
+              formData.append("gender", form.gender);
+              formData.append("age", form.age);
+              formData.append("nation", form.nation);
+              formData.append("politicsType", form.politicsType);
+              formData.append("cellPhone", form.cellPhone);
+              formData.append("buildCorpName", form.buildCorpName);
+              formData.append("urgentLinkMan", form.urgentLinkMan);
+              formData.append("urgentLinkManPhone", form.urgentLinkManPhone);
+              formData.append("address", form.address);
+              formData.append("birthPlaceCode", form.birthPlaceCode);
+              formData.append("jobType", form.jobType);
+              formData.append("maritalStatus", form.maritalStatus);
+              formData.append("degree", form.degree);
+              formData.append("cultureLevelType", form.cultureLevelType);
+              formData.append("idCardType", form.idCardType);
+              formData.append("idCardCode", form.idCardCode);
+              formData.append("isResidencePermit", form.isResidencePermit);
+              formData.append("residencePermitDate", form.residencePermitDate);
+              formData.append("workerType", form.workerType);
+              formData.append("photo", form.photo[0].raw);
+              formData.append("pinfoId",form.pinfoId);
+              console.log(form.photo[0].raw);
+              var url =
+                "/bashUrl/smart/worker/roster/" +
+                sessionStorage.getItem("userId") +
+                "/manager/"+form.pinfoId;
+              this.http.put(url, formData).then(res => {
+                if (res.code == 200) {
+                  this.$message({
+                    type: "success",
+                    message: "编辑成功!"
+                  });
+                  this.$router.push({ path: "/roster/manager" });
+                  this.cancel(formName);
+                }
+              });
+            })
+            .catch(err => {
+              this.$message({
+                type: "info",
+                message: "已取消添加"
+              });
+            });
+
+
+          }
         } else {
           console.log("error submit!!");
           return false;

@@ -12,49 +12,49 @@
         <el-col :span="8">
           <div class="grid-content bg-purple">
             公司名称:
-            <span>9996666</span>
+            <span>{{data[0].company}}</span>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">姓名:</div>
+          <div class="grid-content bg-purple">姓名: <span>{{data[0].name}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">年龄</div>
+          <div class="grid-content bg-purple">年龄:<span>{{data[0].age}}</span></div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content bg-purple">
             性别:
-            <span>9996666666666</span>
+            <span>{{data[0].gender}}</span>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">手机号码:</div>
+          <div class="grid-content bg-purple">手机号码: <span>{{data[0].cellPhone}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">证件类型:</div>
+          <div class="grid-content bg-purple">证件类型:<span>{{data[0].idCardType}}</span></div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content bg-purple">
             政治面貌:
-            <span>9996666666666</span>
+           <span>{{data[0].politicsType}}</span>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">证件编码:</div>
+          <div class="grid-content bg-purple">证件编码:  <span>{{data[0].idCardCode}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">籍贯:</div>
+          <div class="grid-content bg-purple">籍贯: <span>{{data[0].birthPlaceCode}}</span></div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content bg-purple">
             合同名称:
-            <span>9996666666666</span>
+             <span>{{data[0].contractName}}</span>
           </div>
         </el-col>
       </el-row>
@@ -65,10 +65,11 @@
     </template>
   </el-dialog>
 </template>
- 
+
 <script>
 export default {
   name: "turntorepairorder",
+  props:['data'],
   data() {
     return {
       changOrder: false
@@ -93,7 +94,7 @@ export default {
   }
 };
 </script>
- 
+
 <style scoped lang="stylus">
 .el-row {
   margin-bottom: 20px;

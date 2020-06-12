@@ -132,7 +132,7 @@ export default {
         workerType: ""
       },
       changOrder: false, //查看详情
-      total: 11,
+      total: 0,
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
@@ -144,7 +144,7 @@ export default {
       fileList: [],
       loading: true,
       tableData: [],
-      bindData:"999999999"
+      bindData:{},
     };
   },
   activated() {
@@ -317,7 +317,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/manager";
           this.http.delete(url, data).then(res => {
@@ -384,11 +384,26 @@ export default {
     detailsRowClick(index,row) {
       // console.log(row.pinfoId);
       ///smart/worker/roster/{userId}/manager/{id}
+<<<<<<< HEAD
+=======
+      // this.bindData=[];
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/manager/"+row.pinfoId;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          this.bindData=res.data;
+          console.log(this.bindData);
+          // return this.bindData;
+        }
+      });
+>>>>>>> 0ae8389cd5f1965152443d70cfe5bb1f24d1786c
       let _this =this
       _this.changOrder = true;
-      _this.$nextTick(() => {
+      // _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
-      });
+      // });
       // _this.$nextTick(() => {
       //   _this.$refs.turnOrder.init();
       // });

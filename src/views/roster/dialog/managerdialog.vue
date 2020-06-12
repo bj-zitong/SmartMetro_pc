@@ -11,74 +11,77 @@
 
       <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">姓名:<span>9996666</span></div>
+          <div class="grid-content bg-purple">姓名:<span>{{data[0].name}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">性别</div>
+          <div class="grid-content bg-purple">性别:<span>{{data[0].gender}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">年龄</div>
+          <div class="grid-content bg-purple">年龄:<span>{{data[0].age}}</span></div>
         </el-col>
       </el-row>
        <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">民族:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">民族:<span>{{data[0].nation}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">电话</div>
+          <div class="grid-content bg-purple">电话:<span>{{data[0].cellPhone}}</span></div>
         </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">部门</div>
-        </el-col>
+        <!-- <el-col :span="8">
+          <div class="grid-content bg-purple">部门:<span>{{data.nation}}</span></div>
+        </el-col> -->
        </el-row>
        <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">承建单位:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">承建单位:<span>{{data[0].buildCorpName}}</span></div>
         </el-col>
+        <!-- <el-col :span="8">
+          <div class="grid-content bg-purple">岗位/职责:<span>{{data.nation}}</span></div>
+        </el-col> -->
         <el-col :span="8">
-          <div class="grid-content bg-purple">岗位/职责</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">紧急联系人</div>
+          <div class="grid-content bg-purple">紧急联系人:<span>{{data[0].urgentLinkMan}}</span></div>
         </el-col>
       </el-row>
        <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">电话:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">电话:<span>{{data[0].urgentLinkManPhone}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">籍贯</div>
+          <div class="grid-content bg-purple">籍贯:<span>{{data[0].birthPlaceCode}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">婚姻状况</div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <div class="grid-content bg-purple">学位:<span>9996666666666</span></div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">文化程度</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">证件编码</div>
+          <div class="grid-content bg-purple">婚姻状况:<span>{{data[0].maritalStatus}}</span></div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content bg-purple">居住证:<span>9996666666666</span></div>
+          <div class="grid-content bg-purple">学位:<span>{{data[0].degree}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">居住证办理日期</div>
+          <div class="grid-content bg-purple">文化程度:<span>{{data[0].cultureLevelType}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">人员类型</div>
+          <div class="grid-content bg-purple">证件编码:<span>{{data[0].idCardCode}}</span></div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
+          <div class="grid-content bg-purple">居住证:<span>{{data[0].isResidencePermit}}</span></div>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content bg-purple">居住证办理日期:<span>{{data[0].residencePermitDate}}</span></div>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content bg-purple">人员类型:<span>{{data[0].type}}</span></div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="grid-content bg-purple">政治面貌:<span>{{data[0].politicsType}}</span></div>
+        </el-col>
+           <!-- <el-col :span="8">
           <div class="grid-content bg-purple">政治面貌:<span>{{data}}</span></div>
-        </el-col>
+        </el-col> -->
       </el-row>
     </div>
     <template slot="footer" class="dialog-footer">
@@ -94,17 +97,23 @@ export default {
   props:['data'],
   data() {
     return {
-      changOrder: false
+      changOrder: false,
+      dome:data
     };
-  },mounted(){
-    console.log(this.bindData)
+  },
+
+  mounted(){
+
+
   },
   methods: {
     //页面初始化时加载的事件
     init() {
+       alert("9999999")
+       console.log(this.dome)
       this.changOrder = true;
-      console.log(11111111);
-      // console.log(bindData);
+      // console.log(11111111);
+      // console.log(data);
     }, //关闭页面
 
     handleClose() {
