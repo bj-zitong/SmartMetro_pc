@@ -37,17 +37,32 @@
             <el-table-column
               type="selection"
               width="65"
-              prop="pInfoId"
+              prop="pinfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="jobNum" label="工号"></el-table-column>
-            <el-table-column prop="gender" label="性别"></el-table-column>
-            <el-table-column prop="birthPlace" label="籍贯"></el-table-column>
+            <el-table-column prop="gender" label="性别">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.gender==0">男</span>
+                  <span v-if="scope.row.gender==1">女</span>
+               </template>
+            </el-table-column>
+            <el-table-column prop="birthPlaceCode" label="籍贯"></el-table-column>
             <el-table-column prop="age" label="年龄"></el-table-column>
-            <el-table-column prop="workerType" label="工人类别"></el-table-column>
+            <el-table-column prop="workerType" label="工人类别">
+              <template slot-scope="scope">
+                  <span v-if="scope.row.workerType==0">厨师</span>
+                  <span v-if="scope.row.workerType==1">保安</span>
+               </template>
+            </el-table-column>
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
-            <el-table-column prop="politicsType" label="政治面貌"></el-table-column>
+            <el-table-column prop="politicsType" label="政治面貌">
+               <template slot-scope="scope">
+                  <span v-if="scope.row.politicsType==0">党员</span>
+                  <span v-if="scope.row.politicsType==1">团员</span>
+               </template>
+            </el-table-column>
             <el-table-column label="操作" fixed="right" width="240">
               <template slot-scope="scope">
                 <el-button class="T-R-B-Green" size="mini" @click="editRowClick(scope.row)">编辑</el-button>
@@ -154,38 +169,12 @@ export default {
         "/other/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
+          var total = res.data.total;
+          var rows = res.data.rows;
           this.tableData = rows;
           this.total = total;
         }
       });
-      var result = [
-        {
-          pInfoId: 1,
-          name: "上海",
-          jobNum: "普陀区",
-          gender: "男",
-          age: 35,
-          cellPhone: "15236985369",
-          politicsType: "党员",
-          workerType: "瓦工",
-          birthPlace: "北京"
-        },
-        {
-          pInfoId: 2,
-          name: "xxx",
-          jobNum: "普陀区",
-          gender: "男",
-          age: 45,
-          cellPhone: "15236985369",
-          politicsType: "党员",
-          workerType: "瓦工",
-          birthPlace: "河北"
-        }
-      ];
-      this.total = result.length;
-      this.tableData = result;
     },
     //新增
     addStaffClick() {
@@ -201,7 +190,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pInfoId;
+        var id = arrays[i].pinfoId;
         ids.push(id);
       }
       return ids;
@@ -216,7 +205,7 @@ export default {
       this.$router.push({
         name: "AddOther",
         params: {
-          id: row.pInfoId
+          id: row.pinfoId
         }
       });
     },
@@ -231,19 +220,16 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/other";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
               this.$message({
                 type: "success",
                 message: "删除成功!"
               });
+              this.getOtherStaffs();
             }
           });
         })
@@ -256,14 +242,14 @@ export default {
     },
     //删除
     deleteRowClick(row) {
-      var uid = row.pInfoId;
+      var uid = row.pinfoId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除吗？", "warning")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/other";
           this.http.delete(url, data).then(res => {
@@ -272,6 +258,7 @@ export default {
                 type: "success",
                 message: "删除成功!"
               });
+              this.getOtherStaffs();
             }
           });
         })
@@ -295,7 +282,7 @@ export default {
             page: _this.page
           });
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/other/export";
           this.http.post(url, data).then(res => {
@@ -336,10 +323,9 @@ export default {
     },
     detailsRowClick(row) {
       let _this = this;
-      var id = row.pInfoId;
-      ///smart/worker/roster/{userId}/other/{id}
+      var id = row.pinfoId;
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/other/" +
         id;
@@ -355,8 +341,8 @@ export default {
           form.cellPhone = result.cellPhone;
           form.politicsType = result.politicsType;
           form.workerType = result.workerType;
-          form.birthPlace = result.birthPlace;
-          form.pInfoId = id;
+          form.birthPlaceCode = result.birthPlaceCode;
+          form.pinfoId = id;
         }
       });
       _this.changOrder = true;
@@ -368,7 +354,7 @@ export default {
     importCsv() {
       // console.log(this.file.uploadFile[0].raw);
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/other/import";
       var data = new FormData();
@@ -460,5 +446,6 @@ body > .el-container {
     text-align: center;
     margin-top: 30px;
   }
+
 }
 </style>

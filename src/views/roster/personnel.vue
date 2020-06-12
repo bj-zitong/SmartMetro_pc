@@ -417,8 +417,8 @@ export default {
         "/labour/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
+          var total = res.data.total;
+          var rows = res.data.rows;
           this.tableData = rows;
           this.listQuery.total = total;
         }

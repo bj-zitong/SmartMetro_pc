@@ -385,6 +385,7 @@ export default {
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
       });
+      
     },
     seeSubRowClick() {},
     headClass() {
