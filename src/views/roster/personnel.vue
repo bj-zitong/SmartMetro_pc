@@ -74,16 +74,16 @@
             <el-table-column
               fixed
               type="selection"
-              prop="pInfoId"
+              prop="pinfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
-            <el-table-column prop="labourCompany" label="劳务公司" width="150"></el-table-column>
-            <el-table-column prop="teamMaster" label="班组" width="100"></el-table-column>
-            <el-table-column prop="workerType" label="工种" width="100"></el-table-column>
+            <el-table-column prop="company" label="劳务公司" width="150"></el-table-column>
+            <el-table-column prop="teamName" label="班组" width="100"></el-table-column>
+            <el-table-column prop="workType" label="工种" width="100"></el-table-column>
             <el-table-column prop="name" label="姓名" width="120"></el-table-column>
             <el-table-column prop="gender" label="性别" width="120"></el-table-column>
-            <el-table-column prop="status" label="工号" width="120"></el-table-column>
-            <el-table-column prop="birthPlace" label="籍贯" width="300"></el-table-column>
+            <el-table-column prop="jobNum" label="工号" width="120"></el-table-column>
+            <el-table-column prop="birthPlaceCode" label="籍贯" width="300"></el-table-column>
             <el-table-column prop="age" label="年龄" width="120"></el-table-column>
             <el-table-column prop="cellPhone" label="手机号码" width="100"></el-table-column>
             <el-table-column prop="politicsType" label="政治面貌" width="100"></el-table-column>
@@ -151,14 +151,14 @@
               </template>
             </el-table-column>
           </el-table>
-          <!-- <pagination
+          <pagination
             class="pagination-box"
             v-if="total>0"
             :total="total"
             :page.sync="listQuery.currentPage"
             :limit.sync="listQuery.pageSize"
             @pagination="getDataFun"
-          />-->
+          />
           <!-- </el-main> -->
         </div>
       </el-menu>
@@ -284,7 +284,7 @@ export default {
       headClass: headClass,
       centerDialogVisible: false,
       evaluatDialogVisible: false,
-      total: 50,
+      total:null,
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
@@ -295,61 +295,12 @@ export default {
       evaluate: "", //拉黑原因描述,
       rowIndex: null, //选中当前行下标
       changOrder: false, //查看详情
-      pInfoId: "", //点击拉黑获取当前行ID
+      pinfoId: "", //点击拉黑获取当前行ID
       Rules: {
         evaluate: [{ required: true, message: "请输入评价", trigger: "blur" }]
       },
       UploadFileFileList: [],
-      tableData: [
-        {
-          pInfoId: "1",
-          jobNum: "2016-05-025",
-          labourCompany: "北京分公司",
-          teamMaster: "2",
-          workerType: "土方",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "上海",
-          politicsType: "群众",
-          age: "10",
-          cellPhone: "15965478965",
-          status: "23356644656556685",
-          createTime: "2020-4-15",
-          exitTime: "2020-1-14"
-        },
-        {
-          pInfoId: "2",
-          jobNum: "2016-05-025",
-          labourCompany: "北京分公司",
-          teamMaster: "2",
-          workerType: "土方",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "上海",
-          politicsType: "群众",
-          age: "10",
-          cellPhone: "15965478965",
-          status: "23356644656556685",
-          createTime: "2020-4-15",
-          exitTime: "2020-1-14"
-        },
-        {
-          pInfoId: "3",
-          jobNum: "2016-05-025",
-          labourCompany: "北京分公司",
-          teamMaster: "2",
-          workerType: "土方",
-          name: "王小虎",
-          gender: "男",
-          birthPlace: "上海",
-          politicsType: "群众",
-          age: "10",
-          cellPhone: "15965478965",
-          status: "23356644656556685",
-          createTime: "2020-4-15",
-          exitTime: "2020-1-14"
-        }
-      ],
+      tableData: [],
       rules: {
         Reason: [
           { required: true, message: "请输入公司名称", trigger: "blur" }
@@ -420,7 +371,7 @@ export default {
           var total = res.data.total;
           var rows = res.data.rows;
           this.tableData = rows;
-          this.listQuery.total = total;
+          this.total = total;
         }
       });
     },
@@ -447,7 +398,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pInfoId;
+        var id = arrays[i].pinfoId;
         ids.push(id);
       }
       console.log(ids);
@@ -492,7 +443,7 @@ export default {
     PassTrainingClick(row) {
       handleCofirm("请确认是否培训通过", "warning")
         .then(res => {
-          var data = row.pInfoId;
+          var data = row.pinfoId;
           var url =
             "/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
@@ -519,7 +470,7 @@ export default {
     //单个删除
     handleDelete(row) {
       // 删除用户id
-      var uid = row.pInfoId;
+      var uid = row.pinfoId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除", "warning")
@@ -582,7 +533,7 @@ export default {
     exitClick(row) {
       handleCofirm("请确认是否退场", "warning")
         .then(res => {
-          var data = row.pInfoId;
+          var data = row.pinfoId;
           var url =
             "/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
@@ -692,7 +643,7 @@ export default {
     },
     //拉黑
     blockClick(row) {
-      this.pInfoId = row.pInfoId;
+      this.pinfoId = row.pinfoId;
       this.centerDialogVisible = true;
     },
     handleButton() {
@@ -712,7 +663,7 @@ export default {
         if (valid) {
           var _this = this;
           var data = JSON.stringify({
-            pInfoId: 0,
+            pinfoId: 0,
             evaluate: _this.evaluate
           });
           this.evaluatDialogVisible = false;
@@ -775,7 +726,7 @@ export default {
             "/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour/evaluate/" +
-            this.pInfoId +
+            this.pinfoId +
             "/approve/" +
             4;
           this.http.post(url, data).then(res => {

@@ -140,10 +140,11 @@ export default {
       form: {
         photo: ""
       },
+      formParams:null,
       fileList: [],
       loading: true,
       tableData: [],
-      bindData:"999999999"
+      bindData:"99999dzfgdsgfdsg9999"
     };
   },
   activated() {
@@ -381,27 +382,33 @@ export default {
       // });
     },
     detailsRowClick(index,row) {
-      console.log(row.pinfoId);
+      // console.log(row.pinfoId);
       ///smart/worker/roster/{userId}/manager/{id}
-      let _this = this;
+      let _this =this
       _this.changOrder = true;
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
       });
+      // _this.$nextTick(() => {
+      //   _this.$refs.turnOrder.init();
+      // });
+      // this.getDetail(row);
     },
-    // getDetail(){
-    //   var url =
-    //     "/bashUrl/smart/worker/roster/" +
-    //     sessionStorage.getItem("userId") +
-    //     "/manager/"+row.pinfoId;
-    //   this.http.get(url, null).then(res => {
-    //     if (res.code == 200) {
-    //       console.log(res);
-    //       this.formParams=res.data;
-    //       return this.formParams;
-    //     }
-    //   });
-    // },
+    getDetail(row){
+       let _this = this;
+      _this.changOrder = true;
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/manager/"+row.pinfoId;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          console.log(res);
+          this.formParams=res.data;
+          return this.formParams;
+        }
+      });
+    },
     seeSubRowClick() {},
     headClass() {
       return "text-align: center; height: 60px; background:rgba(0,88,162,1); color: #fff;";

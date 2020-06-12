@@ -38,17 +38,22 @@
             <el-table-column
               type="selection"
               width="65"
-              prop="pInfoId"
+              prop="pinfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column prop="company" label="公司名称"></el-table-column>
             <el-table-column prop="contractName" label="合同名称"></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="jobNum" label="工号"></el-table-column>
-            <el-table-column prop="gender" label="性别"></el-table-column>
+            <el-table-column prop="gender" label="性别">
+              <template slot-scope="scope">
+                <span v-if="scope.row.gender==0">男</span>
+                <span v-if="scope.row.gender==1">女</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="professional" label="专业"></el-table-column>
             <el-table-column prop="duty" label="职务"></el-table-column>
-            <el-table-column prop="birthPlace" label="籍贯"></el-table-column>
+            <el-table-column prop="birthPlaceCode" label="籍贯"></el-table-column>
             <el-table-column prop="idCardCode" label="身份证号"></el-table-column>
             <el-table-column prop="age" label="年龄"></el-table-column>
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
@@ -180,38 +185,6 @@ export default {
           this.total = total;
         }
       });
-      var result = [
-        {
-          pInfoId: 1,
-          name: "地铁安保部",
-          idCardCode: "210234567898765876",
-          cellPhone: 15236985236,
-          company: "安保部一",
-          contractName: "部门一",
-          jobNum: "123",
-          gender: "男",
-          professional: "专业1",
-          duty: "xxx",
-          birthPlace: "河北",
-          age: 35
-        },
-        {
-          pInfoId: 2,
-          name: "22222222",
-          idCardCode: "210234567898765789",
-          cellPhone: 111,
-          company: "44444",
-          contractName: "44444",
-          jobNum: "1111",
-          gender: "女",
-          professional: "专业2",
-          duty: "xxxxx",
-          birthPlace: "北京",
-          age: 45
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     //新增
     addStaffClick() {
@@ -227,7 +200,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pInfoId;
+        var id = arrays[i].pinfoId;
         ids.push(id);
       }
       return ids;
@@ -242,7 +215,7 @@ export default {
         page: this.page
       });
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/equipment/export";
       this.http.post(url, data).then(res => {
@@ -284,12 +257,12 @@ export default {
       this.$router.push({
         name: "AddEquipment",
         params: {
-          id: row.pInfoId
+          id: row.pinfoId
         }
       });
     },
     deleteRowClick(row) {
-      var uid = row.pInfoId;
+      var uid = row.pinfoId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除", "warning")
@@ -327,7 +300,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/equipment";
           this.http.delete(url, data).then(res => {
@@ -352,7 +325,7 @@ export default {
     },
     detailsRowClick(row) {
       let _this = this;
-      var id = row.pInfoId;
+      var id = row.pinfoId;
       ////smart/worker/roster/{userId}/equipment/{id}
       var url =
         "/bashUrl/smart/worker/roster/" +
@@ -387,7 +360,7 @@ export default {
     importCsv() {
       console.log(this.file.uploadFile[0].raw);
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/equipment/import";
       var data = new FormData();
