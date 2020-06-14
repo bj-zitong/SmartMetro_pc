@@ -1,7 +1,7 @@
 <template>
   <div class="foreign">
     <el-container class="left_echarts">
-      <div id="main" style="width: 813px;height: 426px;"></div>
+      <div id="main" style="width: 700px;height: 426px;"></div>
       <div class="boxbtn">
         <el-button
           v-for="(item,index) in lists"
@@ -269,7 +269,7 @@ export default {
 <style scoped lang="stylus">
 .foreign {
   width: 100%;
-  margin: 0 25px;
+  padding: 0 25px;
 }
 
 .left_echarts {
@@ -284,7 +284,7 @@ export default {
 }
 
 .right_echarts {
-  width: 35%;
+  width: 37%;
   height: 422px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
@@ -295,7 +295,7 @@ export default {
 }
 
 .bottom_echarts {
-  width: 96.8%;
+  width: 99.8%;
   height: 350px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);

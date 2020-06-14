@@ -273,14 +273,14 @@ ul, li {
 
 /* 主体样式 */
 .home-mian-box {
-      width: 90%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    margin-top: 200px;
+  width: 90%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  margin-top: 150px;
 
   .top {
     width: 100%;
@@ -349,5 +349,13 @@ ul, li {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   opacity: 0.5;
   border-radius: 4px;
+}
+
+$MQMobile = 1920px; // 这样就将默认的719px 覆盖掉了
+
+@media (max-width: $MQMobile) {
+  .home-mian-box {
+    margin-top: 150px;
+  }
 }
 </style>
