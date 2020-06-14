@@ -42,8 +42,8 @@
           <el-col :span="10">
             <el-form-item label="证件类型" prop="documentType">
               <el-select v-model="form.documentType" placeholder="请选择证件类型">
-                <el-option label="身份证" value="1"></el-option>
-                <el-option label="护照" value="2"></el-option>
+                <el-option label="身份证" value="0"></el-option>
+                <el-option label="护照" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -65,8 +65,8 @@
           <el-col :span="10">
             <el-form-item label="职务" prop="post">
               <el-select v-model="form.post" placeholder="请选择职务">
-                <el-option label="身份证" value="1"></el-option>
-                <el-option label="护照" value="2"></el-option>
+                <el-option label="身份证" value="0"></el-option>
+                <el-option label="护照" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>

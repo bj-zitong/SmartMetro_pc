@@ -207,7 +207,8 @@ export default {
             validBeginDate: "",
             validEndDate: "",
             certificationStatus: "",
-            accessory: ""
+            accessory: "",
+            pInfoId:null
           }
         ]
       },
@@ -334,7 +335,6 @@ export default {
     uploadFile() {},
     handleChange(file, fileList) {
       this.$refs.form.clearValidate();
-
       this.form.productGroup[0].accessory = fileList;
       this.form.productGroup.forEach((item, index, array) => {
 

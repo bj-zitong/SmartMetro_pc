@@ -11,7 +11,7 @@
 
       <el-row :gutter="20">
         <el-col :span="8">
-          <!-- <div class="grid-content bg-purple">姓名:<span>{{data.name}}</span></div> -->
+          <div class="grid-content bg-purple">姓名:<span>{{data}}</span></div>
         </el-col>
         <el-col :span="8">
           <!-- <div class="grid-content bg-purple">性别:<span>{{data.gender}}</span></div> -->

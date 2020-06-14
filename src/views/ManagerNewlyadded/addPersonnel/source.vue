@@ -255,13 +255,14 @@ export default {
       //来源地消息
       var History = sessionStorage.getItem("source");
       //个人基本信息
+      debugger;
       var data = JSON.parse(sessionStorage.getItem("data"));
       var formData = new FormData();
       formData.append("name", data.name);
       formData.append("gender", data.gender);
       formData.append("age", data.age);
       formData.append("nation", data.nation);
-      formData.append("workerType", data.workerType);
+      formData.append("workType", data.workType);
       formData.append("cellPhone", data.cellPhone);
       formData.append("buildCorpName ", data.buildCorpName);
       formData.append("urgentLinkMan", data.urgentLinkMan);
@@ -293,37 +294,16 @@ export default {
       this.http.post(dataUrl, formData).then(res => {
         if (res.code == 200) {
           //获得新增的id
-          var id = res.data.pInfoId;
+          var id = res.data;
+          console.log(res);
           this.pInfoId = id;
+          this.addContract();
         }
       });
-      //合同信息
-      var contractInformation = sessionStorage.getItem("contractInformation");
-      // contractInformation.push({pInfoId:this.pInfoId});
-      // contractInformation.pInfoId=this.pInfoId
-      console.log(contractInformation);
-      console.log(contractInformation[0].pInfoId);
-      var contractUrl =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/labour/contract";
-      this.http.post(contractUrl, contractInformation).then(res => {
-        if (res.code == 200) {
-        }
-      });
-
-      //工资记录
-      var payrollRecords1 = sessionStorage.getItem("payrollRecords1");
-      var payrollUrl =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/labour/salary";
-      this.http.post(payrollUrl, payrollRecords1).then(res => {
-        if (res.code == 200) {
-        }
-      });
-
-      //资质证书
+    },
+    //
+    addCer(){
+         //资质证书
       var certificate = JSON.parse(sessionStorage.getItem("certificate"));
       for (var i = 0; i < certificate.productGroup.length; i++) {
         for (var i = 0; i < this.$global_msg.photoArr.length; i++) {
@@ -331,6 +311,10 @@ export default {
           certificateFormdata.append(
             "grantCompany",
             certificate.productGroup[i].grantCompany
+          );
+          certificateFormdata.append(
+            "pInfoId",
+            this.pInfoId
           );
           certificateFormdata.append(
             "certificationName ",
@@ -376,28 +360,75 @@ export default {
 
           //   certificateFormdata.append("accessory ", this.$global_msg.photoArr[i].accessory[0].raw);
           // }
+          debugger;
           var certificateUrl =
             "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
-            "/labour/credential";
+            "/labour/credential/"+this.pInfoId;
           this.http.post(certificateUrl, certificateFormdata).then(res => {
             if (res.code == 200) {
+              this.addHistory();
             }
           });
         }
       }
-      //历史评价记录
+    },
+    //历史记录
+    addHistory(){
+       //历史评价记录
       var History = sessionStorage.getItem("History");
       var paramEval = JSON.stringify({
         pInfoId: this.pInfoId,
         evaluate: History
       });
+      debugger;
       var HistoryUrl =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/labour/evaluate";
       this.http.post(HistoryUrl, paramEval).then(res => {
         if (res.code == 200) {
+        }
+      });
+    },
+    //工资
+    addPay(){
+        //工资记录
+      var payrollRecords1 = sessionStorage.getItem("payrollRecords1");
+      var data = JSON.parse(sessionStorage.getItem("payrollRecords1"));
+      data.pInfoId=this.pInfoId;
+      var payrollUrl =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/salary";
+      this.http.post(payrollUrl, data).then(res => {
+        if (res.code == 200) {
+          this.addCer();
+        }
+      });
+    },
+    //合同信息
+    addContract(){
+           //合同信息
+       var contractInformation = sessionStorage.getItem("contractInformation");
+       var data = JSON.parse(sessionStorage.getItem("contractInformation"));
+       debugger;
+      // contractInformation.push({pInfoId:this.pInfoId});
+      // contractInformation.pInfoId=this.pInfoId
+      data.pContractId=this.pInfoId;
+      // contractInformation.pContractId=this.pInfoId;
+      console.log(this.pInfoId);
+      // console.log(contractInformation.pContractId);
+      console.log(data.pContractId);
+      console.log(data);
+      console.log(contractInformation);
+      var contractUrl =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/contract";
+      this.http.post(contractUrl, data).then(res => {
+        if (res.code == 200) {
+          this.addPay();
         }
       });
     },

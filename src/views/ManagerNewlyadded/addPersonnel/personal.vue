@@ -32,8 +32,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="工种" class="region" prop="workerType">
-              <el-select v-model="form.workerType" placeholder="请选择工种" filterable clearable>
+            <el-form-item label="工种" class="region" prop="workType">
+              <el-select v-model="form.workType" placeholder="请选择工种" filterable clearable>
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -237,7 +237,7 @@ export default {
         gender: "",
         age: "",
         nation: "",
-        workerType: "",
+        workType: "",
         cellPhone: "",
         buildCorpName: "",
         urgentLinkMan: "",
@@ -268,7 +268,7 @@ export default {
         gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         nation: [{ required: true, message: "请输入民族", trigger: "blur" }],
-        workerType: [
+        workType: [
           { required: true, message: "请选择工种", trigger: "blur" }
         ],
         cellPhone: [{ required: true, message: "请输入电话", trigger: "blur" }],
@@ -364,13 +364,12 @@ export default {
           // .then(res => {
           this.$global_msg.photo = this.form.photo;
           sessionStorage.setItem("data", JSON.stringify(this.form));
+          console.log(this.form.photo);
           this.$emit("field", this.field);
           this.$message({
             type: "success",
             message: "保存成功!"
           });
-        } else {
-          return false;
         }
       });
     },
@@ -382,6 +381,7 @@ export default {
     handleChange(file, fileList) {
       this.$refs.form.clearValidate();
       this.form.photo = file;
+      console.log(this.form.photo);
       // this.form.photo1 = fileList;
     },
     beforeAvatarUpload(file) {

@@ -17,8 +17,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="性别" prop="gender" class="el-form-item">
-              <el-radio v-model="form.gender" label="1">男</el-radio>
-              <el-radio v-model="form.gender" label="2">女</el-radio>
+              <el-radio v-model="form.gender" label="0">男</el-radio>
+              <el-radio v-model="form.gender" label="1">女</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -83,16 +83,16 @@
           <el-col :span="8">
             <el-form-item label="学位" prop="degree">
               <el-select v-model="form.degree" placeholder="请选择学位">
-                <el-option label="身份证" value="1"></el-option>
-                <el-option label="护照" value="2"></el-option>
+                <el-option label="身份证" value="0"></el-option>
+                <el-option label="护照" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="证件类型" prop="idCardType">
               <el-select v-model="form.idCardType" placeholder="请选择学位">
-                <el-option label="身份证" value="1"></el-option>
-                <el-option label="护照" value="2"></el-option>
+                <el-option label="身份证" value="0"></el-option>
+                <el-option label="护照" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -298,6 +298,7 @@ export default {
      //调用展示数据方法
      this.form.pinfoId=uid;
      this.getDetail();
+     console.log();
     }
   },
   methods: {

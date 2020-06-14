@@ -36,10 +36,10 @@
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item label="合同结束时间" prop="enddate">
+          <el-form-item label="合同结束时间" prop="endDate">
             <!-- <el-input v-model="contract.startDate"></el-input> -->
             <el-date-picker
-              v-model="contract.enddate"
+              v-model="contract.endDate"
               type="date"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
@@ -91,11 +91,12 @@ export default {
         projectName: "",
         contractCode: "",
         startDate: "",
-        enddate: "",
+        endDate: "",
         contractPeriodType: "",
         clearingType: "",
         corpCode: "",
-        pInfoId:null
+        pInfoId:null,
+        pContractId:null
       },
       rules: {
         projectCode: [
@@ -110,7 +111,7 @@ export default {
         startDate: [
           { required: true, message: "请输入合同开始时间", trigger: "blur" }
         ],
-        enddate: [
+        endDate: [
           { required: true, message: "请输入合同结束时间", trigger: "blur" }
         ],
         contractPeriodType: [
@@ -142,8 +143,8 @@ export default {
             .then(res => {
               sessionStorage.setItem(
                 "contractInformation",
-                // JSON.stringify(this.contract)
-                this.contract
+                JSON.stringify(this.contract)
+                // this.contract
               );
               this.$emit("field", this.field);
               this.$message({

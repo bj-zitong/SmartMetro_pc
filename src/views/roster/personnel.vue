@@ -81,12 +81,22 @@
             <el-table-column prop="teamName" label="班组" width="100"></el-table-column>
             <el-table-column prop="workType" label="工种" width="100"></el-table-column>
             <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-            <el-table-column prop="gender" label="性别" width="120"></el-table-column>
-            <el-table-column prop="jobNum" label="工号" width="120"></el-table-column>
+            <el-table-column prop="gender" label="性别" width="120">
+              <template slot-scope="scope">
+                  <span v-if="scope.row.gender==0">男</span>
+                  <span v-if="scope.row.gender==1">女</span>
+               </template>
+            </el-table-column>
+            <!-- <el-table-column prop="jobNum" label="工号" width="120"></el-table-column> -->
             <el-table-column prop="birthPlaceCode" label="籍贯" width="300"></el-table-column>
             <el-table-column prop="age" label="年龄" width="120"></el-table-column>
             <el-table-column prop="cellPhone" label="手机号码" width="100"></el-table-column>
-            <el-table-column prop="politicsType" label="政治面貌" width="100"></el-table-column>
+            <el-table-column prop="politicsType" label="政治面貌" width="100">
+                 <template slot-scope="scope">
+                  <span v-if="scope.row.politicsType==0">党员</span>
+                  <span v-if="scope.row.politicsType==1">团员</span>
+               </template>
+            </el-table-column>
             <el-table-column prop="createTime" label="进场日期" width="100"></el-table-column>
             <el-table-column prop="exitTime" label="退场日期" width="100"></el-table-column>
             <!-- <el-table-column fixed="right" label="状态" width="100"></el-table-column> -->
@@ -273,7 +283,8 @@ export default {
       },
       //
       formEevaluate: {
-        evaluate: ""
+        evaluate: "",
+        pinfoId:null
       },
       operation: {
         conversionCompile: "编辑",
@@ -284,7 +295,7 @@ export default {
       headClass: headClass,
       centerDialogVisible: false,
       evaluatDialogVisible: false,
-      total:null,
+      total: null,
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
@@ -416,19 +427,16 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
               this.$message({
                 type: "success",
                 message: "删除成功!"
               });
+              this.getDataFun();
             }
           });
         })
@@ -445,7 +453,7 @@ export default {
         .then(res => {
           var data = row.pinfoId;
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "labour/evaluate/" +
             data +
@@ -457,6 +465,7 @@ export default {
                 type: "success",
                 message: "通过成功!"
               });
+              this.getDataFun();
             }
           });
         })
@@ -477,7 +486,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour";
           this.http.delete(url, data).then(res => {
@@ -486,6 +495,7 @@ export default {
                 type: "success",
                 message: "删除成功!"
               });
+              this.getDataFun();
             }
           });
         })
@@ -507,7 +517,7 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "labour/evaluate/" +
             data +
@@ -519,6 +529,7 @@ export default {
                 type: "success",
                 message: "通过成功!"
               });
+              this.getDataFun();
             }
           });
         })
@@ -535,7 +546,7 @@ export default {
         .then(res => {
           var data = row.pinfoId;
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "labour/evaluate/" +
             data +
@@ -547,6 +558,7 @@ export default {
                 type: "success",
                 message: "通过成功!"
               });
+              this.getDataFun();
             }
           });
         })
@@ -571,7 +583,7 @@ export default {
     importCsv() {
       console.log(this.file.uploadFile[0].raw);
       var url =
-        "/smart/worker/roster/" +
+        "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/other/import";
       var data = new FormData();
@@ -608,7 +620,7 @@ export default {
           page: _this.page
         });
         var url =
-          "/smart/worker/roster/" +
+          "/bashUrl/smart/worker/roster/" +
           sessionStorage.getItem("userId") +
           "/labour/export";
         this.http.post(url, data).then(res => {
@@ -650,7 +662,8 @@ export default {
       console.log(this.formInline.region);
     },
     //评价
-    evaluateClick() {
+    evaluateClick(row) {
+      this.formEevaluate.pinfoId=row.pinfoId;
       this.evaluatDialogVisible = true;
     },
     //取消评价
@@ -663,20 +676,21 @@ export default {
         if (valid) {
           var _this = this;
           var data = JSON.stringify({
-            pinfoId: 0,
-            evaluate: _this.evaluate
+            pinfoId: _this.formEevaluate.pinfoId,
+            evaluate: _this.formEevaluate.evaluate
           });
           this.evaluatDialogVisible = false;
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour/evaluate";
-          this.http.get(url, data).then(res => {
+          this.http.put(url, data).then(res => {
             if (res.code == 200) {
               this.$message({
                 type: "success",
                 message: "提交成功!"
               });
+              this.getDataFun();
             }
           });
         } else {
@@ -723,7 +737,7 @@ export default {
           data.append("name", form.Reason);
           data.append("file", form.photo[0].raw);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour/evaluate/" +
             this.pinfoId +

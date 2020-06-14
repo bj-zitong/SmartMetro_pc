@@ -73,7 +73,8 @@ export default {
         payRollCode: "",
         totalPayAmount: "",
         distributionMethod: "",
-        payRollBankCardNumber: ""
+        payRollBankCardNumber: "",
+        pInfoId:null
       },
       field: "payrollRecords",
       rules: {

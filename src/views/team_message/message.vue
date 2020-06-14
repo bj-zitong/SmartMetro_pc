@@ -349,7 +349,7 @@ export default {
   },
   activated: function() {
     this.getTalks();
-    this.company = [];
+    this.companys = [];
     var data = JSON.stringify({
       pageSize: 100,
       page: 1

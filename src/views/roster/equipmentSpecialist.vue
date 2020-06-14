@@ -279,7 +279,7 @@ export default {
                 type: "success",
                 message: "删除成功!"
               });
-              this.getTalks();
+              this.getEquiments();
             }
           });
         })
@@ -306,14 +306,11 @@ export default {
             "/equipment";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
               this.$message({
                 type: "success",
                 message: "删除成功!"
               });
+              this.getEquiments();
             }
           });
         })

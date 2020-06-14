@@ -358,11 +358,11 @@ export default {
               "/other";
             this.http.post(url, data).then(res => {
               if (res.code == 200) {
-                // this.$router.push({ path: "/roster/otherStaffs" });
-                 this.$message({
-                type: "success",
+                this.$message({
+                  type: "success",
                 message: "添加成功!"
               });
+                this.$router.push({ path: "/roster/otherStaffs" });
                 this.cancel(form);
               }
             });
@@ -388,7 +388,7 @@ export default {
             data.append("residencePermitDate", form.residencePermitDate);
             data.append("workerType", form.workerType);
             data.append("photo", form.photo[0].raw);
-            data.append("pinfoId", this.id); 
+            data.append("pinfoId", this.id);
             var url =
               "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
@@ -400,6 +400,7 @@ export default {
                 type: "success",
                 message: "编辑成功!"
               });
+                this.$router.push({ path: "/roster/otherStaffs" });
                 this.cancel(form);
               }
             });

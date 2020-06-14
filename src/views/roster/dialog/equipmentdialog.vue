@@ -26,14 +26,18 @@
         <el-col :span="8">
           <div class="grid-content bg-purple">
             性别:
-            <span>{{data[0].gender}}</span>
+            <span v-if="data[0].gender==0">男</span>
+             <span v-if="data[0].gender==1">女</span>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">手机号码: <span>{{data[0].cellPhone}}</span></div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">证件类型:<span>{{data[0].idCardType}}</span></div>
+          <div class="grid-content bg-purple">证件类型:
+           <span v-if="data[0].idCardType==0">身份证</span>
+           <span v-if="data[0].idCardType==1">护照</span>
+          </div>
         </el-col>
       </el-row>
       <el-row :gutter="20">

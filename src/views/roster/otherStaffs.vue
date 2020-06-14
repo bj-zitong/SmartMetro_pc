@@ -40,7 +40,7 @@
               prop="pinfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
-            <el-table-column prop="name" label="姓名"></el-table-column>            
+            <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="gender" label="性别">
                 <template slot-scope="scope">
                   <span v-if="scope.row.gender==0">男</span>
@@ -50,11 +50,11 @@
             <el-table-column prop="birthPlaceCode" label="籍贯"></el-table-column>
             <el-table-column prop="age" label="年龄"></el-table-column>
             <el-table-column prop="workerType" label="工人类别">
-              <template slot-scope="scope">
+              <!-- <template slot-scope="scope">
                   <span v-if="scope.row.workerType==1">厨师</span>
                   <span v-if="scope.row.workerType==2">保安</span>
                   <span v-if="scope.row.workerType==3">其他</span>
-               </template>
+               </template> -->
             </el-table-column>
             <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
             <el-table-column prop="politicsType" label="政治面貌">
@@ -82,7 +82,7 @@
         />
       </el-main>
     </div>
-    <otherStaffsdialog v-if="changOrder" ref="turnOrder" />
+    <otherStaffsdialog v-if="changOrder" ref="turnOrder"  :data="bindData"/>
     <el-dialog :visible.sync="csvVisible" width="50%">
       <div>
         <el-form ref="file" label-width="120px">
@@ -134,7 +134,7 @@ export default {
         major: "",
         name: ""
       },
-      total: 100, //总条数
+      total: null, //总条数
       changOrder: false, //查看详情
       tableData: [],
       ids: [],
@@ -145,7 +145,8 @@ export default {
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
-      }
+      },
+      bindData:[]
     };
   },
   activated() {
@@ -209,7 +210,7 @@ export default {
         }
       });
     },
-    
+
     //批量删除
     deleteAllClick() {
       var ids = this.handleSelectionChange();
@@ -334,16 +335,17 @@ export default {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
-          var form = this.form;
-          form.name = result.name;
-          form.age = result.age;
-          form.gender = result.gender;
-          form.jobNum = result.jobNum;
-          form.cellPhone = result.cellPhone;
-          form.politicsType = result.politicsType;
-          form.workerType = result.workerType;
-          form.birthPlaceCode = result.birthPlaceCode;
-          form.pinfoId = id;
+          this.bindData=result;
+          // var form = this.form;
+          // form.name = result.name;
+          // form.age = result.age;
+          // form.gender = result.gender;
+          // form.jobNum = result.jobNum;
+          // form.cellPhone = result.cellPhone;
+          // form.politicsType = result.politicsType;
+          // form.workerType = result.workerType;
+          // form.birthPlaceCode = result.birthPlaceCode;
+          // form.pinfoId = id;
         }
       });
       _this.changOrder = true;
