@@ -6,10 +6,6 @@
         <div index="1" class="title-name" @click="homepage" title="返回首页">城市轨道交通智慧工地管理系统—{{tabTitle}}</div>
       </div>
       <div class="avatar-container">
-        <div class="exit_login">
-          <el-link :underline="false" class="exit_login_text">{{orgSite}}</el-link>
-          <el-divider direction="vertical" class="borderline"></el-divider>
-        </div>
         <div class="Head_portrait">
           <img src="/static/image/Head_portrait.png" alt class="ri_icon_name" />
           <span>{{username}}</span>
@@ -23,7 +19,7 @@
               <router-link class="inlineBlock" to="/Statisticsscreen">
                 <el-dropdown-item>{{$t('navbar.switchlargeScreen')}}</el-dropdown-item>
               </router-link>
-               <router-link class="inlineBlock" to="/updatePassword">
+              <router-link class="inlineBlock" to="/updatePassword">
                 <el-dropdown-item>{{$t('navbar.changePassword')}}</el-dropdown-item>
               </router-link>
               <el-dropdown-item @click.native="logout">
@@ -31,6 +27,10 @@
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+        </div>
+        <div class="exit_login">
+          <el-link :underline="false" class="exit_login_text">{{orgSite}}</el-link>
+          <el-divider direction="vertical" class="borderline"></el-divider>
         </div>
       </div>
     </el-menu>
@@ -40,7 +40,7 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
-    tabTitle: String,
+    tabTitle: String
   },
   name: "",
   data() {

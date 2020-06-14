@@ -157,7 +157,7 @@
                 :on-change="handleChange"
                 :file-list="fileList"
                 :auto-upload="false"
-                :limit="1"
+                :limit="2"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
@@ -410,6 +410,7 @@ export default {
       });
     },
     handleChange(file, fileList) {
+      this.fileList = [fileList[fileList.length - 1]];
       this.$refs.form.clearValidate();
       this.form.photo = fileList;
     }
@@ -436,10 +437,6 @@ export default {
   background: rgba(255, 255, 255, 1);
   color: #333;
   height: 100%;
-}
-
-.AddEquipment_form {
-  margin-top: 30px;
 }
 
 .el-form-item {

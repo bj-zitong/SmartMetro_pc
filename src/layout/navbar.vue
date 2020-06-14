@@ -188,8 +188,8 @@ export default {
     .avatar-container {
       position: absolute;
       top: 23px;
-      right: 50px;
-      width: 240px;
+      right: 70px;
+      width: 340px;
       outline: none;
       .avatar-wrapper {
         cursor: pointer;
@@ -206,16 +206,17 @@ export default {
       .ri_icon_name {
         width: 30px;
         height: 30px;
-        margin: -2px 10px 0 20px;
+        margin: -2px 10px 0 0;
         float: left;
       }
 
       .exit_login {
-        float: left;
+        float: right;
       }
 
       .Head_portrait {
-        // float: left;
+        float: right;
+        margin-left:10px;
         span {
           float: left;
           height: 21px;
@@ -341,6 +342,7 @@ export default {
 
 .borderline {
   border: 1px solid #fff;
+  margin-top:4px
 }
 
 .hed_tab>.el-tabs__header .el-tabs__nav {

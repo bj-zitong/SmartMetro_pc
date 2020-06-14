@@ -158,39 +158,19 @@
                 action
                 :on-change="handleChange"
                 :file-list="fileList"
+                :limit="2"
+                :on-exceed="handleExceed"
                 :auto-upload="false"
-                :limit="1"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
               </el-upload>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="24">
-            <el-form-item label="角色" prop="roleIds">
-              <el-checkbox-group v-model="form.roleIds">
-                <el-checkbox label="超级管理员"></el-checkbox>
-                <el-checkbox label="项目负责人"></el-checkbox>
-                <el-checkbox label="项目技术负责人"></el-checkbox>
-                <el-checkbox label="智慧工地管理员"></el-checkbox>
-                <el-checkbox label="BIM管理"></el-checkbox>
-                <el-checkbox label="物资管理"></el-checkbox>
-                <el-checkbox label="质量管理"></el-checkbox>
-                <el-checkbox label="劳务管理"></el-checkbox>
-                <el-checkbox label="生产管理"></el-checkbox>
-                <el-checkbox label="安全管理"></el-checkbox>
-                <el-checkbox label="其他"></el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-          </el-col>-->
           <el-form-item style="float:right">
             <el-button type="primary" round class="cancel-style" @click.native="cancel('form')">取消</el-button>
             <el-button type="primary" round @click.native="submitForm('form')">确认</el-button>
           </el-form-item>
         </el-form>
-        <!-- <el-form-item>
-          <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>-->
       </div>
     </el-main>
   </el-container>
@@ -226,7 +206,7 @@ export default {
         jobType: "",
         workerType: "",
         photo: "",
-        pinfoId:null
+        pinfoId: null
       },
       getImgCodeResults: "",
       keyResults: "",
@@ -291,13 +271,13 @@ export default {
   activated() {
     var uid = this.$route.params.id;
     this.id = uid;
-    console.log('uid------'+uid);
-    if (uid=="0") {
-      console.log('新增');
+    console.log("uid------" + uid);
+    if (uid == "0") {
+      console.log("新增");
     } else {
-     //调用展示数据方法
-     this.form.pinfoId=uid;
-     this.getDetail();
+      //调用展示数据方法
+      this.form.pinfoId = uid;
+      this.getDetail();
     }
   },
   methods: {
@@ -318,14 +298,26 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    getDetail(){
-       var url =
+    handleExceed(files, fileList) {
+      console.log(this.fileList);
+      console.log(fileList);
+      this.fileList.splice(0, 1, fileList);
+      console.log(this.fileList);
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
+    },
+    getDetail() {
+      var url =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
-        "/manager/"+this.form.pinfoId;
+        "/manager/" +
+        this.form.pinfoId;
       this.http.get(url, null).then(res => {
         if (res.code == 200) {
-         this.form=res.data;
+          this.form = res.data;
         }
       });
     },
@@ -333,105 +325,109 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if(this.form.pinfoId==null){
-              var form = this.$refs["form"].model;
-          handleCofirm("确认添加吗？", "warning")
-            .then(res => {
-              let formData = new FormData();
-              formData.append("name", form.name);
-              formData.append("gender", form.gender);
-              formData.append("age", form.age);
-              formData.append("nation", form.nation);
-              formData.append("politicsType", form.politicsType);
-              formData.append("cellPhone", form.cellPhone);
-              formData.append("buildCorpName", form.buildCorpName);
-              formData.append("urgentLinkMan", form.urgentLinkMan);
-              formData.append("urgentLinkManPhone", form.urgentLinkManPhone);
-              formData.append("address", form.address);
-              formData.append("birthPlaceCode", form.birthPlaceCode);
-              formData.append("jobType", form.jobType);
-              formData.append("maritalStatus", form.maritalStatus);
-              formData.append("degree", form.degree);
-              formData.append("cultureLevelType", form.cultureLevelType);
-              formData.append("idCardType", form.idCardType);
-              formData.append("idCardCode", form.idCardCode);
-              formData.append("isResidencePermit", form.isResidencePermit);
-              formData.append("residencePermitDate", form.residencePermitDate);
-              formData.append("workerType", form.workerType);
-              formData.append("photo", form.photo[0].raw);
-              console.log(form.photo[0].raw);
-              var url =
-                "/bashUrl/smart/worker/roster/" +
-                sessionStorage.getItem("userId") +
-                "/manager";
-              this.http.post(url, formData).then(res => {
-                if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: "添加成功!"
-                  });
-                  this.$router.push({ path: "/roster/manager" });
-                  this.cancel(formName);
-                }
+          if (this.form.pinfoId == null) {
+            var form = this.$refs["form"].model;
+            handleCofirm("确认添加吗？", "warning")
+              .then(res => {
+                let formData = new FormData();
+                formData.append("name", form.name);
+                formData.append("gender", form.gender);
+                formData.append("age", form.age);
+                formData.append("nation", form.nation);
+                formData.append("politicsType", form.politicsType);
+                formData.append("cellPhone", form.cellPhone);
+                formData.append("buildCorpName", form.buildCorpName);
+                formData.append("urgentLinkMan", form.urgentLinkMan);
+                formData.append("urgentLinkManPhone", form.urgentLinkManPhone);
+                formData.append("address", form.address);
+                formData.append("birthPlaceCode", form.birthPlaceCode);
+                formData.append("jobType", form.jobType);
+                formData.append("maritalStatus", form.maritalStatus);
+                formData.append("degree", form.degree);
+                formData.append("cultureLevelType", form.cultureLevelType);
+                formData.append("idCardType", form.idCardType);
+                formData.append("idCardCode", form.idCardCode);
+                formData.append("isResidencePermit", form.isResidencePermit);
+                formData.append(
+                  "residencePermitDate",
+                  form.residencePermitDate
+                );
+                formData.append("workerType", form.workerType);
+                formData.append("photo", form.photo[0].raw);
+                console.log(form.photo[0].raw);
+                var url =
+                  "/bashUrl/smart/worker/roster/" +
+                  sessionStorage.getItem("userId") +
+                  "/manager";
+                this.http.post(url, formData).then(res => {
+                  if (res.code == 200) {
+                    this.$message({
+                      type: "success",
+                      message: "添加成功!"
+                    });
+                    this.$router.push({ path: "/roster/manager" });
+                    this.cancel(formName);
+                  }
+                });
+              })
+              .catch(err => {
+                this.$message({
+                  type: "info",
+                  message: "已取消添加"
+                });
               });
-            })
-            .catch(err => {
-              this.$message({
-                type: "info",
-                message: "已取消添加"
+          } else {
+            var form = this.$refs["form"].model;
+            handleCofirm("确认编辑吗？", "warning")
+              .then(res => {
+                let formData = new FormData();
+                formData.append("name", form.name);
+                formData.append("gender", form.gender);
+                formData.append("age", form.age);
+                formData.append("nation", form.nation);
+                formData.append("politicsType", form.politicsType);
+                formData.append("cellPhone", form.cellPhone);
+                formData.append("buildCorpName", form.buildCorpName);
+                formData.append("urgentLinkMan", form.urgentLinkMan);
+                formData.append("urgentLinkManPhone", form.urgentLinkManPhone);
+                formData.append("address", form.address);
+                formData.append("birthPlaceCode", form.birthPlaceCode);
+                formData.append("jobType", form.jobType);
+                formData.append("maritalStatus", form.maritalStatus);
+                formData.append("degree", form.degree);
+                formData.append("cultureLevelType", form.cultureLevelType);
+                formData.append("idCardType", form.idCardType);
+                formData.append("idCardCode", form.idCardCode);
+                formData.append("isResidencePermit", form.isResidencePermit);
+                formData.append(
+                  "residencePermitDate",
+                  form.residencePermitDate
+                );
+                formData.append("workerType", form.workerType);
+                formData.append("photo", form.photo[0].raw);
+                formData.append("pinfoId", form.pinfoId);
+                var url =
+                  "/bashUrl/smart/worker/roster/" +
+                  sessionStorage.getItem("userId") +
+                  "/manager/" +
+                  form.pinfoId;
+                this.http.put(url, formData).then(res => {
+                  if (res.code == 200) {
+                    this.$message({
+                      type: "success",
+                      message: "编辑成功!"
+                    });
+                    this.$router.push({ path: "/roster/manager" });
+                    this.cancel(formName);
+                  }
+                });
+              })
+              .catch(err => {
+                this.$message({
+                  type: "info",
+                  message: "已取消添加"
+                });
               });
-            });
-          }else{
-        var form = this.$refs["form"].model;
-          handleCofirm("确认编辑吗？", "warning")
-            .then(res => {
-              let formData = new FormData();
-              formData.append("name", form.name);
-              formData.append("gender", form.gender);
-              formData.append("age", form.age);
-              formData.append("nation", form.nation);
-              formData.append("politicsType", form.politicsType);
-              formData.append("cellPhone", form.cellPhone);
-              formData.append("buildCorpName", form.buildCorpName);
-              formData.append("urgentLinkMan", form.urgentLinkMan);
-              formData.append("urgentLinkManPhone", form.urgentLinkManPhone);
-              formData.append("address", form.address);
-              formData.append("birthPlaceCode", form.birthPlaceCode);
-              formData.append("jobType", form.jobType);
-              formData.append("maritalStatus", form.maritalStatus);
-              formData.append("degree", form.degree);
-              formData.append("cultureLevelType", form.cultureLevelType);
-              formData.append("idCardType", form.idCardType);
-              formData.append("idCardCode", form.idCardCode);
-              formData.append("isResidencePermit", form.isResidencePermit);
-              formData.append("residencePermitDate", form.residencePermitDate);
-              formData.append("workerType", form.workerType);
-              formData.append("photo", form.photo[0].raw);
-              formData.append("pinfoId",form.pinfoId);
-              console.log(form.photo[0].raw);
-              var url =
-                "/bashUrl/smart/worker/roster/" +
-                sessionStorage.getItem("userId") +
-                "/manager/"+form.pinfoId;
-              this.http.put(url, formData).then(res => {
-                if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: "编辑成功!"
-                  });
-                  this.$router.push({ path: "/roster/manager" });
-                  this.cancel(formName);
-                }
-              });
-            })
-            .catch(err => {
-              this.$message({
-                type: "info",
-                message: "已取消添加"
-              });
-            });
-
-
           }
         } else {
           console.log("error submit!!");
@@ -440,17 +436,9 @@ export default {
       });
     },
     handleChange(file, fileList) {
+      this.fileList = [fileList[fileList.length - 1]]; // 这一步，是 展示最后一次选择的csv文件
       this.$refs.form.clearValidate();
       this.form.photo = fileList;
-      // console.log(file, fileList,this.fileList)
-      // if(fileList.length!=0){
-      //     this.form.photo = []
-      //     this.form.photo = fileList;
-      // }else{
-           this.$refs.form.clearValidate();
-           this.form.photo = fileList;
-      // }
-
     }
   }
 };

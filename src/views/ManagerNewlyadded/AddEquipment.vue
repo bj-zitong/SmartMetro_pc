@@ -287,7 +287,6 @@ export default {
 
 .AddEquipment_form {
   padding: 0 20px;
-  margin-top: 30px;
 }
 
 .el-form-item {

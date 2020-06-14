@@ -202,7 +202,7 @@
                 :on-change="handleChange"
                 :file-list="fileList"
                 :auto-upload="false"
-                :limit="1"
+                :limit="2"
                 :show-file-list="true"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -380,9 +380,9 @@ export default {
     //保存
     preservationClick() {},
     handleChange(file, fileList) {
+      this.fileList = [fileList[fileList.length - 1]];
       this.$refs.form.clearValidate();
       this.form.photo = file;
-      // this.form.photo1 = fileList;
     },
     beforeAvatarUpload(file) {
       return new Promise(resolve => {
