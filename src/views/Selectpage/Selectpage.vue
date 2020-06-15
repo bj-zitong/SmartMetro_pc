@@ -122,6 +122,11 @@ export default {
           sessionStorage.removeItem("userId");
           sessionStorage.removeItem("user");
           sessionStorage.removeItem("token");
+          sessionStorage.removeItem('contractInformation');
+          sessionStorage.removeItem("History");
+          sessionStorage.removeItem("data");
+          sessionStorage.removeItem("certificate");
+          sessionStorage.removeItem("payrollRecords1");
           var url =
             "/systemUrl/smart/auth/" +
             sessionStorage.getItem("userId") +

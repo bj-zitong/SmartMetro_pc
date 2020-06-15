@@ -146,7 +146,7 @@ export default {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
-      bindData:[]
+      bindData:null
     };
   },
   activated() {
@@ -326,28 +326,8 @@ export default {
     detailsRowClick(row) {
       let _this = this;
       var id = row.pinfoId;
-      var url =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/other/" +
-        id;
-      this.http.get(url, null).then(res => {
-        if (res.code == 200) {
-          //渲染数据
-          var result = res.data;
-          this.bindData=result;
-          // var form = this.form;
-          // form.name = result.name;
-          // form.age = result.age;
-          // form.gender = result.gender;
-          // form.jobNum = result.jobNum;
-          // form.cellPhone = result.cellPhone;
-          // form.politicsType = result.politicsType;
-          // form.workerType = result.workerType;
-          // form.birthPlaceCode = result.birthPlaceCode;
-          // form.pinfoId = id;
-        }
-      });
+      this.bindData=id;
+      console.log(this.bindData);
       _this.changOrder = true;
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();

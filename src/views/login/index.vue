@@ -152,7 +152,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.http
-            .post2(this.PersonnelLocalhosts + "/smart/auth/login", params)
+            .post2("/systemUrl/smart/auth/login", params)
             .then(res => {
               if (res.code == 200) {
                 sessionStorage.setItem("userId", res.data.userId);

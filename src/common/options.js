@@ -1,34 +1,34 @@
 let options = [
   {
-    value: 'dg',
+    value: '1',
     label: '电工'
   },
   {
-    value: 'dhg',
+    value: '2',
     label: '电焊工'
   },
   {
-    value: 'wai',
+    value: '3',
     label: '外用电梯司机'
   },
   {
-    value: 'Foreman',
+    value: '4',
     label: '工长'
   },
   {
-    value: 'steelStructure',
+    value: '5',
     label: '钢结构'
   },
   {
-    value: 'fireinstallationworker',
+    value: '6',
     label: '消防安装工'
   },
   {
-    value: 'earthwork',
+    value: '7',
     label: '土方'
   },
   {
-    value: 'steelplantingWorker',
+    value: '8',
     label: '植筋工'
   }
 ]

@@ -128,7 +128,7 @@
         </el-col>
         <el-col :span="15">
           <p>
-            风险程度：{{msg}}
+            风险程度：
             <br />疫情高风险地区：
             县、市、区、
             <br />旗累计确诊病例超过
@@ -152,7 +152,7 @@
             @click="preservationClick"
           >保存</el-button>
           <div style="margin-top:20px">
-            <el-button type="primary" round style="background:#ccc;border:1px solid #ccc">取消</el-button>
+            <el-button type="primary" round style="background:#ccc;border:1px solid #ccc" @click.native="cancel('form')">取消</el-button>
             <el-button type="primary" round @click="submitForm('form')">提交</el-button>
           </div>
         </div>
@@ -247,6 +247,16 @@ export default {
     }
   },
   methods: {
+    cancel(form){
+      this.$refs[form].resetFields();
+      sessionStorage.removeItem('contractInformation');
+      sessionStorage.removeItem("History");
+      sessionStorage.removeItem("data");
+      sessionStorage.removeItem("certificate");
+      sessionStorage.removeItem("payrollRecords1");
+      Object.assign(this.$data.form, this.$options.data().form); // 初始化data
+      this.$router.push({ path: "/roster/personnel" });
+    },
     submitForm(formName) {
       //   this.$refs[formName].validate(valid => {
       //     if (valid) {
@@ -297,14 +307,16 @@ export default {
           var id = res.data;
           console.log(res);
           this.pInfoId = id;
-          this.addContract();
+          this.addContract(formName);
         }
       });
     },
     //
-    addCer(){
+    addCer(formName){
          //资质证书
       var certificate = JSON.parse(sessionStorage.getItem("certificate"));
+      debugger;
+      console.log(JSON.parse(sessionStorage.getItem("certificate")));
       for (var i = 0; i < certificate.productGroup.length; i++) {
         for (var i = 0; i < this.$global_msg.photoArr.length; i++) {
           var certificateFormdata = new FormData();
@@ -367,48 +379,52 @@ export default {
             "/labour/credential/"+this.pInfoId;
           this.http.post(certificateUrl, certificateFormdata).then(res => {
             if (res.code == 200) {
-              this.addHistory();
+              //请求成功
+               this.$router.push({ path: "/roster/personnel" });
+               this.cancel(formName);
             }
           });
         }
       }
     },
     //历史记录
-    addHistory(){
-       //历史评价记录
-      var History = sessionStorage.getItem("History");
-      var paramEval = JSON.stringify({
-        pInfoId: this.pInfoId,
-        evaluate: History
-      });
-      debugger;
-      var HistoryUrl =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/labour/evaluate";
-      this.http.post(HistoryUrl, paramEval).then(res => {
-        if (res.code == 200) {
-        }
-      });
-    },
+    // addHistory(){
+    //    //历史评价记录
+    //   var History = sessionStorage.getItem("History");
+    //   var paramEval = JSON.stringify({
+    //     pInfoId: this.pInfoId,
+    //     evaluate: History
+    //   });
+    //   debugger;
+    //   var HistoryUrl =
+    //     "/bashUrl/smart/worker/roster/" +
+    //     sessionStorage.getItem("userId") +
+    //     "/labour/evaluate";
+    //   this.http.post(HistoryUrl, paramEval).then(res => {
+    //     if (res.code == 200) {
+    //     }
+    //   });
+    // },
     //工资
-    addPay(){
+    addPay(formName){
         //工资记录
       var payrollRecords1 = sessionStorage.getItem("payrollRecords1");
       var data = JSON.parse(sessionStorage.getItem("payrollRecords1"));
       data.pInfoId=this.pInfoId;
+      debugger;
       var payrollUrl =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/labour/salary";
       this.http.post(payrollUrl, data).then(res => {
         if (res.code == 200) {
-          this.addCer();
+          this.addCer(formName);
+          //  this.$router.push({ path: "/roster/personnel" });
         }
       });
     },
     //合同信息
-    addContract(){
+    addContract(formName){
            //合同信息
        var contractInformation = sessionStorage.getItem("contractInformation");
        var data = JSON.parse(sessionStorage.getItem("contractInformation"));
@@ -428,7 +444,7 @@ export default {
         "/labour/contract";
       this.http.post(contractUrl, data).then(res => {
         if (res.code == 200) {
-          this.addPay();
+          this.addPay(formName);
         }
       });
     },

@@ -113,6 +113,7 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "@/components/pagination";
+import axios from "axios";
 export default {
   components: {
     Pagination
@@ -122,38 +123,7 @@ export default {
       value: true,
       csvVisible: false,
       showFileList: false,
-      tableData: [
-        {
-          pScoreId: 0,
-          pInfoId: 0,
-          rank: "一级",
-          name: "地铁安保部",
-          labourCompany: "210234567898765876",
-          team: 15236985236,
-          workType: "木工",
-          trainingType: "安保部一",
-          score: "100",
-          examTime: "10:00",
-          examPath: "试卷",
-          isRelationQate: "true",
-          status:true
-        },
-        {
-          pScoreId: 1,
-          pInfoId: 1,
-          name: "地铁安保部",
-          rank: "二级",
-          labourCompany: "210234567898765876",
-          team: 15236985236,
-          workType: "木工",
-          trainingType: "安保部一",
-          score: "100",
-          examTime: "10:00",
-          examPath: "试卷",
-          isRelationQate: "true",
-          status:false
-        }
-      ],
+      tableData: [],
       rules: {
         score: [{ required: true, message: "请输入分数", trigger: "blur" }]
       },
@@ -163,7 +133,7 @@ export default {
       labelPosition: "left",
       name: "",
       //分页
-      total: 50,
+      total: null,
       dialogFormVisible: false,
       pInfoId: "",
       listQuery: {
@@ -193,43 +163,42 @@ export default {
         page: this.listQuery.currentPage,
         name: this.name
       });
+      console.log(526);
       // ​/smart​/worker​/train​/{userId}​/score​/management
-      var url222 = "/bashUrl/smart​/worker​/train​/"+sessionStorage.getItem("userId")+"/score​/management";
-      this.http.post(url222, params).then(res => {
+      // var url='/bashUrl/smart/worker/train​/'+sessionStorage.getItem("userId") +'/score​/management';
+      var url="/baseUrl/smart/worker/train/"+sessionStorage.getItem('userId')+"/score/management";
+      console.log(url);
+      this.http.post(url, params).then(res => {
         if (res.code == 200) {
-          var rows = res.rows;
+          var total = res.data.total;
+          var rows = res.data.rows;
           this.tableData = rows;
-          this.total = res.total;
+          this.total = total;
         }
-        var result = [
-          {
-            pInfoId: 0,
-            name: "地铁安保部",
-            labourCompany: "210234567898765876",
-            team: 15236985236,
-            workType: "木工",
-            trainingType: "安保部一",
-            score: "100",
-            examTime: "10:00",
-            examPath: "试卷",
-            isRelationQate: "true"
-          },
-          {
-            pInfoId: 1,
-            name: "地铁安保部",
-            labourCompany: "210234567898765876",
-            team: 15236985236,
-            workType: "木工",
-            trainingType: "安保部一",
-            score: "100",
-            examTime: "10:00",
-            examPath: "试卷",
-            isRelationQate: "true"
-          }
-        ];
-        this.tableData = result;
-        this.total = result.length;
       });
+      // decodeURIComponent(this.getQueryString('state'));
+      //     axios({
+      //       method: "post",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: sessionStorage.getItem("token")
+      //       },
+      //       url:url,
+      //       data: params,
+      //       timeout: 5000 //响应时间
+      //     }).then(
+      //       res => {
+      //         if (res.code == 200) {
+      //           var total = res.data.total;
+      //           var rows = res.data.rows;
+      //           this.tableData = rows;
+      //           this.total = total;
+      //         }
+      //       },
+      //       err => {
+      //         return errorfun(err);
+      //       }
+      //     );
     },
     changeImg(file, fileList) {
       this.file.uploadFile = fileList;

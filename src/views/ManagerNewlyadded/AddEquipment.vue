@@ -248,9 +248,8 @@ export default {
             var url =
               "/bashUrl/smart/worker/roster/" +
               sessionStorage.getItem("userId") +
-              "/equipment/" +
-              this.id;
-            this.http.put(url, params).then(res => {
+              "/equipment";
+              this.http.put(url, params).then(res => {
               if (res.code == 200) {
                   this.$message({
                     type: "success",

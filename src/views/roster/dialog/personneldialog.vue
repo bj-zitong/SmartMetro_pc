@@ -16,84 +16,107 @@
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   姓名:
-                  <span></span>
+                   <span>{{person.name}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">性别:</div>
+                <div class="grid-content bg-purple">性别:
+                   <span v-if="person.gender==0">男</span>
+                   <span v-if="person.gender==1">女</span>
+                </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">年龄:</div>
+                <div class="grid-content bg-purple">年龄:
+                   <span>{{person.age}}</span>
+                </div>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   民族:
-                  <span></span>
+                  <span>{{person.nation}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">工种:</div>
+                <div class="grid-content bg-purple">工种:
+                   <span>{{person.workType}}</span>
+                </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">电话:</div>
+                <div class="grid-content bg-purple">电话:
+                   <span>{{person.cellPhone}}</span>
+                </div>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   承建单位:
-                  <span></span>
+                  <span>{{person.buildCorpName}}</span>
                 </div>
               </el-col>
-              <el-col :span="8">
+              <!-- <el-col :span="8">
                 <div class="grid-content bg-purple">部门:</div>
-              </el-col>
+              </el-col> -->
               <el-col :span="8">
-                <div class="grid-content bg-purple">紧急联系人:</div>
+                <div class="grid-content bg-purple">紧急联系人:
+                  <span>{{person.urgentLinkMan}}</span>
+                </div>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   电话:
-                  <span></span>
+                  <span>{{person.urgentLinkManPhone}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">现居住地:</div>
+                <div class="grid-content bg-purple">现居住地:
+                   <span>{{person.address}}</span>
+                </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">籍贯:</div>
+                <div class="grid-content bg-purple">籍贯:
+                    <span>{{person.birthPlaceCode}}</span>
+                </div>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   婚姻状况:
-                  <span></span>
+                  <span>{{person.maritalStatus}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">学位:</div>
+                <div class="grid-content bg-purple">学位:
+                   <span>{{person.degree}}</span>
+                </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">文化程度:</div>
+                <div class="grid-content bg-purple">文化程度:
+                   <span>{{person.cultureLevelType}}</span>
+                </div>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   证件类型:
-                  <span></span>
+                  <span>{{person.idCardType}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">户口类型:</div>
+                <div class="grid-content bg-purple">户口类型:
+                  <span>{{person.registrationType}}</span>
+                </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">证件编码:</div>
+                <div class="grid-content bg-purple">证件编码:
+                   <span>{{person.idCardCode}}</span>
+                </div>
               </el-col>
             </el-row>
 
@@ -101,47 +124,55 @@
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   班组长:
-                  <span></span>
+                  <span>{{person.isTeamLeader}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   参加培训:
-                  <span></span>
+                  <span>{{person.isProjectTrain}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">持证上岗:</div>
+                <div class="grid-content bg-purple">持证上岗:
+                   <span>{{person.isRelatedCertificates}}</span>
+                </div>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
-                <div class="grid-content bg-purple">居住证:</div>
+                <div class="grid-content bg-purple">居住证:
+                   <span>{{person.isResidencePermit}}</span>
+                </div>
               </el-col>
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   居住证办理日期:
-                  <span></span>
+                   <span>{{person.residencePermitDate}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   特殊工种体检情况:
-                  <span></span>
+                   <span>{{person.isSpecialWorkTypeCheckups}}</span>
                 </div>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
-                <div class="grid-content bg-purple">班组:</div>
+                <div class="grid-content bg-purple">班组:
+                   <span>{{person.teamName}}</span>
+                </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">政治面貌:</div>
+                <div class="grid-content bg-purple">政治面貌:
+                  <span>{{person.politicsType}}</span>
+                </div>
               </el-col>
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   一寸照片:
-                  <span></span>
+                  <span>{{person.photoPath}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -154,7 +185,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   项目编号:
-                  <span></span>
+                  <span>{{contract.projectCode}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -162,7 +193,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   项目名称:
-                  <span></span>
+                  <span>{{contract.projectName}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -170,7 +201,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   合同编号:
-                  <span></span>
+                 <span>{{contract.contractCode}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -178,7 +209,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   合同期限:
-                  <span></span>
+                  <span>{{contract.endDate}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -186,7 +217,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   结算方式:
-                  <span></span>
+                  <span>{{contract.clearingType}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -194,7 +225,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   所属企业组织机构代码:
-                  <span></span>
+                  <span>{{contract.corpCode}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -207,7 +238,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   工资单编号:
-                  <span></span>
+                  <span>{{pay.payRollCode}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -215,7 +246,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   发放金额:
-                  <span></span>
+                  <span>{{pay.totalPayAmount}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -223,7 +254,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   发放日期:
-                  <span></span>
+                  <span>{{pay.balanceDate}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -231,7 +262,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   发放方式:
-                  <span></span>
+                   <span>{{pay.provideType}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -239,7 +270,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   发放银行:
-                  <span></span>
+                  <span>{{pay.provideBank}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -247,7 +278,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   银行卡号:
-                  <span></span>
+                  <span>{{pay.payRollBankCardNumber}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -331,9 +362,8 @@
           </div>
         </el-tab-pane>
         <!-- 历史评价记录 -->
-        <el-tab-pane label="历史评价记录" name="evaluate">
+        <!-- <el-tab-pane label="历史评价记录" name="evaluate">
           <div class="AddEquipment_form">
-
             <el-row :gutter="20">
               <el-col :span="10">
                 <div class="grid-content bg-purple">
@@ -343,10 +373,10 @@
               </el-col>
             </el-row>
           </div>
-        </el-tab-pane>
+        </el-tab-pane> -->
         <!-- 来源地消息 -->
-        <el-tab-pane label="来源地消息" name="first">
-             <div class="AddEquipment_form">
+        <!-- <el-tab-pane label="来源地消息" name="first">
+          <div class="AddEquipment_form">
             <el-row :gutter="20">
               <el-col :span="8">
                 <div class="grid-content bg-purple">
@@ -418,7 +448,7 @@
               </el-col>
             </el-row>
           </div>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
     </div>
     <template slot="footer" class="dialog-footer">
@@ -427,14 +457,20 @@
     </template>
   </el-dialog>
 </template>
- 
+
 <script>
 export default {
   name: "turntorepairorder",
+  props: ["data"],
   data() {
     return {
       changOrder: false,
-      activeName: "second"
+      activeName: "second",
+      pid: null,
+      person: null,
+      contract:null,
+      pay:null,
+      credential:null
     };
   },
   methods: {
@@ -448,18 +484,85 @@ export default {
       this.$emit("tyonke", this.changOrder);
     }, //表单提交
     handleSubmit() {},
-    handleClick() {}
+    handleClick() {},
+      //详情
+    getDetail() {
+    var url =
+      "/bashUrl/smart/worker/roster/" +
+      sessionStorage.getItem("userId") +
+      "/labour/basic/" +
+      this.pid;
+    this.http.get(url, null).then(res => {
+      if (res.code == 200) {
+        //渲染数据
+        var result = res.data;
+        this.person = result;
+        this.getContract();
+      }
+    });
   },
-
+  //合同
+  getContract(){
+    ///smart/worker/roster/{userId}/labour/contract/{pInfoId}
+    var url =
+      "/bashUrl/smart/worker/roster/" +
+      sessionStorage.getItem("userId") +
+      "/labour/contract/" +
+      this.pid;
+    this.http.get(url, null).then(res => {
+      if (res.code == 200) {
+        //渲染数据
+        var result = res.data;
+        this.contract = result;
+        this.getPay();
+      }
+    });
+  },
+  //支付
+  getPay(){
+    ///smart/worker/roster/{userId}/labour/salary
+    var url =
+      "/bashUrl/smart/worker/roster/" +
+      sessionStorage.getItem("userId") +
+      "/labour/salary/" +
+      this.pid;
+    this.http.get(url, null).then(res => {
+      if (res.code == 200) {
+        //渲染数据
+        var result = res.data;
+        this.pay = result;
+        this.getCredential();
+      }
+    });
+  },
+  ///smart/worker/roster/{userId}/labour/credential/{id}
+  getCredential(){
+    var url =
+      "/bashUrl/smart/worker/roster/" +
+      sessionStorage.getItem("userId") +
+      "/labour/credential/" +
+      this.pid;
+    this.http.get(url, null).then(res => {
+      if (res.code == 200) {
+        //渲染数据
+        var result = res.data;
+        this.credential = result;
+      }
+    });
+  }
+  },
   //监听
   watch: {
     changOrder(newValue, oldValue) {
       this.changOrder = newValue;
+      this.pid = this.data;
+      this.getDetail();
+      console.log(this.pid);
     }
   }
 };
 </script>
- 
+
 <style scoped lang="stylus">
 .el-row {
   margin-bottom: 20px;

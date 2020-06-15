@@ -19,12 +19,6 @@
           <el-form-item label="姓名：">
             <el-input v-model="formInline.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
-
-          <!-- 工号 -->
-          <el-form-item label="工号：" class="region">
-            <el-input v-model="formInline.jobNum" placeholder="请输入工号"></el-input>
-          </el-form-item>
-
           <!-- 工种 -->
           <el-form-item label="工种：" class="region">
             <el-select
@@ -58,7 +52,7 @@
           <el-button class="T-H-B-Grey" @click="deleteAll">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportExcelClick">导出</el-button>
           <el-button class="T-H-B-Cyan" type="primary" @click="importStaffClick()">导入</el-button>
-          <el-button type="success" class="T-H-B-DarkGreen" @click="PassTraining">培训通过</el-button>
+          <!-- <el-button type="success" class="T-H-B-DarkGreen" @click="PassTraining">培训通过</el-button> -->
         </div>
 
         <div>
@@ -88,18 +82,27 @@
                </template>
             </el-table-column>
             <!-- <el-table-column prop="jobNum" label="工号" width="120"></el-table-column> -->
-            <el-table-column prop="birthPlaceCode" label="籍贯" width="300"></el-table-column>
-            <el-table-column prop="age" label="年龄" width="120"></el-table-column>
-            <el-table-column prop="cellPhone" label="手机号码" width="100"></el-table-column>
+            <el-table-column prop="birthPlaceCode" label="籍贯" width="200"></el-table-column>
+            <el-table-column prop="age" label="年龄" width="100"></el-table-column>
+            <el-table-column prop="cellPhone" label="手机号码" width="120"></el-table-column>
             <el-table-column prop="politicsType" label="政治面貌" width="100">
-                 <template slot-scope="scope">
+                 <!-- <template slot-scope="scope">
                   <span v-if="scope.row.politicsType==0">党员</span>
                   <span v-if="scope.row.politicsType==1">团员</span>
-               </template>
+               </template> -->
             </el-table-column>
             <el-table-column prop="createTime" label="进场日期" width="100"></el-table-column>
             <el-table-column prop="exitTime" label="退场日期" width="100"></el-table-column>
-            <!-- <el-table-column fixed="right" label="状态" width="100"></el-table-column> -->
+            <el-table-column label="状态" width="100" prop="status">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status==0">在场</span>
+                  <span v-if="scope.row.status==1">退场</span>
+                  <span v-if="scope.row.status==2">培训通过</span>
+                  <span v-if="scope.row.status==3">拉黑</span>
+                  <span v-if="scope.row.status==4">已提交</span>
+                  <span v-if="scope.row.status==5">已拉黑</span>
+               </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" :width="tableWidth">
               <template slot-scope="scope">
                 <div v-if="rowIndex!=scope.$index">
@@ -113,12 +116,12 @@
                     size="mini"
                     @click="handleDelete(scope.row)"
                   >{{operation.conversionDelete}}</el-button>
-                  <el-button
+                  <!-- <el-button
                     @click="evaluateClick(scope.row)"
                     type="primary"
                     size="mini"
                     class="T-R-B-Grey"
-                  >{{operation.evaluateVonversion}}</el-button>
+                  >{{operation.evaluateVonversion}}</el-button> -->
                   <el-button
                     @click.native="acrosstheClick(scope.$index, scope.row)"
                     type="success"
@@ -222,7 +225,7 @@
         <el-button class="F-Blue" round @click="submitTeamForm('formEevaluate')">确 定</el-button>
       </span>
     </el-dialog>
-    <personneldialog v-if="changOrder" ref="turnOrder" />
+    <personneldialog v-if="changOrder" ref="turnOrder" :data="bindData"/>
     <el-dialog :visible.sync="csvVisible" width="50%">
       <div>
         <el-form ref="file" label-width="120px">
@@ -276,6 +279,7 @@ export default {
         jobNum: "",
         workerType: ""
       },
+      bindData:null,
       QualificationInput: false,
       from: {
         Reason: "",
@@ -289,7 +293,7 @@ export default {
       operation: {
         conversionCompile: "编辑",
         conversionDelete: "删除",
-        evaluateVonversion: "评价"
+        // evaluateVonversion: "评价"
       },
       screenCompany: [],
       headClass: headClass,
@@ -352,11 +356,15 @@ export default {
     });
   },
   methods: {
-    handleClick(row) {
-      console.log(row);
-    },
+    //新增
     addStaffClick() {
-      this.$router.push({ path: "/LabourNewlyadded" });
+      // this.$router.push({ path: "/LabourNewlyadded" });
+         this.$router.push({
+        name: "LabourNewlyadded",
+        params: {
+          id: 0
+        }
+      });
     },
     //  listQuery: {
     //     currentPage: 1, //与后台定义好的分页参数
@@ -455,11 +463,12 @@ export default {
           var url =
             "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
-            "labour/evaluate/" +
+            "/labour/evaluate/" +
             data +
             "/approve/" +
             2;
-          this.http.delete(url, data).then(res => {
+            var dataform=new FormData();
+          this.http.post(url, dataform).then(res => {
             if (res.code == 200) {
               this.$message({
                 type: "success",
@@ -519,11 +528,9 @@ export default {
           var url =
             "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
-            "labour/evaluate/" +
-            data +
-            "/approve/" +
-            2;
-          this.http.delete(url, data).then(res => {
+            "/labour/basic/" +
+            data;
+          this.http.post(url, data).then(res => {
             if (res.code == 200) {
               this.$message({
                 type: "success",
@@ -548,15 +555,16 @@ export default {
           var url =
             "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
-            "labour/evaluate/" +
+            "/labour/evaluate/" +
             data +
             "/approve/" +
             1;
-          this.http.delete(url, data).then(res => {
+             var dataform=new FormData();
+          this.http.post(url, dataform).then(res => {
             if (res.code == 200) {
               this.$message({
                 type: "success",
-                message: "通过成功!"
+                message: "退场成功!"
               });
               this.getDataFun();
             }
@@ -565,7 +573,7 @@ export default {
         .catch(err => {
           this.$message({
             type: "info",
-            message: "已取消通过"
+            message: "已取消"
           });
         });
     },
@@ -705,16 +713,26 @@ export default {
       console.log(file);
     },
     //查看详情
-    handleClick() {
+    handleClick(row) {
       let _this = this;
+      console.log(row.pinfoId);
+      _this.bindData=row.pinfoId;
       _this.changOrder = true;
       _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
       });
     },
     //编辑
-    editRowClick() {
-      this.$router.push({ path: "/LabourNewlyadded" });
+    editRowClick(indexer,row) {
+
+      console.log(row.pinfoId);
+      // this.$router.push({ path: "/LabourNewlyadded" });
+      this.$router.push({
+        name: "LabourNewlyadded",
+        params: {
+          id:row.pinfoId
+        }
+      });
     },
     handleExceed(files, fileList) {
       this.$message.warning(
@@ -734,8 +752,8 @@ export default {
         if (valid) {
           var form = this.$refs["from"].model;
           var data = new FormData();
-          data.append("name", form.Reason);
-          data.append("file", form.photo[0].raw);
+          data.append("blackReason", form.Reason);
+          data.append("evidence", form.photo[0].raw);
           var url =
             "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
@@ -745,28 +763,14 @@ export default {
             4;
           this.http.post(url, data).then(res => {
             if (res.code == 200) {
-              // this.$router.push({ path: "/roster/otherStaffs" });
+             this.$message({
+                type: "success",
+                message: "已拉黑!"
+              });
+              this.centerDialogVisible=false;
+              this.getDataFun();
             }
           });
-          // // 添加劳务人员请求
-          // this.http
-          //   .post("smart/worker/labour/1/company/management", params)
-          //   .then(res => {
-          //     if (res.code == 200) {
-          //       this.$message({
-          //         type: "success",
-          //         message: "添加成功!"
-          //       });
-          //     }
-          //   })
-          //   .catch(res => {
-          //     if (res.code === 404) {
-          //       this.$message({
-          //         type: "success",
-          //         message: "预留跳转404页面!"
-          //       });
-          //     }
-          //   });
           // this.addOpen = false;
         } else {
           console.log("error submit!!");

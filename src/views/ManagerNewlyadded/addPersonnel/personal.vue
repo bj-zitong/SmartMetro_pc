@@ -159,13 +159,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="居住证办理日期" prop="residencePermitDate">
+            <el-form-item label="签发日期" prop="residencePermitDate">
               <el-date-picker
                 v-model="form.residencePermitDate"
                 type="date"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
-                placeholder="请选择居住证日期"
+                placeholder="请选择签发日期"
               ></el-date-picker>
             </el-form-item>
           </el-col>
@@ -211,8 +211,8 @@
           </el-col>
           <el-col :span="24">
             <el-form-item style="float:right;position:relative;bottom:6px;">
-              <el-button type="primary" round class="cancel-style">取消</el-button>
-              <el-button type="primary" round @click="submitForm('form')">提交</el-button>
+              <el-button type="primary" round class="cancel-style" @click.native="cancel('form')">取消</el-button>
+              <el-button type="primary" round @click.native="submitForm('form')">提交</el-button>
             </el-form-item>
           </el-col>
         </el-form>
@@ -305,7 +305,7 @@ export default {
           { required: true, message: "请选择居住证", trigger: "blur" }
         ],
         residencePermitDate: [
-          { required: true, message: "请选择居住证办理日期", trigger: "blur" }
+          { required: true, message: "请选择签发日期", trigger: "blur" }
         ],
         idCardType: [
           { required: true, message: "请选择证件类型", trigger: "blur" }
@@ -372,6 +372,13 @@ export default {
           });
         }
       });
+    },
+    //取消
+    cancel(form){
+      this.$refs[form].resetFields();
+      sessionStorage.removeItem('data');
+      Object.assign(this.$data.form, this.$options.data().form); // 初始化data
+      this.$router.push({ path: "/roster/personnel" });
     },
     //  beforeRemove(file, fileList) {
     //     return this.$confirm(`确定移除 ${ file.name }？`);

@@ -11,7 +11,7 @@
             class="information"
             :disabled="personalPersonal"
           >
-            <personal @field="getField"></personal>
+            <personal @field="getField" :data="id"></personal>
           </el-tab-pane>
           <!-- 合同信息 -->
           <el-tab-pane label="合同信息" name="third" :disabled="contractInformation">
@@ -68,6 +68,7 @@ export default {
   },
   data() {
     return {
+      id:null,
       isCertificate: false,
       activeName: "second",
       allArr: [],
@@ -101,8 +102,13 @@ export default {
     };
   },
   watch: {
-    getField(val) {
-      alert("6666");
+    getField(val) {}
+  },
+  activated() {
+    var uid = this.$route.params.id;
+    this.id = uid;
+    if (!this.id == 0) {
+      this.getDeatli(this.id);
     }
   },
   mounted() {
@@ -144,6 +150,22 @@ export default {
     }
   },
   methods: {
+    getDeatli(id){
+      ///smart/worker/roster/{userId}/labour/basic/{id}
+       var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/basic/" +
+        id;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          sessionStorage.setItem("data",result);
+          console.log(result);
+        }
+      });
+    },
     handleClick(tab, event) {},
     onSubmit() {},
     handleRemove(file, fileList) {},

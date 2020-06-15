@@ -55,8 +55,8 @@
         </el-col>
         <el-col :span="24">
           <el-form-item style="float:right;position:relative;bottom:6px;">
-            <el-button type="primary" round class="cancel-style">取消</el-button>
-            <el-button type="primary" round @click="submitForm('form')">提交</el-button>
+            <el-button type="primary" round class="cancel-style" @click.native="cancel('form')">取消</el-button>
+            <el-button type="primary" round @click.native="submitForm('form')">提交</el-button>
           </el-form-item>
         </el-col>
       </el-form>
@@ -105,6 +105,12 @@ export default {
     }
   },
   methods: {
+    cancel(form){
+      this.$refs[form].resetFields();
+      sessionStorage.removeItem('payrollRecords1');
+      Object.assign(this.$data.form, this.$options.data().form); // 初始化data
+      this.$router.push({ path: "/roster/personnel" });
+    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         // localStorage.setItem('payrollRecords',JSON.stringify(this.form))
