@@ -6,9 +6,6 @@
           <el-form-item label="姓名">
             <el-input v-model="formInline.name" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item label="工号" class="region">
-            <el-input v-model="formInline.jobNum" placeholder="工号"></el-input>
-          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchClick">搜索</el-button>
           </el-form-item>
@@ -77,8 +74,7 @@ export default {
       // 动态数据
       tableData: [],
       formInline: {
-        jobNum: "", // 搜索
-        name: ""
+        name: null
       },
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
@@ -99,81 +95,15 @@ export default {
           page: this.listQuery.currentPage
       });
       var url =
-        "/smart/worker/reports/" +
+        "/bashUrl/smart/worker/reports/" +
         sessionStorage.getItem("userId") +
         "/management/4";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
-          this.tableData = rows;
-          this.total = total;
+          this.tableData =  res.data.rows;
+          this.total = res.data.total;
         }
       });
-      var result = [
-        {
-          pReportsId: 0,
-          pInfoId: 0,
-          name: "张三",
-          jobNum: "12346956",
-          duty: "劳务一组",
-          workerType: "矿工",
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-          pReportsId: 1,
-          pInfoId: 1,
-          name: "张三",
-          jobNum: "12346956",
-          duty: "劳务一组",
-          workerType: "矿工",
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-          pReportsId: 3,
-          pInfoId: 3,
-          name: "张三",
-          jobNum: "12346956",
-          duty: "劳务一组",
-          workerType: "矿工",
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-          pReportsId: 3,
-          pInfoId: 3,
-          name: "张三",
-          jobNum: "12346956",
-          jobType: "劳务一组",
-          workerType: "矿工", // 单位
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-          pReportsId: 4,
-          pInfoId: 4,
-          name: "张三",
-          jobNum: "12346956",
-          jobType: "劳务一组",
-          workerType: "矿工", // 单位
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     //导出
     exportExcelClick() {

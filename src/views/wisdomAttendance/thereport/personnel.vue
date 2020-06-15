@@ -7,7 +7,7 @@
             <el-input v-model="formInline.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchClick">搜索</el-button>
+            <el-button type="primary" @click="getDatafun()">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-main>
@@ -53,7 +53,7 @@
           :total="total"
           :page.sync="listQuery.currentPage"
           :limit.sync="listQuery.pageSize"
-          @pagination="getDatafun"
+          @pagination="getDatafun()"
         />
       </el-main>
     </div>
@@ -146,7 +146,7 @@ export default {
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
           this.tableData =  res.data.rows;
-          this.total = total;
+          this.total = res.data.total;
         }
       });
     },

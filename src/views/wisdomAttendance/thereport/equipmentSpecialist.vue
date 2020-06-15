@@ -8,7 +8,7 @@
           </el-form-item>
           <!-- <el-form-item label="工号" class="region">
             <el-input v-model="formInline.jobNum" placeholder="请输入工号"></el-input>
-          </el-form-item> -->
+          </el-form-item>-->
           <el-form-item>
             <el-button type="primary" @click="searchClick">搜索</el-button>
           </el-form-item>
@@ -50,7 +50,7 @@
                      layout="total, sizes, prev, pager, next, jumper"
 
         -->
-         <pagination
+        <pagination
           class="pagination-box"
           v-if="total>0"
           :total="total"
@@ -67,7 +67,7 @@ import { headClass } from "@/utils";
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "@/components/pagination";
 export default {
-   components: {
+  components: {
     Pagination
   },
   data() {
@@ -76,93 +76,36 @@ export default {
       // 动态数据
       tableData: [],
       formInline: {
-        jobNum: "", // 搜索
-        name: ""
+        name:null
       },
-       listQuery: {
+      listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
       },
-      total: 10, //总条数
+      total: 0 //总条数
     };
   },
-  created: function() {this.getDatafun()},
+  activated: function() {
+    this.getDatafun();
+  },
   methods: {
     getDatafun() {
       var _this = this;
       var data = JSON.stringify({
         name: _this.formInline.name,
-        jobNum: _this.formInline.jobNum,
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage
       });
       var url =
-        "/smart/worker/reports/" +
+        "/bashUrl/smart/worker/reports/" +
         sessionStorage.getItem("userId") +
         "/management/3";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
-          this.tableData = rows;
-          this.total = total;
+          this.tableData = res.data.rows;
+          this.total = res.data.total;
         }
       });
-      var result = [
-        {
-          pReportsId: 0,
-          pInfoId: 0,
-          name: "张三",
-          jobNum: "12346956",
-          jobType: "劳务一组",
-          company: "北京公司", // 单位
-          duty:"矿工",
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-          pReportsId: 1,
-          pInfoId: 1,
-          name: "张三",
-          jobNum: "12346956",
-          jobType: "劳务一组",
-          company: "北京公司", // 单位
-          duty:"矿工",
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-         pReportsId: 2,
-          pInfoId: 2,
-          name: "张三",
-          jobNum: "12346956",
-          jobType: "劳务一组",
-          company: "北京公司", // 单位
-          duty:"矿工",
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        },
-        {
-          pReportsId: 3,
-          pInfoId: 3,
-          name: "张三",
-          jobNum: "12346956",
-          jobType: "劳务一组",
-          workerType: "矿工", // 单位
-          attendanceHoursByYear: "10",
-          attendanceHoursByQuarter: "10",
-          attendanceHoursByMonth: "10",
-          attendanceHoursByWeek: "10"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     //导出
     exportExcelClick() {
@@ -208,12 +151,12 @@ export default {
         });
       });
     },
-    searchClick() {this.getDatafun()},
+    searchClick() {
+      this.getDatafun();
+    },
     handleSizeChange(val) {},
     handleCurrentChange(val) {},
-    changeFun(){
-
-    }
+    changeFun() {}
   }
 };
 </script>

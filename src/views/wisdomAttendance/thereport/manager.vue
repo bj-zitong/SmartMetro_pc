@@ -75,8 +75,7 @@ export default {
       // 动态数据
       tableData: [],
      formInline: {
-        jobNum: "", // 搜索
-        name: ""
+        name: null
       },
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
@@ -93,20 +92,17 @@ export default {
       var _this = this;
       var data = JSON.stringify({
         name: _this.formInline.name,
-        jobNum: _this.formInline.jobNum,
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage
       });
       var url =
-        "/smart/worker/reports/" +
+        "/bashUrl/smart/worker/reports/" +
         sessionStorage.getItem("userId") +
         "/management/1";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
-          this.tableData = rows;
-          this.total = total;
+          this.tableData =  res.data.rows;
+          this.total = res.data.total;
         }
       });
     },
@@ -116,7 +112,6 @@ export default {
         let _this = this;
         var data = JSON.stringify({
           name: _this.formInline.name,
-          jobNum: _this.formInline.jobNum,
           pageSize: _this.page.pageSize,
           page: _this.page.page
         });

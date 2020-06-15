@@ -225,12 +225,14 @@ export default {
     },
     //详情
     personnelDetailClick(index, row) {
+      console.log(row)
+      return;
       this.dialogFormVisible = true;
       let url =
         "/smart/worker/access/" +
         sessionStorage.getItem("userId") +
         "/common/" +
-        row.id +
+        row.ids +
         "/detail";
       this.http
         .delete(url, data)

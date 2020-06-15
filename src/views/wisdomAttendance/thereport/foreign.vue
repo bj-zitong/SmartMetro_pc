@@ -55,7 +55,8 @@
       </div>
     </el-container>
     <el-container class="bottom_echarts">
-      <div id="foreignEcharts" style="width:100%;height: 350px;"></div>
+      <!-- <div id="foreignEcharts" style="width:100%;height: 350px;"></div> -->
+      <div id="alarmtrendEcharts" style="width:100%;height:300px;"></div>
     </el-container>
   </div>
 </template>
@@ -81,7 +82,8 @@ export default {
         { value: 234, name: "联盟广告" },
         { value: 135, name: "视频广告" },
         { value: 1548, name: "搜索引擎" }
-      ]
+      ],
+      arr:[]
     };
   },
   methods: {
@@ -142,100 +144,130 @@ export default {
         ]
       });
     },
-    foreignEcharts(id) {
-      this.charts = echarts.init(document.getElementById(id));
-      this.charts.setOption({
+    //今日人员趋势图
+    alarmtrendCharts(arr) {
+      let alarmtrend = echarts.init(
+        document.getElementById("alarmtrendEcharts")
+      );
+      let sizeFun = function() {
+        alarmtrend.resize();
+      };
+      window.addEventListener("resize", sizeFun);
+      alarmtrend.setOption({
         title: {
           text: "今日工作人员趋势图",
-          subtext: ""
+          subtext: "",
+          top: "10%",
+          left: "20",
+          textStyle: {
+            color: "#333333",
+            fontWeight: "bold",
+            fontSize: 12
+          }
         },
+        grid: {
+          // width:315 //调整折线图的宽度
+          top: 80,
+          x: 50,
+          x2: 50,
+          y2: 30
+        },
+        // backgroundColor: "#011a33",
         tooltip: {
-          trigger: "axis"
-        },
-        legend: {
-          x: "right",
-          right:'50px',
-          data: ["蒸发量", "降水量"]
-        },
-        calculable: true,
-        xAxis: [
-          {
-            type: "category",
-            data: [
-              "1月",
-              "2月",
-              "3月",
-              "4月",
-              "5月",
-              "6月",
-              "7月",
-              "8月",
-              "9月",
-              "10月",
-              "11月",
-              "12月"
-            ]
+          backgroundColor: "rgb(255,153,255,0.5)",
+          padding: [10, 20, 10, 8],
+          textStyle: {
+            fontSize: 12,
+            lineHeight: 24
+          },
+          trigger: "axis",
+          axisPointer: {
+            type: "line",
+            lineStyle: {
+              type: "dashed",
+              color: "#ff99ff"
+            }
           }
-        ],
-        yAxis: [
-          {
-            type: "value"
-          }
-        ],
-        series: [
-          {
-            name: "蒸发量",
-            type: "bar",
-            data: [
-              2.0,
-              4.9,
-              7.0,
-              23.2,
-              25.6,
-              76.7,
-              135.6,
-              162.2,
-              32.6,
-              20.0,
-              6.4,
-              3.3
-            ],
-            markPoint: {
-              data: [
-                { type: "max", name: "最大值" },
-                { type: "min", name: "最小值" }
-              ]
-            },
-            markLine: {
-              data: [{ type: "average", name: "平均值" }]
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          // 改变x轴颜色
+          axisLine: {
+            lineStyle: {
+              color: "#009cff",
+              width: 0.3
             }
           },
-          {
-            name: "降水量",
-            type: "bar",
-            data: [
-              2.6,
-              5.9,
-              9.0,
-              26.4,
-              28.7,
-              70.7,
-              175.6,
-              182.2,
-              48.7,
-              18.8,
-              6.0,
-              2.3
-            ],
-            markPoint: {
-              data: [
-                { name: "年最高", value: 182.2, xAxis: 7, yAxis: 183 },
-                { name: "年最低", value: 2.3, xAxis: 11, yAxis: 3 }
-              ]
-            },
-            markLine: {
-              data: [{ type: "average", name: "平均值" }]
+          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+          // 轴刻度
+          axisTick: {
+            show: false
+          },
+          // 轴网格
+          splitLine: {
+            show: false
+          },
+          axisLabel: {
+            show: true,
+            interval: 0, //横轴信息全部显示
+            textStyle: {
+              color: "#009cff",
+              fontSize: 15
             }
+          }
+        },
+        yAxis: {
+          name: "人数(人)",
+          axisTick: {
+            show: false //轴刻度不显示
+          },
+
+          min: 0,
+          // 改变y轴颜色
+          axisLine: {
+            lineStyle: {
+              color: "#009cff",
+              width: 0.3
+            }
+          },
+          // 轴网格
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#009cff",
+              width: 0.3
+            }
+          },
+          //坐标轴文字样式
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: "#009cff",
+              fontSize: 14
+            }
+          }
+        },
+        series: [
+          {
+            name: "当前人数",
+            type: "line",
+            areaStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "#71BCFE" },
+                  { offset: 1, color: "#050A62" }
+                ])
+              }
+            },
+            symbol: "none", // 折线无拐点
+            lineStyle: {
+              normal: {
+                width: 0 //折线宽度
+              }
+            },
+            smooth: true,
+            data: arr,
           }
         ]
       });
@@ -243,25 +275,39 @@ export default {
     isActive(index) {
       this.idx = index;
       let _this = this;
-      var data = JSON.stringify({
-        name: "",
-        jobNum: "",
-        pageSize: "",
-        page: ""
-      });
+      // var data = JSON.stringify({
+      //   name: "",
+      //   jobNum: "",
+      //   pageSize: "",
+      //   page: ""
+      // });
       var url =
-        " /smart/worker/reports/" +
+        " /bashUrl/smart/worker/reports/" +
         sessionStorage.getItem("userId") +
         "/chart/" +
         this.switchState[index];
-      this.http.post(url, data).then(res => {});
+      this.http.post(url, data).then(res => {
+        
+      });
+    },
+    //今日工作人员趋势图
+    TrendChartOfday() {
+      var url =
+        "/bashUrl/smart/worker/reports/" +
+        sessionStorage.getItem("userId") +
+        "/chart/today"
+      this.http.post(url,null).then(res => {
+          // this.arr = res.data
+           this.alarmtrendCharts(res.data)
+      })
     }
   },
   //调用
-  mounted() {
+  activated() {
     this.$nextTick(function() {
       this.drawPie("main");
-      this.foreignEcharts("foreignEcharts");
+      this.alarmtrendCharts();
+      this.TrendChartOfday()
     });
   }
 };
@@ -305,6 +351,7 @@ export default {
   // margin-left: 27px;
   margin-top: 30px;
 }
+
 .boxbtn {
   width: 138px;
   margin-right: 77px;
