@@ -27,7 +27,7 @@
           :show-file-list="showFileList"
           :on-change="changeImg"
         >
-        <el-button  class="T-H-B-Cyan">导出</el-button>
+          <el-button class="T-H-B-Cyan">导出</el-button>
         </el-upload>
         <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
         <!-- <el-button class="T-H-B-DarkGreen" @click="downloadClick">下载</el-button> -->
@@ -77,13 +77,13 @@
         </el-table-column>
       </el-table>
       <pagination
-          class="pagination-box"
-          v-if="total>0"
-          :total="total"
-          :page.sync="listQuery.currentPage"
-          :limit.sync="listQuery.pageSize"
-          @pagination="getDatelist"
-        />
+        class="pagination-box"
+        v-if="total>0"
+        :total="total"
+        :page.sync="listQuery.currentPage"
+        :limit.sync="listQuery.pageSize"
+        @pagination="getDatelist"
+      />
     </div>
     <el-dialog :visible.sync="dialogFormVisible" width="20%" center :show-close="false">
       <el-form

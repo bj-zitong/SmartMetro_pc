@@ -128,12 +128,13 @@ export default {
           sessionStorage.removeItem("certificate");
           sessionStorage.removeItem("payrollRecords1");
           var url =
-            "/systemUrl/smart/auth/" +
-            sessionStorage.getItem("userId") +
-            "/logout";
+            "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/logout";
           this.http.get(url, null).then(res => {
             if (res.code == 200) {
               this.$message("退出成功！");
+              sessionStorage.removeItem("userId");
+              sessionStorage.removeItem("user");
+              sessionStorage.removeItem("token");
               this.$router.push({ path: "/login" });
             }
           });
@@ -272,7 +273,7 @@ ul, li {
 .username-wrapper {
   display: inline-block;
   height: 30px;
-  line-height: 20px;
+  line-height: 15px;
   color: #fff;
 }
 

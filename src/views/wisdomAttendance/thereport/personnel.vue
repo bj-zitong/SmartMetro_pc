@@ -145,9 +145,7 @@ export default {
         "/management/2";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
-          this.tableData = rows;
+          this.tableData =  res.data.rows;
           this.total = total;
         }
       });

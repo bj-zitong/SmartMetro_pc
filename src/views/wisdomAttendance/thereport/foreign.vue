@@ -295,7 +295,7 @@ export default {
 }
 
 .bottom_echarts {
-  width: 99.8%;
+  width: 99%;
   height: 350px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
@@ -305,7 +305,6 @@ export default {
   // margin-left: 27px;
   margin-top: 30px;
 }
-
 .boxbtn {
   width: 138px;
   margin-right: 77px;

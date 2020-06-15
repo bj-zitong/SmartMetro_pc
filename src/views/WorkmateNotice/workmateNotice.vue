@@ -2,7 +2,7 @@
   <div class="container">
     <div class="main-content">
       <el-main class="button-head">
-        <el-button @click="dialogFormVisible = true" class="T-H-B-DarkBlue">新增</el-button>
+        <el-button @click="dialogFormVisible111" class="T-H-B-DarkBlue">新增</el-button>
         <el-button @click="releaseNotice()" class="T-H-B-Yellow" style="margin-left:30px;">发布</el-button>
         <el-button @click="deleteAll()" class="T-H-B-Grey" style="margin-left:30px;">删除</el-button>
         <div class="table-content">
@@ -21,12 +21,17 @@
             ></el-table-column>
             <el-table-column prop="title" label="标题"></el-table-column>
             <el-table-column prop="content" label="内容"></el-table-column>
-            <el-table-column prop="status" label="状态"></el-table-column>
+            <el-table-column prop="status" label="状态">
+              <template slot-scope="scope">
+                <span v-if="scope.row.status==1">已发布</span>
+                <span v-if="scope.row.status==2">未发布</span>
+              </template>
+            </el-table-column>
             <el-table-column label="操作" fixed="right">
               <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
                 <el-button size="mini" @click="handleDelete(scope.row)" class="T-H-B-Grey">删除</el-button>
-                <el-button size="mini" @click="publishNotice(scope.row)" class="T-H-B-Yellow">发布</el-button>
+                <el-button size="mini" @click="publishNotice(scope.row)" class="T-H-B-Yellow" v-show="scope.row.status==1?false:true">发布</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -91,13 +96,13 @@ export default {
       token: null, // token
       // 动态数据
       tableData: [],
-      total: 100, //总条数
+      total: 0, //总条数
       ids: null, //选中的id
       dialogFormVisible: false, //添加默认弹框
       form: {
         content: "", //内容
         title: "", //标题
-        pAnnouncementId: null
+        pannouncementId: null
       },
       formRules: {
         content: [{ required: true, message: "请输入内容", trigger: "blur" }],
@@ -106,7 +111,8 @@ export default {
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
-      }
+      },
+      publish:false
     };
   },
   activated: function() {
@@ -124,30 +130,11 @@ export default {
         "/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
-          this.tableData = rows;
-          this.total = total;
+          
+          this.tableData = res.data.rows;
+          this.total = res.data.total;
         }
       });
-      var result = [
-        {
-          pAnnouncementId: 1,
-          title: "考试通知",
-          content:
-            "中铁二十二局昌平三班司机考试二卷试题中铁二十二局昌平三班司机考试二卷试题",
-          status: "提交"
-        },
-        {
-          pAnnouncementId: 2,
-          title: "考生通知",
-          content:
-            "中铁二十二局昌平三班司机考试二卷试题中铁二十二局昌平三班司机考试二卷试题",
-          status: "提交"
-        }
-      ];
-      this.tableData = result;
-      this.total = result.length;
     },
     //获得表格前面选中的id值
     changeFun() {
@@ -155,7 +142,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pAnnouncementId;
+        var id = arrays[i].pannouncementId;
         ids.push(id);
       }
       return ids;
@@ -171,13 +158,11 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/bashUrl/smart/worker/announcement/" + sessionStorage.getItem("userId");
+            "/bashUrl/smart/worker/announcement/" +
+            sessionStorage.getItem("userId");
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+              this.getTalks();
               this.$message({
                 type: "success",
                 message: "删除成功!"
@@ -196,19 +181,17 @@ export default {
     handleDelete(row) {
       // 删除用户id
       var ids = [];
-      ids.push(row.pAnnouncementId);
+      ids.push(row.pannouncementId);
       var data = JSON.stringify(ids);
       handleCofirm("确认删除")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/announcement/" + sessionStorage.getItem("userId");
+            "/bashUrl/smart/worker/announcement/" +
+            sessionStorage.getItem("userId");
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+              this.getTalks();
               this.$message({
                 type: "success",
                 message: "删除成功!"
@@ -234,13 +217,12 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/announcement/" + sessionStorage.getItem("userId");
+            "/bashUrl/smart/worker/announcement/" +
+            sessionStorage.getItem("userId") +
+            "/publish";
           this.http.post(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+              this.getTalks();
               this.$message({
                 type: "success",
                 message: "发布成功!"
@@ -256,20 +238,19 @@ export default {
         });
     },
     publishNotice(row) {
-      var id = row.pAnnouncementId;
+      var id = row.pannouncementId;
       var ids = [];
       ids.push(id);
       handleCofirm("确认发布")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/announcement/" + sessionStorage.getItem("userId");
+            "/bashUrl/smart/worker/announcement/" +
+            sessionStorage.getItem("userId") +
+            "/publish";
           this.http.post(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+              this.getTalks();
               this.$message({
                 type: "success",
                 message: "发布成功!"
@@ -284,39 +265,51 @@ export default {
           });
         });
     },
+    dialogFormVisible111(){
+        this.form = {
+        content: "", //内容
+        title: "", //标题
+        pannouncementId: null
+      },
+        this.dialogFormVisible =true;
+        this.form =JSON.parse(JSON.stringify(this.form))
+    },
     //编辑 新增
     addUser(form) {
       this.$refs[form].validate(valid => {
         //校验
         if (valid) {
+         
           var form = this.$refs["form"].model;
-          if (form.pAnnouncementId == null) {
+          if (form.pannouncementId == null) {
             //新增 id为空
             var params = JSON.stringify({
               title: form.title,
               content: form.content
             });
             var url =
-              "/smart/worker/announcement/" + sessionStorage.getItem("userId");
+              "/bashUrl/smart/worker/announcement/" +
+              sessionStorage.getItem("userId");
             this.http.post(url, params).then(res => {
               if (res.code == 200) {
+                this.getTalks();
                 this.dialogFormVisible = false;
-                this.$refs[form].resetFields();
               }
             });
           } else {
+          
             //新增 id为空
             var params = JSON.stringify({
               title: form.title,
               content: form.content,
-              pAnnouncementId: form.pAnnouncementId
+              pannouncementId: form.pannouncementId
             });
             var url =
-              "/smart/worker/announcement/" + sessionStorage.getItem("userId");
+              "/bashUrl/smart/worker/announcement/" + sessionStorage.getItem("userId");
             this.http.put(url, params).then(res => {
               if (res.code == 200) {
                 this.dialogFormVisible = false;
-                this.$refs[form].resetFields();
+                this.form.pannouncementId =null
               }
             });
           }
@@ -331,20 +324,22 @@ export default {
     },
     //编辑
     handleEdit(row) {
-      var uid = row.pAnnouncementId;
-      this.form.pAnnouncementId = uid;
+      var uid = row.pannouncementId;
+      this.form.pannouncementId = uid;
       var url =
-        "/smart/worker/announcement/" +
+        "/bashUrl/smart/worker/announcement/" +
         sessionStorage.getItem("userId") +
         "/detail/" +
         uid;
-      this.http.get(url, null).then(res => {
+        console.log(url)
+      this.http.post(url, {}).then(res => {
         if (res.code == 200) {
           //渲染数据
+          this.form = row;
           var result = res.data;
         }
       });
-      this.form = row;
+      // this.form = row;
       this.dialogFormVisible = true;
     }
   }
@@ -387,7 +382,7 @@ export default {
   .button-head {
     padding-left: 30px;
     padding-top: 30px;
-    height: 600px;
+    height: 100%;
   }
 
   .table-content {
