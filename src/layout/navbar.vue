@@ -237,7 +237,7 @@ export default {
     .username-wrapper {
       display: inline-block;
       height: 30px;
-      line-height: 20px;
+      line-height: 25px;
       color: #fff;
     }
   }

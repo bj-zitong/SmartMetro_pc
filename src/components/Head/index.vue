@@ -38,6 +38,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { handleCofirm } from "@/utils/confirm";
 export default {
   props: {
     tabTitle: String
@@ -60,7 +61,21 @@ export default {
   },
   methods: {
     logout() {
-      this.$router.push({ path: "/login" });
+     handleCofirm("您确定退出吗？")
+        // 点击确定 删除sessStorage本地存储 返回到登录页面
+        .then(res => {
+          var url =
+            "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/logout";
+          this.http.get(url, null).then(res => {
+            if (res.code == 200) {
+              this.$message("退出成功！");
+              sessionStorage.removeItem("userId");
+              sessionStorage.removeItem("user");
+              sessionStorage.removeItem("token");
+              this.$router.push({ path: "/login" });
+            }
+          });
+        });
     },
     ...mapActions({
       userLogout: "logout"

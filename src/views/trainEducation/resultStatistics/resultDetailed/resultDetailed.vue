@@ -27,7 +27,7 @@
           :show-file-list="showFileList"
           :on-change="changeImg"
         >
-        <el-button  class="T-H-B-Cyan">导出</el-button>
+          <el-button class="T-H-B-Cyan">导出</el-button>
         </el-upload>
         <el-button class="T-H-B-Grey" @click="deleteAllClick">删除</el-button>
         <!-- <el-button class="T-H-B-DarkGreen" @click="downloadClick">下载</el-button> -->
@@ -77,13 +77,13 @@
         </el-table-column>
       </el-table>
       <pagination
-          class="pagination-box"
-          v-if="total>0"
-          :total="total"
-          :page.sync="listQuery.currentPage"
-          :limit.sync="listQuery.pageSize"
-          @pagination="getDatelist"
-        />
+        class="pagination-box"
+        v-if="total>0"
+        :total="total"
+        :page.sync="listQuery.currentPage"
+        :limit.sync="listQuery.pageSize"
+        @pagination="getDatelist"
+      />
     </div>
     <el-dialog :visible.sync="dialogFormVisible" width="20%" center :show-close="false">
       <el-form
@@ -113,6 +113,7 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "@/components/pagination";
+import axios from "axios";
 export default {
   components: {
     Pagination
@@ -136,7 +137,7 @@ export default {
           examTime: "10:00",
           examPath: "试卷",
           isRelationQate: "true",
-          status:true
+          status: true
         },
         {
           pScoreId: 1,
@@ -151,7 +152,7 @@ export default {
           examTime: "10:00",
           examPath: "试卷",
           isRelationQate: "true",
-          status:false
+          status: false
         }
       ],
       rules: {
@@ -188,48 +189,70 @@ export default {
   methods: {
     //列表请求
     getDatelist() {
-      var params = JSON.stringify({
-        pageSize: this.listQuery.pageSize,
-        page: this.listQuery.currentPage,
-        name: this.name
-      });
-      // ​/smart​/worker​/train​/{userId}​/score​/management
-      var url222 = "/bashUrl/smart​/worker​/train​/"+sessionStorage.getItem("userId")+"/score​/management";
-      this.http.post(url222, params).then(res => {
-        if (res.code == 200) {
-          var rows = res.rows;
-          this.tableData = rows;
-          this.total = res.total;
+      // alert("999999")
+      // var params = JSON.stringify({
+      //   pageSize: this.listQuery.pageSize,
+      //   page: this.listQuery.currentPage,
+      //   name: this.name
+      // });
+
+      // // ​/smart​/worker​/train​/{userId}​/score​/management
+      // var url222 = "/bashUrl/smart​/worker​/train​/"+2+"/score​/management";
+      // this.http.post(url222, decodeURI(params)).then(res => {
+      //   if (res.code == 200) {
+      //     var rows = res.rows;
+      //     this.tableData = rows;
+      //     this.total = res.total;
+      //   }
+      //   var result = [
+      //     {
+      //       pInfoId: 0,
+      //       name: "地铁安保部",
+      //       labourCompany: "210234567898765876",
+      //       team: 15236985236,
+      //       workType: "木工",
+      //       trainingType: "安保部一",
+      //       score: "100",
+      //       examTime: "10:00",
+      //       examPath: "试卷",
+      //       isRelationQate: "true"
+      //     },
+      //     {
+      //       pInfoId: 1,
+      //       name: "地铁安保部",
+      //       labourCompany: "210234567898765876",
+      //       team: 15236985236,
+      //       workType: "木工",
+      //       trainingType: "安保部一",
+      //       score: "100",
+      //       examTime: "10:00",
+      //       examPath: "试卷",
+      //       isRelationQate: "true"
+      //     }
+      //   ];
+      //   this.tableData = result;
+      //   this.total = result.length;
+      // });
+      var url ="/bashUrl/smart​/worker​/train​/"+ sessionStorage.getItem("userId")+"/score​/management";
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:  sessionStorage.getItem("token")
+        },
+        url:url,
+      }).then(
+        res => {
+          console.log(res)
+          // if (res.code == 200) {
+          //   // this.$message("修改成功！");
+          //   // this.$router.push({ path: "/login" });
+          // }
+        },
+        err => {
+          // return errorfun(err);
         }
-        var result = [
-          {
-            pInfoId: 0,
-            name: "地铁安保部",
-            labourCompany: "210234567898765876",
-            team: 15236985236,
-            workType: "木工",
-            trainingType: "安保部一",
-            score: "100",
-            examTime: "10:00",
-            examPath: "试卷",
-            isRelationQate: "true"
-          },
-          {
-            pInfoId: 1,
-            name: "地铁安保部",
-            labourCompany: "210234567898765876",
-            team: 15236985236,
-            workType: "木工",
-            trainingType: "安保部一",
-            score: "100",
-            examTime: "10:00",
-            examPath: "试卷",
-            isRelationQate: "true"
-          }
-        ];
-        this.tableData = result;
-        this.total = result.length;
-      });
+      );
     },
     changeImg(file, fileList) {
       this.file.uploadFile = fileList;

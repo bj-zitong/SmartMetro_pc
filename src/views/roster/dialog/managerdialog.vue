@@ -98,10 +98,8 @@ export default {
   data() {
     return {
       changOrder: false
-      // dome:data
     };
   },
-
   mounted(){
 
 
@@ -109,13 +107,8 @@ export default {
   methods: {
     //页面初始化时加载的事件
     init() {
-      //  alert("9999999")
-      //  console.log(this.dome)
       this.changOrder = true;
-      // console.log(11111111);
-      // console.log(data);
     }, //关闭页面
-
     handleClose() {
       this.changOrder = false;
       this.$emit("tyonke", this.changOrder);
