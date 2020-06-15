@@ -198,8 +198,7 @@ export default {
             userId: sessionStorage.getItem("userId")
           });
           var url =
-            this.PersonnelLocalhosts +
-            "/smart/auth/" +
+            "/systemUrl/smart/auth/" +
             sessionStorage.getItem("userId") +
             "/password/change";
           // this.http.post(url, params).then(res => {

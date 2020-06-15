@@ -12,31 +12,41 @@
         <el-col :span="8">
           <div class="grid-content bg-purple">
             公司名称:
-            <span>{{data[0].company}}</span>
+            <span>{{equipment.company}}</span>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">姓名: <span>{{data[0].name}}</span></div>
+          <div class="grid-content bg-purple">
+            姓名:
+            <span>{{equipment.name}}</span>
+          </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">年龄:<span>{{data[0].age}}</span></div>
+          <div class="grid-content bg-purple">
+            年龄:
+            <span>{{equipment.age}}</span>
+          </div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content bg-purple">
             性别:
-            <span v-if="data[0].gender==0">男</span>
-             <span v-if="data[0].gender==1">女</span>
+            <span v-if="equipment.gender==0">男</span>
+            <span v-if="equipment.gender==1">女</span>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">手机号码: <span>{{data[0].cellPhone}}</span></div>
+          <div class="grid-content bg-purple">
+            手机号码:
+            <span>{{equipment.cellPhone}}</span>
+          </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">证件类型:
-           <span v-if="data[0].idCardType==0">身份证</span>
-           <span v-if="data[0].idCardType==1">护照</span>
+          <div class="grid-content bg-purple">
+            证件类型:
+            <span v-if="equipment.idCardType==0">身份证</span>
+            <span v-if="equipment.idCardType==1">护照</span>
           </div>
         </el-col>
       </el-row>
@@ -44,21 +54,27 @@
         <el-col :span="8">
           <div class="grid-content bg-purple">
             政治面貌:
-           <span>{{data[0].politicsType}}</span>
+            <span>{{equipment.politicsType}}</span>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">证件编码:  <span>{{data[0].idCardCode}}</span></div>
+          <div class="grid-content bg-purple">
+            证件编码:
+            <span>{{equipment.idCardCode}}</span>
+          </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple">籍贯: <span>{{data[0].birthPlaceCode}}</span></div>
+          <div class="grid-content bg-purple">
+            籍贯:
+            <span>{{equipment.birthPlaceCode}}</span>
+          </div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content bg-purple">
             合同名称:
-             <span>{{data[0].contractName}}</span>
+            <span>{{equipment.contractName}}</span>
           </div>
         </el-col>
       </el-row>
@@ -73,10 +89,12 @@
 <script>
 export default {
   name: "turntorepairorder",
-  props:['data'],
+  props: ["data"],
   data() {
     return {
-      changOrder: false
+      changOrder: false,
+      id:null,
+      equipment:null
     };
   },
   methods: {
@@ -89,11 +107,29 @@ export default {
       this.changOrder = false;
       this.$emit("tyonke", this.changOrder);
     }, //表单提交
-    handleSubmit() {}
+    handleSubmit() {},
+    getDatil() {
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/equipment/" +
+        this.id;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          // console.log(res.data)
+          var result = res.data;
+          this.equipment=result;
+          // });
+        }
+      });
+    }
   }, //监听
   watch: {
     changOrder(newValue, oldValue) {
       this.changOrder = newValue;
+      this.id=this.data;
+      this.getDatil();
     }
   }
 };

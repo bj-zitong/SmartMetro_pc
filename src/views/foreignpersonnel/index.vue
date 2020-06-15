@@ -251,7 +251,7 @@ export default {
       tableData: [],
       page: 1, // 初始页
       pageSize: 10, //    每页的数据
-      total: 100, //总条数
+      total: null, //总条数
       ids: null, //选中的id
       searchUname: null, // 搜索
       searchNum: null,
@@ -578,10 +578,6 @@ export default {
             "/outlander";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
               this.$message({
                 type: "success",
                 message: "删除成功!"

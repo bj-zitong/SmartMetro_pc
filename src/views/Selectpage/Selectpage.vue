@@ -119,6 +119,14 @@ export default {
       handleCofirm("您确定退出吗？")
         // 点击确定 删除sessStorage本地存储 返回到登录页面
         .then(res => {
+          sessionStorage.removeItem("userId");
+          sessionStorage.removeItem("user");
+          sessionStorage.removeItem("token");
+          sessionStorage.removeItem('contractInformation');
+          sessionStorage.removeItem("History");
+          sessionStorage.removeItem("data");
+          sessionStorage.removeItem("certificate");
+          sessionStorage.removeItem("payrollRecords1");
           var url =
             "/systemUrl/smart/auth/" + sessionStorage.getItem("userId") + "/logout";
           this.http.get(url, null).then(res => {

@@ -71,8 +71,8 @@
         </el-col>
         <el-col :span="24">
           <el-form-item style="float:right;position:relative;bottom:6px;">
-            <el-button type="primary" round class="cancel-style">取消</el-button>
-            <el-button type="primary" round @click="submitForm('contract')">提交</el-button>
+            <el-button type="primary" round class="cancel-style" @click.native="cancel('contract')">取消</el-button>
+            <el-button type="primary" round @click.native="submitForm('contract')">提交</el-button>
           </el-form-item>
         </el-col>
       </el-form>
@@ -136,6 +136,12 @@ export default {
     }
   },
   methods: {
+     cancel(contract){
+      this.$refs[contract].resetFields();
+      sessionStorage.removeItem('contractInformation');
+      Object.assign(this.$data.contract, this.$options.data().contract); // 初始化data
+      this.$router.push({ path: "/roster/personnel" });
+    },
     submitForm(contract) {
       this.$refs[contract].validate(valid => {
         if (valid) {

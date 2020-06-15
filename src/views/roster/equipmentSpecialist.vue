@@ -122,7 +122,7 @@ export default {
   },
   data() {
     return {
-      bindData:[],
+      bindData:null,
       headClass: headClass,
       tableData: [],
       total: null, //总条数
@@ -324,24 +324,10 @@ export default {
     detailsRowClick(row) {
       let _this = this;
       var id = row.pinfoId;
-      this.bindData=[];
-      var url =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/equipment/" +
-        id;
-      this.http.get(url, null).then(res => {
-        if (res.code == 200) {
-          //渲染数据
-          // console.log(res.data)
-          var result = res.data;
-          this.bindData.push(result)
-           _this.changOrder = true;
+      this.bindData=id;
+      _this.changOrder = true;
       // _this.$nextTick(() => {
         _this.$refs.turnOrder.init();
-      // });
-        }
-      });
 
     },
     //导入

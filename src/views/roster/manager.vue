@@ -149,7 +149,7 @@ export default {
       fileList: [],
       loading: true,
       tableData: [],
-      bindData:[],
+      bindData:null,
     };
   },
   activated() {
@@ -388,20 +388,10 @@ export default {
     },
     detailsRowClick(index,row) {
       console.log(row.pinfoId);
-      this.bindData=[];
+      this.bindData=row.pinfoId;
       let _this =this;
-      var url =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/manager/"+row.pinfoId;
-      _this.http.get(url, null).then(res => {
-        if (res.code == 200) {
-          this.bindData.push(res.data);
-          console.log(_this.bindData);
-          _this.changOrder = true;
-          _this.$refs.turnOrder.init();
-        }
-      });
+      _this.changOrder = true;
+      _this.$refs.turnOrder.init();
       // _this.$nextTick(() => {
       //   _this.$refs.turnOrder.init();
       // });
@@ -409,21 +399,6 @@ export default {
       //   _this.$refs.turnOrder.init();
       // });
       // this.getDetail(row);
-    },
-    getDetail(row){
-       let _this = this;
-      _this.changOrder = true;
-      var url =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/manager/"+row.pinfoId;
-      this.http.get(url, null).then(res => {
-        if (res.code == 200) {
-          console.log(res);
-          this.formParams=res.data;
-          return this.formParams;
-        }
-      });
     },
     seeSubRowClick() {},
     headClass() {
