@@ -60,7 +60,7 @@
                 :limit="2"
                 :show-file-list="true"
               >
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button type="primary" style="margin-left:10px;">导入</el-button>
               </el-upload>
         </div>
         <el-table

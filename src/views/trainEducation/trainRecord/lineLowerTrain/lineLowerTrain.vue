@@ -33,16 +33,16 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" prop="ptrainingId"></el-table-column>
-          <el-table-column prop="uuid" label="编号"></el-table-column>
+          <el-table-column prop="uid" label="编号"></el-table-column>
           <el-table-column prop="trainingName" label="培训主题"></el-table-column>
-          <el-table-column prop="trainAmount" label="培训人数"></el-table-column>
-          <el-table-column prop="trainObject" label="培训对象"></el-table-column>
-          <el-table-column prop="trainDepartment" label="培训部门/召集人"></el-table-column>
+          <el-table-column prop="trainingAmount" label="培训人数"></el-table-column>
+          <el-table-column prop="trainingObject" label="培训对象"></el-table-column>
+          <el-table-column prop="trainingDepartment" label="培训部门/召集人"></el-table-column>
           <el-table-column prop="trainer" label="主讲人"></el-table-column>
           <el-table-column prop="trimmer" label="记录整理人"></el-table-column>
           <el-table-column prop="trainingDate" label="培训时间"></el-table-column>
-          <el-table-column prop="trainAddress" label="培训地点"></el-table-column>
-          <el-table-column prop="trainDuration" label="学时"></el-table-column>
+          <el-table-column prop="trainingAddress" label="培训地点"></el-table-column>
+          <el-table-column prop="trainingDuration" label="学时"></el-table-column>
           <el-table-column prop="description" label="培训提纲"></el-table-column>
           <el-table-column label="操作" width="240" fixed="right">
             <template slot-scope="scope">
@@ -164,7 +164,7 @@ export default {
       titleTrain: "",
       formTrain: {
         id: null,
-        ptrainingId: "",
+        ptrainingId: null,
         trainAmount: "",
         trainObject: "",
         trainDepartment: "",
@@ -229,40 +229,12 @@ export default {
         "/record/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.total;
-          var rows = res.rows;
+          var total = res.data.total;
+          var rows = res.data.rows;
           this.tableData = rows;
           this.total = total;
         }
       });
-      // var result = [
-      //     {
-      //         pTrainingId: '安全培训1',
-      //         trainAmount: '50',
-      //         trainObject: '安保部门',
-      //         trainDepartment: '张三',
-      //         trainer: '李四',
-      //         trimmer: '王五',
-      //         trainingDate: '2020-05-20 17:17:17',
-      //         trainAddress: '北京房山',
-      //         trainDuration: '4',
-      //         description: '主讲安全培训'
-      //     },
-      //     {
-      //         pTrainingId: '安全培训2',
-      //         trainAmount: '51',
-      //         trainObject: '安保部门',
-      //         trainDepartment: '张三',
-      //         trainer: '李四',
-      //         trimmer: '王五',
-      //         trainingDate: '2020-05-20 17:17:17',
-      //         trainAddress: '北京房山',
-      //         trainDuration: '4',
-      //         description: '主讲安全培训'
-      //     }
-      // ];
-      // this.tableData = result;
-      // this.total = result.length;
     },
     //获得表格前面选中的id值
     handleSelectionChange() {
@@ -297,7 +269,7 @@ export default {
         if (valid) {
           let form = this.$refs[refTrain].model;
           // 判断id是否为空
-          if (form.id == null) {
+          if (form.ptrainingId == null) {
             var url =
               "/bashUrl/smart/worker/train/" +
               sessionStorage.getItem("userId") +
@@ -311,6 +283,8 @@ export default {
                     type: "success",
                     message: "添加成功!"
                   });
+                  this.cloneTrainForm(refTrain);
+                  this.getTable();
                 }
               })
               .catch(res => {
@@ -321,13 +295,14 @@ export default {
           } else {
             let data = JSON.stringify(this.formTrain);
             this.http
-              .put("smart/worker/train/1/record", data)
+              .put("/bashUrl/smart/worker/train/1/record", data)
               .then(res => {
                 if (res.code == 200) {
                   this.$message({
                     type: "success",
                     message: "修改成功!"
                   });
+                  this.getTable();
                 }
               })
               .catch(res => {
@@ -373,7 +348,7 @@ export default {
         .then(res => {
           let data = JSON.stringify(ids);
           let url =
-            "/smart/worker/train/" +
+            "/bashUrl/smart/worker/train/" +
             sessionStorage.getItem("userId") +
             "/record";
           this.http.delete(url, data).then(res => {
@@ -386,6 +361,7 @@ export default {
                 type: "success",
                 message: "删除成功!"
               });
+              this.getTable();
             }
           });
         })
@@ -419,12 +395,12 @@ export default {
     // 删除
     deleteRowClick(index, row) {
       let ids = [];
-      ids.push(row.id);
+      ids.push(row.ptrainingId);
       handleCofirm("确定删除吗？")
         .then(res => {
           let data = JSON.stringify(ids);
           let url =
-            "/smart/worker/train/" +
+            "/bashUrl/smart/worker/train/" +
             sessionStorage.getItem("userId") +
             "/record";
           this.http.delete(url, data).then(res => {
@@ -437,6 +413,7 @@ export default {
                 type: "success",
                 message: "删除成功!"
               });
+              this.getTable();
             }
           });
         })

@@ -41,7 +41,7 @@
             ></el-table-column>
             <el-table-column prop="company" label="所属单位"></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="workType" label="工种"></el-table-column>
+            <!-- <el-table-column prop="workType" label="工种"></el-table-column> -->
             <el-table-column prop="blackReason" label="拉黑原因"></el-table-column>
             <el-table-column prop="provePath" label="相关证明"></el-table-column>
             <el-table-column prop="status" label="审核状态">

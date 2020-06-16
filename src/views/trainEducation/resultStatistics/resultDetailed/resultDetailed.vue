@@ -44,13 +44,13 @@
         <el-table-column
           type="selection"
           width="65"
-          prop="pOutlanderId"
+          prop="pscoreId"
           @selection-change="changeFun"
         ></el-table-column>
-        <el-table-column prop="rank" label="名次"></el-table-column>
+        <el-table-column prop="pscoreId" label="名次"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="labourCompany" label="劳务单位"></el-table-column>
-        <el-table-column prop="team" label="所在班组"></el-table-column>
+        <el-table-column prop="company" label="劳务单位"></el-table-column>
+        <el-table-column prop="teamName" label="所在班组"></el-table-column>
         <el-table-column prop="workType" label="工种"></el-table-column>
         <el-table-column prop="trainingType" label="培训类型"></el-table-column>
         <el-table-column prop="score" label="分数"></el-table-column>
@@ -192,7 +192,7 @@ export default {
     //点击填写分数弹出框
     fillinScoreClick(index, row) {
        this.form.score =''
-      this.pInfoId = row.pScoreId;
+      this.pInfoId = row.pscoreId;
       this.dialogFormVisible = true;
     },
     myUpload(content) {
