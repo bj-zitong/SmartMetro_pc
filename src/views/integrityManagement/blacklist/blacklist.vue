@@ -161,10 +161,6 @@ export default {
     },
     //取消
     cancelClick(row) {
-      var uid = row.uuid;
-      var ids = [];
-      ids.push(uid);
-      console.log(ids);
       handleCofirm("确认取消")
         .then(res => {
           var data = JSON.stringify(ids);
@@ -176,11 +172,8 @@ export default {
           var data = new FormData();
           data.append("status",5);
           this.http.post(url, data).then(res => {
-            if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+             if (res.code == 200) {
+              this.getDateList()
               this.$message({
                 type: "success",
                 message: "取消成功!"
@@ -225,23 +218,19 @@ export default {
     },
     //驳回
     rejectClick(row) {
-      var uid = row.uuid;
-      var ids = [];
-      ids.push(uid);
-      console.log(ids);
       handleCofirm("确认驳回")
         .then(res => {
           var data = JSON.stringify(ids);
-          var url =
-            "/smart/worker/integrity/" +
+           var url =
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
-            "/black/change/3";
+            "/labour/basic/" +
+            row.pinfoId;
+            var data = new FormData();
+          data.append("status",4);
           this.http.post(url, data).then(res => {
-            if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+             if (res.code == 200) {
+              this.getDateList()
               this.$message({
                 type: "success",
                 message: "驳回成功!"

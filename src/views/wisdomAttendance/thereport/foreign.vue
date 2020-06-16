@@ -20,42 +20,14 @@
       </div>
     </el-container>
     <el-container class="right_echarts">
-      <!-- <div class="sign">
-        <p style=""></p>
-        <p style="border:4px solid rgba(96,90,216,1)"></p>
-        <p style="border:4px solid rgba(249,205,51,1)"></p>
-        <p style="border:4px solid rgba(143,85,231,1)"></p>
-        <p style="border:4px solid rgba(94,216,169,1)"></p>
-        <p style="border:4px solid rgba(108,111,191,1)"></p>
-        <p style="border:4px solid rgba(248,104,70,1)"></p>
-        <p style="border:4px solid rgba(120,196,70,1)"></p>
-        <p style="border:4px solid rgba(255,177,26,1)"></p>
-      </div> -->
-      <div class="sign" v-for="(item,index) in arrs" :key="index">
-        {{item.itemStyle.color}}
-        <p :style="{'border':'4px solid'+item.itemStyle.color}"></p>
+      <div class="sign">
+        <p v-for="(item,index) in backColor" :key="index" :style="item"></p>
       </div>
       <div class="sign_classify">
-        <p>工长</p>
-        <p style="color:rgb(197,151,193)">电梯安装工</p>
-        <p>土方</p>
-        <p>机修长</p>
-        <p>水电工</p>
-        <p style="padding-top:4px">消防安装工</p>
-        <p>结构工</p>
-        <p>筑路工</p>
-        <p>电工</p>
+        <p v-for="(item,index) in arrs" :key="index" :style="item">{{item.name}}</p>
       </div>
       <div class="sign_classify_price">
-        <p>30%</p>
-        <p>30%</p>
-        <p>30%</p>
-        <p>30%</p>
-        <p>30%</p>
-        <p>30%</p>
-        <p>30%</p>
-        <p>30%</p>
-        <p>30%</p>
+        <p v-for="(item,index) in arrs" :key="index" :style="item">{{item.value}}</p>
       </div>
     </el-container>
     <el-container class="bottom_echarts">
@@ -87,12 +59,12 @@ export default {
         { value: 1548, name: "搜索引擎" }
       ],
       arr: [],
-      arrs:null
+      arrs:null,
+      backColor:[]
     };
   },
   methods: {
     drawPie(id, data) {
-      console.log(data);
       this.charts = echarts.init(document.getElementById(id));
       this.charts.setOption({
         tooltip: {
@@ -127,25 +99,6 @@ export default {
               show: true
             },
             data: data
-            //             data: [
-            //               { value: 335, name: "工长", itemStyle: { color: "#4FC5EA" } },
-            //               {
-            //                 value: 335,
-            //                 name: "电梯安装工",
-            //                 itemStyle: { color: "#605AD8" }
-            //               },
-            //               { value: 310, name: "土方", itemStyle: { color: "#F9CD33" } },
-            //               { value: 234, name: "机修长", itemStyle: { color: "#8F55E7" } },
-            //               { value: 135, name: "水电工", itemStyle: { color: "#5ED8A9" } },
-            //               {
-            //                 value: 254,
-            //                 name: "消防安装工",
-            //                 itemStyle: { color: "#6C6FBF" }
-            //               },
-            //               { value: 35, name: "结构工", itemStyle: { color: "#F86846" } },
-            //               { value: 145, name: "筑路工", itemStyle: { color: "#78C446" } },
-            //               { value: 256, name: "电工", itemStyle: { color: "#FFB11A" } }
-            //             ]
           }
         ]
       });
@@ -306,6 +259,7 @@ export default {
     isActive(index) {
       let _this = this;
       this.idx = index;
+       this.backColor=[]
       var url =
         " /bashUrl/smart/worker/reports/" +
         sessionStorage.getItem("userId") +
@@ -315,7 +269,6 @@ export default {
         for (var i = 0; i < res.data.length; i++) {
           res.data[i].itemStyle = { color: this.randomRgb(i) };
         }
-        console.log(res.data);
         var arrs = res.data.map(function(item) {
           return {
             name: item.company,
@@ -331,6 +284,7 @@ export default {
       let R = Math.floor(Math.random() * 130 + 110);
       let G = Math.floor(Math.random() * 130 + 110);
       let B = Math.floor(Math.random() * 130 + 110);
+      this.backColor.push(' border: 20px solid rgba(' + R + ',' + G + ',' + B + ')' )
       return "rgb(" + R + "," + G + "," + B + ")";
     },
     //今日工作人员趋势图
@@ -423,12 +377,12 @@ export default {
     margin-top: 10px;
 
     p {
-      width: 25px;
-      height: 25px;
+      width: 15px;
+      height: 15px;
       background: rgba(255, 255, 255, 1);
-      border: 4px solid rgba(79, 197, 234, 1);
+      // border: 4px solid rgba(79, 197, 234, 1);
       opacity: 1;
-      border-radius: 13px;
+      border-radius:20px;
       margin-top: 15px;
     }
   }
@@ -439,7 +393,7 @@ export default {
     margin-top: 10px;
 
     p {
-      margin-top: 21px;
+      margin-top: 35px;
     }
   }
 
@@ -449,7 +403,7 @@ export default {
     margin-top: 10px;
 
     p {
-      margin-top: 21.5px;
+      margin-top: 35px;
     }
   }
 }
