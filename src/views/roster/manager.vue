@@ -391,7 +391,7 @@ export default {
       this.bindData=row.pinfoId;
       let _this =this;
       _this.changOrder = true;
-      _this.$refs.turnOrder.init();
+      _this.$refs.changOrder.init();
       // _this.$nextTick(() => {
       //   _this.$refs.turnOrder.init();
       // });

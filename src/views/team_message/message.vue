@@ -226,9 +226,9 @@
           :header-cell-style="headClass"
           stripe
         >
-          <el-table-column type="selection" prop="personId" @selection-change="changeFunPerson"></el-table-column>
-          <el-table-column prop="jobNumber" label="工号" width="180"></el-table-column>
-          <el-table-column prop="personName" label="姓名" width="180"></el-table-column>
+          <el-table-column type="selection" prop="pinfoId" @selection-change="changeFunPerson"></el-table-column>
+          <el-table-column prop="pinfoId" label="编号" width="180"></el-table-column>
+          <el-table-column prop="name" label="姓名" width="180"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
           <el-button @click="innerVisible = false" class="F-Grey" round>取 消</el-button>
@@ -411,7 +411,7 @@ export default {
       var arrays = this.$refs.multipleTable2.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        ids.push(arrays[i].personId);
+        ids.push(arrays[i].pinfoId);
       }
       this.selectedPersonIds = ids;
       this.multipleSelection = val;
@@ -633,11 +633,25 @@ export default {
     //选择人员赋值
     selectPerson() {
       this.innerVisible = true;
-      this.persons = [
-        { personId: 1, jobNumber: "1111", personName: "aaaaa" },
-        { personId: 2, jobNumber: "2222", personName: "b5bbbb" },
-        { personId: 3, jobNumber: "3333", personName: "cc999ccc" }
-      ];
+       let _this = this;
+       var data = JSON.stringify({
+        pageSize: 10000,
+        page: 1
+      });
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+         this.persons=res.data.rows;
+        }
+      });
+      // this.persons = [
+      //   { personId: 1, jobNumber: "1111", personName: "aaaaa" },
+      //   { personId: 2, jobNumber: "2222", personName: "b5bbbb" },
+      //   { personId: 3, jobNumber: "3333", personName: "cc999ccc" }
+      // ];
       //  this.$refs.multipleTable2.toggleRowSelection(this.persons[2], true);
       // if (this.selectedPersonIds != undefined) {
       //   for (var i = 0; i < this.selectedPersonIds.length; i++) {

@@ -16,18 +16,20 @@
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   姓名:
-                   <span>{{person.name}}</span>
+                  <span>{{person.name}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">性别:
-                   <span v-if="person.gender==0">男</span>
-                   <span v-if="person.gender==1">女</span>
+                <div class="grid-content bg-purple">
+                  性别:
+                  <span v-if="person.gender==0">男</span>
+                  <span v-if="person.gender==1">女</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">年龄:
-                   <span>{{person.age}}</span>
+                <div class="grid-content bg-purple">
+                  年龄:
+                  <span>{{person.age}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -39,13 +41,15 @@
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">工种:
-                   <span>{{person.workType}}</span>
+                <div class="grid-content bg-purple">
+                  工种:
+                  <span>{{person.workType}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">电话:
-                   <span>{{person.cellPhone}}</span>
+                <div class="grid-content bg-purple">
+                  电话:
+                  <span>{{person.cellPhone}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -58,9 +62,10 @@
               </el-col>
               <!-- <el-col :span="8">
                 <div class="grid-content bg-purple">部门:</div>
-              </el-col> -->
+              </el-col>-->
               <el-col :span="8">
-                <div class="grid-content bg-purple">紧急联系人:
+                <div class="grid-content bg-purple">
+                  紧急联系人:
                   <span>{{person.urgentLinkMan}}</span>
                 </div>
               </el-col>
@@ -73,13 +78,15 @@
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">现居住地:
-                   <span>{{person.address}}</span>
+                <div class="grid-content bg-purple">
+                  现居住地:
+                  <span>{{person.address}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">籍贯:
-                    <span>{{person.birthPlaceCode}}</span>
+                <div class="grid-content bg-purple">
+                  籍贯:
+                  <span>{{person.birthPlaceCode}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -91,13 +98,15 @@
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">学位:
-                   <span>{{person.degree}}</span>
+                <div class="grid-content bg-purple">
+                  学位:
+                  <span>{{person.degree}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">文化程度:
-                   <span>{{person.cultureLevelType}}</span>
+                <div class="grid-content bg-purple">
+                  文化程度:
+                  <span>{{person.cultureLevelType}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -109,13 +118,15 @@
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">户口类型:
+                <div class="grid-content bg-purple">
+                  户口类型:
                   <span>{{person.registrationType}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">证件编码:
-                   <span>{{person.idCardCode}}</span>
+                <div class="grid-content bg-purple">
+                  证件编码:
+                  <span>{{person.idCardCode}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -134,38 +145,42 @@
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">持证上岗:
-                   <span>{{person.isRelatedCertificates}}</span>
+                <div class="grid-content bg-purple">
+                  持证上岗:
+                  <span>{{person.isRelatedCertificates}}</span>
                 </div>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
-                <div class="grid-content bg-purple">居住证:
-                   <span>{{person.isResidencePermit}}</span>
+                <div class="grid-content bg-purple">
+                  居住证:
+                  <span>{{person.isResidencePermit}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   居住证办理日期:
-                   <span>{{person.residencePermitDate}}</span>
+                  <span>{{person.residencePermitDate}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   特殊工种体检情况:
-                   <span>{{person.isSpecialWorkTypeCheckups}}</span>
+                  <span>{{person.isSpecialWorkTypeCheckups}}</span>
                 </div>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
-                <div class="grid-content bg-purple">班组:
-                   <span>{{person.teamName}}</span>
+                <div class="grid-content bg-purple">
+                  班组:
+                  <span>{{person.teamName}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
-                <div class="grid-content bg-purple">政治面貌:
+                <div class="grid-content bg-purple">
+                  政治面貌:
                   <span>{{person.politicsType}}</span>
                 </div>
               </el-col>
@@ -201,7 +216,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   合同编号:
-                 <span>{{contract.contractCode}}</span>
+                  <span>{{contract.contractCode}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -262,7 +277,7 @@
               <el-col :span="20">
                 <div class="grid-content bg-purple">
                   发放方式:
-                   <span>{{pay.provideType}}</span>
+                  <span>{{pay.provideType}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -285,13 +300,19 @@
           </div>
         </el-tab-pane>
         <!-- 资质证书 -->
+
         <el-tab-pane label="资质证书" name="certificate">
-          <div class="AddEquipment_form" style="background:#ccc">
+          <div
+            class="AddEquipment_form"
+            style="background:#ccc"
+            v-for="(item,index) in credential"
+            :key="index"
+          >
             <el-row :gutter="20">
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   真伪查询:
-                  <span></span>
+                  <span>{{item.grantCompany}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -299,7 +320,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   证书名称:
-                  <span></span>
+                  <span>{{item.certificationName}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -307,7 +328,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   证书类型:
-                  <span></span>
+                  <span>{{item.certificationType}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -315,7 +336,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   专业编码:
-                  <span></span>
+                  <span>{{item.certificationCode}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -323,7 +344,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   证书等级:
-                  <span></span>
+                  <span>{{item.credentialLevelType}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -331,7 +352,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   发证日期:
-                  <span></span>
+                  <span>{{item.firstBeginDate}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -339,7 +360,8 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   有效时间:
-                  <span></span>
+                  <span>{{item.validBeginDate}}</span>-
+                  <span>{{item.validEndDate}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -347,7 +369,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   资格状态:
-                  <span></span>
+                  <span>{{item.certificationStatus}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -355,7 +377,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   附件上传:
-                  <span></span>
+                  <span>{{item.accessoryPath}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -373,7 +395,7 @@
               </el-col>
             </el-row>
           </div>
-        </el-tab-pane> -->
+        </el-tab-pane>-->
         <!-- 来源地消息 -->
         <!-- <el-tab-pane label="来源地消息" name="first">
           <div class="AddEquipment_form">
@@ -448,7 +470,7 @@
               </el-col>
             </el-row>
           </div>
-        </el-tab-pane> -->
+        </el-tab-pane>-->
       </el-tabs>
     </div>
     <template slot="footer" class="dialog-footer">
@@ -468,9 +490,9 @@ export default {
       activeName: "second",
       pid: null,
       person: null,
-      contract:null,
-      pay:null,
-      credential:null
+      contract: null,
+      pay: null,
+      credential: null
     };
   },
   methods: {
@@ -485,71 +507,71 @@ export default {
     }, //表单提交
     handleSubmit() {},
     handleClick() {},
-      //详情
+    //详情
     getDetail() {
-    var url =
-      "/bashUrl/smart/worker/roster/" +
-      sessionStorage.getItem("userId") +
-      "/labour/basic/" +
-      this.pid;
-    this.http.get(url, null).then(res => {
-      if (res.code == 200) {
-        //渲染数据
-        var result = res.data;
-        this.person = result;
-        this.getContract();
-      }
-    });
-  },
-  //合同
-  getContract(){
-    ///smart/worker/roster/{userId}/labour/contract/{pInfoId}
-    var url =
-      "/bashUrl/smart/worker/roster/" +
-      sessionStorage.getItem("userId") +
-      "/labour/contract/" +
-      this.pid;
-    this.http.get(url, null).then(res => {
-      if (res.code == 200) {
-        //渲染数据
-        var result = res.data;
-        this.contract = result;
-        this.getPay();
-      }
-    });
-  },
-  //支付
-  getPay(){
-    ///smart/worker/roster/{userId}/labour/salary
-    var url =
-      "/bashUrl/smart/worker/roster/" +
-      sessionStorage.getItem("userId") +
-      "/labour/salary/" +
-      this.pid;
-    this.http.get(url, null).then(res => {
-      if (res.code == 200) {
-        //渲染数据
-        var result = res.data;
-        this.pay = result;
-        this.getCredential();
-      }
-    });
-  },
-  ///smart/worker/roster/{userId}/labour/credential/{id}
-  getCredential(){
-    var url =
-      "/bashUrl/smart/worker/roster/" +
-      sessionStorage.getItem("userId") +
-      "/labour/credential/" +
-      this.pid;
-    this.http.get(url, null).then(res => {
-      if (res.code == 200) {
-        //渲染数据
-        var result = res.data;
-        this.credential = result;
-      }
-    });
-  }
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/basic/" +
+        this.pid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.person = result;
+          this.getContract();
+        }
+      });
+    },
+    //合同
+    getContract() {
+      ///smart/worker/roster/{userId}/labour/contract/{pInfoId}
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/contract/" +
+        this.pid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.contract = result;
+          this.getPay();
+        }
+      });
+    },
+    //支付
+    getPay() {
+      ///smart/worker/roster/{userId}/labour/salary
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/salary/" +
+        this.pid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.pay = result;
+          this.getCredential();
+        }
+      });
+    },
+    ///smart/worker/roster/{userId}/labour/credential/{id}
+    getCredential() {
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/credential/" +
+        this.pid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.credential = result;
+        }
+      });
+    }
   },
   //监听
   watch: {
@@ -557,7 +579,6 @@ export default {
       this.changOrder = newValue;
       this.pid = this.data;
       this.getDetail();
-      console.log(this.pid);
     }
   }
 };

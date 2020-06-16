@@ -82,6 +82,7 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 export default {
+  props:['data'],
   data() {
     return {
       labelPosition: "left",
@@ -127,12 +128,34 @@ export default {
         clearingType: [
           { required: true, message: "请选择结算方式", trigger: "change" }
         ]
-      }
+      },
+      id:null
     };
   },
+  activated(){
+    this.id=this.data;
+  },
   mounted() {
-    if (sessionStorage.getItem("contractInformation") != null) {
-      this.contract = JSON.parse(sessionStorage.getItem("contractInformation"));
+    if(this.id==0){
+        if (sessionStorage.getItem("contractInformation") != null && sessionStorage.getItem('contractInformation') !=undefined) {
+          this.contract = JSON.parse(sessionStorage.getItem("contractInformation"));
+        }
+    }
+    //渲染
+    else{
+       var url =
+      "/bashUrl/smart/worker/roster/" +
+      sessionStorage.getItem("userId") +
+      "/labour/contract/" +
+      this.id;
+    this.http.get(url, null).then(res => {
+      if (res.code == 200) {
+        //渲染数据
+        var result = res.data;
+        this.contract=result;
+        sessionStorage.setItem("contractInformation",this.contract);
+      }
+    });
     }
   },
   methods: {

@@ -100,8 +100,28 @@ export default {
     };
   },
   mounted() {
-    if (sessionStorage.getItem("payrollRecords1") != null) {
-      this.form = JSON.parse(sessionStorage.getItem("payrollRecords1"));
+    //新增
+    if(this.id==0){
+       if (sessionStorage.getItem("payrollRecords1") != null && sessionStorage.getItem('payrollRecords1') != undefined) {
+           this.form = JSON.parse(sessionStorage.getItem("payrollRecords1"));
+      }
+    }
+    //编辑
+     else{
+      //渲染
+       var url =
+      "/bashUrl/smart/worker/roster/" +
+      sessionStorage.getItem("userId") +
+      "/labour/salary/" +
+      this.id;
+    this.http.get(url, null).then(res => {
+      if (res.code == 200) {
+        //渲染数据
+        var result = res.data;
+        this.form = result;
+        sessionStorage.setItem("payrollRecords1",JSON.stringify(this.form));
+      }
+    });
     }
   },
   methods: {
