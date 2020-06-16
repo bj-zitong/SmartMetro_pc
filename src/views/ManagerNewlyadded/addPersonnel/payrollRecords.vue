@@ -76,7 +76,7 @@ export default {
         payRollBankCardNumber: "",
         pInfoId:null
       },
-      field: "payrollRecords",
+      field: "salary",
       rules: {
         payRollCode: [
           { required: true, message: "请输入工资单编号", trigger: "blur" }
@@ -101,28 +101,28 @@ export default {
   },
   mounted() {
     //新增
-    if(this.id==0){
-       if (sessionStorage.getItem("payrollRecords1") != null && sessionStorage.getItem('payrollRecords1') != undefined) {
-           this.form = JSON.parse(sessionStorage.getItem("payrollRecords1"));
+    // if(this.id==0){
+       if (sessionStorage.getItem("salary") != null && sessionStorage.getItem("salary") !=undefined) {
+           this.form = JSON.parse(sessionStorage.getItem("salary"));
       }
-    }
+    // }
     //编辑
-     else{
-      //渲染
-       var url =
-      "/bashUrl/smart/worker/roster/" +
-      sessionStorage.getItem("userId") +
-      "/labour/salary/" +
-      this.id;
-    this.http.get(url, null).then(res => {
-      if (res.code == 200) {
-        //渲染数据
-        var result = res.data;
-        this.form = result;
-        sessionStorage.setItem("payrollRecords1",JSON.stringify(this.form));
-      }
-    });
-    }
+    //  else{
+    //   //渲染
+    //    var url =
+    //   "/bashUrl/smart/worker/roster/" +
+    //   sessionStorage.getItem("userId") +
+    //   "/labour/salary/" +
+    //   this.id;
+    // this.http.get(url, null).then(res => {
+    //   if (res.code == 200) {
+    //     //渲染数据
+    //     var result = res.data;
+    //     this.form = result;
+    //     sessionStorage.setItem("payrollRecords1",JSON.stringify(this.form));
+    //   }
+    // });
+    // }
   },
   methods: {
     cancel(form){
@@ -132,13 +132,15 @@ export default {
       this.$router.push({ path: "/roster/personnel" });
     },
     submitForm(formName) {
+      console.log(JSON.stringify(this.form),this.form)
       this.$refs[formName].validate(valid => {
         // localStorage.setItem('payrollRecords',JSON.stringify(this.form))
         if (valid) {
           handleCofirm("确认保存吗", "warning")
             .then(res => {
+
               sessionStorage.setItem(
-                "payrollRecords1",
+                "salary",
                 JSON.stringify(this.form)
               );
               this.$emit("field", this.field);

@@ -339,18 +339,15 @@ export default {
       fileList: [],
       value1: "",
       value2: "",
-      id: null
+      id: this.$global_msg.uId
     };
   },
   activated() {
-    this.id = this.data;
-  },
-  mounted() {
-    if (this.id == 0) {
+    if (this.$global_msg.uId == 0) {
       if (
-        sessionStorage.getItem("data") != null &&
-        sessionStorage.getItem("data" != undefined)
-      ) {
+        sessionStorage.getItem("data") != null)
+       {
+
         this.form = JSON.parse(sessionStorage.getItem("data"));
         let name = JSON.parse(sessionStorage.getItem("data")).photo.name;
         this.fileList.push({ name });
@@ -358,23 +355,26 @@ export default {
     }
     //详情展示
     else {
-      this.form.pinfoId = this.id;
+      // this.form.pinfoId = this.id;
       var url =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
         "/labour/basic/" +
-        this.id;
+        this.$global_msg.uId;
       this.http.get(url, null).then(res => {
         if (res.code == 200) {
           //渲染数据
           var result = res.data;
           this.form = result;
-          let name = result.photo;
-          this.fileList.push({ name });
-          sessionStorage.setItem("data", JSON.stringify(this.form));
+          // let name = result.photo;
+          // this.fileList.push({ name });
+          // sessionStorage.setItem("data", JSON.stringify(this.form));
         }
       });
     }
+  },
+  watch:{
+
   },
   methods: {
     handleClick(tab, event) {},

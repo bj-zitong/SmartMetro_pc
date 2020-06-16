@@ -267,7 +267,7 @@ export default {
   activated() {
     var uid = this.$route.params.id;
     this.id = uid;
-    if (!this.id==0) {
+    if (this.id!=0) {
       this.getDeatli(this.id);
     }
   },
@@ -363,6 +363,7 @@ export default {
                 message: "添加成功!"
               });
                 this.$router.push({ path: "/roster/otherStaffs" });
+                this.$refs[form].resetFields();
                 this.cancel(form);
               }
             });
@@ -402,6 +403,7 @@ export default {
               });
                 this.$router.push({ path: "/roster/otherStaffs" });
                 this.cancel(form);
+                this.$refs[form].resetFields();
               }
             });
           }

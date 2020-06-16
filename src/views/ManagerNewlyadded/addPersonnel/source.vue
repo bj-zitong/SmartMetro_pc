@@ -249,7 +249,7 @@ export default {
     };
   },
   activated() {
-    this.id = this.data; //获取传来id
+    this.id = this.$global_msg.uId; //获取传来id
   },
   mounted() {
     if (sessionStorage.getItem("source") != null) {
@@ -263,7 +263,7 @@ export default {
       sessionStorage.removeItem("History");
       sessionStorage.removeItem("data");
       sessionStorage.removeItem("certificate");
-      sessionStorage.removeItem("payrollRecords1");
+      sessionStorage.removeItem("salary");
       Object.assign(this.$data.form, this.$options.data().form); // 初始化data
       this.$router.push({ path: "/roster/personnel" });
     },
@@ -353,8 +353,8 @@ export default {
     },
     updatePay(formName) {
       //工资记录
-      var payrollRecords1 = sessionStorage.getItem("payrollRecords1");
-      var data = JSON.parse(sessionStorage.getItem("payrollRecords1"));
+      var salary = sessionStorage.getItem("salary");
+      var data = JSON.parse(sessionStorage.getItem("salary"));
       data.pInfoId = this.id;
       var payrollUrl =
         "/bashUrl/smart/worker/roster/" +
@@ -536,8 +536,8 @@ export default {
     //工资
     addPay(formName) {
       //工资记录
-      var payrollRecords1 = sessionStorage.getItem("payrollRecords1");
-      var data = JSON.parse(sessionStorage.getItem("payrollRecords1"));
+      var salary = sessionStorage.getItem("salary");
+      var data = JSON.parse(sessionStorage.getItem("salary"));
       data.pInfoId = this.pInfoId;
       var payrollUrl =
         "/bashUrl/smart/worker/roster/" +

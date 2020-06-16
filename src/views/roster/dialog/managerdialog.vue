@@ -119,14 +119,14 @@ export default {
     handleSubmit() {},
  //监听
   getDetail(){
-    var _this=this;
+    var _this =this
      var url =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
-        "/manager/"+_this.id;
+        "/manager/"+this.id;
       _this.http.get(url, null).then(res => {
         if (res.code == 200) {
-          _this.manager=res.data;
+          this.manager=res.data;
         }
       });
   }

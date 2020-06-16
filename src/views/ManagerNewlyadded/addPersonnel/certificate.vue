@@ -262,8 +262,8 @@ export default {
     this.id=this.data;
   },
   mounted() {
-    if(this.id==0){
-      if (sessionStorage.getItem("certificate") != null && sessionStorage.getItem('certificate') !=undefined) {
+    // if(this.id==0){
+      if (sessionStorage.getItem("certificate") != null) {
         JSON.parse(sessionStorage.getItem("certificate")).productGroup.filter(
           (item, index, arr) => {
             // return item.hot == true;
@@ -271,21 +271,22 @@ export default {
         );
         this.form = JSON.parse(sessionStorage.getItem("certificate"));
       }
-    }else{
-       var url =
-      "/bashUrl/smart/worker/roster/" +
-      sessionStorage.getItem("userId") +
-      "/labour/credential/" +
-      this.id;
-    this.http.get(url, null).then(res => {
-      if (res.code == 200) {
-        //渲染数据
-        var result = res.data;
-        this.form=result;
-        sessionStorage.setItem("certificate", JSON.stringify(this.form));
-      }
-    });
-    }
+    // }
+    // else{
+    //    var url =
+    //   "/bashUrl/smart/worker/roster/" +
+    //   sessionStorage.getItem("userId") +
+    //   "/labour/credential/" +
+    //   this.id;
+    // this.http.get(url, null).then(res => {
+    //   if (res.code == 200) {
+    //     //渲染数据
+    //     var result = res.data;
+    //     this.form=result;
+    //     sessionStorage.setItem("certificate", JSON.stringify(this.form));
+    //   }
+    // });
+    // }
   },
   methods: {
     handleClick(tab, event) {

@@ -31,9 +31,9 @@
             <certificate @field="getQualification" :data="pid"></certificate>
           </el-tab-pane>
           <!-- 历史评价记录 -->
-          <el-tab-pane label="历史评价记录" name="evaluate" :disabled="History">
+          <!-- <el-tab-pane label="历史评价记录" name="evaluate" :disabled="History">
             <evaluationRecord @field="getHistory"></evaluationRecord>
-          </el-tab-pane>
+          </el-tab-pane> -->
           <!-- 来源地消息 -->
           <el-tab-pane label="来源地消息" name="first" :disabled="SourceInformation">
             <asource :data="pid"></asource>
@@ -68,7 +68,7 @@ export default {
   },
   data() {
     return {
-      pid: null,
+      pid: this.$route.params.id,
       isCertificate: false,
       activeName: "second",
       allArr: [],
@@ -106,21 +106,22 @@ export default {
     };
   },
   watch: {
-    getField(val) {}
+    // getField(val) {}
   },
   activated() {
     this.pid = this.$route.params.id;
     // if (this.pid != 0) {
-    //   // this.getDeatli(this.pid);
+    //   this.getDeatli(this.pid);
     // }
     //进入新增页面判断是否特殊工种 如果是显示资质证书
     //根据id 判断 新增
     if (this.pid == 0) {
+     console.log()
       let Information = JSON.parse(sessionStorage.getItem("data"));
       if (Information != null) {
         updateVegetablesCollection(
           this.typeWorkArr,
-          Information.workerType
+          Information.workType
         ).then(res => {
           if (res == true) {
             this.isCertificate = true;
@@ -140,8 +141,9 @@ export default {
       if (getContract != null && getContract != undefined) {
         this.payrollRecords = false;
       }
-      let getpayroll = JSON.parse(sessionStorage.getItem("payrollRecords"));
-      if (getpayroll != null && getpayroll != undefined) {
+      let getpayroll = JSON.parse(sessionStorage.getItem("salary"));
+      console.log(getpayroll)
+      if (getpayroll != null) {
         this.qualification = false;
       }
       let getqualification = JSON.parse(
@@ -153,18 +155,20 @@ export default {
       let getHistoryRecord = JSON.parse(
         sessionStorage.getItem("HistoryRecord")
       );
-      if (getHistoryRecord != null && getHistoryRecord != undefined) {
+      if (getHistoryRecord != null) {
         this.SourceInformation = false;
       }
     } else {
-      sessionStorage.removeItem("contractInformation");
-      sessionStorage.removeItem("History");
+      sessionStorage.removeItem('contractInformation');
+      sessionStorage.removeItem('History');
       sessionStorage.removeItem("data");
-      sessionStorage.removeItem("certificate");
-      sessionStorage.removeItem("payrollRecords1");
-      sessionStorage.removeItem("payrollRecords");
-      sessionStorage.removeItem("personalPersonal");
-      sessionStorage.removeItem("getContractInformation");
+      sessionStorage.removeItem('certificate');
+      sessionStorage.removeItem('payrollRecords1');
+      sessionStorage.removeItem('payrollRecords');
+      sessionStorage.removeItem('personalPersonal');
+      sessionStorage.removeItem('getContractInformation');
+      // this.getContractInformation();
+      // this.getPayrollRecords();
       var url =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
@@ -199,6 +203,22 @@ export default {
     handleRemove(file, fileList) {},
     handlePreview(file) {},
     handleChange() {},
+    // fun () {
+    //    var url =
+    //       "/bashUrl/smart/worker/roster/" +
+    //       sessionStorage.getItem("userId") +
+    //       "/labour/basic/" +
+    //       this.pid;
+    //     this.http.get(url, null).then(res => {
+    //       if (res.code == 200) {
+    //         //渲染数据
+    //         alert("接口")
+    //         var result = res.data;
+    //         sessionStorage.setItem("data", JSON.stringify(result));
+    //         // this.getField()
+    //       }
+    //      });
+    // },
     //个人基本信息
     getField(v) {
       this.isCertificate = true;
@@ -221,36 +241,58 @@ export default {
           });
         }
       } else {
-        var url =
+
+      }
+    },
+    //合同信息
+    getContractInformation(v) {
+      //新增
+      if(this.pid==0){
+         sessionStorage.setItem("getContractInformation", JSON.stringify(v));
+      this.payrollRecords = false;
+      this.activeName = "fourth";
+      }else{
+         var url =
+      "/bashUrl/smart/worker/roster/" +
+      sessionStorage.getItem("userId") +
+      "/labour/contract/" +
+      this.pid;
+    this.http.get(url, null).then(res => {
+      if (res.code == 200) {
+        //渲染数据
+        var result = res.data;
+        sessionStorage.setItem("getContractInformation", JSON.stringify(result));
+      }
+    });
+      }
+    },
+    //工资记录
+    getPayrollRecords(v) {
+      if(this.pid==0){
+        sessionStorage.setItem("getPayrollRecords", JSON.stringify(v));
+        this.activeName = "certificate";
+        this.qualification = false;
+      }else{
+         //渲染
+          var url =
           "/bashUrl/smart/worker/roster/" +
           sessionStorage.getItem("userId") +
-          "/labour/basic/" +
+          "/labour/salary/" +
           this.pid;
         this.http.get(url, null).then(res => {
           if (res.code == 200) {
             //渲染数据
             var result = res.data;
+            sessionStorage.setItem("payrollRecords1",JSON.stringify(result));
           }
         });
       }
     },
-    //合同信息
-    getContractInformation(v) {
-      sessionStorage.setItem("getContractInformation", JSON.stringify(v));
-      this.payrollRecords = false;
-      this.activeName = "fourth";
-    },
-    //工资记录
-    getPayrollRecords(v) {
-      sessionStorage.setItem("payrollRecords", JSON.stringify(v));
-      this.activeName = "certificate";
-      this.qualification = false;
-    },
-    //历史评价记录
+    //证书
     getQualification(v) {
-      sessionStorage.setItem("qualification", JSON.stringify(v));
-      this.activeName = "evaluate";
-      this.History = false;
+      // sessionStorage.setItem("certificate", JSON.stringify(v));
+      this.activeName = "first";
+      this.SourceInformation = false;
     },
 
     getHistory(v) {

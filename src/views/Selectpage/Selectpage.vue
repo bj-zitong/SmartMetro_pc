@@ -129,10 +129,11 @@ export default {
               sessionStorage.removeItem("token");
               sessionStorage.removeItem("userId");
               sessionStorage.removeItem('contractInformation');
-              sessionStorage.removeItem("History");
-              sessionStorage.removeItem("data");
-              sessionStorage.removeItem("certificate");
-              sessionStorage.removeItem("payrollRecords1");
+              sessionStorage.removeItem('History');
+              sessionStorage.removeItem('data');
+              sessionStorage.removeItem('certificate');
+              sessionStorage.removeItem('payrollRecords1');
+              sessionStorage.removeItem('getContractInformation');
               this.$router.push({ path: "/login" });
             }
           });
