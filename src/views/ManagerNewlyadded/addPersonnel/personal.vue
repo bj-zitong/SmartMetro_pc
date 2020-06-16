@@ -398,10 +398,10 @@ export default {
     },
     //取消
     cancel(form) {
+      this.$router.push({ path: "/roster/personnel" });
       this.$refs[form].resetFields();
       sessionStorage.removeItem("data");
       Object.assign(this.$data.form, this.$options.data().form); // 初始化data
-      this.$router.push({ path: "/roster/personnel" });
     },
     //  beforeRemove(file, fileList) {
     //     return this.$confirm(`确定移除 ${ file.name }？`);
