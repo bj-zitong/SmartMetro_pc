@@ -89,7 +89,7 @@
     </div>
     <template slot="footer" class="dialog-footer">
       <el-button type="default" @click="handleClose" round class="T-R-B-Grey">取消</el-button>
-      <el-button type="primary" @click="handleSubmit">提交</el-button>
+      <!-- <el-button type="primary" @click="handleSubmit">提交</el-button> -->
     </template>
   </el-dialog>
 </template>
@@ -116,9 +116,10 @@ export default {
       this.changOrder = false;
       this.$emit("tyonke", this.changOrder);
     }, //表单提交
-    handleSubmit() {}
-  }, //监听
+    handleSubmit() {},
+ //监听
   getDetail(){
+    var _this =this
      var url =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +
@@ -128,7 +129,8 @@ export default {
           this.manager=res.data;
         }
       });
-  },
+  }
+},
   watch: {
     changOrder(newValue, oldValue) {
       this.changOrder = newValue;

@@ -11,7 +11,7 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <!-- 个人基本信息 -->
         <el-tab-pane label="个人基本信息" name="second" class="information">
-          <div class="AddEquipment_form">
+          <div class="AddEquipment_form" v-if="person!=null">
             <el-row :gutter="20">
               <el-col :span="8">
                 <div class="grid-content bg-purple">
@@ -122,7 +122,7 @@
 
             <el-row :gutter="20">
               <el-col :span="8">
-                <div class="grid-content bg-purple">
+                <div class="grid-content bg-purple" v-if="person!=null">
                   班组长:
                   <span>{{person.isTeamLeader}}</span>
                 </div>
@@ -180,7 +180,7 @@
         </el-tab-pane>
         <!-- 合同信息 -->
         <el-tab-pane label="合同信息" name="third">
-          <div class="AddEquipment_form">
+          <div class="AddEquipment_form" v-if="contract!=null">
             <el-row :gutter="20">
               <el-col :span="20">
                 <div class="grid-content bg-purple">
@@ -232,7 +232,7 @@
           </div>
         </el-tab-pane>
         <!-- 工资记录 -->
-        <el-tab-pane label="工资记录" name="fourth">
+        <el-tab-pane label="工资记录" name="fourth" v-if="pay!=null">
           <div class="AddEquipment_form">
             <el-row :gutter="20">
               <el-col :span="20">
@@ -285,13 +285,14 @@
           </div>
         </el-tab-pane>
         <!-- 资质证书 -->
-        <el-tab-pane label="资质证书" name="certificate">
-          <div class="AddEquipment_form" style="background:#ccc">
+
+        <el-tab-pane label="资质证书" name="certificate" v-if="credential!=null">
+          <div class="AddEquipment_form" style="background:#ccc" v-for="(item,index) in credential" :key="index">
             <el-row :gutter="20">
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   真伪查询:
-                  <span></span>
+                  <span>{{item.grantCompany}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -299,7 +300,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   证书名称:
-                  <span></span>
+                  <span>{{item.certificationName}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -307,7 +308,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   证书类型:
-                  <span></span>
+                  <span>{{item.certificationType}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -315,7 +316,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   专业编码:
-                  <span></span>
+                 <span>{{item.certificationCode}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -323,7 +324,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   证书等级:
-                  <span></span>
+                 <span>{{item.credentialLevelType}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -331,7 +332,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   发证日期:
-                  <span></span>
+                 <span>{{item.firstBeginDate}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -339,7 +340,8 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   有效时间:
-                  <span></span>
+                 <span>{{item.validBeginDate}}</span>-
+                 <span>{{item.validEndDate}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -347,7 +349,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   资格状态:
-                  <span></span>
+                 <span>{{item.certificationStatus}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -355,7 +357,7 @@
               <el-col :span="10">
                 <div class="grid-content bg-purple">
                   附件上传:
-                  <span></span>
+                 <span>{{item.accessoryPath}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -512,8 +514,10 @@ export default {
     this.http.get(url, null).then(res => {
       if (res.code == 200) {
         //渲染数据
-        var result = res.data;
-        this.contract = result;
+        if(res.data!=null){
+             var result = res.data;
+            this.contract = result;
+        }
         this.getPay();
       }
     });
@@ -547,6 +551,7 @@ export default {
         //渲染数据
         var result = res.data;
         this.credential = result;
+        console.log(this.credential);
       }
     });
   }

@@ -227,6 +227,7 @@ import { handleCofirm } from "@/utils/confirm";
 import { beforeAvatarUpload } from "@/common/imgcompress";
 // import { isValidUsername } from '@/utils/validate'
 export default {
+  props: ["data"],
   data() {
     return {
       activeName: "second",
@@ -257,7 +258,8 @@ export default {
         isTeamLeader: "",
         isProjectTrain: "",
         isRelatedCertificates: "",
-        isSpecialWorkTypeCheckups: ""
+        isSpecialWorkTypeCheckups: "",
+        pinfoId: null
       },
       getImgCodeResults: "",
       keyResults: "",
@@ -268,9 +270,7 @@ export default {
         gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
         age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         nation: [{ required: true, message: "请输入民族", trigger: "blur" }],
-        workType: [
-          { required: true, message: "请选择工种", trigger: "blur" }
-        ],
+        workType: [{ required: true, message: "请选择工种", trigger: "blur" }],
         cellPhone: [{ required: true, message: "请输入电话", trigger: "blur" }],
         // department: [
         //   { required: true, message: "请输入部门", trigger: "blur" }
@@ -338,25 +338,49 @@ export default {
       //图片上传
       fileList: [],
       value1: "",
-      value2: ""
+      value2: "",
+      id: this.$global_msg.uId
     };
   },
-  mounted() {
-    if (sessionStorage.getItem("data") != null) {
-      this.form = JSON.parse(sessionStorage.getItem("data"));
-      let name = JSON.parse(sessionStorage.getItem("data")).photo.name;
-      this.fileList.push({ name });
+  activated() {
+    if (this.$global_msg.uId == 0) {
+      if (
+        sessionStorage.getItem("data") != null)
+       {
+
+        this.form = JSON.parse(sessionStorage.getItem("data"));
+        let name = JSON.parse(sessionStorage.getItem("data")).photo.name;
+        this.fileList.push({ name });
+      }
+    }
+    //详情展示
+    else {
+      // this.form.pinfoId = this.id;
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/basic/" +
+        this.$global_msg.uId;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.form = result;
+          // let name = result.photo;
+          // this.fileList.push({ name });
+          // sessionStorage.setItem("data", JSON.stringify(this.form));
+        }
+      });
     }
   },
+  watch:{
+
+  },
   methods: {
-    handleClick(tab, event) {
-    },
-    onSubmit() {
-    },
-    handleRemove(file, fileList) {
-    },
-    handlePreview(file) {
-    },
+    handleClick(tab, event) {},
+    onSubmit() {},
+    handleRemove(file, fileList) {},
+    handlePreview(file) {},
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -364,7 +388,6 @@ export default {
           // .then(res => {
           this.$global_msg.photo = this.form.photo;
           sessionStorage.setItem("data", JSON.stringify(this.form));
-          console.log(this.form.photo);
           this.$emit("field", this.field);
           this.$message({
             type: "success",
@@ -374,9 +397,9 @@ export default {
       });
     },
     //取消
-    cancel(form){
+    cancel(form) {
       this.$refs[form].resetFields();
-      sessionStorage.removeItem('data');
+      sessionStorage.removeItem("data");
       Object.assign(this.$data.form, this.$options.data().form); // 初始化data
       this.$router.push({ path: "/roster/personnel" });
     },
@@ -389,12 +412,10 @@ export default {
       this.fileList = [fileList[fileList.length - 1]];
       this.$refs.form.clearValidate();
       this.form.photo = file;
-      console.log(this.form.photo);
       // this.form.photo1 = fileList;
     },
     beforeAvatarUpload(file) {
-      return new Promise(resolve => {
-      });
+      return new Promise(resolve => {});
     },
     //图片上传失败调用
     imgUploadError(err, file, fileList) {

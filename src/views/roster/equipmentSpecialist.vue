@@ -188,13 +188,14 @@ export default {
       });
     },
     //新增
-    addStaffClick() {
+    addStaffClick(form) {
       this.$router.push({
         name: "AddEquipment",
         params: {
           id: "0"
         }
       });
+    // this.$refs[form].resetFields();
     },
     handleSelectionChange() {
       var ids = new Array();

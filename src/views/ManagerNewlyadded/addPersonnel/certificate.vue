@@ -187,6 +187,7 @@ import options from "@/common/options";
 //  field:"payrollRecords",
 import { handleCofirm } from "@/utils/confirm";
 export default {
+  props:['data'],
   data() {
     return {
       activeName: "",
@@ -253,20 +254,39 @@ export default {
       //图片上传
       fileList: [],
       value1: "",
-      value2: ""
+      value2: "",
+      id:null
     };
   },
+  activated(){
+    this.id=this.data;
+  },
   mounted() {
-    if (sessionStorage.getItem("certificate") != null) {
-      // alert('000000')
-
-      JSON.parse(sessionStorage.getItem("certificate")).productGroup.filter(
-        (item, index, arr) => {
-          // return item.hot == true;
-        }
-      );
-      this.form = JSON.parse(sessionStorage.getItem("certificate"));
-    }
+    // if(this.id==0){
+      if (sessionStorage.getItem("certificate") != null) {
+        JSON.parse(sessionStorage.getItem("certificate")).productGroup.filter(
+          (item, index, arr) => {
+            // return item.hot == true;
+          }
+        );
+        this.form = JSON.parse(sessionStorage.getItem("certificate"));
+      }
+    // }
+    // else{
+    //    var url =
+    //   "/bashUrl/smart/worker/roster/" +
+    //   sessionStorage.getItem("userId") +
+    //   "/labour/credential/" +
+    //   this.id;
+    // this.http.get(url, null).then(res => {
+    //   if (res.code == 200) {
+    //     //渲染数据
+    //     var result = res.data;
+    //     this.form=result;
+    //     sessionStorage.setItem("certificate", JSON.stringify(this.form));
+    //   }
+    // });
+    // }
   },
   methods: {
     handleClick(tab, event) {

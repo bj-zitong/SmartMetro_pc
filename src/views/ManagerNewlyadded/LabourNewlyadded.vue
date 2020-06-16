@@ -11,15 +11,15 @@
             class="information"
             :disabled="personalPersonal"
           >
-            <personal @field="getField" :data="id"></personal>
+            <personal @field="getField" :data="pid"></personal>
           </el-tab-pane>
           <!-- 合同信息 -->
           <el-tab-pane label="合同信息" name="third" :disabled="contractInformation">
-            <contract @field="getContractInformation"></contract>
+            <contract @field="getContractInformation" :data="pid"></contract>
           </el-tab-pane>
           <!-- 工资记录 -->
           <el-tab-pane label="工资记录" name="fourth" :disabled="payrollRecords">
-            <payrollRecords @field="getPayrollRecords"></payrollRecords>
+            <payrollRecords @field="getPayrollRecords" :data="pid"></payrollRecords>
           </el-tab-pane>
           <!-- 资质证书 -->
           <el-tab-pane
@@ -28,15 +28,15 @@
             :disabled="qualification"
             v-if="isCertificate"
           >
-            <certificate @field="getQualification"></certificate>
+            <certificate @field="getQualification" :data="pid"></certificate>
           </el-tab-pane>
           <!-- 历史评价记录 -->
-          <el-tab-pane label="历史评价记录" name="evaluate" :disabled="History">
+          <!-- <el-tab-pane label="历史评价记录" name="evaluate" :disabled="History">
             <evaluationRecord @field="getHistory"></evaluationRecord>
-          </el-tab-pane>
+          </el-tab-pane> -->
           <!-- 来源地消息 -->
           <el-tab-pane label="来源地消息" name="first" :disabled="SourceInformation">
-            <asource></asource>
+            <asource :data="pid"></asource>
           </el-tab-pane>
         </el-tabs>
       </el-main>
@@ -68,7 +68,7 @@ export default {
   },
   data() {
     return {
-      id:null,
+      pid: this.$route.params.id,
       isCertificate: false,
       activeName: "second",
       allArr: [],
@@ -88,7 +88,7 @@ export default {
       qualification: true, //资质证书
       History: true, //I历史评价记录
       SourceInformation: true, //来源地信息,
-      typeWorkArr: ["dg", "dhg", "wai"],
+      typeWorkArr: ["1", "2", "3"],
       //图片上传
       fileList: [
         {
@@ -98,90 +98,30 @@ export default {
         }
       ],
       value1: "",
-      value2: ""
+      value2: "",
+      person: null,
+      contract: null,
+      pay: null,
+      getCredential2: null
     };
   },
   watch: {
-    getField(val) {}
+    // getField(val) {}
   },
   activated() {
-    var uid = this.$route.params.id;
-    this.id = uid;
-    if (!this.id == 0) {
-      this.getDeatli(this.id);
-    }
-  },
-  mounted() {
+    this.pid = this.$route.params.id;
+    // if (this.pid != 0) {
+    //   this.getDeatli(this.pid);
+    // }
     //进入新增页面判断是否特殊工种 如果是显示资质证书
-    let Information = JSON.parse(sessionStorage.getItem("data"));
-    if (Information != null) {
-      updateVegetablesCollection(this.typeWorkArr, Information.workerType).then(
-        res => {
-          if (res == true) {
-            this.isCertificate = true;
-          } else {
-            this.isCertificate = false;
-          }
-        }
-      );
-    }
-    let getArr = JSON.parse(sessionStorage.getItem("personalPersonal"));
-    if (getArr != null) {
-      this.contractInformation = false;
-      this.activeName = "third";
-    }
-    let getContract = JSON.parse(
-      sessionStorage.getItem("getContractInformation")
-    );
-    if (getContract != null) {
-      this.payrollRecords = false;
-    }
-    let getpayroll = JSON.parse(sessionStorage.getItem("payrollRecords"));
-    if (getpayroll != null) {
-      this.qualification = false;
-    }
-    let getqualification = JSON.parse(sessionStorage.getItem("qualification"));
-    if (getqualification != null) {
-      this.History = false;
-    }
-    let getHistoryRecord = JSON.parse(sessionStorage.getItem("HistoryRecord"));
-    if (getHistoryRecord != null) {
-      this.SourceInformation = false;
-    }
-  },
-  methods: {
-    getDeatli(id){
-      ///smart/worker/roster/{userId}/labour/basic/{id}
-       var url =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/labour/basic/" +
-        id;
-      this.http.get(url, null).then(res => {
-        if (res.code == 200) {
-          //渲染数据
-          var result = res.data;
-          sessionStorage.setItem("data",result);
-          console.log(result);
-        }
-      });
-    },
-    handleClick(tab, event) {},
-    onSubmit() {},
-    handleRemove(file, fileList) {},
-    handlePreview(file) {},
-    handleChange() {},
-    //个人基本信息
-    getField(v) {
-      this.isCertificate = true;
-      sessionStorage.setItem("personalPersonal", JSON.stringify(v));
-      this.activeName = "third";
-      this.contractInformation = false;
+    //根据id 判断 新增
+    if (this.pid == 0) {
+     console.log()
       let Information = JSON.parse(sessionStorage.getItem("data"));
       if (Information != null) {
         updateVegetablesCollection(
           this.typeWorkArr,
-          Information.workerType
+          Information.workType
         ).then(res => {
           if (res == true) {
             this.isCertificate = true;
@@ -190,31 +130,224 @@ export default {
           }
         });
       }
-    },
+      let getArr = JSON.parse(sessionStorage.getItem("personalPersonal"));
+      if (getArr != null && getArr != undefined) {
+        this.contractInformation = false;
+        this.activeName = "third";
+      }
+      let getContract = JSON.parse(
+        sessionStorage.getItem("getContractInformation")
+      );
+      if (getContract != null && getContract != undefined) {
+        this.payrollRecords = false;
+      }
+      let getpayroll = JSON.parse(sessionStorage.getItem("salary"));
+      console.log(getpayroll)
+      if (getpayroll != null) {
+        this.qualification = false;
+      }
+      let getqualification = JSON.parse(
+        sessionStorage.getItem("qualification")
+      );
+      if (getqualification != null && getqualification != undefined) {
+        this.History = false;
+      }
+      let getHistoryRecord = JSON.parse(
+        sessionStorage.getItem("HistoryRecord")
+      );
+      if (getHistoryRecord != null) {
+        this.SourceInformation = false;
+      }
+    } else {
+      sessionStorage.removeItem('contractInformation');
+      sessionStorage.removeItem('History');
+      sessionStorage.removeItem("data");
+      sessionStorage.removeItem('certificate');
+      sessionStorage.removeItem('payrollRecords1');
+      sessionStorage.removeItem('payrollRecords');
+      sessionStorage.removeItem('personalPersonal');
+      sessionStorage.removeItem('getContractInformation');
+      // this.getContractInformation();
+      // this.getPayrollRecords();
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/basic/" +
+        this.pid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.person = result;
+          updateVegetablesCollection(this.typeWorkArr, result.workType).then(
+            res => {
+              if (res == true) {
+                this.isCertificate = true;
+              } else {
+                this.isCertificate = false;
+              }
+            }
+          );
+          this.contractInformation = false;
+          this.payrollRecords = false;
+          this.qualification = false;
+          this.History = false;
+          this.SourceInformation = false;
+        }
+      });
+    }
+  },
+  methods: {
+    handleClick(tab, event) {},
+    onSubmit() {},
+    handleRemove(file, fileList) {},
+    handlePreview(file) {},
+    handleChange() {},
+    // fun () {
+    //    var url =
+    //       "/bashUrl/smart/worker/roster/" +
+    //       sessionStorage.getItem("userId") +
+    //       "/labour/basic/" +
+    //       this.pid;
+    //     this.http.get(url, null).then(res => {
+    //       if (res.code == 200) {
+    //         //渲染数据
+    //         alert("接口")
+    //         var result = res.data;
+    //         sessionStorage.setItem("data", JSON.stringify(result));
+    //         // this.getField()
+    //       }
+    //      });
+    // },
+    //个人基本信息
+    getField(v) {
+      this.isCertificate = true;
+      //新增
+      if (this.pid == 0) {
+        sessionStorage.setItem("personalPersonal", JSON.stringify(v));
+        this.activeName = "third";
+        this.contractInformation = false;
+        let Information = JSON.parse(sessionStorage.getItem("data"));
+        if (Information != null) {
+          updateVegetablesCollection(
+            this.typeWorkArr,
+            Information.workerType
+          ).then(res => {
+            if (res == true) {
+              this.isCertificate = true;
+            } else {
+              this.isCertificate = false;
+            }
+          });
+        }
+      } else {
 
+      }
+    },
     //合同信息
     getContractInformation(v) {
-      sessionStorage.setItem("getContractInformation", JSON.stringify(v));
+      //新增
+      if(this.pid==0){
+         sessionStorage.setItem("getContractInformation", JSON.stringify(v));
       this.payrollRecords = false;
       this.activeName = "fourth";
+      }else{
+         var url =
+      "/bashUrl/smart/worker/roster/" +
+      sessionStorage.getItem("userId") +
+      "/labour/contract/" +
+      this.pid;
+    this.http.get(url, null).then(res => {
+      if (res.code == 200) {
+        //渲染数据
+        var result = res.data;
+        sessionStorage.setItem("getContractInformation", JSON.stringify(result));
+      }
+    });
+      }
     },
     //工资记录
     getPayrollRecords(v) {
-      sessionStorage.setItem("payrollRecords", JSON.stringify(v));
-      this.activeName = "certificate";
-      this.qualification = false;
+      if(this.pid==0){
+        sessionStorage.setItem("getPayrollRecords", JSON.stringify(v));
+        this.activeName = "certificate";
+        this.qualification = false;
+      }else{
+         //渲染
+          var url =
+          "/bashUrl/smart/worker/roster/" +
+          sessionStorage.getItem("userId") +
+          "/labour/salary/" +
+          this.pid;
+        this.http.get(url, null).then(res => {
+          if (res.code == 200) {
+            //渲染数据
+            var result = res.data;
+            sessionStorage.setItem("payrollRecords1",JSON.stringify(result));
+          }
+        });
+      }
     },
-    //历史评价记录
+    //证书
     getQualification(v) {
-      sessionStorage.setItem("qualification", JSON.stringify(v));
-      this.activeName = "evaluate";
-      this.History = false;
+      // sessionStorage.setItem("certificate", JSON.stringify(v));
+      this.activeName = "first";
+      this.SourceInformation = false;
     },
 
     getHistory(v) {
       sessionStorage.setItem("HistoryRecord", JSON.stringify(v));
       this.activeName = "first";
       this.SourceInformation = false;
+    },
+    //合同
+    getContract() {
+      ///smart/worker/roster/{userId}/labour/contract/{pInfoId}
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/contract/" +
+        this.pid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.contract = result;
+          this.getPay();
+        }
+      });
+    },
+    //支付
+    getPay() {
+      ///smart/worker/roster/{userId}/labour/salary
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/salary/" +
+        this.pid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.pay = result;
+          this.getCredential();
+        }
+      });
+    },
+    ///smart/worker/roster/{userId}/labour/credential/{id}
+    getCredential() {
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/credential/" +
+        this.pid;
+      this.http.get(url, null).then(res => {
+        if (res.code == 200) {
+          //渲染数据
+          var result = res.data;
+          this.credential = result;
+        }
+      });
     }
   }
 };

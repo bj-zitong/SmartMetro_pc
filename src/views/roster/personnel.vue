@@ -358,6 +358,7 @@ export default {
   methods: {
     //新增
     addStaffClick() {
+      this.$global_msg.uId = 0
       // this.$router.push({ path: "/LabourNewlyadded" });
          this.$router.push({
         name: "LabourNewlyadded",
@@ -715,17 +716,18 @@ export default {
     //查看详情
     handleClick(row) {
       let _this = this;
-      console.log(row.pinfoId);
+
       _this.bindData=row.pinfoId;
       _this.changOrder = true;
       _this.$nextTick(() => {
+        console.log(_this.$refs.turnOrder);
         _this.$refs.turnOrder.init();
       });
     },
     //编辑
     editRowClick(indexer,row) {
-
       console.log(row.pinfoId);
+      this.$global_msg.uId = row.pinfoId;
       // this.$router.push({ path: "/LabourNewlyadded" });
       this.$router.push({
         name: "LabourNewlyadded",
