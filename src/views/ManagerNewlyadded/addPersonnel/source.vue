@@ -258,6 +258,7 @@ export default {
   },
   methods: {
     cancel(form) {
+      this.$router.push({ path: "/roster/personnel" });
       this.$refs[form].resetFields();
       sessionStorage.removeItem("contractInformation");
       sessionStorage.removeItem("History");
