@@ -226,6 +226,7 @@ export default {
                 message: "添加成功!"
               });
                 this.$router.push({ path: "/roster/equipmentSpecialist" });
+                this.$refs[form].resetFields();
                 this.cancel(form);
               }
             });
@@ -255,6 +256,7 @@ export default {
                     type: "success",
                     message: "编辑成功!"
                   });
+                   this.$refs[form].resetFields();
                 this.$router.push({ path: "/roster/equipmentSpecialist" });
                 this.cancel(form);
               }
