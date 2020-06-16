@@ -71,7 +71,7 @@
             <el-button
               class="T-R-B-Green"
               size="mini"
-              @click="fillinScoreClick(scope.$index, scope.row)"
+              @click="fillinScoreClick(scope.$index,scope.row)"
             >填写分数</el-button>
           </template>
         </el-table-column>
@@ -133,7 +133,7 @@ export default {
       labelPosition: "left",
       name: "",
       //分页
-      total: null,
+      total: 0,
       dialogFormVisible: false,
       pInfoId: "",
       listQuery: {
@@ -163,42 +163,17 @@ export default {
         page: this.listQuery.currentPage,
         name: this.name
       });
-      console.log(526);
-      // ​/smart​/worker​/train​/{userId}​/score​/management
-      // var url='/bashUrl/smart/worker/train​/'+sessionStorage.getItem("userId") +'/score​/management';
-      var url="/baseUrl/smart/worker/train/"+sessionStorage.getItem('userId')+"/score/management";
+      var url =
+        "/bashUrl/smart/worker/train/" +
+        sessionStorage.getItem("userId") +
+        "/score/management";
       console.log(url);
       this.http.post(url, params).then(res => {
         if (res.code == 200) {
-          var total = res.data.total;
-          var rows = res.data.rows;
-          this.tableData = rows;
-          this.total = total;
+          this.total = res.data.total;
+          this.tableData = res.data.rows;
         }
       });
-      // decodeURIComponent(this.getQueryString('state'));
-      //     axios({
-      //       method: "post",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         Authorization: sessionStorage.getItem("token")
-      //       },
-      //       url:url,
-      //       data: params,
-      //       timeout: 5000 //响应时间
-      //     }).then(
-      //       res => {
-      //         if (res.code == 200) {
-      //           var total = res.data.total;
-      //           var rows = res.data.rows;
-      //           this.tableData = rows;
-      //           this.total = total;
-      //         }
-      //       },
-      //       err => {
-      //         return errorfun(err);
-      //       }
-      //     );
     },
     changeImg(file, fileList) {
       this.file.uploadFile = fileList;
@@ -216,22 +191,14 @@ export default {
     changeFun() {},
     //点击填写分数弹出框
     fillinScoreClick(index, row) {
-      this.pInfoId = row.pInfoId;
+       this.form.score =''
+      this.pInfoId = row.pScoreId;
       this.dialogFormVisible = true;
     },
     myUpload(content) {
       console.log(content);
       let formData = new FormData();
       formData.append("file", content.file); // 'file[]' 代表数组 其中`file`是可变的
-      // request
-      //   .post(content.action, formData)
-      //   .then(rs => {
-      //     this.$store.dispatch("GetInfo");
-      //   })
-      //   .catch(err => {
-      //     this.$store.dispatch("LogMessage", "用户头像上传失败!");
-      //     console.log(err);
-      //   });
     },
     //上传文件
     uploadFile(row) {
@@ -249,13 +216,14 @@ export default {
       data.append("file", this.file.uploadFile[0].raw);
       this.http.get(url, data).then(res => {
         if (res.code == 200) {
-          // this.getOtherStaffs();
+          this.dialogFormVisible = false;
         }
       });
     },
     handleChange() {},
     //确认填写分数
     determineClick(formName) {
+      // console.log(formName)
       this.$refs[formName].validate(valid => {
         if (valid) {
           var params = JSON.stringify({
@@ -263,11 +231,16 @@ export default {
             score: this.form.score
           });
           var url =
-            "​/smart/worker/train/" +
+            "/bashUrl/smart/worker/train/" +
             sessionStorage.getItem("userId") +
-            "​/score​";
+            "/score";
           this.http.put(url, params).then(res => {
             if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "修改成功!"
+              });
+              this.dialogFormVisible = false;
             }
           });
         } else {
@@ -282,7 +255,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pInfoId;
+        var id = arrays[i].pScoreId;
         ids.push(id);
       }
       return ids;
@@ -298,11 +271,12 @@ export default {
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/train/" +
+            "/bashUrl/smart/worker/train/" +
             sessionStorage.getItem("userId") +
             "/score";
           this.http.delete(url, data).then(res => {
             if (res.code == 200) {
+              this.getDatelist();
               this.$message({
                 type: "success",
                 message: "删除成功!"

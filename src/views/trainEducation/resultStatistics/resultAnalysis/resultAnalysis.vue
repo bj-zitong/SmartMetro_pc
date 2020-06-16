@@ -12,7 +12,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="queryClick">查询</el-button>
+            <el-button type="primary" @click="drawLine()">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -29,7 +29,8 @@ export default {
     return {
       formInline: {
         trainingType: ""
-      }
+      },
+      
     };
   },
   activated() {
@@ -38,114 +39,119 @@ export default {
   },
   methods: {
     drawLine() {
+     var arrChart=[]
       //  获取echarts
       let myChart = this.$echarts.init(document.getElementById("myChart"));
       //  绘制图表
-      myChart.setOption({
-        title: {
-          //  标题
-          text: "人员成绩统计分析图", //   主标题内容
-          x: "46%" //   x轴左边便宜
-        },
-        tooltip: {}, //  鼠标悬浮
-        xAxis: {
-          //  x轴配置
-          name: "分数(分)", // 坐标轴名称
-          nameTextStyle: {
-            //   坐标轴名称字体设置
-            color: "#C0C0C0"
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: { color: "rgb(51,51,51)" },
-          axisLine: {
-            lineStyle: { color: "rgb(237,237,255)" }
-          },
-          data: ["0-50", "51-60", "61-70", "71-80", "81-90", "91-100"]
-        },
-        yAxis: {
-          name: "人数(个)",
-          type: "value",
-          nameTextStyle: {
-            color: "#C0C0C0"
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: ["#EDEDFF"],
-              width: 1,
-              type: "solid"
-            }
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: { color: "rgb(51,51,51)" },
-          axisLine: {
-            lineStyle: { color: "rgb(237,237,255)" }
-          }
-        },
-        series: [
-          {
-            name: "分数",
-            type: "bar",
-            barWidth: 45,
-            itemStyle: {
-              normal: {
-                color: "#5D95E0" //  柱状图颜色
-              }
-            },
-            markPoint: {
-              symbol: "pin", //标记(气泡)的图形
-              symbolSize: 50, //标记(气泡)的大小
-              itemStyle: {
-                normal: {
-                  borderColor: "#5D95E0",
-                  borderWidth: 1, // 标注边线线宽，单位px，默认为1
-                  label: {
-                    show: true
-                  }
-                }
-              },
-              data: [
-                //配置项
-                { value: "12", xAxis: 0, yAxis: 50 },
-                { value: "32", xAxis: 51, yAxis: 60 },
-                { value: "16", xAxis: 61, yAxis:70 },
-                { value: "23", xAxis: 71, yAxis: 80 },
-                { value: "45", xAxis: 81, yAxis: 90 },
-                { value: "35", xAxis: 91, yAxis: 100 }
-              ]
-            },
-            data: [12, 32, 16, 23, 45, 35]
-          }
-        ]
-      });
-    },
-    getDatalist() {
       var type =
-        this.formInline.trainingType == ""
-          ? "1"
-          : this.formInline.trainingType;
-         
+        this.formInline.trainingType == "" ? "1" : this.formInline.trainingType;
+
       var url =
-        "/smart/worker/train/" +
+        "/bashUrl/smart/worker/train/" +
         sessionStorage.getItem("userId") +
         "/score/" +
         type +
         "/chart";
-
+      
       this.http.get(url, {}).then(res => {
         if (res.code == 200) {
+          arrChart.push(res.data.poor)
+          arrChart.push(res.data.ordinary)
+          arrChart.push(res.data.noGood)
+          arrChart.push(res.data.good)
+          arrChart.push(res.data.perfect)
+          arrChart.push(res.data.veryGood)
+          console.log(arrChart)
+          myChart.setOption({
+            title: {
+              //  标题
+              text: "人员成绩统计分析图", //   主标题内容
+              x: "46%" //   x轴左边便宜
+            },
+            tooltip: {}, //  鼠标悬浮
+            xAxis: {
+              //  x轴配置
+              name: "分数(分)", // 坐标轴名称
+              nameTextStyle: {
+                //   坐标轴名称字体设置
+                color: "#C0C0C0"
+              },
+              splitLine: {
+                show: false
+              },
+              axisTick: {
+                show: false
+              },
+              axisLabel: { color: "rgb(51,51,51)" },
+              axisLine: {
+                lineStyle: { color: "rgb(237,237,255)" }
+              },
+              data: ["0-50", "51-60", "61-70", "71-80", "81-90", "91-100"]
+            },
+            yAxis: {
+              name: "人数(个)",
+              type: "value",
+              nameTextStyle: {
+                color: "#C0C0C0"
+              },
+              splitLine: {
+                show: true,
+                lineStyle: {
+                  color: ["#EDEDFF"],
+                  width: 1,
+                  type: "solid"
+                }
+              },
+              axisTick: {
+                show: false
+              },
+              axisLabel: { color: "rgb(51,51,51)" },
+              axisLine: {
+                lineStyle: { color: "rgb(237,237,255)" }
+              }
+            },
+            series: [
+              {
+                name: "分数",
+                type: "bar",
+                barWidth: 45,
+                itemStyle: {
+                  normal: {
+                    color: "#5D95E0" //  柱状图颜色
+                  }
+                },
+                markPoint: {
+                  symbol: "pin", //标记(气泡)的图形
+                  symbolSize: 50, //标记(气泡)的大小
+                  itemStyle: {
+                    normal: {
+                      borderColor: "#5D95E0",
+                      borderWidth: 1, // 标注边线线宽，单位px，默认为1
+                      label: {
+                        show: true
+                      }
+                    }
+                  },
+                  data: [
+                    //配置项
+                    { value: "12", xAxis: 0, yAxis: 50 },
+                    { value: "32", xAxis: 51, yAxis: 60 },
+                    { value: "16", xAxis: 61, yAxis: 70 },
+                    { value: "23", xAxis: 71, yAxis: 80 },
+                    { value: "45", xAxis: 81, yAxis: 90 },
+                    { value: "35", xAxis: 91, yAxis: 100 }
+                  ]
+                },
+                data:arrChart
+              }
+            ]
+          });
         }
       });
     },
+    getDatalist() {},
     queryClick() {
-         this.getDatalist();
+      this.getDatalist();
     }
   }
 };

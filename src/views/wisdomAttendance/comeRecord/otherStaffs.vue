@@ -84,12 +84,12 @@
       :show-close="true"
       :hide-required-asterisk="true"
     >
-      <el-row>
+     <el-row>
         <el-col :span="8">
           <span>作业区域：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ workingArea }}</span>
+          <span class="colorB">{{ details.enterArea }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -97,7 +97,7 @@
           <span>作业设备：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ equipmentNo }}</span>
+          <span class="colorB">{{ details.enterNo }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -105,7 +105,7 @@
           <span>打卡时间：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorR">{{ date }} {{ direction }}</span>
+          <span class="colorR">{{ details.enterDate}}</span>
         </el-col>
       </el-row>
       <br />
@@ -115,7 +115,7 @@
           <span>作业区域：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ workingArea }}</span>
+          <span class="colorB">{{ details.workingArea }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -123,7 +123,7 @@
           <span>作业设备：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorB">{{ equipmentNo }}</span>
+          <span class="colorB">{{ details.exitNo }}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -131,7 +131,7 @@
           <span>打卡时间：</span>
         </el-col>
         <el-col :span="16">
-          <span class="colorG">{{ date }} {{ direction }}</span>
+          <span class="colorG">{{ details.exitDate}}</span>
         </el-col>
       </el-row>
     </el-dialog>
@@ -162,10 +162,15 @@ export default {
         name: "",
         workerType: ""
       },
-      workingArea: "昌平三班南段",
-      equipmentNo: "西南侧挖掘机设备一台",
-      date: "2020-4-30 14:22",
-      direction: "出"
+      details:{
+         workingArea:'',
+         enterArea:'',
+         equipmentNo:'',
+         enterDate:'',
+         exit:'',
+         exitNo:'',
+         exitDate:''
+      }
     };
   },
   activated: function() {
@@ -224,21 +229,20 @@ export default {
       });
     },
     //详情
-    personnelDetailClick(index, row) {
-      console.log(row)
-      return;
+    personnelDetailClick(row) {
+      
       this.dialogFormVisible = true;
-      let url =
-        "/smart/worker/access/" +
+       let url =
+        "/bashUrl/smart/worker/access/" +
         sessionStorage.getItem("userId") +
         "/common/" +
         row.ids +
         "/detail";
       this.http
-        .delete(url, data)
+        .post(url, {})
         .then(res => {
           if (res.code == 200) {
-            console.log(res);
+            this.details = res.data;
           }
         })
         .catch(err => {

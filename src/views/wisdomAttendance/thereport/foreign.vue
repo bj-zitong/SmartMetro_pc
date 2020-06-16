@@ -20,8 +20,8 @@
       </div>
     </el-container>
     <el-container class="right_echarts">
-      <div class="sign">
-        <p style="border:4px solid rgba(79,197,234,1)"></p>
+      <!-- <div class="sign">
+        <p style=""></p>
         <p style="border:4px solid rgba(96,90,216,1)"></p>
         <p style="border:4px solid rgba(249,205,51,1)"></p>
         <p style="border:4px solid rgba(143,85,231,1)"></p>
@@ -30,10 +30,14 @@
         <p style="border:4px solid rgba(248,104,70,1)"></p>
         <p style="border:4px solid rgba(120,196,70,1)"></p>
         <p style="border:4px solid rgba(255,177,26,1)"></p>
+      </div> -->
+      <div class="sign" v-for="(item,index) in arrs" :key="index">
+        {{item.itemStyle.color}}
+        <p :style="{'border':'4px solid'+item.itemStyle.color}"></p>
       </div>
       <div class="sign_classify">
         <p>工长</p>
-        <p>电梯安装工</p>
+        <p style="color:rgb(197,151,193)">电梯安装工</p>
         <p>土方</p>
         <p>机修长</p>
         <p>水电工</p>
@@ -55,7 +59,6 @@
       </div>
     </el-container>
     <el-container class="bottom_echarts">
-      <!-- <div id="foreignEcharts" style="width:100%;height: 350px;"></div> -->
       <div id="alarmtrendEcharts" style="width:100%;height:300px;"></div>
     </el-container>
   </div>
@@ -75,7 +78,7 @@ export default {
       idx: 0,
       charts: "",
       opinioSn: [],
-      switchState: ["1", "2", "3", "4"],
+      switchState: ["year", "quarter", "month", "week"],
       opinionData: [
         { value: 335, name: "工长" },
         { value: 310, name: "邮件营销" },
@@ -83,16 +86,18 @@ export default {
         { value: 135, name: "视频广告" },
         { value: 1548, name: "搜索引擎" }
       ],
-      arr:[]
+      arr: [],
+      arrs:null
     };
   },
   methods: {
-    drawPie(id) {
+    drawPie(id, data) {
+      console.log(data);
       this.charts = echarts.init(document.getElementById(id));
       this.charts.setOption({
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b}: {c} ({d}%)"
+          formatter: "{a} <br/>{b}: {c}%"
         },
         legend: {
           orient: "vertical",
@@ -121,25 +126,26 @@ export default {
             labelLine: {
               show: true
             },
-            data: [
-              { value: 335, name: "工长", itemStyle: { color: "#4FC5EA" } },
-              {
-                value: 335,
-                name: "电梯安装工",
-                itemStyle: { color: "#605AD8" }
-              },
-              { value: 310, name: "土方", itemStyle: { color: "#F9CD33" } },
-              { value: 234, name: "机修长", itemStyle: { color: "#8F55E7" } },
-              { value: 135, name: "水电工", itemStyle: { color: "#5ED8A9" } },
-              {
-                value: 254,
-                name: "消防安装工",
-                itemStyle: { color: "#6C6FBF" }
-              },
-              { value: 35, name: "结构工", itemStyle: { color: "#F86846" } },
-              { value: 145, name: "筑路工", itemStyle: { color: "#78C446" } },
-              { value: 256, name: "电工", itemStyle: { color: "#FFB11A" } }
-            ]
+            data: data
+            //             data: [
+            //               { value: 335, name: "工长", itemStyle: { color: "#4FC5EA" } },
+            //               {
+            //                 value: 335,
+            //                 name: "电梯安装工",
+            //                 itemStyle: { color: "#605AD8" }
+            //               },
+            //               { value: 310, name: "土方", itemStyle: { color: "#F9CD33" } },
+            //               { value: 234, name: "机修长", itemStyle: { color: "#8F55E7" } },
+            //               { value: 135, name: "水电工", itemStyle: { color: "#5ED8A9" } },
+            //               {
+            //                 value: 254,
+            //                 name: "消防安装工",
+            //                 itemStyle: { color: "#6C6FBF" }
+            //               },
+            //               { value: 35, name: "结构工", itemStyle: { color: "#F86846" } },
+            //               { value: 145, name: "筑路工", itemStyle: { color: "#78C446" } },
+            //               { value: 256, name: "电工", itemStyle: { color: "#FFB11A" } }
+            //             ]
           }
         ]
       });
@@ -199,7 +205,32 @@ export default {
               width: 0.3
             }
           },
-          data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+          data: [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23
+          ],
           // 轴刻度
           axisTick: {
             show: false
@@ -267,47 +298,60 @@ export default {
               }
             },
             smooth: true,
-            data: arr,
+            data: arr
           }
         ]
       });
     },
     isActive(index) {
-      this.idx = index;
       let _this = this;
-      // var data = JSON.stringify({
-      //   name: "",
-      //   jobNum: "",
-      //   pageSize: "",
-      //   page: ""
-      // });
+      this.idx = index;
       var url =
         " /bashUrl/smart/worker/reports/" +
         sessionStorage.getItem("userId") +
         "/chart/" +
         this.switchState[index];
-      this.http.post(url, data).then(res => {
-        
+      this.http.post(url, {}).then(res => {
+        for (var i = 0; i < res.data.length; i++) {
+          res.data[i].itemStyle = { color: this.randomRgb(i) };
+        }
+        console.log(res.data);
+        var arrs = res.data.map(function(item) {
+          return {
+            name: item.company,
+            value: item.days,
+            itemStyle: item.itemStyle
+          };
+        });
+        this.arrs=arrs
+        this.drawPie("main", arrs);
       });
+    },
+    randomRgb(item) {
+      let R = Math.floor(Math.random() * 130 + 110);
+      let G = Math.floor(Math.random() * 130 + 110);
+      let B = Math.floor(Math.random() * 130 + 110);
+      return "rgb(" + R + "," + G + "," + B + ")";
     },
     //今日工作人员趋势图
     TrendChartOfday() {
       var url =
         "/bashUrl/smart/worker/reports/" +
         sessionStorage.getItem("userId") +
-        "/chart/today"
-      this.http.post(url,null).then(res => {
-          // this.arr = res.data
-           this.alarmtrendCharts(res.data)
-      })
+        "/chart/today";
+      this.http.post(url, null).then(res => {
+        // this.arr = res.data
+        this.alarmtrendCharts(res.data);
+      });
     }
   },
   //调用
   activated() {
     this.$nextTick(function() {
-      this.drawPie("main");
+      this.isActive(0);
+      // this.drawPie("main");
       this.alarmtrendCharts();
-      this.TrendChartOfday()
+      this.TrendChartOfday();
     });
   }
 };
@@ -342,7 +386,7 @@ export default {
 
 .bottom_echarts {
   width: 99%;
-  height: 350px;
+  height: 300px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 3px 3px 10px rgba(112, 112, 112, 0.16);
   opacity: 1;

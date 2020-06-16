@@ -43,14 +43,25 @@
           <el-button class="T-H-B-DarkBlue" @click="addClick">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
           <el-button class="T-H-B-Cyan" @click="exportBatchClick">导出</el-button>
-          <el-upload
+          <!-- <el-upload
             style="display:inline-block; margin-left: 10px;"
             class="upload-demo"
             action
             :show-file-list="false"
           >
             <el-button class="T-H-B-Cyan" type="primary" @click="importBatchClick">导入</el-button>
-          </el-upload>
+          </el-upload>-->
+          <el-upload
+                class="upload-demo"
+                action
+                :on-change="handleChange"
+                :file-list="fileList"
+                :auto-upload="false"
+                :limit="2"
+                :show-file-list="true"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
         </div>
         <el-table
           ref="multipleTable"
@@ -330,6 +341,7 @@ export default {
         corpCode: "",
         contractType: ""
       },
+      fileList:[],
       // 自定义表单验证
       rulesForm: {
         company: [
@@ -721,13 +733,14 @@ export default {
       //     });
     },
     //  导入
-    importBatchClick() {
+    handleChange(file,fileList) {
+      console.log(file.raw,fileList)
       let url =
         "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/company/management/import";
       let params = new FormData();
-      params.append("file", this.file.uploadFile[0].raw);
+      params.append("file",file.raw);
       this.http.get(url, params).then(res => {
         if (res.code == 200) {
           this.getTable();

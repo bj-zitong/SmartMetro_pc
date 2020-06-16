@@ -44,7 +44,17 @@
             <el-table-column prop="workType" label="工种"></el-table-column>
             <el-table-column prop="blackReason" label="拉黑原因"></el-table-column>
             <el-table-column prop="provePath" label="相关证明"></el-table-column>
-            <el-table-column prop="status" label="审核状态"></el-table-column>
+            <el-table-column prop="status" label="审核状态">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status==0">在场</span>
+                  <span v-if="scope.row.status==1">退场</span>
+                  <span v-if="scope.row.status==2">培训通过</span>
+                  <span v-if="scope.row.status==3">拉黑已提交</span>
+                  <span v-if="scope.row.status==4">驳回</span>
+                  <span v-if="scope.row.status==5">取消</span>
+                  <span v-if="scope.row.status==6">已拉黑</span>
+               </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="280">
               <template slot-scope="scope">
                 <!-- class="T-R-B-Grey"
@@ -54,17 +64,20 @@
                   size="mini"
                   type="warning"
                   @click="cancelClick(scope.row)"
+                  v-show="roleName=='普通管理员'?true:false"
                 >取消</el-button>
                 <el-button
                   class="T-R-B-BlackishGreen btn"
                   size="mini"
                   type="warning"
+                  v-show="roleName=='Administrator'?true:false"
                   @click="throughClick(scope.row)"
                 >通过</el-button>
                 <el-button
                   class="T-R-B-Cyan"
                   size="mini"
                   type="warning"
+                  v-show="roleName=='Administrator'?true:false"
                   @click="rejectClick(scope.row)"
                 >驳回</el-button>
               </template>
@@ -109,6 +122,7 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
+      roleName:JSON.parse(sessionStorage.getItem("user")).roles[0].roleName,
       // 动态数据
       tableData: [],
       total: 10,
@@ -130,7 +144,7 @@ export default {
       // 获得搜索的内容
       var data = JSON.stringify({
         name: this.formInline.name,
-        status:"3",
+        status: "3",
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage
       });
@@ -151,15 +165,16 @@ export default {
       var ids = [];
       ids.push(uid);
       console.log(ids);
-      //       /smart/worker/roster/{userId}/labour/management
-      // query labour management
       handleCofirm("确认取消")
         .then(res => {
           var data = JSON.stringify(ids);
           var url =
-            "/smart/worker/roster/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
-            "/labour/management";
+            "/labour/basic/" +
+            row.pinfoId;
+          var data = new FormData();
+          data.append("status",5);
           this.http.post(url, data).then(res => {
             if (res.code == 200) {
               var total = res.total;
@@ -182,25 +197,18 @@ export default {
     },
     //通过
     throughClick(row) {
-      console.log(row)
-      var uid = row.pLabourCompanyId;
-      var ids = [];
-      ids.push(uid);
-      console.log(ids);
-      // /smart/worker/integrity/{userId}/black/change/{status}
       handleCofirm("确认通过")
         .then(res => {
-          var data = JSON.stringify(ids);
           var url =
-            "/bashUrl/smart/worker/integrity/" +
+            "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
-            "/black/change/2";
-          this.http.post(url, data).then(res => {
+            "/labour/basic/" +
+            row.pinfoId;
+          var data = new FormData();
+          data.append("status",2);
+          this.http.put(url, data).then(res => {
             if (res.code == 200) {
-              var total = res.total;
-              var rows = res.rows;
-              this.tableData = rows;
-              this.total = total;
+              this.getDateList()
               this.$message({
                 type: "success",
                 message: "通过成功!"
@@ -221,7 +229,6 @@ export default {
       var ids = [];
       ids.push(uid);
       console.log(ids);
-      // /smart/worker/integrity/{userId}/black/change/{status}
       handleCofirm("确认驳回")
         .then(res => {
           var data = JSON.stringify(ids);

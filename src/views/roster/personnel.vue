@@ -746,7 +746,6 @@ export default {
     },
     //点击确认拉黑
     addSubmitForm(from) {
-      console.log(from);
       // 验证
       this.$refs[from].validate(valid => {
         if (valid) {

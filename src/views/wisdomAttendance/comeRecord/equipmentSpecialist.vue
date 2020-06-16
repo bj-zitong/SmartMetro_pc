@@ -226,13 +226,13 @@ export default {
       });
     },
     //详情
-    personnelDetailClick(index, row) {
+    personnelDetailClick(row) {
       this.dialogFormVisible = true;
       let url =
         "/bashUrl/smart/worker/access/" +
         sessionStorage.getItem("userId") +
         "/common/" +
-        row.id +
+        row.ids +
         "/detail";
       this.http
         .post(url, {})
