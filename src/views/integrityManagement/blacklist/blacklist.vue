@@ -45,15 +45,19 @@
             <el-table-column prop="blackReason" label="拉黑原因"></el-table-column>
             <el-table-column prop="provePath" label="相关证明"></el-table-column>
             <el-table-column prop="status" label="审核状态">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.status==0">在场</span>
-                  <span v-if="scope.row.status==1">退场</span>
-                  <span v-if="scope.row.status==2">培训通过</span>
-                  <span v-if="scope.row.status==3">拉黑已提交</span>
-                  <span v-if="scope.row.status==4">驳回</span>
-                  <span v-if="scope.row.status==5">取消</span>
-                  <span v-if="scope.row.status==6">已拉黑</span>
-               </template>
+              <template slot-scope="scope" v-show="roleName=='Administrator'?true:false">
+                <span v-if="scope.row.status==6">已拉黑</span>
+                <span v-if="scope.row.status==7">已取消拉黑</span>
+                <span v-if="scope.row.status==5">申请取消拉黑</span>
+              </template>
+              <template slot-scope="scope" v-show="roleName=='普通管理员'?true:false">
+                <span v-if="scope.row.status==0">在场</span>
+                <span v-if="scope.row.status==1">退场</span>
+                <span v-if="scope.row.status==2">培训通过</span>
+                <span v-if="scope.row.status==3">拉黑已提交</span>
+                <span v-if="scope.row.status==4">驳回</span>
+                <span v-if="scope.row.status==5">申请取消拉黑</span>
+              </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="280">
               <template slot-scope="scope">
@@ -122,7 +126,7 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      roleName:JSON.parse(sessionStorage.getItem("user")).roles[0].roleName,
+      roleName: JSON.parse(sessionStorage.getItem("user")).roles[0].roleName,
       // 动态数据
       tableData: [],
       total: 10,
@@ -144,7 +148,11 @@ export default {
       // 获得搜索的内容
       var data = JSON.stringify({
         name: this.formInline.name,
-        status: "3",
+        status:
+          JSON.parse(sessionStorage.getItem("user")).roles[0].roleName ==
+          "普通管理员"
+            ? "0"
+            : "6",
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage
       });
@@ -170,10 +178,10 @@ export default {
             "/labour/basic/" +
             row.pinfoId;
           var data = new FormData();
-          data.append("status",5);
-          this.http.post(url, data).then(res => {
-             if (res.code == 200) {
-              this.getDateList()
+          data.append("status", 5);
+          this.http.put(url, data).then(res => {
+            if (res.code == 200) {
+              this.getDateList();
               this.$message({
                 type: "success",
                 message: "取消成功!"
@@ -198,10 +206,10 @@ export default {
             "/labour/basic/" +
             row.pinfoId;
           var data = new FormData();
-          data.append("status",2);
+          data.append("status", 2);
           this.http.put(url, data).then(res => {
             if (res.code == 200) {
-              this.getDateList()
+              this.getDateList();
               this.$message({
                 type: "success",
                 message: "通过成功!"
@@ -220,17 +228,17 @@ export default {
     rejectClick(row) {
       handleCofirm("确认驳回")
         .then(res => {
-          var data = JSON.stringify(ids);
-           var url =
+          // var data = JSON.stringify(ids);
+          var url =
             "/bashUrl/smart/worker/roster/" +
             sessionStorage.getItem("userId") +
             "/labour/basic/" +
             row.pinfoId;
-            var data = new FormData();
-          data.append("status",4);
-          this.http.post(url, data).then(res => {
-             if (res.code == 200) {
-              this.getDateList()
+          var data = new FormData();
+          data.append("status", 4);
+          this.http.put(url, data).then(res => {
+            if (res.code == 200) {
+              this.getDateList();
               this.$message({
                 type: "success",
                 message: "驳回成功!"

@@ -10,7 +10,7 @@
             <el-input v-model="screenForm.trainingName" placeholder="请输入培训主题"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onScreen">查询</el-button>
+            <el-button type="primary" @click="getTable">查询</el-button>
           </el-form-item>
         </el-form>
       </el-menu>
@@ -161,6 +161,7 @@ export default {
       screenForm: {
         trainingName: ""
       },
+      total:0,
       titleTrain: "",
       formTrain: {
         id: null,
@@ -219,8 +220,9 @@ export default {
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
-        pageSize: this.pageSize,
-        page: this.page
+        trainingName:this.screenForm.trainingName,
+         pageSize: this.listQuery.pageSize,
+        page: this.listQuery.currentPage
       });
       //请求
       var url =

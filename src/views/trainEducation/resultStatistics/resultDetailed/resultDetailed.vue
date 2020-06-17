@@ -41,12 +41,7 @@
         style="width: 100%;"
         @selection-change="changeFun"
       >
-        <el-table-column
-          type="selection"
-          width="65"
-          prop="pscoreId"
-          @selection-change="changeFun"
-        ></el-table-column>
+        <el-table-column type="selection" width="65" prop="pscoreId" @selection-change="changeFun"></el-table-column>
         <el-table-column prop="pscoreId" label="名次"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="company" label="劳务单位"></el-table-column>
@@ -55,7 +50,6 @@
         <el-table-column prop="trainingType" label="培训类型"></el-table-column>
         <el-table-column prop="score" label="分数"></el-table-column>
         <el-table-column prop="examTime" label="培训时间" width="180"></el-table-column>
-        <!-- <el-table-column prop="examPath" label="试卷"></el-table-column> -->
         <el-table-column label="关联闸机" fixed="right" prop="isRelationQate">
           <template slot-scope="scope">
             <el-switch
@@ -167,7 +161,6 @@ export default {
         "/bashUrl/smart/worker/train/" +
         sessionStorage.getItem("userId") +
         "/score/management";
-      console.log(url);
       this.http.post(url, params).then(res => {
         if (res.code == 200) {
           this.total = res.data.total;
@@ -177,22 +170,38 @@ export default {
     },
     changeImg(file, fileList) {
       this.file.uploadFile = fileList;
-      console.log(this.file.uploadFile);
-      console.log(this.file.uploadFile[0].raw);
     },
     //查询
     queryClick() {
       this.getDatelist();
     },
     //关联闸机
-    changeSwitch(state) {
-      console.log(state);
+    changeSwitch(row) {
+      var params = JSON.stringify({
+        pScoreId: row.pScoreId,
+        status: row.status == true ? "0" : "1"
+      });
+      var url =
+        "/bashUrl/smart/worker/train/" +
+        sessionStorage.getItem("userId") +
+        "/score";
+      this.http.put(url, params).then(res => {
+        if (res.code == 200) {
+          // this.getDatelist();
+          this.$message({
+            type: "success",
+            message: "修改成功!"
+          });
+          this.dialogFormVisible = false;
+        }
+      });
     },
     changeFun() {},
     //点击填写分数弹出框
     fillinScoreClick(index, row) {
-       this.form.score =''
-      this.pInfoId = row.pscoreId;
+      this.form.score = "";
+      console.log(row);
+      this.pInfoId = row.pScoreId;
       this.dialogFormVisible = true;
     },
     myUpload(content) {
@@ -220,7 +229,6 @@ export default {
         }
       });
     },
-    handleChange() {},
     //确认填写分数
     determineClick(formName) {
       // console.log(formName)
@@ -236,6 +244,7 @@ export default {
             "/score";
           this.http.put(url, params).then(res => {
             if (res.code == 200) {
+              this.getDatelist();
               this.$message({
                 type: "success",
                 message: "修改成功!"
@@ -303,9 +312,6 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    // handleSelectionChange(val) {
-    //   this.multipleSelection = val;
-    // },
     onScreen() {},
     uploadQuestionsClick() {},
     deleteBatchClick() {},
