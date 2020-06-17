@@ -169,7 +169,6 @@ export default {
     },
     //获得详情
     getDeatli(id) {
-      this.form.corporateName = "1111";
       var url =
         "/bashUrl/smart/worker/roster/" +
         sessionStorage.getItem("userId") +

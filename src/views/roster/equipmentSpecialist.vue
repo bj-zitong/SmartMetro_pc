@@ -38,7 +38,7 @@
             <el-table-column
               type="selection"
               width="65"
-              prop="pinfoId"
+              prop="pInfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column prop="company" label="公司名称"></el-table-column>
@@ -202,7 +202,7 @@ export default {
       var arrays = this.$refs.multipleTable.selection;
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].pinfoId;
+        var id = arrays[i].pInfoId;
         ids.push(id);
       }
       return ids;
@@ -256,15 +256,16 @@ export default {
     //  表格操作
     //  编辑
     editRowClick(row) {
+      console.log(row.pInfoId);
       this.$router.push({
         name: "AddEquipment",
         params: {
-          id: row.pinfoId
+          id: row.pInfoId
         }
       });
     },
     deleteRowClick(row) {
-      var uid = row.pinfoId;
+      var uid = row.pInfoId;
       var ids = [];
       ids.push(uid);
       handleCofirm("确认删除", "warning")
@@ -324,7 +325,7 @@ export default {
     },
     detailsRowClick(row) {
       let _this = this;
-      var id = row.pinfoId;
+      var id = row.pInfoId;
       this.bindData=id;
       _this.changOrder = true;
       // _this.$nextTick(() => {
