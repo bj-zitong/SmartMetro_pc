@@ -9,14 +9,6 @@
           :class="[idx == index?'active':'btn']"
           @click="isActive(index)"
         >{{item}}</el-button>
-        <!-- <el-button
-          class="btn"
-          style="background:linear-gradient(180deg,rgba(54,130,243,1) 0%,rgba(0,88,162,1) 100%);color:rgba(255,255,255,1);"
-        >出勤天数（工时）/年</el-button>
-        <br />
-        <el-button class="btn">出勤天数（工时)/季度</el-button>
-        <el-button class="btn">出勤天数（工时）/月</el-button>
-        <el-button class="btn">出勤天数（工时）/周</el-button>-->
       </div>
     </el-container>
     <el-container class="right_echarts">
@@ -27,7 +19,7 @@
         <p v-for="(item,index) in arrs" :key="index" :style="item">{{item.name}}</p>
       </div>
       <div class="sign_classify_price">
-        <p v-for="(item,index) in arrs" :key="index" :style="item">{{item.value}}</p>
+        <p v-for="(item,index) in arrs" :key="index" :style="item">{{item.value}}%</p>
       </div>
     </el-container>
     <el-container class="bottom_echarts">

@@ -58,7 +58,7 @@
                 :file-list="fileList"
                 :auto-upload="false"
                 :limit="2"
-                :show-file-list="true"
+                :show-file-list="false"
               >
                 <el-button type="primary" style="margin-left:10px;">导入</el-button>
               </el-upload>

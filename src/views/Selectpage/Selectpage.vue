@@ -62,16 +62,17 @@
             <img src="/static/image/Selectpage/huanjingguanli.png" alt class="list_img" />
             <h6>环境与能耗管理</h6>
           </div>
+         <div class="box">
+            <img src="/static/image/Selectpage/zhiliangguanli.png" alt class="list_img" />
+            <h6>安全管理</h6>
+          </div>
         </div>
         <div class="bottom">
           <div class="box">
             <img src="/static/image/Selectpage/huaban.png" alt class="list_img" />
             <h6>质量管理</h6>
           </div>
-          <div class="box">
-            <img src="/static/image/Selectpage/zhiliangguanli.png" alt class="list_img" />
-            <h6>安全管理</h6>
-          </div>
+          
           <div class="box">
             <img src="/static/image/Selectpage/jinduguanli.png" alt class="list_img" />
             <h6>进度智慧管理</h6>
@@ -79,6 +80,10 @@
           <div class="box" @click="videoMonitoring()">
             <img src="/static/image/Selectpage/shipinjiankong.png" alt class="list_img" />
             <h6>视频监控管理</h6>
+          </div>
+            <div class="box">
+            <img src="/static/image/Selectpage/cxglicon.png" alt class="list_img" />
+            <h6>诚信管理</h6>
           </div>
           <div class="box" @click="systemManager()">
             <img src="/static/image/Selectpage/xitong.png" alt class="list_img" />
@@ -291,7 +296,6 @@ ul, li {
     width: 100%;
     height: 279px;
     display: flex;
-    padding: 0 160px;
     justify-content: space-around;
     cursor: pointer;
   }
