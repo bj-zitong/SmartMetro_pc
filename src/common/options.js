@@ -1,35 +1,35 @@
 let options = [
   {
-    value: '1',
-    label: '电工'
+    value: '010',
+    label: '砌筑工'
   },
   {
-    value: '2',
-    label: '电焊工'
+    value: '020',
+    label: '钢筋工'
   },
   {
-    value: '3',
-    label: '外用电梯司机'
+    value: '030',
+    label: '架子工'
   },
   {
-    value: '4',
-    label: '工长'
+    value: '040',
+    label: '混凝土工'
   },
   {
-    value: '5',
-    label: '钢结构'
+    value: '050',
+    label: '模板工'
   },
   {
-    value: '6',
-    label: '消防安装工'
+    value: '060',
+    label: '机械设备安装工'
   },
   {
-    value: '7',
-    label: '土方'
+    value: '080',
+    label: '安装起重工'
   },
   {
-    value: '8',
-    label: '植筋工'
+    value: '070',
+    label: '通风工'
   }
 ]
 export default options

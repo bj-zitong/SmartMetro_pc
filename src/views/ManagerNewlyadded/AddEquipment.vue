@@ -196,8 +196,8 @@ export default {
         }
       });
     },
-    submitForm(form) {
-      this.$refs[form].validate(valid => {
+    submitForm(form1) {
+      this.$refs[form1].validate(valid => {
         if (valid) {
           var form = this.$refs["form"].model;
           if (this.id == 0) {
@@ -226,8 +226,8 @@ export default {
                 message: "添加成功!"
               });
                 this.$router.push({ path: "/roster/equipmentSpecialist" });
-                this.$refs[form].resetFields();
-                this.cancel(form);
+                this.$refs[form1].resetFields();
+                this.cancel(form1);
               }
             });
           } else {
@@ -256,9 +256,9 @@ export default {
                     type: "success",
                     message: "编辑成功!"
                   });
-                   this.$refs[form].resetFields();
+                   this.$refs[form1].resetFields();
                 this.$router.push({ path: "/roster/equipmentSpecialist" });
-                this.cancel(form);
+                this.cancel(form1);
               }
             });
           }

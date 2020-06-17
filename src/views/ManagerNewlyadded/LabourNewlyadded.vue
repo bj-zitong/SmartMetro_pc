@@ -88,7 +88,7 @@ export default {
       qualification: true, //资质证书
       History: true, //I历史评价记录
       SourceInformation: true, //来源地信息,
-      typeWorkArr: ["1", "2", "3"],
+      typeWorkArr: ["010", "020", "030"],
       //图片上传
       fileList: [
         {

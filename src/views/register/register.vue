@@ -199,11 +199,10 @@ export default {
     },
     // 注册
     register(form) {
-      
+
       // 使用
       var form = this.form;
       this.$refs["form"].validate(valid => {
-        alert(123);
         if (valid) {
           if (form.password != form.confirmPassword) {
             this.$message("密码不一致，请重新输入！");

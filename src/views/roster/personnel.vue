@@ -378,7 +378,7 @@ export default {
         company: _this.formInline.company,
         name: _this.formInline.id,
         jobNum: _this.formInline.jobNum,
-        workerType: _this.formInline.workerType,
+        workType: _this.formInline.workerType,
         pageSize: _this.listQuery.pageSize,
         page: _this.listQuery.currentPage
       });

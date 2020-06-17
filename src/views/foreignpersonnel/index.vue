@@ -359,9 +359,9 @@ export default {
       });
       this.form.intervieweeDepartmentId = obj.id;
     },
-    addUser(form) {
+    addUser(form1) {
       //获得所选的form表单
-      this.$refs[form].validate(valid => {
+      this.$refs[form1].validate(valid => {
         if (valid) {
           var form = this.$refs["form"].model;
           if (form.poutlanderId == null) {
@@ -388,7 +388,7 @@ export default {
                   message: "添加成功!"
                  });
                  this.handleUserList();
-                 this.cancel();
+                 this.cancel(form1);
               }
             });
             this.dialogFormVisible = false;
@@ -417,7 +417,7 @@ export default {
                   message: "修改成功!"
               });
               this.handleUserList();
-               this.cancel();
+               this.cancel(form1);
               }
             });
           }
