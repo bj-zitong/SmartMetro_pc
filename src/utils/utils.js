@@ -7,7 +7,7 @@ function updateVegetablesCollection(veggies, veggie) {
     } else if (veggies.indexOf(veggie) > -1) {
         istf = true
     }
-
+    console.log(istf)
     return Promise.resolve(istf)
 }
 //秒转天时分秒

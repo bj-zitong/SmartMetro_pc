@@ -35,6 +35,7 @@
           <el-table-column type="selection" prop="ptrainingId"></el-table-column>
           <el-table-column prop="uid" label="编号"></el-table-column>
           <el-table-column prop="trainingName" label="培训主题"></el-table-column>
+          <el-table-column prop="trainingType" label="培训类型"></el-table-column>
           <el-table-column prop="trainingAmount" label="培训人数"></el-table-column>
           <el-table-column prop="trainingObject" label="培训对象"></el-table-column>
           <el-table-column prop="trainingDepartment" label="培训部门/召集人"></el-table-column>
@@ -96,14 +97,14 @@
         <el-form-item prop="trainingName" label="培训主题" :required="true">
           <el-input v-model="formTrain.trainingName"></el-input>
         </el-form-item>
-         <el-form-item prop="trainingtype" label="培训类型" :required="true">
-          <el-input v-model="formTrain.trainingtype"></el-input>
+         <el-form-item prop="trainingType" label="培训类型" :required="true">
+          <el-input v-model="formTrain.trainingType"></el-input>
         </el-form-item>
         <el-form-item prop="trainingAmount" label="培训人数" :required="true">
           <el-input v-model="formTrain.trainingAmount"></el-input>
         </el-form-item>
-        <el-form-item prop="trainingObject" label="培训对象" :required="true">
-          <el-input v-model="formTrain.trainingObject"></el-input>
+        <el-form-item label="培训对象" :required="true">
+          <el-button type="primary" @click="selectPerson()">点击选择</el-button>
         </el-form-item>
         <el-form-item prop="trainingDepartment" label="培训部门/召集人" :required="true">
           <el-input v-model="formTrain.trainingDepartment"></el-input>
@@ -139,6 +140,31 @@
           <el-button class="F-Blue" round @click.native="submiTraintForm('refTrain')">确定</el-button>
         </el-form-item>
       </el-form>
+       <el-dialog
+        width="25%"
+        title="选择人员"
+        :visible.sync="innerVisible"
+        append-to-body
+        :center="true"
+        :show-close="false"
+      >
+        <el-table
+          :data="persons"
+          style="width: 100%"
+          ref="multipleTable2"
+          @selection-change="changeFunPerson"
+          :header-cell-style="headClass"
+          stripe
+        >
+          <el-table-column type="selection" prop="pinfoId" @selection-change="changeFunPerson"></el-table-column>
+          <el-table-column prop="pinfoId" label="编号" width="180"></el-table-column>
+          <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+        </el-table>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="innerVisible = false" class="F-Grey" round>取 消</el-button>
+          <el-button @click="innerVisible= false" class="F-Blue" round style="margin-left:60px">确 定</el-button>
+        </div>
+      </el-dialog>
     </el-dialog>
   </div>
 </template>
@@ -146,6 +172,7 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "@/components/pagination";
+import {updateVegetablesCollection} from '@/utils/utils'
 export default {
   components: {
     Pagination
@@ -163,11 +190,13 @@ export default {
       },
       total:0,
       titleTrain: "",
+      innerVisible: false, //二层
+      persons:[],
       formTrain: {
-        id: null,
-        ptrainingId: null,
-        trainAmount: "",
+        trainingName:'',
+        trainingType: "",
         trainObject: "",
+        description:'',
         trainDepartment: "",
         trainer: "",
         trimmer: "",
@@ -267,6 +296,8 @@ export default {
     //  添加/编辑 提交
     submiTraintForm(refTrain) {
       // 验证
+      // var pids = this.changeFunPerson();
+      console.log(this.formTrain)
       this.$refs[refTrain].validate(valid => {
         if (valid) {
           let form = this.$refs[refTrain].model;
@@ -276,6 +307,7 @@ export default {
               "/bashUrl/smart/worker/train/" +
               sessionStorage.getItem("userId") +
               "/record";
+              
             let data = JSON.stringify(this.formTrain);
             this.http
               .post(url, data)
@@ -320,7 +352,36 @@ export default {
         }
       });
     },
-
+    //选择对象
+     selectPerson() {
+      this.innerVisible = true;
+       let _this = this;
+       var data = JSON.stringify({
+        pageSize: 10000,
+        page: 1
+      });
+      var url =
+        "/bashUrl/smart/worker/roster/" +
+        sessionStorage.getItem("userId") +
+        "/labour/management";
+      this.http.post(url, data).then(res => {
+        if (res.code == 200) {
+         this.persons=res.data.rows;
+        }
+      });
+    },
+    changeFunPerson(val) {
+      var ids = [];
+      console.log(this.$refs.multipleTable2)
+      // var arrays = this.$refs.multipleTable2.selection;
+      // for (var i = 0; i < arrays.length; i++) {
+      //   // 获得id
+      //   ids.push(arrays[i].pinfoId);
+      // }
+      // this.selectedPersonIds = ids;
+      // this.multipleSelection = val;
+      // return ids;
+    },
     //  新增/编辑   关闭
     cloneTrainForm(refTrain) {
       this.dialogVisibleTrain = false;

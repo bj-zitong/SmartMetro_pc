@@ -46,21 +46,21 @@
             <el-table-column prop="provePath" label="相关证明"></el-table-column>
             <el-table-column prop="status" label="审核状态">
               <template slot-scope="scope">
-                <span v-if="scope.row.status==6 && roleName=='Administrator'">已拉黑</span>
+                <!-- <span v-show="updateVegetablesCollection(rowArr,scope.row.status)">已拉黑</span>
                 <span v-if="scope.row.status==7 && roleName=='Administrator'">已取消拉黑</span>
-                <span v-if="scope.row.status==5 && roleName=='Administrator'">申请取消拉黑</span>
-                <span v-if="scope.row.status==0 && roleName=='普通管理员'">在场</span>
-                <span v-if="scope.row.status==1 && roleName=='普通管理员'">退场</span>
-                <span v-if="scope.row.status==2 && roleName=='普通管理员'">培训通过</span>
-                <span v-if="scope.row.status==3 && roleName=='普通管理员'">拉黑已提交</span>
-                <span v-if="scope.row.status==4 && roleName=='普通管理员'">驳回</span>
-                <span v-if="scope.row.status==5 && roleName=='普通管理员'">申请取消拉黑</span>
+                <span v-if="scope.row.status==5 && roleName=='Administrator'">申请取消拉黑</span> -->
+
+
+                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">已拉黑</span>
+                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">已取消拉黑</span>
+                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">申请取消拉黑</span>
+                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">拉黑已提交</span>
+                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">驳回</span>
+                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">申请取消拉黑</span>
               </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="280">
               <template slot-scope="scope">
-                <!-- class="T-R-B-Grey"
-                size="mini"-->
                 <el-button
                   class="T-R-B-Grey"
                   size="mini"
@@ -117,6 +117,7 @@
 <script>
 import Pagination from "@/components/pagination";
 import { handleCofirm } from "@/utils/confirm";
+
 export default {
   components: {
     Pagination
@@ -124,7 +125,7 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      roleName: JSON.parse(sessionStorage.getItem("user")).roles[0].roleName,
+      roleName: JSON.parse(sessionStorage.getItem("user")).roles,
       // 动态数据
       tableData: [],
       total: 10,
@@ -134,13 +135,30 @@ export default {
       },
       formInline: {
         name: "" // 搜索
-      }
+      },
+      rowArr: []
     };
   },
   activated() {
+    var roles = JSON.parse(sessionStorage.getItem("user")).roles;
+    for (var i = 0; i < roles.length; i++) {
+      this.rowArr.push(roles[i].sysRoleId);
+    }
+    console.log(this.rowArr);
     this.getDateList();
   },
   methods: {
+    updateVegetablesCollection(veggies, veggie) {
+      var istf;
+      if (veggies.indexOf(veggie) === -1) {
+        veggies.push(veggie);
+        istf = false;
+      } else if (veggies.indexOf(veggie) > -1) {
+        istf = true;
+      }
+      console.log(istf);
+      return Promise.resolve(istf);
+    },
     // 列表请求
     getDateList() {
       // 获得搜索的内容
@@ -159,10 +177,18 @@ export default {
         sessionStorage.getItem("userId") +
         "/labour/management";
       this.http.post(url, data).then(res => {
-        if (res.code == 200) {
-          this.tableData = res.data.rows;
-          this.total = res.data.total;
-        }
+        // if (res.code == 200) {
+        //   for(var i=0;i<res.data.rows.length;i++){
+        //      for(var i=0;i<this.rowArr.lenght;i++){
+        //         if(res.data.rows[i].status==this.rowArr[i]){
+        //            res.data.rows[i].status=this.rowArr[i]==0?'在场':this.rowArr[i]==1?'退场':this.rowArr[i]==2?'培训通过':this.rowArr[i]==3?'拉黑已提交':this.rowArr[i]==4?'驳回':this.rowArr[i]==5?'申请取消拉黑':this.rowArr[i]==6?'已拉黑':this.rowArr[i]==7?'已取消拉黑':''
+        //         }
+        //      }
+        //   }
+        //   console.log(res.data.rows)
+        //   this.tableData = res.data.rows;
+        //   this.total = res.data.total;
+        // }
       });
     },
     //取消
