@@ -52,7 +52,7 @@
             <template slot-scope="scope">
               <el-button size="mini" @click="handleEdit(scope.row)" class="T-R-B-Green">编辑</el-button>
               <el-button size="mini" @click="handleDelete(scope.row)" class="T-R-B-Grey">删除</el-button>
-              <el-button size="mini" class="T-R-B-Orange" @click="addEvalte(scope.row)">评价</el-button>
+              <!-- <el-button size="mini" class="T-R-B-Orange" @click="addEvalte(scope.row)">评价</el-button> -->
               <el-button size="mini" @click="addSpeech(scope.row)" class="T-R-B-Blue">新增讲话</el-button>
             </template>
           </el-table-column>
@@ -614,12 +614,12 @@ export default {
       this.evaluated = null;
     },
     //添加评价
-    addEvalte(row) {
-      var uid = row.pteamMasterId;
-      this.dialogVisible = true;
-      //设置全局变量
-      this.id = uid;
-    },
+    // addEvalte(row) {
+    //   var uid = row.pteamMasterId;
+    //   this.dialogVisible = true;
+    //   //设置全局变量
+    //   this.id = uid;
+    // },
     //选中的值
     toggleSelection(rows) {
       if (rows) {

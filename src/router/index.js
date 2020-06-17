@@ -162,7 +162,7 @@ export const constantRouterMap = [
                     name: 'message',
                     component: () =>
                         import('@/views/team_message/message'),
-                    meta: { title: '班前信息', icon: '', enable: "Y", parent: '实名认证' }
+                    meta: { title: '班组信息', icon: '', enable: "Y", parent: '实名认证' }
                 },
                 {
                     path: '/team_message/talkrecord',

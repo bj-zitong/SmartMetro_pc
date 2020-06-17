@@ -45,18 +45,16 @@
             <el-table-column prop="blackReason" label="拉黑原因"></el-table-column>
             <el-table-column prop="provePath" label="相关证明"></el-table-column>
             <el-table-column prop="status" label="审核状态">
-              <template slot-scope="scope" v-show="roleName=='Administrator'?true:false">
-                <span v-if="scope.row.status==6">已拉黑</span>
-                <span v-if="scope.row.status==7">已取消拉黑</span>
-                <span v-if="scope.row.status==5">申请取消拉黑</span>
-              </template>
-              <template slot-scope="scope" v-show="roleName=='普通管理员'?true:false">
-                <span v-if="scope.row.status==0">在场</span>
-                <span v-if="scope.row.status==1">退场</span>
-                <span v-if="scope.row.status==2">培训通过</span>
-                <span v-if="scope.row.status==3">拉黑已提交</span>
-                <span v-if="scope.row.status==4">驳回</span>
-                <span v-if="scope.row.status==5">申请取消拉黑</span>
+              <template slot-scope="scope">
+                <span v-if="scope.row.status==6 && roleName=='Administrator'">已拉黑</span>
+                <span v-if="scope.row.status==7 && roleName=='Administrator'">已取消拉黑</span>
+                <span v-if="scope.row.status==5 && roleName=='Administrator'">申请取消拉黑</span>
+                <span v-if="scope.row.status==0 && roleName=='普通管理员'">在场</span>
+                <span v-if="scope.row.status==1 && roleName=='普通管理员'">退场</span>
+                <span v-if="scope.row.status==2 && roleName=='普通管理员'">培训通过</span>
+                <span v-if="scope.row.status==3 && roleName=='普通管理员'">拉黑已提交</span>
+                <span v-if="scope.row.status==4 && roleName=='普通管理员'">驳回</span>
+                <span v-if="scope.row.status==5 && roleName=='普通管理员'">申请取消拉黑</span>
               </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="280">
@@ -74,14 +72,14 @@
                   class="T-R-B-BlackishGreen btn"
                   size="mini"
                   type="warning"
-                  v-show="roleName=='Administrator'?true:false"
+                  v-show="roleName=='Administrator' && scope.row.status!=6 && scope.row.status!=7 ?true:false"
                   @click="throughClick(scope.row)"
                 >通过</el-button>
                 <el-button
                   class="T-R-B-Cyan"
                   size="mini"
                   type="warning"
-                  v-show="roleName=='Administrator'?true:false"
+                  v-show="roleName=='Administrator' && scope.row.status!=6 && scope.row.status!=7?true:false"
                   @click="rejectClick(scope.row)"
                 >驳回</el-button>
               </template>

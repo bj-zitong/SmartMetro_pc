@@ -53,7 +53,7 @@
         <el-table-column label="关联闸机" fixed="right" prop="isRelationQate">
           <template slot-scope="scope">
             <el-switch
-              v-model="scope.row.status"
+              v-model="scope.row.isRelationGate"
               active-color="#13ce66"
               inactive-color="#ff4949"
               @change="changeSwitch(scope.row)"
@@ -192,7 +192,6 @@ export default {
             type: "success",
             message: "修改成功!"
           });
-          this.dialogFormVisible = false;
         }
       });
     },
