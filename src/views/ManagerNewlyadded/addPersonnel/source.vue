@@ -310,7 +310,6 @@ export default {
       formData.append("photo", this.$global_msg.photo.raw);
       formData.append("pinfoId", data.pinfoId);
       //新增
-      if (this.id == 0) {
         var dataUrl =
           "/bashUrl/smart/worker/roster/" +
           sessionStorage.getItem("userId") +
@@ -323,123 +322,6 @@ export default {
             this.addContract(formName);
           }
         });
-        //修改
-      } else {
-        var dataUrl =
-          "/bashUrl/smart/worker/roster/" +
-          sessionStorage.getItem("userId") +
-          "/labour/basic/" +
-          this.id;
-        this.http.put(dataUrl, formData).then(res => {
-          if (res.code == 200) {
-            this.updateContract(formName);
-          }
-        });
-      }
-    },
-    updateContract(formName) {
-      //合同信息
-      var contractInformation = sessionStorage.getItem("contractInformation");
-      var data = JSON.parse(sessionStorage.getItem("contractInformation"));
-      data.pContractId = this.id;
-      var contractUrl =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/labour/contract";
-      this.http.put(contractUrl, data).then(res => {
-        if (res.code == 200) {
-          this.updatePay(formName);
-        }
-      });
-    },
-    updatePay(formName) {
-      //工资记录
-      var salary = sessionStorage.getItem("salary");
-      var data = JSON.parse(sessionStorage.getItem("salary"));
-      data.pInfoId = this.id;
-      var payrollUrl =
-        "/bashUrl/smart/worker/roster/" +
-        sessionStorage.getItem("userId") +
-        "/labour/salary";
-      this.http.put(payrollUrl, data).then(res => {
-        if (res.code == 200) {
-          this.updateCer(formName);
-          //  this.$router.push({ path: "/roster/personnel" });
-        }
-      });
-    },
-    updateCer(formName) {
-      var certificate = JSON.parse(sessionStorage.getItem("certificate"));
-      if (certificate != null) {
-        for (var i = 0; i < certificate.productGroup.length; i++) {
-          for (var i = 0; i < this.$global_msg.photoArr.length; i++) {
-            var certificateFormdata = new FormData();
-            certificateFormdata.append(
-              "grantCompany",
-              certificate.productGroup[i].grantCompany
-            );
-            certificateFormdata.append("pInfoId", this.pInfoId);
-            certificateFormdata.append(
-              "certificationName ",
-              certificate.productGroup[i].certificationName
-            );
-            certificateFormdata.append(
-              "grantOrg",
-              certificate.productGroup[i].grantOrg
-            );
-            certificateFormdata.append(
-              "certificationType",
-              certificate.productGroup[i].certificationType
-            );
-            certificateFormdata.append(
-              "certificationCode",
-              certificate.productGroup[i].certificationCode
-            );
-            certificateFormdata.append(
-              "credentialLevelType",
-              certificate.productGroup[i].credentialLevelType
-            );
-            certificateFormdata.append(
-              "firstBeginDate",
-              certificate.productGroup[i].firstBeginDate
-            );
-            certificateFormdata.append(
-              "validBeginDate",
-              certificate.productGroup[i].validBeginDate
-            );
-            certificateFormdata.append(
-              "validEndDate",
-              certificate.productGroup[i].validEndDate
-            );
-            certificateFormdata.append(
-              "certificationStatus",
-              certificate.productGroup[i].certificationStatus
-            );
-            certificateFormdata.append(
-              "accessory ",
-              this.$global_msg.photoArr[i].accessory[0].raw
-            );
-            // for(var i=0;i<=this.$global_msg.photoArr.length;i++){
-
-            //   certificateFormdata.append("accessory ", this.$global_msg.photoArr[i].accessory[0].raw);
-            // }
-            var certificateUrl =
-              "/bashUrl/smart/worker/roster/" +
-              sessionStorage.getItem("userId") +
-              "/labour/credential/" +
-              this.id;
-            this.http.put(certificateUrl, certificateFormdata).then(res => {
-              if (res.code == 200) {
-                //请求成功
-                this.$router.push({ path: "/roster/personnel" });
-                this.cancel(formName);
-              }
-            });
-          }
-        }
-      } else {
-        this.$router.push({ path: "/roster/personnel" });
-      }
     },
     //
     addCer(formName) {

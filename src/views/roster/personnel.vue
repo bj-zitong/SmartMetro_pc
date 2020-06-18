@@ -735,7 +735,7 @@ export default {
       this.$global_msg.uId = row.pinfoId;
       // this.$router.push({ path: "/LabourNewlyadded" });
       this.$router.push({
-        name: "LabourNewlyadded",
+        name: "Labouredit",
         params: {
           id:row.pinfoId
         }

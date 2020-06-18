@@ -37,8 +37,8 @@
                 <el-option
                   v-for="item in options"
                   :key="item.value"
-                  :label="item.no"
-                  :value="item.value"
+                  :label="item.value"
+                  :value="item.label"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -213,7 +213,6 @@
             <el-form-item style="float:right;position:relative;bottom:6px;">
               <el-button type="primary" round class="cancel-style" @click.native="cancel('form')">取消</el-button>
               <el-button type="primary" round @click.native="submitForm('form')">提交</el-button>
-              {{options}}
             </el-form-item>
           </el-col>
         </el-form>

@@ -11,25 +11,25 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/systemUrl': {
-        target: 'http://192.168.1.30:8001', //系统
-        // target: 'http://192.168.1.108:8001', //系统
+        // target: 'http://192.168.1.100:8001/auth', //系统
+        target: 'http://192.168.1.199:8001', //系统
         secure: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/systemUrl': 'http://192.168.1.30:8001'
-          // '^/systemUrl': 'http://192.168.1.108:8001'
+          // '^/systemUrl': 'http://192.168.1.105:8003'
+          '^/systemUrl': ''
         }
       },
       '/bashUrl': {
         //  target: 'http://192.168.1.105:8002',
-        target: 'http://192.168.1.30:8002',
-        // target: 'http://192.168.1.108:8002',
+        // target: 'http://192.168.1.30:8000/worker',
+        target: 'http://192.168.1.199:8002',
         secure: false,
         changeOrigin: true,
         pathRewrite: {
           // '^/bashUrl': 'http://192.168.1.105:8002',
-          '^/bashUrl': 'http://192.168.1.30:8002'
-          // '^/bashUrl': 'http://192.168.1.108:8002'
+          '^/bashUrl': ''
+          // '^/bashUrl': 'http://192.168.1.100:8002'
         }
       },
     },
