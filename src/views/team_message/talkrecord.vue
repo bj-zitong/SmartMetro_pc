@@ -52,7 +52,7 @@
             <el-table-column prop="createTime" label="创建日期" width="150"></el-table-column>
             <el-table-column prop="updateTime" label="修改日期" width="150"></el-table-column>
             <!-- accessoryPath 路径-->
-            <el-table-column label="视频附件" width="100" fixed="right">
+            <el-table-column label="影音附件" width="100" fixed="right">
               <template slot-scope="scope">
                 <img
                   src="../../../static/image/shangchuan.png"
@@ -172,17 +172,18 @@
     <!--- 视频上传-->
     <el-dialog :visible.sync="csvVisible" width="50%">
       <div>
+        <!--  accept=".mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb"-->
         <el-form ref="file" label-width="120px">
-          <el-form-item label="视频上传：" prop="videoForm">
+          <el-form-item label="影音附件：" prop="videoForm">
             <el-upload
               class="upload-demo"
               v-model="videoForm.getVideo"
               action
-              accept=".mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb"
               :on-change="handleChange"
               :file-list="fileList"
               :auto-upload="false"
               :limit="1"
+              accept=".mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb, .jpeg, .gif, .png,.jpg"
               :show-file-list="true"
             >
               <i class="el-icon-upload"></i>
@@ -190,7 +191,10 @@
                 将文件拖到此处，或
                 <em>点击上传</em>
               </div>
-              <div class="el-upload__tip" slot="tip">上传视频</div>
+              <div
+                class="el-upload__tip"
+                slot="tip"
+              >请上传后缀名为mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb,.jpeg,.gif,.png,.jpg的附件！文件最大限制为5M!</div>
             </el-upload>
           </el-form-item>
         </el-form>
@@ -227,6 +231,7 @@ export default {
       innerVisible: false, //二层
       csvVisible: false,
       fileList: [], //上传
+      names: null, //参加作业人员名单
       formSpeech: {
         //班前讲话
         jobsite: "",
@@ -306,7 +311,46 @@ export default {
       // this.file.uploadFile = fileList;
       this.videoForm.getVideo = file.raw;
     },
+    beforeUpload(file) {
+      var FileExt = file.name.replace(/.+\./, "");
+      if (
+        [
+          "jpg",
+          "png",
+          "txt",
+          "zip",
+          "rar",
+          "pdf",
+          "doc",
+          "docx",
+          "xlsx"
+        ].indexOf(FileExt.toLowerCase()) === -1
+      ) {
+        this.$message({
+          type: "warning",
+          message:
+            "请上传后缀名为mp4, .qlv, .qsv, .ogg, .flv, .avi, .wmv, .rmvb,.jpeg,.gif,.png的附件！"
+        });
+        return false;
+      }
+      this.isLt2k = file.size / 1024 < 200 ? "1" : "0";
+      console.log(this.isLt2k);
+      if (this.isLt2k === "0") {
+        this.$message({
+          message: "上传文件大小不能超过5M!",
+          type: "error"
+        });
+      }
+      return this.isLt2k === "1" ? true : false;
+    },
     impotVideo() {
+      if(this.videoForm.getVideo.size>(1024*5)){
+         this.$message({
+          message: "上传文件大小不能超过5M!",
+          type: "error"
+        });
+        return;
+      }
       var url =
         "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
@@ -333,12 +377,12 @@ export default {
       }).then(
         res => {
           if (res.code == 200) {
-            this.getOtherStaffs();
-            this.csvVisible = false;
             this.$message({
               type: "success",
               message: "上传成功!"
             });
+            this.csvVisible = false;
+            this.getOtherStaffs();
           }
         },
         err => {}
@@ -358,19 +402,50 @@ export default {
         page: this.listQuery.currentPage,
         pLabourCompanyId: this.form.laborCompany
       });
+      debugger;
       var url =
         "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/team/meeting/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-          var total = res.data.total;
-          var rows = res.rows;
-          this.tableData = res.data.rows;
-          this.total = total;
+          if (res.data != null) {
+            var total = res.data.total;
+            var arrs = res.data.rows;
+            var rows=arrs;
+            // this.tableData = rows;
+            console.log(rows);
+            for (var i = 0; i < rows.length; i++) {
+               var name=null;
+              var ids = rows[i].workerInfoIds;
+              console.log(ids);
+              if (ids != null && ids!=undefined) {
+                  var params = JSON.stringify({ ids: ids });
+                  var url2 =
+                    "/bashUrl/smart/worker/labour/" +
+                    sessionStorage.getItem("userId") +
+                    "/team/meeting/querylabourbyid";
+                  this.http.post(url2, params).then(res2 => {
+                    console.log(res2);
+                    if (res2.code == "200") {
+                      console.log(res2.data);
+                      name=res2.data;
+                      // rows[i].workerInfoIds=name;
+                      console.log( rows[i].workerInfoIds);
+                    }
+                      // this.tableData.workerInfoIds =name;
+                  });
+              }
+            }
+            this.total = total;
+            this.tableData=rows;
+            console.log(this.tableData);
+            console.log(rows);
+          }
         }
       });
     },
+
     //获得表格前面选中的id值
     changeFun() {
       var ids = new Array();
@@ -470,7 +545,7 @@ export default {
     },
     selectPerson() {
       this.innerVisible = true;
-       var data = JSON.stringify({
+      var data = JSON.stringify({
         pageSize: 10000,
         page: 1
       });
@@ -480,7 +555,7 @@ export default {
         "/labour/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-         this.persons=res.data.rows;
+          this.persons = res.data.rows;
         }
       });
       // this.persons = [

@@ -17,6 +17,8 @@ import store from './store'
 import i18n from './lang'
 // 全局权限检查
 import './permission'
+
+
 // 全局图标
 import './icons'
 // 全局 Mock 接口

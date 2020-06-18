@@ -54,7 +54,7 @@
               @selection-change="handleSelectionChange"
             ></el-table-column>
             <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
-            <el-table-column prop="jobType" label="岗位/职责">
+            <el-table-column prop="jobType" label="岗/职位">
               <template slot-scope="scope">
                 <span v-if="scope.row.jobType==0">xxxx1</span>
                 <span v-if="scope.row.jobType==1">xxxx2</span>

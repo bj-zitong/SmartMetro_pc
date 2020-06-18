@@ -37,7 +37,7 @@
                 <el-option
                   v-for="item in options"
                   :key="item.value"
-                  :label="item.label"
+                  :label="item.no"
                   :value="item.value"
                 ></el-option>
               </el-select>
@@ -213,6 +213,7 @@
             <el-form-item style="float:right;position:relative;bottom:6px;">
               <el-button type="primary" round class="cancel-style" @click.native="cancel('form')">取消</el-button>
               <el-button type="primary" round @click.native="submitForm('form')">提交</el-button>
+              {{options}}
             </el-form-item>
           </el-col>
         </el-form>
@@ -223,6 +224,7 @@
 <script>
 import rules from "@/utils/rules";
 import options from "@/common/options";
+// import { isLogin} from "@/common/options";
 import { handleCofirm } from "@/utils/confirm";
 import { beforeAvatarUpload } from "@/common/imgcompress";
 // import { isValidUsername } from '@/utils/validate'
@@ -343,6 +345,7 @@ export default {
     };
   },
   activated() {
+  console.log(options);
     if (this.$global_msg.uId == 0) {
       if (
         sessionStorage.getItem("data") != null)

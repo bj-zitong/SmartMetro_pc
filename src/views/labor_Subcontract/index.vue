@@ -105,6 +105,8 @@
             </template>
           </el-table-column>
           <el-table-column prop="corpCode" label="组织机构代码" min-width="120"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" min-width="180"></el-table-column>
+          <el-table-column prop="updateTime" label="修改时间" min-width="180"></el-table-column>
           <el-table-column label="操作" width="240" fixed="right">
             <template slot-scope="scope">
               <el-button
@@ -178,7 +180,7 @@
         <el-form-item prop="contractCode" label="合同编号">
           <el-input v-model="formLabor.contractCode"></el-input>
         </el-form-item>
-        <el-form-item label="有效时间" required>
+        <el-form-item label="合同有效时间" required>
           <el-col :span="11">
             <el-form-item prop="startDate">
               <el-date-picker
@@ -219,7 +221,7 @@
             <el-option label="专业分包" value="2"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="corpCode" label="所属企业组织机构代码" class="labelWidth">
+        <el-form-item prop="corpCode" label="组织机构代码" class="labelWidth">
           <el-input v-model="formLabor.corpCode"></el-input>
         </el-form-item>
         <el-form-item>
@@ -251,14 +253,15 @@
           <el-input v-model="formTeam.teamName" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item prop="teamType" label="班组类型：">
-          <el-select v-model="formTeam.teamType">
+          <!-- <el-select v-model="formTeam.teamType">
             <el-option
               v-for="item in teamOptions"
               :key="item.id"
               :label="item.name"
               :value="item.id"
             ></el-option>
-          </el-select>
+          </el-select> -->
+           <el-input v-model="formTeam.teamType" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item prop="teamLeaderName" label="班组长：">
           <el-input v-model="formTeam.teamLeaderName" placeholder="请输入"></el-input>
@@ -741,7 +744,7 @@ export default {
         "/company/management/import";
       let params = new FormData();
       params.append("file",file.raw);
-      this.http.get(url, params).then(res => {
+      this.http.post(url, params).then(res => {
         if (res.code == 200) {
           this.getTable();
         }

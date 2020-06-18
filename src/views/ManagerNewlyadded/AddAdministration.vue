@@ -43,8 +43,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="岗位/职责" prop="jobType" class="el-form-item">
-              <el-select v-model="form.jobType" placeholder="请选择岗位/职责">
+            <el-form-item label="岗/职位" prop="jobType" class="el-form-item">
+              <el-select v-model="form.jobType" placeholder="请选择岗/职位">
                 <el-option label="xxxx1" value="0"></el-option>
                 <el-option label="xxxx2" value="1"></el-option>
               </el-select>
@@ -221,7 +221,7 @@ export default {
           { required: true, message: "请输入承建单位", trigger: "blur" }
         ],
         jobType: [
-          { required: true, message: "请选择岗位/职责", trigger: "change" }
+          { required: true, message: "请选择岗/职位", trigger: "change" }
         ],
         urgentLinkMan: [
           { required: true, message: "请输入紧急联系人", trigger: "blur" }
