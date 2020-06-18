@@ -19,7 +19,7 @@
     <el-container>
       <el-menu class="main-con-box">
         <div class="main-btn-box">
-          <el-button class="T-H-B-DarkBlue" @click="addClick">新增</el-button>
+          <el-button class="T-H-B-DarkBlue" @click="addClick()">新增</el-button>
           <el-button class="T-H-B-Grey" @click="deleteBatchClick">删除</el-button>
         </div>
         <!-- 表格& -->
@@ -78,8 +78,9 @@
     </el-container>
     <!-- 添加& -->
     <el-dialog
+      top="3%"
       width="450px"
-      class="popupDialog abow_dialog"
+      class="popupDialog"
       :title="titleTrain"
       :visible.sync="dialogVisibleTrain"
       :close-on-click-modal="false"
@@ -90,14 +91,16 @@
       <el-form
         ref="refTrain"
         class="demo-ruleForm"
-        label-width="80px"
+        style="margin-top:50px"
+        label-width="140px"
         :rules="rulesForm"
         :model="formTrain"
+        :label-position="labelPosition"
       >
         <el-form-item prop="trainingName" label="培训主题" :required="true">
           <el-input v-model="formTrain.trainingName"></el-input>
         </el-form-item>
-         <el-form-item prop="trainingType" label="培训类型" :required="true">
+        <el-form-item prop="trainingType" label="培训类型" :required="true">
           <el-input v-model="formTrain.trainingType"></el-input>
         </el-form-item>
         <el-form-item prop="trainingAmount" label="培训人数" :required="true">
@@ -121,8 +124,8 @@
             type="datetime"
             style="width: 100%;"
             :editable="false"
-             format="yyyy-MM-dd"
-             value-format="yyyy-MM-dd"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
             placeholder="选择培训时间"
           ></el-date-picker>
         </el-form-item>
@@ -135,12 +138,12 @@
         <el-form-item prop="description" label="培训提纲" :required="true">
           <el-input v-model="formTrain.description"></el-input>
         </el-form-item>
-        <el-form-item>
+        <div class="ConfirmCancel">
           <el-button class="F-Grey" round @click.native="cloneTrainForm('refTrain')">取消</el-button>
           <el-button class="F-Blue" round @click.native="submiTraintForm('refTrain')">确定</el-button>
-        </el-form-item>
+        </div>
       </el-form>
-       <el-dialog
+      <el-dialog
         width="25%"
         title="选择人员"
         :visible.sync="innerVisible"
@@ -172,13 +175,14 @@
 <script>
 import { handleCofirm } from "@/utils/confirm";
 import Pagination from "@/components/pagination";
-import {updateVegetablesCollection} from '@/utils/utils'
+import { updateVegetablesCollection } from "@/utils/utils";
 export default {
   components: {
     Pagination
   },
   data() {
     return {
+      labelPosition: "left",
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
@@ -188,21 +192,22 @@ export default {
       screenForm: {
         trainingName: ""
       },
-      total:0,
+      total: 0,
       titleTrain: "",
       innerVisible: false, //二层
-      persons:[],
+      changeIncreases: "新增",
+      persons: [],
       formTrain: {
-        trainingName:'',
+        trainingName: "",
         trainingType: "",
-        trainObject: "",
-        description:'',
-        trainDepartment: "",
+        trainingAmount: "",
+        trainingObject: "",
+        trainingDepartment: "",
         trainer: "",
         trimmer: "",
         trainingDate: "",
-        trainAddress: "",
-        trainDuration: "",
+        trainingAddress: "",
+        trainingDuration: "",
         description: ""
       },
       // 自定义表单验证
@@ -210,7 +215,7 @@ export default {
         trainingName: [
           { required: true, message: "请输入培训主题", trigger: "blur" }
         ],
-        trainingtype: [
+        trainingType: [
           { required: true, message: "请输入培训类型", trigger: "blur" }
         ],
         trainingAmount: [
@@ -244,13 +249,21 @@ export default {
   activated() {
     // 页面加载时获取信息
     this.getTable();
+    var that = this;
+    // this.$refs.multipleTable2.toggleRowSelection(this.persons[1],true);
+    // this.$nextTick(() => {
+    //   this.$refs.multipleTable2.toggleRowSelection(this.persons[1],true);
+    // });
+    // this.$nextTick（function(){
+
+    // })
   },
   methods: {
     // 表格加载请求
     getTable() {
       var data = JSON.stringify({
-        trainingName:this.screenForm.trainingName,
-         pageSize: this.listQuery.pageSize,
+        trainingName: this.screenForm.trainingName,
+        pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage
       });
       //请求
@@ -260,6 +273,9 @@ export default {
         "/record/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
+          this.$nextTick(() => {
+            console.log(this.$refs.multipleTable2);
+          });
           var total = res.data.total;
           var rows = res.data.rows;
           this.tableData = rows;
@@ -274,7 +290,7 @@ export default {
       console.log(arrays);
       for (var i = 0; i < arrays.length; i++) {
         // 获得id
-        var id = arrays[i].ptrainingId;
+        var id = arrays[i].pTrainingId;
         ids.push(id);
       }
       return ids;
@@ -296,18 +312,18 @@ export default {
     //  添加/编辑 提交
     submiTraintForm(refTrain) {
       // 验证
-      // var pids = this.changeFunPerson();
-      console.log(this.formTrain)
+var pids = this.changeFunPerson();
       this.$refs[refTrain].validate(valid => {
         if (valid) {
           let form = this.$refs[refTrain].model;
           // 判断id是否为空
-          if (form.ptrainingId == null) {
+          if (this.titleTrain == "新增培训记录") {
+            
             var url =
               "/bashUrl/smart/worker/train/" +
               sessionStorage.getItem("userId") +
               "/record";
-              
+            this.formTrain.trainingObject = pids.toString();
             let data = JSON.stringify(this.formTrain);
             this.http
               .post(url, data)
@@ -322,14 +338,34 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleLabor = false;
           } else {
-            let data = JSON.stringify(this.formTrain);
+            alert("修改");
+            // console.log(this.formTrain)
+            // this.formTrain.trainingObject = this.formTrain.trainingObject;
+            var data = {
+              trainingName: this.formTrain.trainingName,
+              trainingType: this.formTrain.trainingType,
+              trainingAmount: this.formTrain.trainingAmount,
+              trainingObject: pids.toString(),
+              trainingDepartment: this.formTrain.trainingDepartment,
+              trainer: this.formTrain.trainer,
+              trimmer: this.formTrain.trimmer,
+              trainingDate:this.formTrain.trainingDate,
+              trainingAddress:this.formTrain.trainingAddress,
+              trainingDuration: this.formTrain.trainingDuration,
+              description: this.formTrain.description
+            };
+            // let data = JSON.stringify(this.formTrain);
             this.http
-              .put("/bashUrl/smart/worker/train/1/record", data)
+              .put(
+                "/bashUrl/smart/worker/train/" +
+                  sessionStorage.getItem("userId") +
+                  "/record",
+                data
+              )
               .then(res => {
                 if (res.code == 200) {
                   this.$message({
@@ -340,7 +376,6 @@ export default {
                 }
               })
               .catch(res => {
-                console.log("error!");
                 return false;
               });
             this.dialogVisibleLabor = false;
@@ -353,10 +388,20 @@ export default {
       });
     },
     //选择对象
-     selectPerson() {
+    selectPerson() {
       this.innerVisible = true;
-       let _this = this;
-       var data = JSON.stringify({
+      //  this.$nextTick(() => {
+      //   // console.log(this.formTrain.trainingObject.split(","));
+      //   for (
+      //     var i = 0;
+      //     i < this.formTrain.trainingObject.split(",").length;
+      //     i++
+      //   ) {
+      //     this.$refs.multipleTable2.toggleRowSelection(this.persons[i], true);
+      //   }
+      // });
+      let _this = this;
+      var data = JSON.stringify({
         pageSize: 10000,
         page: 1
       });
@@ -366,21 +411,29 @@ export default {
         "/labour/management";
       this.http.post(url, data).then(res => {
         if (res.code == 200) {
-         this.persons=res.data.rows;
+          this.persons = res.data.rows;
         }
       });
     },
+    updateVegetablesCollection(veggies, veggie) {
+      var istf;
+      if (veggies.indexOf(veggie) === -1) {
+        veggies.push(veggie);
+        istf = false;
+      } else if (veggies.indexOf(veggie) > -1) {
+        istf = true;
+      }
+      return Promise.resolve(istf);
+    },
     changeFunPerson(val) {
       var ids = [];
-      console.log(this.$refs.multipleTable2)
-      // var arrays = this.$refs.multipleTable2.selection;
-      // for (var i = 0; i < arrays.length; i++) {
-      //   // 获得id
-      //   ids.push(arrays[i].pinfoId);
-      // }
-      // this.selectedPersonIds = ids;
-      // this.multipleSelection = val;
-      // return ids;
+      console.log(this.$refs.multipleTable2.selection);
+      var arrays = this.$refs.multipleTable2.selection;
+      for (var i = 0; i < arrays.length; i++) {
+        // 获得id
+        ids.push(arrays[i].pinfoId);
+      }
+      return ids;
     },
     //  新增/编辑   关闭
     cloneTrainForm(refTrain) {
@@ -458,7 +511,7 @@ export default {
     // 删除
     deleteRowClick(index, row) {
       let ids = [];
-      ids.push(row.ptrainingId);
+      ids.push(row.pTrainingId);
       handleCofirm("确定删除吗？")
         .then(res => {
           let data = JSON.stringify(ids);
@@ -541,5 +594,9 @@ export default {
 
 .cancelClone {
   background: linear-gradient(180deg, rgba(225, 225, 225, 1) 0%, rgba(190, 190, 190, 1) 100%);
+}
+
+.ConfirmCancel {
+  text-align: center;
 }
 </style>

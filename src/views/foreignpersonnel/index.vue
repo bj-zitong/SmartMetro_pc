@@ -73,16 +73,16 @@
     <div style="text-align:center;">
       <el-dialog
         :visible.sync="dialogFormVisible"
-        width="450px"
+        width="650px"
         title="外来人员登记"
         :show-close="false"
-        class="popupDialog abow_dialog"
+        class="popupDialog"
         :center="true"
         :lockScroll="true"
       >
         <div class="login_box">
           <el-form
-            label-width="80px"
+            label-width="120px"
             class="demo-ruleForm"
             method="post"
             enctype="multipart/form-data"
@@ -90,8 +90,9 @@
             :rules="formRules"
             :model="form"
             action="http://192.168.1.164:8001/auth/user/baseUser"
+            :label-position="labelPosition"
           >
-            <el-form-item prop="id">
+            <el-form-item prop="id" v-show="false">
               <el-input v-model="form.id" type="text" hidden></el-input>
             </el-form-item>
             <el-form-item prop="name" label="用户名">
@@ -244,6 +245,7 @@ export default {
   },
   data() {
     return {
+      labelPosition: 'left',
       token: null, // token
       dialogFormVisible: false,
       dialogFormVisibleDetail: false,

@@ -83,6 +83,7 @@
         :rules="formRules"
         :model="formClass"
         label-width="80px"
+        :label-position="labelPosition"
         action="http://192.168.1.164:8001/auth/user/baseUser"
       >
         <el-form-item prop="pteamMasterId">
@@ -154,9 +155,10 @@
     <el-dialog
       title="班前讲话记录"
       :visible.sync="outerVisible"
-      width="25%"
+      width="650px"
       :center="true"
       :show-close="false"
+      style="height:850px"
       class="popupDialog abow_dialog"
     >
       <div>
@@ -166,8 +168,9 @@
           ref="formSpeech"
           :rules="formSpeechRules"
           :model="formSpeech"
-          label-width="80px"
+          label-width="180px"
           action="http://192.168.1.164:8001/auth/user/baseUser"
+          :label-position="labelPosition"
         >
           <el-form-item prop="jobsite" label="作业部位:">
             <el-input v-model="formSpeech.jobsite" placeholder="作业部位"></el-input>
@@ -248,6 +251,7 @@ export default {
   },
   data() {
     return {
+      labelPosition: 'left',
       id: null, //当前选中的id
       token: null, // token
       // 动态数据

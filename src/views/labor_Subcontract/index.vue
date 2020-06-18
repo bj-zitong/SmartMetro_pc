@@ -138,7 +138,7 @@
     </el-container>
     <!-- 添加 -->
     <el-dialog
-      width="450px"
+      width="650px"
       class="popupDialog abow_dialog"
       :title="titleLabor"
       :visible.sync="dialogVisibleLabor"
@@ -151,10 +151,11 @@
         ref="refLabor"
         :rules="rulesForm"
         :model="formLabor"
-        label-width="80px"
+        label-width="180px"
         class="demo-ruleForm"
+        :label-position="labelPosition"
       >
-        <el-form-item prop="pLabourCompanyId">
+        <el-form-item prop="pLabourCompanyId" v-show="false">
           <el-input v-model="formLabor.pLabourCompanyId" type="text" hidden></el-input>
         </el-form-item>
         <el-form-item prop="company" label="公司名称">
@@ -188,11 +189,11 @@
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
                 v-model="formLabor.startDate"
-                style="width: 100%;"
+                style="width: 95%;"
               ></el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col class="line" :span="2">至</el-col>
+          <el-col class="line" :span="2" style="padding-left:5px;"> 至 </el-col>
           <el-col :span="11">
             <el-form-item prop="endDate">
               <el-date-picker
@@ -240,7 +241,7 @@
       :close-on-click-modal="false"
       :hide-required-asterisk="true"
     >
-      <el-form ref="refTeam" label-width="100px" :rules="rulesForm" :model="formTeam" action>
+      <el-form ref="refTeam" label-width="100px" :rules="rulesForm" :model="formTeam" :label-position="labelPosition" action>
         <el-form-item prop="pLabourCompanyId">
           <el-input v-model="formTeam.pLabourCompanyId" type="text" hidden></el-input>
         </el-form-item>
@@ -290,6 +291,7 @@ export default {
   data() {
     return {
       total: "",
+      labelPosition: 'left',
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10

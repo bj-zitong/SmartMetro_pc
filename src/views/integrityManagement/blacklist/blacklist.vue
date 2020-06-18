@@ -23,6 +23,7 @@
           :limit="1"
         >-->
         <el-button class="T-H-B-SkyBlue">上传</el-button>
+        <!-- <div v-if="generalAdministrator">fdasfdsfsdf</div> -->
         <!-- </el-upload> -->
         <div class="table-content">
           <el-table
@@ -46,17 +47,15 @@
             <el-table-column prop="provePath" label="相关证明"></el-table-column>
             <el-table-column prop="status" label="审核状态">
               <template slot-scope="scope">
-                <!-- <span v-show="updateVegetablesCollection(rowArr,scope.row.status)">已拉黑</span>
+                <!-- <span v-if="scope.row.status==5 && roleName=='Administrator'">已拉黑</span>
                 <span v-if="scope.row.status==7 && roleName=='Administrator'">已取消拉黑</span>
                 <span v-if="scope.row.status==5 && roleName=='Administrator'">申请取消拉黑</span> -->
 
-
-                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">已拉黑</span>
-                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">已取消拉黑</span>
-                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">申请取消拉黑</span>
-                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">拉黑已提交</span>
-                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">驳回</span>
-                <span v-if="updateVegetablesCollection(rowArr,scope.row.status)">申请取消拉黑</span>
+                <span v-if="scope.row.status==6 && generalAdministrator">已拉黑</span>
+                <span v-if="scope.row.status==7 && generalAdministrator">已取消拉黑</span>
+                <span v-if="scope.row.status==3 && generalAdministrator">拉黑已提交</span>
+                <span v-if="scope.row.status==4 && generalAdministrator">驳回</span>
+                <span v-if="scope.row.status==5 && generalAdministrator">申请取消拉黑</span>
               </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="280">
@@ -66,20 +65,20 @@
                   size="mini"
                   type="warning"
                   @click="cancelClick(scope.row)"
-                  v-show="roleName=='普通管理员'?true:false"
+                  v-show="updateVegetablesCollection(rowArr, 1)?false:true"
                 >取消</el-button>
                 <el-button
                   class="T-R-B-BlackishGreen btn"
                   size="mini"
                   type="warning"
-                  v-show="roleName=='Administrator' && scope.row.status!=6 && scope.row.status!=7 ?true:false"
+                  v-show="updateVegetablesCollection(rowArr, 1) && scope.row.status!=6 && scope.row.status!=7 ?true:false"
                   @click="throughClick(scope.row)"
                 >通过</el-button>
                 <el-button
                   class="T-R-B-Cyan"
                   size="mini"
                   type="warning"
-                  v-show="roleName=='Administrator' && scope.row.status!=6 && scope.row.status!=7?true:false"
+                  v-show="updateVegetablesCollection(rowArr, 1) && scope.row.status!=6 && scope.row.status!=7?true:false"
                   @click="rejectClick(scope.row)"
                 >驳回</el-button>
               </template>
@@ -117,7 +116,6 @@
 <script>
 import Pagination from "@/components/pagination";
 import { handleCofirm } from "@/utils/confirm";
-
 export default {
   components: {
     Pagination
@@ -125,7 +123,7 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      roleName: JSON.parse(sessionStorage.getItem("user")).roles,
+      generalAdministrator: false,
       // 动态数据
       tableData: [],
       total: 10,
@@ -143,32 +141,38 @@ export default {
     var roles = JSON.parse(sessionStorage.getItem("user")).roles;
     for (var i = 0; i < roles.length; i++) {
       this.rowArr.push(roles[i].sysRoleId);
+      
     }
-    console.log(this.rowArr);
+    // this.updateVegetablesCollection(this.rowArr, 3)
     this.getDateList();
   },
   methods: {
+    //判断普通用户
     updateVegetablesCollection(veggies, veggie) {
       var istf;
       if (veggies.indexOf(veggie) === -1) {
         veggies.push(veggie);
         istf = false;
-      } else if (veggies.indexOf(veggie) > -1) {
+      } else if (veggies.indexOf(veggie) > -1 || veggies.indexOf(2) > -1) {
         istf = true;
+        this.generalAdministrator=true
       }
-      console.log(istf);
       return Promise.resolve(istf);
     },
     // 列表请求
     getDateList() {
-      // 获得搜索的内容
+      // 获得搜索的内容 超管6 普通0
+      var start = 0
+      this.updateVegetablesCollection(this.rowArr, 1).then(res => {
+            if (res == true) {
+              start=6
+            } else {
+              start=0
+            }
+          });
       var data = JSON.stringify({
         name: this.formInline.name,
-        status:
-          JSON.parse(sessionStorage.getItem("user")).roles[0].roleName ==
-          "普通管理员"
-            ? "0"
-            : "6",
+        status:start,
         pageSize: this.listQuery.pageSize,
         page: this.listQuery.currentPage
       });
@@ -177,18 +181,10 @@ export default {
         sessionStorage.getItem("userId") +
         "/labour/management";
       this.http.post(url, data).then(res => {
-        // if (res.code == 200) {
-        //   for(var i=0;i<res.data.rows.length;i++){
-        //      for(var i=0;i<this.rowArr.lenght;i++){
-        //         if(res.data.rows[i].status==this.rowArr[i]){
-        //            res.data.rows[i].status=this.rowArr[i]==0?'在场':this.rowArr[i]==1?'退场':this.rowArr[i]==2?'培训通过':this.rowArr[i]==3?'拉黑已提交':this.rowArr[i]==4?'驳回':this.rowArr[i]==5?'申请取消拉黑':this.rowArr[i]==6?'已拉黑':this.rowArr[i]==7?'已取消拉黑':''
-        //         }
-        //      }
-        //   }
-        //   console.log(res.data.rows)
-        //   this.tableData = res.data.rows;
-        //   this.total = res.data.total;
-        // }
+        if (res.code == 200) {
+          this.tableData = res.data.rows;
+          this.total = res.data.total;
+        }
       });
     },
     //取消

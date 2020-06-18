@@ -12,7 +12,7 @@
         >
           <el-col :span="8">
             <el-form-item label="姓名" prop="name" class="el-form-item">
-              <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
+              <el-input v-model="form.name" placeholder="请输入姓名" style="width:200px"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -28,7 +28,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="民族" prop="nation" class="el-form-item">
-              <el-input v-model="form.nation" placeholder="请输入民族"></el-input>
+              <el-input v-model="form.nation" placeholder="请输入民族" style="width:200px"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -50,12 +50,12 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="承建单位" prop="buildCorpName" class="el-form-item">
-              <el-input v-model="form.buildCorpName" placeholder="请输入承建单位"></el-input>
+              <el-input v-model="form.buildCorpName" placeholder="请输入承建单位" style="width:200px"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="紧急联系人" prop="urgentLinkMan" class="el-form-item">
-              <el-input v-model="form.urgentLinkMan" placeholder="请输入紧急联系人"></el-input>
+              <el-input v-model="form.urgentLinkMan" placeholder="请输入紧急联系人" style="width:200px"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">

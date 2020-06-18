@@ -111,6 +111,7 @@
           :rules="rulesForm"
           :model="formTeam"
           action
+          :label-position="labelPosition"
         >
           <el-form-item prop="sysUserId">
             <el-input v-model="formTeam.sysUserId" type="text" hidden></el-input>
@@ -145,7 +146,7 @@
           <el-form-item prop="confimPassword" label="确认密码：">
             <el-input type="password" v-model="formTeam.confimPassword" placeholder="请输入"></el-input>
           </el-form-item>
-          <el-form-item label="角色" prop="roles">
+          <el-form-item label="角色" prop="roles" style="padding-left:12px">
             <el-checkbox-group v-model="formTeam.roles" @change="handleCheckedRoleChange">
               <el-checkbox v-for="item in options" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
             </el-checkbox-group>
@@ -239,6 +240,7 @@ export default {
   },
   data() {
     return {
+      labelPosition: 'left',
       //  初始化页面
       total: 5, //总条数
       tableData: [], // 初始化表格
