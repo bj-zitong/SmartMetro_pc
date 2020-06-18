@@ -323,8 +323,19 @@ var pids = this.changeFunPerson();
               "/bashUrl/smart/worker/train/" +
               sessionStorage.getItem("userId") +
               "/record";
-            this.formTrain.trainingObject = pids.toString();
-            let data = JSON.stringify(this.formTrain);
+            var data = {
+              trainingName: this.formTrain.trainingName,
+              trainingType: this.formTrain.trainingType,
+              trainingAmount: this.formTrain.trainingAmount,
+              trainingObject: pids.toString(),
+              trainingDepartment: this.formTrain.trainingDepartment,
+              trainer: this.formTrain.trainer,
+              trimmer: this.formTrain.trimmer,
+              trainingDate:this.formTrain.trainingDate,
+              trainingAddress:this.formTrain.trainingAddress,
+              trainingDuration: this.formTrain.trainingDuration,
+              description: this.formTrain.description
+            };
             this.http
               .post(url, data)
               .then(res => {
@@ -342,9 +353,6 @@ var pids = this.changeFunPerson();
               });
             this.dialogVisibleLabor = false;
           } else {
-            alert("修改");
-            // console.log(this.formTrain)
-            // this.formTrain.trainingObject = this.formTrain.trainingObject;
             var data = {
               trainingName: this.formTrain.trainingName,
               trainingType: this.formTrain.trainingType,

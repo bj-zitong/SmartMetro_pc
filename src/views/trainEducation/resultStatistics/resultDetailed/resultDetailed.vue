@@ -54,12 +54,12 @@
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.isRelationGate"
-                  off-color="#000"
-                  off-text="禁止"
-                  off-value="0"
-                  on-color="#000"
-                  on-text="启动"
-                  on-value="1"
+              on-color="#F04134"
+              on-text="否"
+              on-value="1"
+              off-color="#00A854"
+              off-text="是"
+              off-value="0"
               @change="changeSwitch(scope.row)"
             ></el-switch>
           </template>
@@ -167,8 +167,16 @@ export default {
         "/score/management";
       this.http.post(url, params).then(res => {
         if (res.code == 200) {
-          this.total = res.data.total;
+           this.total = res.data.total;
           this.tableData = res.data.rows;
+          for (var i = 0; i < this.tableData.length; i++) {
+            if (this.tableData[i].isRelationGate == "0") {
+              this.tableData[i].isRelationGate = true;
+            } else {
+              this.tableData[i].isRelationGate = false;
+            }
+          }
+         
         }
       });
     },
@@ -181,10 +189,10 @@ export default {
     },
     //关联闸机
     changeSwitch(row) {
-      console.log(row.isRelationGate)
+      console.log(row.isRelationGate);
       var params = JSON.stringify({
         pScoreId: row.pScoreId,
-        isRelationGate: row.isRelationGate == true ? "1" : "0"
+        isRelationGate: row.isRelationGate == true ? "0" : "1"
       });
       var url =
         "/bashUrl/smart/worker/train/" +
@@ -192,7 +200,7 @@ export default {
         "/score";
       this.http.put(url, params).then(res => {
         if (res.code == 200) {
-          // this.getDatelist();
+          this.getDatelist();
           this.$message({
             type: "success",
             message: "修改成功!"

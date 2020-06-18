@@ -29,6 +29,9 @@
               <el-option label="专业分包" value="2"></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="时间：">
+            <el-date-picker v-model="screenForm.value1" type="datetime" placeholder="选择日期时间"></el-date-picker>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="getTable(0)">查询</el-button>
           </el-form-item>
@@ -52,16 +55,16 @@
             <el-button class="T-H-B-Cyan" type="primary" @click="importBatchClick">导入</el-button>
           </el-upload>-->
           <el-upload
-                class="upload-demo"
-                action
-                :on-change="handleChange"
-                :file-list="fileList"
-                :auto-upload="false"
-                :limit="2"
-                :show-file-list="false"
-              >
-                <el-button type="primary" style="margin-left:10px;">导入</el-button>
-              </el-upload>
+            class="upload-demo"
+            action
+            :on-change="handleChange"
+            :file-list="fileList"
+            :auto-upload="false"
+            :limit="2"
+            :show-file-list="false"
+          >
+            <el-button type="primary" style="margin-left:10px;">导入</el-button>
+          </el-upload>
         </div>
         <el-table
           ref="multipleTable"
@@ -195,7 +198,7 @@
               ></el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col class="line" :span="2" style="padding-left:5px;"> 至 </el-col>
+          <el-col class="line" :span="2" style="padding-left:5px;">至</el-col>
           <el-col :span="11">
             <el-form-item prop="endDate">
               <el-date-picker
@@ -243,7 +246,14 @@
       :close-on-click-modal="false"
       :hide-required-asterisk="true"
     >
-      <el-form ref="refTeam" label-width="100px" :rules="rulesForm" :model="formTeam" :label-position="labelPosition" action>
+      <el-form
+        ref="refTeam"
+        label-width="100px"
+        :rules="rulesForm"
+        :model="formTeam"
+        :label-position="labelPosition"
+        action
+      >
         <el-form-item prop="pLabourCompanyId">
           <el-input v-model="formTeam.pLabourCompanyId" type="text" hidden></el-input>
         </el-form-item>
@@ -261,8 +271,8 @@
               :label="item.name"
               :value="item.id"
             ></el-option>
-          </el-select> -->
-           <el-input v-model="formTeam.teamType" placeholder="请输入"></el-input>
+          </el-select>-->
+          <el-input v-model="formTeam.teamType" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item prop="teamLeaderName" label="班组长：">
           <el-input v-model="formTeam.teamLeaderName" placeholder="请输入"></el-input>
@@ -294,7 +304,7 @@ export default {
   data() {
     return {
       total: "",
-      labelPosition: 'left',
+      labelPosition: "left",
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数
         pageSize: 10
@@ -323,7 +333,8 @@ export default {
         //  筛选
         company: "",
         responsiblePersonName: "",
-        contractType: ""
+        contractType: "",
+        value1:''
       },
       company: [
         // { id: null, name: "" },
@@ -346,7 +357,7 @@ export default {
         corpCode: "",
         contractType: ""
       },
-      fileList:[],
+      fileList: [],
       // 自定义表单验证
       rulesForm: {
         company: [
@@ -651,7 +662,6 @@ export default {
           // const data = this.formatJson(filterVal, list)
           // export_json_to_excel(tHeader, res, '导出列表名称')
           // })
-          debugger;
 
           // //将文件流转成blob形式
           const blob = new Blob([res], {
@@ -738,14 +748,14 @@ export default {
       //     });
     },
     //  导入
-    handleChange(file,fileList) {
-      console.log(file.raw,fileList)
+    handleChange(file, fileList) {
+      console.log(file.raw, fileList);
       let url =
         "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
         "/company/management/import";
       let params = new FormData();
-      params.append("file",file.raw);
+      params.append("file", file.raw);
       this.http.post(url, params).then(res => {
         if (res.code == 200) {
           this.getTable();

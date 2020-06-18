@@ -14,6 +14,9 @@
                 ></el-option>
               </el-select>
             </el-form-item>
+             <el-form-item label="时间：">
+            <el-date-picker v-model="form.value1" type="datetime" placeholder="选择日期时间"></el-date-picker>
+          </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="getTalks()" style="margin-left:30px;">查询</el-button>
             </el-form-item>
@@ -257,7 +260,8 @@ export default {
       total: 0, //总条数
       ids: null, //选中的id
       form: {
-        laborCompany: "" //搜索内容
+        laborCompany: "",//搜索内容
+        value1:''
       },
       dialogFormVisible: false, //新增
       dialogVisible: false, //评价

@@ -5,7 +5,7 @@
     <div
       :class="hideMainContainer=='首页'||hideMainContainer=='工友须知'||hideMainContainer=='开复工管理'||hideMainContainer=='工地管理'||hideMainContainer=='角色管理'||hideMainContainer=='用户管理'||hideMainContainer=='分析'||hideMainContainer=='预警'?'main-container1':'main-container'"
     >
-      <tabs-view @tagName="tagName"></tabs-view>
+      <tabs-view @tagName="tagName" v-if="false"></tabs-view>
       <app-main></app-main>
     </div>
   </div>
@@ -33,6 +33,14 @@ export default {
   },
   computed: {
     ...mapGetters(["routers"])
+  },
+  activated() {
+    alert("969999")
+    // var uid = this.$route.params.id;
+    // this.id = uid;
+    // if (this.id!=0) {
+    //   this.getDeatli(this.id);
+    // }
   },
   mounted() {
     window.addEventListener("scroll", this.windowScroll);

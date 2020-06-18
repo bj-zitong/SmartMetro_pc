@@ -25,6 +25,9 @@
               <el-dropdown-item @click.native="logout">
                 <span style="display:block;">{{$t('navbar.logOut')}}</span>
               </el-dropdown-item>
+              <el-dropdown-item @click.native="removeSwitch">
+                <span style="display:block;">去掉切换</span>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -76,6 +79,9 @@ export default {
             }
           });
         });
+    },
+    removeSwitch(){
+         
     },
     ...mapActions({
       userLogout: "logout"

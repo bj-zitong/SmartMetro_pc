@@ -80,7 +80,6 @@ export default {
 
 <style lang="stylus">
 .tabs-view-container
-  height 40px
   padding 5px
   border-bottom 1px solid #dfdfdf
   .tags-view-item

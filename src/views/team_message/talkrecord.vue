@@ -404,7 +404,6 @@ export default {
         page: this.listQuery.currentPage,
         pLabourCompanyId: this.form.laborCompany
       });
-      debugger;
       var url =
         "/bashUrl/smart/worker/labour/" +
         sessionStorage.getItem("userId") +
