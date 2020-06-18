@@ -764,7 +764,7 @@ export default {
             validEndDate: "",
             certificationStatus: "",
             accessory: "",
-            pinfoId: null,
+            pInfoId: null,
             accessoryPath: null,
             pcredentialId: null,
             paccessoryId: null
@@ -1034,7 +1034,7 @@ export default {
     //最后提交
     submitForm() {
       //人员
-      debugger;
+      // debugger;
       var data = JSON.parse(sessionStorage.getItem("person"));
       var formData = new FormData();
       formData.append("name", data.name);
@@ -1057,6 +1057,7 @@ export default {
       formData.append("registrationType", data.registrationType);
       formData.append("idCardType", data.idCardType);
       formData.append("politicsType", data.politicsType);
+      formData.append("photo", data.politicsType);
       formData.append("isRelatedCertificates", data.isRelatedCertificates);
       formData.append(
         "isSpecialWorkTypeCheckups",
@@ -1076,11 +1077,11 @@ export default {
         this.pinfoId;
       this.http.put(dataUrl, formData).then(res => {
         if (res.code == 200) {
-          this.updateContract();
-          this.updatePay();
-          this.updateCer();
         }
       });
+      // this.updateContract();
+      // this.updatePay();
+      this.updateCer();
     },
     //合同
     updateContract() {
@@ -1123,7 +1124,7 @@ export default {
             "grantCompany",
             certificate.productGroup[i].grantCompany
           );
-          certificateFormdata.append("pInfoId", this.pInfoId);
+          // certificateFormdata.append("pInfoId", this.pInfoId);
           certificateFormdata.append(
             "certificationName ",
             certificate.productGroup[i].certificationName
@@ -1157,12 +1158,12 @@ export default {
             certificate.productGroup[i].validEndDate
           );
           certificateFormdata.append(
-            "paccessoryId",
+            "pAccessoryId",
             certificate.productGroup[i].paccessoryId
           );
           certificateFormdata.append(
-            "pinfoId",
-            certificate.productGroup[i].pinfoId
+            "pInfoId",
+           this.pinfoId
           );
            certificateFormdata.append(
             "accessoryPath",
@@ -1172,6 +1173,15 @@ export default {
             "certificationStatus",
             certificate.productGroup[i].certificationStatus
           );
+            certificateFormdata.append(
+            "certificationStatus",
+            certificate.productGroup[i].certificationStatus
+          );
+          certificateFormdata.append(
+              "pCredentialId ",
+              // this.$global_msg.photoArr[i].accessory[0].raw
+              certificate.productGroup[i].pcredentialId
+            );
           if (certificate.productGroup[i].accessory != null) {
             certificateFormdata.append(
               "accessory ",
