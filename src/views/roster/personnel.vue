@@ -98,9 +98,11 @@
                   <span v-if="scope.row.status==0">在场</span>
                   <span v-if="scope.row.status==1">退场</span>
                   <span v-if="scope.row.status==2">培训通过</span>
-                  <span v-if="scope.row.status==3">拉黑</span>
-                  <span v-if="scope.row.status==4">已提交</span>
-                  <span v-if="scope.row.status==5">已拉黑</span>
+                  <span v-if="scope.row.status==3">拉黑已提交</span>
+                  <span v-if="scope.row.status==4">驳回</span>
+                  <span v-if="scope.row.status==5">申请取消</span>
+                  <span v-if="scope.row.status==6">已拉黑</span>
+                  <span v-if="scope.row.status==7">已取消拉黑</span>
                </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" :width="tableWidth">
@@ -328,7 +330,8 @@ export default {
         uploadFile: ""
       },
       fileList: [],
-      csvVisible: false
+      csvVisible: false,
+      roles:null
     };
   },
   activated() {
@@ -354,6 +357,8 @@ export default {
         }
       }
     });
+    //获得当前用户的角色
+    var role=sessionStorage.getItem('user').roles;
   },
   methods: {
     //新增

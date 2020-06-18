@@ -39,10 +39,6 @@
           <el-table-column prop="projectName" label="工程名称" width="150"></el-table-column>
           <el-table-column prop="teamName" label="班组名称" width="150"></el-table-column>
           <el-table-column prop="teamType" label="班组类型" width="120">
-            <template slot-scope="scope">
-              <span v-if="scope.row.teamType==1">班组1</span>
-              <span v-if="scope.row.teamType==2">班组2</span>
-            </template>
           </el-table-column>
           <el-table-column prop="teamLeaderName" label="班组长" width="100"></el-table-column>
           <el-table-column prop="teamLeaderPhone" label="手机号" width="120"></el-table-column>
@@ -102,13 +98,14 @@
           <el-input v-model="formClass.groupLeader" placeholder="班组长"></el-input>
         </el-form-item>
         <el-form-item prop="profession" label="班组类型">
-          <el-select
+          <!-- <el-select
             v-model="formClass.profession"
             placeholder="请选择班组类型"
             @change="selectProfession"
           >
             <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-          </el-select>
+          </el-select> -->
+          <el-input v-model="formClass.profession" placeholder="班组类型"></el-input>
         </el-form-item>
         <div class="dialog-footer">
           <el-button @click="cloneLaborForm('formClass')" round class="F-Grey">取 消</el-button>
