@@ -116,8 +116,9 @@
         ref="refLabor"
         :rules="rulesForm"
         :model="formLabor"
-        label-width="80px"
+        label-width="120px"
         class="demo-ruleForm"
+        :label-position="labelPosition"
       >
         <el-form-item prop="orgSiteId">
           <el-input v-model="formLabor.orgSiteId" type="text" hidden></el-input>
@@ -169,6 +170,7 @@ export default {
   },
   data() {
     return {
+      labelPosition: 'left',
       //  初始化页面
       loading: true,
       total: 0, //总条数

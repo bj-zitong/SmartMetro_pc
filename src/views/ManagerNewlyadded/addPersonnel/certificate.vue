@@ -361,7 +361,7 @@ export default {
     uploadFile() {},
     handleChange(file, fileList) {
       this.$refs.form.clearValidate();
-      this.form.productGroup[0].accessory = fileList;
+      // this.form.productGroup[0].accessory = fileList;
       this.form.productGroup.forEach((item, index, array) => {
 
         item.accessory = fileList;

@@ -50,12 +50,16 @@
         <el-table-column prop="trainingType" label="培训类型"></el-table-column>
         <el-table-column prop="score" label="分数"></el-table-column>
         <el-table-column prop="examTime" label="培训时间" width="180"></el-table-column>
-        <el-table-column label="关联闸机" fixed="right" prop="isRelationQate">
+        <el-table-column label="关联闸机" fixed="right" prop="isRelationGate">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.isRelationGate"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
+                  off-color="#000"
+                  off-text="禁止"
+                  off-value="0"
+                  on-color="#000"
+                  on-text="启动"
+                  on-value="1"
               @change="changeSwitch(scope.row)"
             ></el-switch>
           </template>
@@ -177,9 +181,10 @@ export default {
     },
     //关联闸机
     changeSwitch(row) {
+      console.log(row.isRelationGate)
       var params = JSON.stringify({
         pScoreId: row.pScoreId,
-        status: row.status == true ? "0" : "1"
+        isRelationGate: row.isRelationGate == true ? "1" : "0"
       });
       var url =
         "/bashUrl/smart/worker/train/" +

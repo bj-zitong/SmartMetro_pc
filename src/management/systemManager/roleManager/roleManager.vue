@@ -105,6 +105,7 @@
           :rules="rulesForm"
           :model="formTeam"
           action
+          :label-position="labelPosition"
         >
           <el-form-item prop="sysUserId">
             <el-input v-model="formTeam.sysUserId" type="text" hidden></el-input>
@@ -115,7 +116,7 @@
           <el-form-item prop="memo" label="备注">
             <el-input v-model="formTeam.memo" placeholder="请输入"></el-input>
           </el-form-item>
-          <el-form-item label="权限" prop="permissionName">
+          <el-form-item label="权限" prop="permissionName" style="padding-left:12px">
             <el-checkbox-group v-model="formTeam.permissionName" @change="handleCheckedRoleChange">
               <el-checkbox v-for="item in options" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
             </el-checkbox-group>
@@ -142,6 +143,7 @@ export default {
   },
   data() {
     return {
+      labelPosition: 'left',
       //  初始化页面
       listQuery: {
         currentPage: 1, //与后台定义好的分页参数

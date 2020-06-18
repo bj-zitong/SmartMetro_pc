@@ -84,7 +84,7 @@
       top="30px"
       title="班前讲话记录"
       :visible.sync="outerVisible"
-      width="25%"
+      width="650px"
       style="height:100%"
       :center="true"
       :show-close="false"
@@ -96,8 +96,9 @@
         ref="formSpeech"
         :rules="formSpeechRules"
         :model="formSpeech"
-        label-width="80px"
+        label-width="180px"
         action
+        :label-position="labelPosition"
       >
         <el-form-item prop="pshiftMeetingId">
           <el-input v-model="formSpeech.pshiftMeetingId" type="text" hidden></el-input>
@@ -217,6 +218,7 @@ export default {
   },
   data() {
     return {
+      labelPosition: 'left',
       id: null, //当前选中的id
       updateForm: {
         file: ""
