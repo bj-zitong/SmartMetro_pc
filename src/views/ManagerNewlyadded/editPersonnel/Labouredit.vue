@@ -211,7 +211,7 @@
                       :on-change="handlePersonChange"
                       :file-list="fileList"
                       :auto-upload="false"
-                      :limit="2"
+                      :limit="1"
                       :show-file-list="true"
                     >
                       <el-button size="small" type="primary">点击上传</el-button>
@@ -455,9 +455,7 @@
                 </el-col>
                 <el-col>
                   <el-form-item
-                    label="附件上传"
                     :prop="`productGroup.${index}.accessoryPath`"
-                    :rules="cerrules.accessory"
                   >
                     <img
                       src="productGroup.${index}.accessoryPath"
@@ -477,6 +475,7 @@
                       action
                       :on-change="handleCerChange"
                       :file-list="fileList"
+                      :before-upload="beforeUpload(index)"
                       :auto-upload="false"
                       :limit="1"
                     >
@@ -810,7 +809,8 @@ export default {
       //图片上传
       fileList: [],
       wokerTypeArr: ["010", "020"],
-      isCertificate: false
+      isCertificate: false,
+      index:null//证书当前的下标
     };
   },
   activated() {
@@ -833,7 +833,6 @@ export default {
       // if(tab.name=='four'){
       //   this.getCer();
       // }
-      console.log(tab.name);
     },
     //获得人员详情
     getPerson() {
@@ -919,7 +918,6 @@ export default {
           // handleCofirm("确认保存吗", "warning")
           //   .then(res => {
           sessionStorage.setItem("CerForm", JSON.stringify(this.cerform)); //证书存储
-          console.log(this.cerform);
         }
       });
     },
@@ -945,6 +943,7 @@ export default {
         if (valid) {
           // handleCofirm("确认保存吗", "warning")
           // .then(res => {
+          this.$global_msg.editPhoto = this.form.photo;
           sessionStorage.setItem("person", JSON.stringify(this.form));
           this.$message({
             type: "success",
@@ -953,14 +952,13 @@ export default {
         }
         this.activeName = "second";
       });
-      console.log(this.form);
     },
     //人员
     handlePersonChange(file, fileList) {
       // this.fileList = [fileList[fileList.length - 1]];
       this.$refs.form.clearValidate();
       this.form.photo = file;
-      console.log(file);
+      console.log(this.form.photo.raw);
     },
     //合同提交
     submitContract(formName) {
@@ -979,7 +977,6 @@ export default {
           } else {
             this.activeName = "three";
           }
-          console.log(sessionStorage.getItem("contract"));
         }
       });
     },
@@ -995,20 +992,25 @@ export default {
             type: "success",
             message: "保存成功!"
           });
-          console.log(sessionStorage.getItem("pay"));
         }
       });
     },
+    beforeUpload(index){
+      this.index=index;
+      console.log('上传时的下标'+this.index);
+      return index;
+    },
     handleCerChange(file, fileList) {
       this.$refs.cerform.clearValidate();
-      // console.log(index);
-      // this.cerform.productGroup[0].accessoryPath = fileList;
-      this.cerform.productGroup.forEach((item, index, array) => {
-        item.accessory = fileList;
-        // item[index]=fileList
-        //执行代码
-      });
-      console.log(this.cerform.productGroup);
+      //获得下标进行赋值
+      var index=this.index;
+      this.cerform.productGroup[index].accessory=file;
+      // this.cerform.productGroup.forEach((item, index, array) => {
+      //   item.accessory = file;
+      //   // item[index]=fileList
+      //   //执行代码
+      // });
+      console.log(this.cerform.productGroup[index].accessory);
     },
     //证书
     submitaCerForm(formName) {
@@ -1021,6 +1023,7 @@ export default {
           });
           // handleCofirm("确认保存吗", "warning")
           //   .then(res => {
+          this.$global_msg.editAccessory = this.form.productGroup;
           sessionStorage.setItem("CerForm", JSON.stringify(this.cerform)); //证书存储
           this.$message({
             type: "success",
@@ -1034,7 +1037,6 @@ export default {
     //最后提交
     submitForm() {
       //人员
-      // debugger;
       var data = JSON.parse(sessionStorage.getItem("person"));
       var formData = new FormData();
       formData.append("name", data.name);
@@ -1057,7 +1059,6 @@ export default {
       formData.append("registrationType", data.registrationType);
       formData.append("idCardType", data.idCardType);
       formData.append("politicsType", data.politicsType);
-      formData.append("photo", data.politicsType);
       formData.append("isRelatedCertificates", data.isRelatedCertificates);
       formData.append(
         "isSpecialWorkTypeCheckups",
@@ -1066,9 +1067,11 @@ export default {
       formData.append("teamId ", data.teamId);
       formData.append("isTeamLeader", data.isTeamLeader);
       formData.append("isProjectTrain", data.isProjectTrain);
-      formData.append("pinfoId", data.pinfoId);
+      formData.append("pInfoId", data.pinfoId);
       if (data.photo != null) {
-        formData.append("photo", data.photo.raw);
+        formData.append("photo", this.$global_msg.editPhoto.raw);
+        console.log('人员上传 --');
+        console.log(this.$global_msg.editPhoto.raw);
       }
       var dataUrl =
         "/bashUrl/smart/worker/roster/" +
@@ -1077,10 +1080,11 @@ export default {
         this.pinfoId;
       this.http.put(dataUrl, formData).then(res => {
         if (res.code == 200) {
+          sessionStorage.removeItem('person');
         }
       });
-      // this.updateContract();
-      // this.updatePay();
+      this.updateContract();
+      this.updatePay();
       this.updateCer();
     },
     //合同
@@ -1094,6 +1098,7 @@ export default {
         "/labour/contract";
       this.http.put(contractUrl, data).then(res => {
         if (res.code == 200) {
+            sessionStorage.removeItem('contract');
         }
       });
     },
@@ -1108,14 +1113,13 @@ export default {
         "/labour/salary";
       this.http.put(payrollUrl, data).then(res => {
         if (res.code == 200) {
+           sessionStorage.removeItem('pay');
           //  this.$router.push({ path: "/roster/personnel" });
         }
       });
     },
     updateCer() {
-      debugger;
       var certificate = JSON.parse(sessionStorage.getItem("CerForm"));
-      console.log(certificate);
       if (certificate != null) {
         for (var i = 0; i < certificate.productGroup.length; i++) {
           // for (var i = 0; i < this.$global_msg.photoArr.length; i++) {
@@ -1179,15 +1183,17 @@ export default {
           );
           certificateFormdata.append(
               "pCredentialId ",
-              // this.$global_msg.photoArr[i].accessory[0].raw
               certificate.productGroup[i].pcredentialId
             );
-          if (certificate.productGroup[i].accessory != null) {
+            debugger
+            console.log(certificate.productGroup[i].accessory);
+          if (this.$global_msg.editAccessory[i].accessory != null) {
             certificateFormdata.append(
               "accessory ",
-              // this.$global_msg.photoArr[i].accessory[0].raw
-              certificate.productGroup[i].accessory.raw
+              this.$global_msg.editAccessory[i].accessory.raw
             );
+            console.log('证书上传');
+            console.log(this.$global_msg.editAccessory[i].accessory.raw);
           }
           if (certificate.productGroup[i].pcredentialId != null) {
             var certificateUrl =
@@ -1199,7 +1205,7 @@ export default {
               if (res.code == 200) {
                 //请求成功
                 this.$router.push({ path: "/roster/personnel" });
-                this.cancel(formName);
+                // this.cancel(formName);
               }
             });
           } else {
@@ -1212,10 +1218,11 @@ export default {
               if (res.code == 200) {
                 //请求成功
                 this.$router.push({ path: "/roster/personnel" });
-                this.cancel(formName);
+                // this.cancel(formName);
               }
             });
           }
+           sessionStorage.removeItem('CerForm');
           // }
         }
       } else {
