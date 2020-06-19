@@ -76,11 +76,11 @@
         width="650px"
         title="外来人员登记"
         :show-close="false"
-        class="popupDialog"
+          class="popupDialog"
         :center="true"
         :lockScroll="true"
       >
-        <div class="login_box">
+        <div style="margin-top:50px;">
           <el-form
             label-width="120px"
             class="demo-ruleForm"
