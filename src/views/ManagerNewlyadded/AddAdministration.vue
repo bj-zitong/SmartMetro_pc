@@ -33,7 +33,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="电话" prop="cellPhone" class="el-form-item">
+            <el-form-item label="联系电话" prop="cellPhone" class="el-form-item">
               <el-input v-model="form.cellPhone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
@@ -56,7 +56,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="电话" prop="urgentLinkManPhone" class="el-form-item">
+            <el-form-item label="紧急联系电话" prop="urgentLinkManPhone" class="el-form-item">
               <el-input v-model="form.urgentLinkManPhone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
@@ -111,12 +111,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件编号" prop="idCardCode">
+            <el-form-item label="证件编号/身份证号" prop="idCardCode">
               <el-input v-model="form.idCardCode" placeholder="请输入证件编号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="居住证" prop="isResidencePermit">
+            <el-form-item label="居住证是否办理" prop="isResidencePermit">
               <el-select v-model="form.isResidencePermit" placeholder="持证上岗">
                 <el-option label="是" value="0"></el-option>
                 <el-option label="否" value="1"></el-option>
@@ -124,11 +124,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="居住证办理日期" prop="residencePermitDate">
+            <el-form-item label="居住证签发日期" prop="residencePermitDate">
               <el-date-picker
                 v-model="form.residencePermitDate"
                 type="date"
-                placeholder="请选择居住证办理日期"
+                placeholder="请选择居住证签发日期"
                 default-time="12:00:00"
                 value-format="yyyy-MM-dd"
               ></el-date-picker>

@@ -104,8 +104,8 @@
             <el-form-item prop="phone" label="电话">
               <el-input v-model="form.phone" placeholder="联系电话"></el-input>
             </el-form-item>
-            <el-form-item prop="company" label="单位">
-              <el-input v-model="form.company" placeholder="单位"></el-input>
+            <el-form-item prop="company" label="所属单位">
+              <el-input v-model="form.company" placeholder="所属单位"></el-input>
             </el-form-item>
             <el-form-item prop="busNum" label="车牌号">
               <el-input v-model="form.busNum" placeholder="车牌号"></el-input>
@@ -132,11 +132,11 @@
               <el-input v-model="form.visitReason" placeholder="来访事由"></el-input>
             </el-form-item>
             <br />
-            <el-form-item prop="visitTime" label="日期">
+            <el-form-item prop="visitTime" label="来访时间">
               <el-date-picker
                 v-model="form.visitTime"
                 type="datetime"
-                placeholder="选择日期时间"
+                placeholder="选择时间"
                 default-time="12:00:00"
                 value-format="yyyy-MM-dd HH:mm:ss"
               ></el-date-picker>

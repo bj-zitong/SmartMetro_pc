@@ -640,13 +640,13 @@ export default {
       })
         .then(res => {
           // var res=[{name:1,age:1}];
-          // require.ensure([], () => {
-          // const { export_json_to_excel } = require('../../../src/excel/Export2Excel')
-          // const tHeader = ['公司名称','负责人','联系方式','服务单位','项目编号','项目名称','合同编号','合同期限类型','合同类型','组织机构代码']
-          //   const filterVal = ['company', 'responsiblePersonName','responsiblePersonPhone','serviceCompany','projectCode','projectName','contractCode','contractPeriodType','contractType','corpCode']
-          //   const list = this.tableData
-          //   console.log(list.contractPeriodType)
-          //    console.log(list)
+          require.ensure([], () => {
+          const { export_json_to_excel } = require('../../../src/excel/Export2Excel')
+            const tHeader = ['公司名称','负责人','联系方式','服务单位','项目编号','项目名称','合同编号','合同期限类型','合同类型','组织机构代码']
+            const filterVal = ['company', 'responsiblePersonName','responsiblePersonPhone','serviceCompany','projectCode','projectName','contractCode','contractPeriodType','contractType','corpCode']
+            const list = ['','','','','','','','','','']
+            // console.log(list.contractPeriodType)
+            //  console.log(list)
           //  for(var i=0;i<list.length;i++){
           //     if(list[i].contractPeriodType=='0'){
           //       list[i].contractPeriodType='固定期限合同'
@@ -659,28 +659,28 @@ export default {
           //     list[i].contractType='专业分包'
           //   }
           //  }
-          // const data = this.formatJson(filterVal, list)
-          // export_json_to_excel(tHeader, res, '导出列表名称')
-          // })
+          const data = this.formatJson(filterVal, list)
+          export_json_to_excel(tHeader, list, '导出列表名称')
+          })
 
           // //将文件流转成blob形式
-          const blob = new Blob([res], {
-            type:
-              "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          }); //application/vnd.ms-excel
+          // const blob = new Blob([res], {
+          //   type:
+          //     "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          // }); //application/vnd.ms-excel
           //创建一个超链接，将文件流赋进去，然后实现这个超链接的单击事件
-          const elink = document.createElement("a");
-          elink.download = "1.xls"; // 重命名文件
-          elink.style.display = "none";
-          let url = URL.createObjectURL(blob);
-          elink.href = url;
+          // const elink = document.createElement("a");
+          // elink.download = "1.xls"; // 重命名文件
+          // elink.style.display = "none";
+          // let url = URL.createObjectURL(blob);
+          // elink.href = url;
           // const fileName = decodeURI(res.headers['filename']);
           // elink.setAttribute('download', fileName);
           // document.body.appendChild(elink);
-          document.body.appendChild(elink);
-          elink.click();
+          // document.body.appendChild(elink);
+          // elink.click();
           // URL.revokeObjectURL(url); // 释放URL 对象
-          document.body.removeChild(elink);
+          // document.body.removeChild(elink);
         })
         .catch(error => {
           this.$message.error("导出失败");

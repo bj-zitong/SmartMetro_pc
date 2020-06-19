@@ -44,7 +44,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="电话" prop="cellPhone" class="el-form-item">
+            <el-form-item label="联系电话" prop="cellPhone" class="el-form-item">
               <el-input v-model="form.cellPhone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
@@ -59,7 +59,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="电话" prop="urgentLinkManPhone" class="el-form-item">
+            <el-form-item label="紧急联系人电话" prop="urgentLinkManPhone" class="el-form-item">
               <el-input v-model="form.urgentLinkManPhone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
@@ -69,7 +69,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="籍贯" prop="birthPlaceCode" class="el-form-item">
+            <el-form-item label="户籍地址 / 籍贯" prop="birthPlaceCode" class="el-form-item">
               <el-input v-model="form.birthPlaceCode" placeholder="请输入籍贯"></el-input>
             </el-form-item>
           </el-col>
@@ -122,12 +122,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证件编码" prop="idCardCode">
+            <el-form-item label="证件编码 / 身份证号" prop="idCardCode">
               <el-input v-model="form.idCardCode" placeholder="请填写证件编码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="班组长" prop="isTeamLeader">
+            <el-form-item label="是否班组长" prop="isTeamLeader">
               <el-select v-model="form.isTeamLeader" placeholder="请选择">
                 <el-option label="是" value="0"></el-option>
                 <el-option label="否" value="1"></el-option>
@@ -135,7 +135,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="参加培训" prop="isProjectTrain">
+            <el-form-item label="是否参加培训" prop="isProjectTrain">
               <el-select v-model="form.isProjectTrain" placeholder="请选择参加培训">
                 <el-option label="是" value="0"></el-option>
                 <el-option label="否" value="1"></el-option>
@@ -143,7 +143,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="持证上岗" prop="isRelatedCertificates">
+            <el-form-item label="是否持证上岗" prop="isRelatedCertificates">
               <el-select v-model="form.isRelatedCertificates" placeholder="请选择持证上岗">
                 <el-option label="是" value="0"></el-option>
                 <el-option label="否" value="1"></el-option>
@@ -159,7 +159,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="签发日期" prop="residencePermitDate">
+            <el-form-item label="居住证签发日期" prop="residencePermitDate">
               <el-date-picker
                 v-model="form.residencePermitDate"
                 type="date"
