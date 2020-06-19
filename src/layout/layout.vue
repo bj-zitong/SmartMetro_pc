@@ -5,7 +5,8 @@
     <div
       :class="hideMainContainer=='首页'||hideMainContainer=='工友须知'||hideMainContainer=='开复工管理'||hideMainContainer=='工地管理'||hideMainContainer=='角色管理'||hideMainContainer=='用户管理'||hideMainContainer=='分析'||hideMainContainer=='预警'?'main-container1':'main-container'"
     >
-      <tabs-view @tagName="tagName" v-if="false"></tabs-view>
+      <tabs-view @tagName="tagName"></tabs-view>
+      <div style="clear:both"></div>
       <app-main></app-main>
     </div>
   </div>
@@ -35,7 +36,6 @@ export default {
     ...mapGetters(["routers"])
   },
   activated() {
-    alert("969999")
     // var uid = this.$route.params.id;
     // this.id = uid;
     // if (this.id!=0) {

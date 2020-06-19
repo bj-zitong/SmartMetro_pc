@@ -213,6 +213,13 @@ export const constantRouterMap = [
           component: () =>
             import('@/views/roster/otherStaffs'),
           meta: { title: '其他服务类人员', icon: '', enable: "Y", parent: '实名认证' }
+        },
+        {
+          path: '/roster/supervisory',
+          name: 'supervisory',
+          component: () =>
+            import('@/views/roster/supervisory'),
+          meta: { title: '监理人员', icon: '', enable: "Y", parent: '实名认证' }
         }
         ]
       },

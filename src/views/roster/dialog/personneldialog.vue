@@ -15,13 +15,6 @@
             <el-row :gutter="20">
               <el-col :span="8">
                 <div class="grid-content bg-purple">
-                  一寸照片:
-                  <!-- <span>{{person.photoPath}}</span> -->
-                  <span><img :src="person.photoPath" @click="uploadVideo(scope.row)"/></span>
-                </div>
-              </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple">
                   姓名:
                   <span>{{person.name}}</span>
                 </div>
@@ -96,6 +89,7 @@
                   <span>{{person.birthPlaceCode}}</span>
                 </div>
               </el-col>
+              
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
@@ -189,6 +183,12 @@
                 <div class="grid-content bg-purple">
                   政治面貌:
                   <span>{{person.politicsType}}</span>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div class="grid-content bg-purple">
+                  一寸照片:
+                  <span><img :src='"/systemUrl" + person.photoPath' class="photo"/></span>
                 </div>
               </el-col>
             </el-row>
@@ -375,12 +375,18 @@
               </el-col>
             </el-row>
             <el-row :gutter="20">
-              <el-col :span="10">
+              <el-col :span="8">
+                <div class="grid-content bg-purple">
+                  <p></p>一寸照片:
+                  <span><img :src='"/systemUrl" + item.accessoryPath' class="photo"/></span>
+                </div>
+              </el-col>
+              <!-- <el-col :span="10">
                 <div class="grid-content bg-purple">
                   附件上传:
                   <span>{{item.accessoryPath}}</span>
                 </div>
-              </el-col>
+              </el-col> -->
             </el-row>
           </div>
         </el-tab-pane>
@@ -627,5 +633,9 @@ export default {
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
+}
+.photo{
+  width:100px;
+  height:100px;
 }
 </style>

@@ -7,7 +7,7 @@ const tabsview = {
   },
   mutations: {
     [SET_TABSVIEW](state, view) {
-      // console.log(view)
+      console.log(state, view)
       if(view.query.code==3){
         view.meta.title="人员智慧管理"
         state.visitedTabsView=[]
@@ -38,9 +38,14 @@ const tabsview = {
     }
   },
   actions: {
+    // 清空所有
+    // VisitedTabsView({ commit }, view) {
+    //   console.log(view)
+    //   commit(SET_TABSVIEW, view)
+    // },
     // 添加一个新的tabsView
     addVisitedTabsView({ commit }, view) {
-
+      console.log(view)
       commit(SET_TABSVIEW, view)
     },
     // 关闭一个tabsView

@@ -32,8 +32,6 @@
               prop="userId"
             ></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="jobNum" label="工号"></el-table-column>
-            <!-- <el-table-column prop="phone" label="所在部门"></el-table-column> -->
             <el-table-column prop="jobType" label="岗位/职责"></el-table-column>
             <el-table-column prop="attendanceHoursByYear" label="出勤天数/工时（年）"></el-table-column>
             <el-table-column prop="attendanceHoursByQuarter" label="出勤天数/工时（季度）"></el-table-column>
