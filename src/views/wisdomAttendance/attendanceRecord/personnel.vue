@@ -52,7 +52,7 @@
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="idNum" label="身份证号" width="180"></el-table-column>
             <el-table-column prop="gender" label="性别"></el-table-column>
-            <el-table-column prop="jobNum" label="工号"></el-table-column>
+            <!-- <el-table-column prop="jobNum" label="工号"></el-table-column> -->
             <el-table-column prop="team" label="所在班组"></el-table-column>
             <el-table-column prop="workType" label="工种"></el-table-column>
             <el-table-column prop="date" label="日期"></el-table-column>

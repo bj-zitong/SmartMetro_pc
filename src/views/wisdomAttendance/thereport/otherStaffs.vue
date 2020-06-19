@@ -31,7 +31,6 @@
               @selection-change="changeFun"
             ></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="jobNum" label="工号"></el-table-column>
             <el-table-column prop="duty" label="职务"></el-table-column>
             <el-table-column prop="workerType" label="工人类别"></el-table-column>
             <el-table-column prop="attendanceHoursByYear" label="出勤天数/工时（年）"></el-table-column>

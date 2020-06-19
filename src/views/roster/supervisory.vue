@@ -7,8 +7,8 @@
           <el-form-item label="姓名">
             <el-input v-model="formInline.name" placeholder="姓名"></el-input>
           </el-form-item>
-          <el-form-item label="人员类型" class="region">
-            <el-select v-model="formInline.workerType" placeholder="请选择人员类型">
+          <el-form-item label="专业" class="region">
+            <el-select v-model="formInline.workerType" placeholder="请选择专业">
               <el-option label="企业自有职工" value="0"></el-option>
               <el-option label="劳务派遣人员" value="1"></el-option>
             </el-select>
@@ -54,37 +54,14 @@
               prop="pinfoId"
               @selection-change="handleSelectionChange"
             ></el-table-column>
-            <el-table-column fixed prop="buildCorpName" label="承建单位"></el-table-column>
-            <el-table-column prop="jobType" label="岗/职位">
-              <template slot-scope="scope">
-                <span v-if="scope.row.jobType==0">xxxx1</span>
-                <span v-if="scope.row.jobType==1">xxxx2</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="workerType" label="人员类型">
-              <template slot-scope="scope">
-                <span v-if="scope.row.workerType==0">企业自有职工</span>
-                <span v-if="scope.row.workerType==1">劳务派遣人员</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="gender" label="性别">
-               <template slot-scope="scope">
-                <span v-if="scope.row.gender==0">男</span>
-                <span v-if="scope.row.gender==1">女</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="birthPlaceCode" label="籍贯"></el-table-column>
-            <el-table-column prop="idCardCode" label="证件编号"></el-table-column>
-            <el-table-column prop="age" label="年龄"></el-table-column>
-            <el-table-column prop="cellPhone" label="手机号码"></el-table-column>
-            <el-table-column prop="address" label="住址"></el-table-column>
-            <el-table-column prop="politicsType" label="政治面貌">
-              <template slot-scope="scope">
-                <span v-if="scope.row.politicsType==0">党员</span>
-                <span v-if="scope.row.politicsType==1">团员</span>
-              </template>
-            </el-table-column>
+            <el-table-column fixed prop="buildCorpName" label="姓名"></el-table-column>
+            <el-table-column prop="jobType" label="性别"></el-table-column>
+            <el-table-column prop="workerType" label="岗位"></el-table-column>
+            <el-table-column prop="name" label="所属单位"></el-table-column>
+            <el-table-column prop="gender" label="上岗证件名称"></el-table-column>
+            <el-table-column prop="birthPlaceCode" label="上岗证件证号"></el-table-column>
+            <el-table-column prop="idCardCode" label="职称"></el-table-column>
+            <el-table-column prop="age" label="监理范围"></el-table-column>
             <el-table-column fixed="right" label="操作" width="270">
               <template slot-scope="scope">
                 <el-button
